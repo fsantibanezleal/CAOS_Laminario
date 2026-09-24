@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario system overview</title>
+  <desc id="desc">A browser talks to nginx on one server. nginx serves the web app, routes the API to FastAPI, image tiles to the IIIF server and uploads to tusd. A worker turns uploads into pyramidal image files. Everything the product stores lives on a dedicated data volume. The base collection is prepared offline and enters through the same pipeline.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; }
+    }
+    .bg { fill: var(--bg); }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; stroke-dasharray: 4 4; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: 0.06em; }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#tip); }
+    .flow { stroke: var(--accent); stroke-width: 1.8; fill: none; marker-end: url(#tipa); }
+    .tip-line { fill: var(--line); } .tip-accent { fill: var(--accent); } .tip-warm { fill: var(--warm); }
+    .warmflow { stroke: var(--warm); stroke-width: 1.8; fill: none; marker-end: url(#tipw); stroke-dasharray: 6 4; }
+  </style>
+  <defs>
+    <marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="tip-line" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+    <marker id="tipa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="tip-accent" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+    <marker id="tipw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="tip-warm" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="560"/>
+
+  <!-- browser -->
+  <rect class="box" x="24" y="40" width="190" height="150" rx="10"/>
+  <text class="h" x="40" y="64">BROWSER</text>
+  <text class="t" x="40" y="88">Laminario web app</text>
+  <text class="s" x="40" y="110">cabinet, drawer, slide, stage</text>
+  <text class="m" x="40" y="134">OpenSeadragon (IIIF)</text>
+  <text class="m" x="40" y="152">MapLibre + PMTiles</text>
+  <text class="m" x="40" y="170">Uppy (tus uploads)</text>
+
+  <!-- server lane -->
+  <rect class="lane" x="250" y="20" width="690" height="400" rx="14"/>
+  <text class="h" x="268" y="44">SERVER, ONE LINUX HOST</text>
+
+  <rect class="box" x="268" y="60" width="150" height="120" rx="10"/>
+  <text class="t" x="284" y="86">nginx</text>
+  <text class="s" x="284" y="108">TLS, static app</text>
+  <text class="m" x="284" y="130">/api</text><text class="s" x="330" y="130">API</text>
+  <text class="m" x="284" y="148">/iiif</text><text class="s" x="330" y="148">iipsrv</text>
+  <text class="m" x="284" y="166">/files</text><text class="s" x="330" y="166">tusd</text>
+
+  <rect class="box" x="470" y="52" width="200" height="72" rx="10"/>
+  <text class="t" x="486" y="78">API (FastAPI)</text>
+  <text class="s" x="486" y="99">catalog, accounts, identifications,</text>
+  <text class="s" x="486" y="115">IIIF manifests, job events (SSE)</text>
+
+  <rect class="box" x="470" y="140" width="200" height="60" rx="10"/>
+  <text class="t" x="486" y="166">iipsrv</text>
+  <text class="s" x="486" y="186">IIIF Image API 3, level 2</text>
+
+  <rect class="box" x="470" y="216" width="200" height="60" rx="10"/>
+  <text class="t" x="486" y="242">tusd</text>
+  <text class="s" x="486" y="262">resumable uploads, hooks</text>
+
+  <rect class="box" x="712" y="52" width="210" height="148" rx="10"/>
+  <text class="t" x="728" y="78">Worker</text>
+  <text class="s" x="728" y="100">one heavy job at a time</text>
+  <text class="m" x="728" y="124">libvips + OpenSlide</text>
+  <text class="m" x="728" y="142">pyramid per image plane</text>
+  <text class="m" x="728" y="160">focus composite, labels, QR</text>
+  <text class="m" x="728" y="178">durable jobs in SQLite</text>
+
+  <!-- volume -->
+  <rect class="store" x="470" y="300" width="452" height="104" rx="10"/>
+  <text class="h" x="488" y="324">DATA VOLUME, /srv/laminario</text>
+  <text class="m" x="488" y="348">store/</text><text class="s" x="584" y="348">one BigTIFF per image plane</text>
+  <text class="m" x="488" y="366">quarantine/</text><text class="s" x="584" y="366">uploads awaiting their checks</text>
+  <text class="m" x="488" y="384">cache/</text><text class="s" x="584" y="384">tile cache</text>
+  <text class="m" x="770" y="348">laminario.sqlite3</text>
+  <text class="s" x="770" y="366">catalog, users, jobs</text>
+  <!-- offline lane -->
+  <rect class="lane" x="24" y="440" width="916" height="100" rx="14"/>
+  <text class="h" x="40" y="464">OFFLINE, THE OWNER'S MACHINE</text>
+  <rect class="box" x="40" y="476" width="300" height="52" rx="10"/>
+  <text class="t" x="56" y="498">Base collection curation</text>
+  <text class="s" x="56" y="517">open sources, licences, a locked list</text>
+  <rect class="box" x="370" y="476" width="250" height="52" rx="10"/>
+  <text class="t" x="386" y="498">Same pipeline as uploads</text>
+  <text class="s" x="386" y="517">verified bake, then copied</text>
+
+  <!-- flows -->
+  <path class="flow" d="M214 115 L266 115"/>
+  <path class="arrow" d="M418 96 L468 90"/>
+  <path class="arrow" d="M418 140 L468 168"/>
+  <path class="arrow" d="M418 160 L468 244"/>
+  <path class="arrow" d="M670 246 C 700 246, 690 170, 710 160"/>
+  <path class="arrow" d="M670 88 L710 100"/>
+  <path class="arrow" d="M816 200 L816 298"/>
+  <path class="arrow" d="M570 200 L570 298"/>
+  <path class="arrow" d="M620 276 L620 298"/>
+  <path class="warmflow" d="M620 502 C 700 502, 760 460, 760 406"/>
+  <path class="arrow" d="M340 502 L368 502"/>
+</svg>
