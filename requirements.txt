@@ -1,0 +1,2 @@
+# Laminario has no in-browser Python lane: the runtime is the server (API and worker).
+-r requirements-api.txt
