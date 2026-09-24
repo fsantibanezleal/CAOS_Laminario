@@ -1,0 +1,53 @@
+name: ci
+
+# Cheap checks on committed files only: lint and guards. No test suite, no processing, no imaging
+# stack: the full test suite runs locally before every push. Trunk and manual triggers only;
+# superseded runs are cancelled.
+on:
+  push:
+    branches: [develop, main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Lint
+        run: pip install ruff==0.16.8 && ruff check app tests scripts
+
+  guards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Repository hygiene (no env, venv, slides, pyramids, databases or local paths tracked)
+        run: python scripts/check_repo_hygiene.py
+      - name: No template residue
+        run: python scripts/check_template_residue.py
+      - name: No em-dash or emoji
+        run: python scripts/check_content_standards.py
+      - name: CI budget
+        run: python scripts/check_ci_budget.py
+      - name: The design document, every requirement names a gate that exists
+        run: python scripts/check_sdd.py
+      - name: Shell scripts are executable
+        run: |
+          if git ls-files -s '*.sh' | grep -qv '^100755'; then
+            git ls-files -s '*.sh' | grep -v '^100755'
+            echo "::error::a tracked .sh file is not mode 100755"; exit 1; fi
+          echo "shell modes: OK"
