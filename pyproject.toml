@@ -1,0 +1,14 @@
+# Tool configuration only. Laminario is an application, not a package: there is no [project] table and
+# nothing is installed with `pip install -e .`. Dependencies live in the requirements files.
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = [".tmp", ".data", "frontend", "node_modules"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

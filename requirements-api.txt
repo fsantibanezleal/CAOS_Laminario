@@ -1,0 +1,6 @@
+# Server runtime: the API and the processing worker. Python 3.12.
+# Each unit adds the dependencies it uses, pinned, when it lands.
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+pydantic==2.13.5
+pydantic-settings==2.15.0

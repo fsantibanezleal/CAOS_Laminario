@@ -1,0 +1,5 @@
+# Local development and the full test suite (run locally; CI runs only lint and guards).
+-r requirements-api.txt
+pytest==9.1.1
+httpx2==2.13.1
+ruff==0.16.8
