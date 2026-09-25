@@ -21,6 +21,8 @@ the command to fix it when a prerequisite is missing. PowerShell first; the bash
 .\.venv\Scripts\python.exe scripts\check_content_standards.py
 .\.venv\Scripts\python.exe scripts\check_ci_budget.py
 .\.venv\Scripts\python.exe scripts\check_sdd.py
+.\.venv\Scripts\python.exe scripts\export_contracts.py --check
+cd frontend ; npm run contract:check ; npm run typecheck ; npm test
 ```
 
 CI runs only the lint and the guards; the test suite is the local gate.

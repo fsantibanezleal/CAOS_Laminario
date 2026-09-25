@@ -34,8 +34,10 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.00.000`: the repository base (U0). The server skeleton answers `GET /api/health`; guards, continuous
-integration, local scripts and the wiki are in place. The units that follow are listed in the design document.
+Version `0.01.000`: the repository base (U0) and the data model with both contracts (U1). The API validates a
+slide case (`POST /api/slide-cases/validate`), stores it, and serves the catalog record (`GET /api/slides/{id}`,
+`GET /api/slides`); the JSON Schemas of both contracts are committed and mirrored as TypeScript types. The units
+that follow are listed in the design document.
 
 ## Architecture at a glance
 
@@ -68,9 +70,11 @@ hygiene, template residue, content standards, CI budget and the design-document 
 ## Project structure
 
 ```
-app/            the server: API (and, from U4, the processing worker)
+app/            the server: contracts, database, services, routes (and, from U4, the processing worker)
+contracts/      the committed JSON Schemas of the ingestion and catalog contracts
 docs/           the wiki: design, architecture, guides
-scripts/        guards, and scripts/local/ for setup and running
+frontend/       the web app (React, Vite, TypeScript) and the generated contract types
+scripts/        guards, the contract exporter, and scripts/local/ for setup and running
 tests/          the test suite (local)
 ```
 

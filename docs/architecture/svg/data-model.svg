@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario data model: the slide case</title>
+  <desc id="desc">A submission passes the ingestion contract, is stored as one slide row with one asset row per image, and is read back as a catalog record with geoprivacy applied. The JSON Schemas of both contracts are committed and mirrored as TypeScript types.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; }
+    }
+    .bg { fill: var(--bg); }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; stroke-dasharray: 4 4; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: 0.06em; }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#tip); }
+    .flow { stroke: var(--accent); stroke-width: 1.8; fill: none; marker-end: url(#tipa); }
+    .tip-line { fill: var(--line); } .tip-accent { fill: var(--accent); }
+  </style>
+  <defs>
+    <marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="tip-line" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+    <marker id="tipa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="tip-accent" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="520"/>
+
+  <!-- ingestion -->
+  <rect class="lane" x="20" y="20" width="290" height="300" rx="14"/>
+  <text class="h" x="36" y="44">INGESTION CONTRACT</text>
+  <rect class="box" x="36" y="58" width="258" height="246" rx="10"/>
+  <text class="t" x="52" y="82">SlideCaseSubmission</text>
+  <text class="m" x="52" y="106">origin     base | contribution</text>
+  <text class="m" x="52" y="124">slide      format, coverslip,</text>
+  <text class="m" x="52" y="140">           preparation, label</text>
+  <text class="m" x="52" y="160">specimen   anchor, host, dates,</text>
+  <text class="m" x="52" y="176">           coordinates, geoprivacy</text>
+  <text class="m" x="52" y="196">placement  node</text>
+  <text class="m" x="52" y="216">assets[]   family, role, content,</text>
+  <text class="m" x="52" y="232">           licence, scale, modality,</text>
+  <text class="m" x="52" y="248">           plane, polarisation, source</text>
+  <text class="s" x="52" y="276">structure (types, ranges), then</text>
+  <text class="s" x="52" y="292">rules across fields, then flags</text>
+
+  <!-- database -->
+  <rect class="lane" x="340" y="20" width="290" height="300" rx="14"/>
+  <text class="h" x="356" y="44">DATABASE (SQLite, WAL)</text>
+  <rect class="store" x="356" y="58" width="258" height="112" rx="10"/>
+  <text class="t" x="372" y="82">slide</text>
+  <text class="m" x="372" y="104">id, short_id, status, origin</text>
+  <text class="m" x="372" y="120">format and coverslip in mm</text>
+  <text class="m" x="372" y="136">label, anchor, host, place</text>
+  <text class="m" x="372" y="152">placement, contributor, dates</text>
+  <rect class="store" x="356" y="190" width="258" height="114" rx="10"/>
+  <text class="t" x="372" y="214">asset</text>
+  <text class="m" x="372" y="236">slide_id, family, role, order</text>
+  <text class="m" x="372" y="252">media_kind, status, size, scale</text>
+  <text class="m" x="372" y="268">modality, plane, polarisation</text>
+  <text class="m" x="372" y="284">licence, rights, source, storage</text>
+  <path class="arrow" d="M485 170 L485 188"/>
+  <text class="s" x="495" y="184">1 to many</text>
+
+  <!-- catalog -->
+  <rect class="lane" x="660" y="20" width="280" height="300" rx="14"/>
+  <text class="h" x="676" y="44">CATALOG CONTRACT</text>
+  <rect class="box" x="676" y="58" width="248" height="246" rx="10"/>
+  <text class="t" x="692" y="82">SlideRecord</text>
+  <text class="m" x="692" y="106">id, permalink, qr_payload</text>
+  <text class="m" x="692" y="124">format, coverslip, label</text>
+  <text class="m" x="692" y="142">anchor, host, placement</text>
+  <text class="m" x="692" y="160">place: after geoprivacy</text>
+  <text class="s" x="704" y="176">open: the point</text>
+  <text class="s" x="704" y="192">obscured: a 0.2 degree cell</text>
+  <text class="s" x="704" y="208">private: nothing</text>
+  <text class="m" x="692" y="230">quality: computed checks</text>
+  <text class="m" x="692" y="248">assets[]: media addresses,</text>
+  <text class="m" x="692" y="264">  licence, source, planes</text>
+  <text class="m" x="692" y="284">manifest_url</text>
+
+  <path class="flow" d="M294 180 L354 180"/>
+  <text class="s" x="298" y="172">store</text>
+  <path class="flow" d="M614 180 L674 180"/>
+  <text class="s" x="620" y="172">build</text>
+
+  <!-- mirrors -->
+  <rect class="lane" x="20" y="350" width="920" height="150" rx="14"/>
+  <text class="h" x="36" y="374">THE SCHEMAS AND THEIR MIRROR</text>
+  <rect class="box" x="36" y="390" width="270" height="92" rx="10"/>
+  <text class="t" x="52" y="414">contracts/*.schema.json</text>
+  <text class="s" x="52" y="436">JSON Schema of both contracts,</text>
+  <text class="s" x="52" y="452">exported from the models; a test</text>
+  <text class="s" x="52" y="468">fails when they are stale</text>
+  <rect class="box" x="346" y="390" width="270" height="92" rx="10"/>
+  <text class="t" x="362" y="414">frontend/src/contract/*.ts</text>
+  <text class="s" x="362" y="436">TypeScript generated from the</text>
+  <text class="s" x="362" y="452">schemas; check-contract-drift</text>
+  <text class="s" x="362" y="468">fails the build on a difference</text>
+  <rect class="box" x="656" y="390" width="268" height="92" rx="10"/>
+  <text class="t" x="672" y="414">POST /api/slide-cases/validate</text>
+  <text class="s" x="672" y="436">runs the ingestion contract</text>
+  <text class="s" x="672" y="452">without storing: 422 names the</text>
+  <text class="s" x="672" y="468">field and range, 200 lists flags</text>
+  <path class="arrow" d="M306 436 L344 436"/>
+</svg>
