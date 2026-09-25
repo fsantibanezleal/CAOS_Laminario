@@ -1,0 +1,770 @@
+{
+  "$defs": {
+    "Anchor": {
+      "additionalProperties": false,
+      "description": "What the slide shows: a taxon, a rock, a mineral, a crystal or a material.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "taxon",
+            "rock",
+            "mineral",
+            "crystal",
+            "material"
+          ],
+          "expected": "one of: taxon, rock, mineral, crystal, material",
+          "type": "string"
+        },
+        "ref": {
+          "expected": "1 to 200 characters; for a taxon, its GBIF usage key",
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        "name": {
+          "expected": "1 to 200 characters",
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        "rank": {
+          "anyOf": [
+            {
+              "maxLength": 32,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 32 characters"
+        }
+      },
+      "required": [
+        "kind",
+        "ref",
+        "name"
+      ],
+      "title": "Anchor",
+      "type": "object"
+    },
+    "AssetSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "enum": [
+            "macro",
+            "micro"
+          ],
+          "expected": "one of: macro, micro",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "slide_overview",
+            "specimen",
+            "place",
+            "label",
+            "single",
+            "pyramid",
+            "z_plane",
+            "polarised"
+          ],
+          "expected": "one of: slide_overview, specimen, place, label, single, pyramid, z_plane, polarised",
+          "type": "string"
+        },
+        "upload_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9_+-]{8,128}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "an upload id, 8 to 128 characters"
+        },
+        "remote_iiif": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "the URL of a IIIF Image API service"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "licence": {
+          "expected": "a licence URI",
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        "rights_holder": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 200 characters"
+        },
+        "creator": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 200 characters"
+        },
+        "pixel_size_um": {
+          "anyOf": [
+            {
+              "maximum": 50,
+              "minimum": 0.05,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "0.05 to 50 um per pixel"
+        },
+        "modality": {
+          "anyOf": [
+            {
+              "enum": [
+                "brightfield",
+                "darkfield",
+                "phase_contrast",
+                "dic",
+                "polarised_ppl",
+                "polarised_xpl",
+                "reflected",
+                "fluorescence",
+                "sem_external"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "one of: brightfield, darkfield, phase_contrast, dic, polarised_ppl, polarised_xpl, reflected, fluorescence, sem_external"
+        },
+        "plane": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PlaneSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "polarisation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PolarisationSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "exif": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ExifSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "caption": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 300 characters"
+        }
+      },
+      "required": [
+        "family",
+        "role",
+        "licence"
+      ],
+      "title": "AssetSpec",
+      "type": "object"
+    },
+    "Coordinates": {
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "expected": "-90 to 90 degrees",
+          "maximum": 90,
+          "minimum": -90,
+          "type": "number"
+        },
+        "lon": {
+          "expected": "-180 to 180 degrees",
+          "maximum": 180,
+          "minimum": -180,
+          "type": "number"
+        },
+        "uncertainty_m": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at least 0 m"
+        }
+      },
+      "required": [
+        "lat",
+        "lon"
+      ],
+      "title": "Coordinates",
+      "type": "object"
+    },
+    "CoverslipSizeMm": {
+      "additionalProperties": false,
+      "description": "A custom coverslip size.",
+      "properties": {
+        "w_mm": {
+          "exclusiveMinimum": 0,
+          "expected": "more than 0 and at most 100 mm",
+          "maximum": 100,
+          "type": "number"
+        },
+        "h_mm": {
+          "exclusiveMinimum": 0,
+          "expected": "more than 0 and at most 100 mm",
+          "maximum": 100,
+          "type": "number"
+        }
+      },
+      "required": [
+        "w_mm",
+        "h_mm"
+      ],
+      "title": "CoverslipSizeMm",
+      "type": "object"
+    },
+    "ExifSpec": {
+      "additionalProperties": false,
+      "description": "What the browser read from a photo's EXIF block, sent so the server can flag and strip.",
+      "properties": {
+        "datetime_original": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "an ISO date-time"
+        },
+        "gps_present": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "title": "ExifSpec",
+      "type": "object"
+    },
+    "PlacementSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "node": {
+          "expected": "a node id: lowercase words joined by hyphens, levels by dots",
+          "maxLength": 120,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?:\\.[a-z0-9]+(?:-[a-z0-9]+)*)*$",
+          "type": "string"
+        },
+        "override_reason": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 300 characters"
+        }
+      },
+      "required": [
+        "node"
+      ],
+      "title": "PlacementSpec",
+      "type": "object"
+    },
+    "PlaneSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "expected": "0 to 10000",
+          "maximum": 10000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "depth_um": {
+          "expected": "-100000 to 100000 um",
+          "maximum": 100000,
+          "minimum": -100000,
+          "type": "number"
+        },
+        "stack": {
+          "expected": "1 to 64 letters, digits, hyphens or underscores",
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "index",
+        "depth_um",
+        "stack"
+      ],
+      "title": "PlaneSpec",
+      "type": "object"
+    },
+    "PolarisationSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "ppl",
+            "xpl"
+          ],
+          "expected": "one of: ppl, xpl",
+          "type": "string"
+        },
+        "angle_deg": {
+          "default": 0.0,
+          "expected": "0 to 360 degrees",
+          "maximum": 360,
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "state"
+      ],
+      "title": "PolarisationSpec",
+      "type": "object"
+    },
+    "SizeMm": {
+      "additionalProperties": false,
+      "description": "A custom slide size.",
+      "properties": {
+        "w_mm": {
+          "expected": "20 to 100 mm",
+          "maximum": 100,
+          "minimum": 20,
+          "type": "number"
+        },
+        "h_mm": {
+          "expected": "20 to 100 mm",
+          "maximum": 100,
+          "minimum": 20,
+          "type": "number"
+        }
+      },
+      "required": [
+        "w_mm",
+        "h_mm"
+      ],
+      "title": "SizeMm",
+      "type": "object"
+    },
+    "SlideSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "enum": [
+            "iso_76x26",
+            "us_75x25",
+            "petro_27x46",
+            "us_2x3in",
+            "custom"
+          ],
+          "expected": "one of: iso_76x26, us_75x25, petro_27x46, us_2x3in, custom",
+          "type": "string"
+        },
+        "custom_mm": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SizeMm"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "a size, only for the custom format"
+        },
+        "coverslip": {
+          "default": "none",
+          "enum": [
+            "none",
+            "18x18",
+            "22x22",
+            "22x40",
+            "22x50",
+            "24x50",
+            "24x60",
+            "custom"
+          ],
+          "expected": "one of: none, 18x18, 22x22, 22x40, 22x50, 24x50, 24x60, custom",
+          "type": "string"
+        },
+        "coverslip_custom_mm": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CoverslipSizeMm"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "a size, only for a custom coverslip"
+        },
+        "preparation": {
+          "enum": [
+            "whole_mount",
+            "section",
+            "smear",
+            "squash",
+            "strew",
+            "thin_section",
+            "polished_section",
+            "peel",
+            "cast",
+            "fluid_mount"
+          ],
+          "expected": "one of: whole_mount, section, smear, squash, strew, thin_section, polished_section, peel, cast, fluid_mount",
+          "type": "string"
+        },
+        "stain": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 80 characters"
+        },
+        "mountant": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 80 characters"
+        },
+        "catalogue_number": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 64 characters"
+        },
+        "label_note": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 160 characters"
+        },
+        "prepared_on": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "a date YYYY, YYYY-MM or YYYY-MM-DD, from 1600 to today"
+        },
+        "preparer": {
+          "anyOf": [
+            {
+              "maxLength": 120,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 120 characters"
+        }
+      },
+      "required": [
+        "format",
+        "preparation"
+      ],
+      "title": "SlideSpec",
+      "type": "object"
+    },
+    "SourceSpec": {
+      "additionalProperties": false,
+      "description": "Where an imported asset came from (the base collection).",
+      "properties": {
+        "url": {
+          "expected": "an http or https URL",
+          "format": "uri",
+          "maxLength": 2083,
+          "minLength": 1,
+          "type": "string"
+        },
+        "record_id": {
+          "expected": "1 to 200 characters",
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        "retrieved_on": {
+          "expected": "a date YYYY-MM-DD, not in the future",
+          "format": "date",
+          "type": "string"
+        },
+        "sha256": {
+          "expected": "64 lowercase hexadecimal characters",
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "record_id",
+        "retrieved_on",
+        "sha256"
+      ],
+      "title": "SourceSpec",
+      "type": "object"
+    },
+    "SpecimenSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/$defs/Anchor"
+        },
+        "collected_on": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "a date YYYY, YYYY-MM or YYYY-MM-DD, from 1600 to today"
+        },
+        "collector": {
+          "anyOf": [
+            {
+              "maxLength": 120,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 120 characters"
+        },
+        "locality_text": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "at most 300 characters"
+        },
+        "coordinates": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Coordinates"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "geoprivacy": {
+          "default": "open",
+          "enum": [
+            "open",
+            "obscured",
+            "private"
+          ],
+          "expected": "one of: open, obscured, private",
+          "type": "string"
+        },
+        "host": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Anchor"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "a taxon anchor"
+        },
+        "type_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "holotype",
+                "paratype",
+                "allotype",
+                "syntype",
+                "lectotype",
+                "paralectotype",
+                "neotype",
+                "topotype",
+                "other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "one of: holotype, paratype, allotype, syntype, lectotype, paralectotype, neotype, topotype, other"
+        }
+      },
+      "required": [
+        "anchor"
+      ],
+      "title": "SpecimenSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "origin": {
+      "default": "contribution",
+      "enum": [
+        "contribution",
+        "base"
+      ],
+      "expected": "one of: contribution, base",
+      "type": "string"
+    },
+    "slide": {
+      "$ref": "#/$defs/SlideSpec"
+    },
+    "specimen": {
+      "$ref": "#/$defs/SpecimenSpec"
+    },
+    "placement": {
+      "$ref": "#/$defs/PlacementSpec"
+    },
+    "assets": {
+      "expected": "1 to 500 assets",
+      "items": {
+        "$ref": "#/$defs/AssetSpec"
+      },
+      "maxItems": 500,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "slide",
+    "specimen",
+    "placement",
+    "assets"
+  ],
+  "title": "SlideCaseSubmission",
+  "type": "object",
+  "$id": "https://laminario.ml.fasl-work.com/contracts/ingest.schema.json"
+}

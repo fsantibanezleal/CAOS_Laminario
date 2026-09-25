@@ -26,6 +26,27 @@ jobs:
           python-version: "3.12"
       - name: Lint
         run: pip install ruff==0.16.8 && ruff check app tests scripts
+      - name: Contract schemas match the models (stdlib plus pydantic, no server stack)
+        run: pip install pydantic==2.13.5 pydantic-settings==2.15.0 && python scripts/export_contracts.py --check
+
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Contract types match the committed schemas
+        run: node scripts/check-contract-drift.mjs
+      - name: Type check and build
+        run: npm run build
 
   guards:
     runs-on: ubuntu-latest

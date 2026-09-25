@@ -1,0 +1,955 @@
+{
+  "$id": "https://laminario.ml.fasl-work.com/contracts/catalog.schema.json",
+  "title": "LaminarioCatalog",
+  "type": "object",
+  "properties": {
+    "slide": {
+      "$ref": "#/$defs/SlideRecord"
+    },
+    "slidePage": {
+      "$ref": "#/$defs/SlidePage"
+    },
+    "slideSummary": {
+      "$ref": "#/$defs/SlideSummary"
+    },
+    "validation": {
+      "$ref": "#/$defs/ValidationResult"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "AnchorRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "taxon",
+            "rock",
+            "mineral",
+            "crystal",
+            "material"
+          ],
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "rank": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "kind",
+        "ref",
+        "name"
+      ],
+      "title": "AnchorRecord",
+      "type": "object"
+    },
+    "AssetRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "family": {
+          "enum": [
+            "macro",
+            "micro"
+          ],
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "sort_order": {
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "ready",
+            "failed"
+          ],
+          "type": "string"
+        },
+        "media": {
+          "$ref": "#/$defs/MediaRecord"
+        },
+        "pixel_size_um": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "modality": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "plane": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PlaneRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "polarisation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PolarisationRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "caption": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "licence": {
+          "$ref": "#/$defs/LicenceRecord"
+        },
+        "rights_holder": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "creator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "family",
+        "role",
+        "sort_order",
+        "status",
+        "media",
+        "licence"
+      ],
+      "title": "AssetRecord",
+      "type": "object"
+    },
+    "CellRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "south": {
+          "type": "number"
+        },
+        "west": {
+          "type": "number"
+        },
+        "north": {
+          "type": "number"
+        },
+        "east": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "title": "CellRecord",
+      "type": "object"
+    },
+    "CoverslipRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "long_mm": {
+          "type": "number"
+        },
+        "short_mm": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "code",
+        "long_mm",
+        "short_mm"
+      ],
+      "title": "CoverslipRecord",
+      "type": "object"
+    },
+    "FormatRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "width_mm": {
+          "type": "number"
+        },
+        "height_mm": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "code",
+        "width_mm",
+        "height_mm"
+      ],
+      "title": "FormatRecord",
+      "type": "object"
+    },
+    "LabelRecord": {
+      "additionalProperties": false,
+      "description": "What the printed label shows.",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "catalogue_number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "preparation": {
+          "type": "string"
+        },
+        "stain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "mountant": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "label_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "prepared_on": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "preparer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "collected_on": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "collector": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "locality_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "type_status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name",
+        "preparation"
+      ],
+      "title": "LabelRecord",
+      "type": "object"
+    },
+    "LicenceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "uri": {
+          "type": "string"
+        },
+        "short_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "short_name"
+      ],
+      "title": "LicenceRecord",
+      "type": "object"
+    },
+    "MediaRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "pyramid",
+            "image",
+            "remote_iiif"
+          ],
+          "type": "string"
+        },
+        "iiif_info_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "image_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "width_px": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "height_px": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "MediaRecord",
+      "type": "object"
+    },
+    "PlaceRecord": {
+      "additionalProperties": false,
+      "description": "Where the specimen was collected, after geoprivacy.",
+      "properties": {
+        "geoprivacy": {
+          "enum": [
+            "open",
+            "obscured",
+            "private"
+          ],
+          "type": "string"
+        },
+        "point": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PointRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "cell": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CellRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "uncertainty_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "locality_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "geoprivacy"
+      ],
+      "title": "PlaceRecord",
+      "type": "object"
+    },
+    "PlacementRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "overridden": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "node"
+      ],
+      "title": "PlacementRecord",
+      "type": "object"
+    },
+    "PlaneRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "stack": {
+          "type": "string"
+        },
+        "index": {
+          "type": "integer"
+        },
+        "depth_um": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "stack",
+        "index",
+        "depth_um"
+      ],
+      "title": "PlaneRecord",
+      "type": "object"
+    },
+    "PointRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "lat",
+        "lon"
+      ],
+      "title": "PointRecord",
+      "type": "object"
+    },
+    "PolarisationRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "ppl",
+            "xpl"
+          ],
+          "type": "string"
+        },
+        "angle_deg": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "state",
+        "angle_deg"
+      ],
+      "title": "PolarisationRecord",
+      "type": "object"
+    },
+    "QualityCheckRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "licence_and_provenance",
+            "scale",
+            "modality",
+            "macro_and_micro"
+          ],
+          "type": "string"
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "detail": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "passed",
+        "detail"
+      ],
+      "title": "QualityCheckRecord",
+      "type": "object"
+    },
+    "QualityRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "badge": {
+          "enum": [
+            "verified",
+            "needs_id",
+            "reference"
+          ],
+          "type": "string"
+        },
+        "checks": {
+          "items": {
+            "$ref": "#/$defs/QualityCheckRecord"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "badge",
+        "checks"
+      ],
+      "title": "QualityRecord",
+      "type": "object"
+    },
+    "SlidePage": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/SlideSummary"
+          },
+          "type": "array"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "offset": {
+          "type": "integer"
+        },
+        "limit": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "offset",
+        "limit"
+      ],
+      "title": "SlidePage",
+      "type": "object"
+    },
+    "SlideRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "permalink": {
+          "type": "string"
+        },
+        "qr_payload": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "processing",
+            "published",
+            "hidden"
+          ],
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "base",
+            "contribution"
+          ],
+          "type": "string"
+        },
+        "format": {
+          "$ref": "#/$defs/FormatRecord"
+        },
+        "coverslip": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CoverslipRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "label": {
+          "$ref": "#/$defs/LabelRecord"
+        },
+        "anchor": {
+          "$ref": "#/$defs/AnchorRecord"
+        },
+        "host": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AnchorRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "place": {
+          "$ref": "#/$defs/PlaceRecord"
+        },
+        "placement": {
+          "$ref": "#/$defs/PlacementRecord"
+        },
+        "quality": {
+          "$ref": "#/$defs/QualityRecord"
+        },
+        "assets": {
+          "items": {
+            "$ref": "#/$defs/AssetRecord"
+          },
+          "type": "array"
+        },
+        "manifest_url": {
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "permalink",
+        "qr_payload",
+        "status",
+        "origin",
+        "format",
+        "label",
+        "anchor",
+        "place",
+        "placement",
+        "quality",
+        "assets",
+        "manifest_url",
+        "created_at",
+        "updated_at"
+      ],
+      "title": "SlideRecord",
+      "type": "object"
+    },
+    "SlideSummary": {
+      "additionalProperties": false,
+      "description": "A slide in a list: enough to draw it in a drawer.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "permalink": {
+          "type": "string"
+        },
+        "anchor": {
+          "$ref": "#/$defs/AnchorRecord"
+        },
+        "format": {
+          "$ref": "#/$defs/FormatRecord"
+        },
+        "placement": {
+          "$ref": "#/$defs/PlacementRecord"
+        },
+        "preparation": {
+          "type": "string"
+        },
+        "thumbnail_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "origin": {
+          "enum": [
+            "base",
+            "contribution"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "permalink",
+        "anchor",
+        "format",
+        "placement",
+        "preparation",
+        "origin"
+      ],
+      "title": "SlideSummary",
+      "type": "object"
+    },
+    "SourceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "record_id": {
+          "type": "string"
+        },
+        "retrieved_on": {
+          "format": "date",
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "record_id",
+        "retrieved_on",
+        "sha256"
+      ],
+      "title": "SourceRecord",
+      "type": "object"
+    },
+    "ValidationError": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "expected": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "message",
+        "expected"
+      ],
+      "title": "ValidationError",
+      "type": "object"
+    },
+    "ValidationFlag": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "field",
+        "message"
+      ],
+      "title": "ValidationFlag",
+      "type": "object"
+    },
+    "ValidationResult": {
+      "additionalProperties": false,
+      "description": "The answer of ``POST /api/slide-cases/validate``.",
+      "properties": {
+        "valid": {
+          "type": "boolean"
+        },
+        "flags": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ValidationFlag"
+          },
+          "type": "array"
+        },
+        "errors": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ValidationError"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "valid"
+      ],
+      "title": "ValidationResult",
+      "type": "object"
+    }
+  }
+}
