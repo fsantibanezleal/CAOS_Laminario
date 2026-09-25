@@ -33,6 +33,18 @@ Open `http://127.0.0.1:8147/api/health`; it answers with the product name and th
 file. The interactive API documentation is at `/api/docs`. The script refuses to start on a port another
 program already holds.
 
+## 2. The database and the web app
+
+```powershell
+.\.venv\Scripts\python.exe -m app.db.migrate      # creates or upgrades .data/laminario.sqlite3
+cd frontend
+npm ci
+npm run dev                                        # http://127.0.0.1:5909, proxies /api to the API
+```
+
+The web dev server proxies `/api`, `/iiif` and `/media` to the API on port 8147, so the app is served from one
+origin as it is in production.
+
 ## Tests and guards
 
 The full test suite runs locally; continuous integration runs only the lint and the guards.
@@ -45,7 +57,14 @@ The full test suite runs locally; continuous integration runs only the lint and 
 .\.venv\Scripts\python.exe scripts\check_content_standards.py # no em-dash, no emoji
 .\.venv\Scripts\python.exe scripts\check_ci_budget.py         # CI stays cheap
 .\.venv\Scripts\python.exe scripts\check_sdd.py               # every requirement names a gate that exists
+.\.venv\Scripts\python.exe scripts\export_contracts.py --check # committed schemas equal the models
+cd frontend
+npm run contract:check                                        # committed TypeScript equals the schemas
+npm run typecheck
+npm test
 ```
+
+After a change to a contract model: `python scripts/export_contracts.py`, then `npm run contract:generate`.
 
 Tests write only to a temporary folder: `LAMINARIO_TEST_TMP` when set, otherwise `.tmp/pytest` inside the
 repository (git ignores it).
