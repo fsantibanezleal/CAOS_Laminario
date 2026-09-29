@@ -14,7 +14,7 @@ from app.collections import taxa
 from app.config import Settings, get_settings
 from app.db.engine import async_sessions, database_path, make_async_engine, make_sync_engine
 from app.delivery.iiif import InfoCache
-from app.routers import accounts, annotations, cases, collections, iiif, jobs, slides, uploads
+from app.routers import accounts, annotations, cases, collections, community, iiif, jobs, slides, uploads
 from app.version import VERSION
 
 
@@ -69,7 +69,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return await call_next(request)
 
     for router in [*accounts.routers(app.state.accounts), *uploads.routers(app.state.accounts),
-                   *annotations.routers(app.state.accounts), *cases.routers(app.state.accounts)]:
+                   *annotations.routers(app.state.accounts), *cases.routers(app.state.accounts),
+                   *community.routers(app.state.accounts)]:
         app.include_router(router)
     app.include_router(slides.router)
     app.include_router(iiif.router)

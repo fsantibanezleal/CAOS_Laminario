@@ -49,6 +49,9 @@ CATALOG_ROOTS = {
     "annotation": c.AnnotationRecord,
     "case": c.CaseRecord,
     "caseSummary": c.CaseSummary,
+    "identifications": c.IdentificationList,
+    "flag": c.FlagRecord,
+    "moderationAction": c.ModerationActionRecord,
 }
 
 

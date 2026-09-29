@@ -29,6 +29,9 @@ KEYS = {
     112: "Spirochaetes, a synonym whose accepted taxon is Spirochaetota",
     10707403: "Spirochaetota, the accepted taxon of 112",
     298129616: "Polyplax serrata from another checklist: not a backbone key",
+    1032575: "Polyplax alaskensis, a second species of the payload's genus (U13, the agreement)",
+    1032563: "Polyplax, the genus the two species agree on (U13)",
+    4369: "Polyplacidae, their family, too coarse even when voted as good as it can be (U13)",
 }
 SUGGEST = ["Polyplax"]
 

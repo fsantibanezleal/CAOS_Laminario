@@ -66,6 +66,10 @@ export function AccountMenu() {
             <li><Link href="/contribute" className={styles.item}><Glyph name="draft" size={20} />
               <span>{t("contribute.mine")}</span></Link></li>
           ) : null}
+          {session.can("moderate") ? (
+            <li><Link href="/moderate" className={styles.item}><Glyph name="warning" size={20} />
+              <span>{t("moderate.title")}</span></Link></li>
+          ) : null}
           <li>
             <button type="button" className={styles.item} onClick={async () => {
               setOpen(false);

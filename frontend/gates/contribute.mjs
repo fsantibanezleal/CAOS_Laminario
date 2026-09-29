@@ -6,23 +6,15 @@
 // processes both, the case is published, and the slide opens at its address with each file's SHA-256.
 //
 //   LAMINARIO_FIXTURES   the data vault (samples/cmu1.svs, samples/commons_san_cristobal_gps.jpg)
-//   LAMINARIO_TUSD_BIN   tusd v2.10.1
-//   LAMINARIO_VIPS_BIN   libvips on Windows
-//   LAMINARIO_PYTHON     the Python with the app's dependencies (default: the repository's .venv)
-//   LAMINARIO_TEST_TMP   where the sandbox goes (default: the system's temporary folder)
 //
-// Ports 8147 (API), 8148 (tusd) and 4909 (preview) must be free: the preview proxies to the first two.
-import { spawn, spawnSync } from "node:child_process";
-import { createHash, randomBytes } from "node:crypto";
-import { createReadStream, existsSync, mkdirSync, openSync, readFileSync, readdirSync, rmSync, statSync } from "node:fs";
-import { createServer } from "node:net";
-import { tmpdir } from "node:os";
+// and the sandbox's own variables and ports (gates/lib/sandbox.mjs).
+import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import exifr from "exifr";
 import { chromium } from "playwright";
-import { FRONTEND, LANGS, ORIGIN, ROOMS, WIDTHS, outDir, serve } from "./lib/serve.mjs";
+import { need, PASSWORD, sha256, startSandbox } from "./lib/sandbox.mjs";
+import { LANGS, ORIGIN, ROOMS, WIDTHS, outDir } from "./lib/serve.mjs";
 
-const ROOT = join(FRONTEND, "..");
 const failures = [];
 const passed = [];
 const check = (ok, what) => (ok ? passed : failures).push(what);
@@ -30,101 +22,20 @@ const check = (ok, what) => (ok ? passed : failures).push(what);
 const shows = (locator, timeout = 15_000) => locator.first().waitFor({ state: "visible", timeout }).then(() => true,
   () => false);
 
-function need(name) {
-  const value = process.env[name];
-  if (!value) throw new Error(`${name} is not set (see the header of gates/contribute.mjs)`);
-  return value;
-}
-
 const fixtures = need("LAMINARIO_FIXTURES");
 const SCANNER = join(fixtures, "samples", "cmu1.svs");
 const PHOTO = join(fixtures, "samples", "commons_san_cristobal_gps.jpg");
 for (const file of [SCANNER, PHOTO]) if (!existsSync(file)) throw new Error(`missing fixture ${file}`);
-const tusd = need("LAMINARIO_TUSD_BIN");
-const python = process.env.LAMINARIO_PYTHON
-  ?? [join(ROOT, ".venv", "Scripts", "python.exe"), join(ROOT, ".venv", "bin", "python")].find(existsSync);
-if (!python) throw new Error("no Python with the app's dependencies: set LAMINARIO_PYTHON");
-
-async function free(port) {
-  return new Promise((resolve) => {
-    const probe = createServer().once("error", () => resolve(false))
-      .once("listening", () => probe.close(() => resolve(true))).listen(port, "127.0.0.1");
-  });
-}
-for (const port of [8147, 8148, 4909]) {
-  if (!(await free(port))) throw new Error(`port ${port} is in use: the gate needs it free (it runs its own stack)`);
-}
-
-const sha256 = (path) => new Promise((resolve, reject) => {
-  const hash = createHash("sha256");
-  createReadStream(path).on("data", (d) => hash.update(d)).on("end", () => resolve(hash.digest("hex"))).on("error", reject);
-});
-
-// --- the sandbox ------------------------------------------------------------------------------------------------
-const base = process.env.LAMINARIO_TEST_TMP ?? tmpdir();
-const sandbox = join(base, `contribute-gate-${Date.now()}`);
-const dataRoot = join(sandbox, "data");
-mkdirSync(join(dataRoot, "quarantine"), { recursive: true });
-const env = {
-  ...process.env,
-  LAMINARIO_DATA_ROOT: dataRoot,
-  LAMINARIO_PUBLIC_BASE_URL: ORIGIN,
-  LAMINARIO_SECRET_KEY: randomBytes(32).toString("hex"),
-  LAMINARIO_TUSD_URL: "http://127.0.0.1:8148",
-  PYTHONUTF8: "1",
-};
-const children = [];
-function start(name, command, args) {
-  const log = openSync(join(sandbox, `${name}.log`), "a");
-  const child = spawn(command, args, { cwd: ROOT, env, stdio: ["ignore", log, log] });
-  children.push(child);
-  return child;
-}
-function stopAll() {
-  for (const child of children.reverse()) {
-    if (child.exitCode !== null) continue;
-    // The worker has a pool of processes: stop the whole tree.
-    if (process.platform === "win32") spawnSync("taskkill", ["/PID", String(child.pid), "/T", "/F"], { stdio: "ignore" });
-    else child.kill("SIGTERM");
-  }
-}
-async function waitFor(url, { status = 200, timeout = 60_000 } = {}) {
-  const deadline = Date.now() + timeout;
-  for (;;) {
-    try {
-      const r = await fetch(url);
-      if (r.status === status || (status === "any" && r.status < 500)) return r;
-    } catch {
-      // not up yet
-    }
-    if (Date.now() > deadline) throw new Error(`${url} did not answer within ${timeout / 1000} s`);
-    await new Promise((r) => setTimeout(r, 300));
-  }
-}
 
 const out = outDir("contribute");
 const EMAIL = "gate.contributor@example.org";
-const PASSWORD = `lamina-${randomBytes(6).toString("hex")}`;
 const NAME = "Gate Contributor";
-let stopPreview = null;
+const sb = await startSandbox("contribute");
+const { sandbox, dataRoot } = sb;
 let browser = null;
 
 try {
-  // The invitation creates the database (the command line migrates it first) and prints the link.
-  const invited = spawnSync(python, ["-m", "app.accounts", "invite", "--role", "contributor", "--email", EMAIL],
-    { cwd: ROOT, env, encoding: "utf8" });
-  const token = /join\?token=([\w-]+)/.exec(invited.stdout ?? "")?.[1];
-  if (!token) throw new Error(`the invitation was not issued: ${invited.stderr}`);
-
-  start("api", python, ["-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8147"]);
-  await waitFor("http://127.0.0.1:8147/api/health");
-  start("tusd", tusd, ["-host=127.0.0.1", "-port=8148", "-base-path=/files/", `-upload-dir=${join(dataRoot, "quarantine")}`,
-    "-hooks-http=http://127.0.0.1:8147/api/_internal/tus-hook", "-hooks-http-forward-headers=Cookie",
-    "-hooks-enabled-events=pre-create,post-finish,post-terminate", "-behind-proxy", "-disable-download", "-disable-cors",
-    "-show-greeting=false"]); // the flags of deploy/tusd/compose.yaml
-  await waitFor("http://127.0.0.1:8148/files/", { status: "any" });
-  start("worker", python, ["-m", "app.worker"]);
-  stopPreview = await serve();
+  const token = sb.invite("contributor", EMAIL);
   browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: "en-GB" });
   await context.addInitScript(() => {
@@ -275,12 +186,11 @@ try {
   failures.push(`the walk stopped: ${error instanceof Error ? error.message : String(error)}`);
 } finally {
   await browser?.close();
-  await stopPreview?.();
-  stopAll();
+  await sb.stop();
 }
 
 for (const p of passed) console.log(`ok    ${p}`);
 for (const f of failures) console.error(`FAIL  ${f}`);
 console.log(`contribute: ${passed.length} passed, ${failures.length} failed (sandbox ${sandbox}; screenshots in ${out})`);
-if (!failures.length) rmSync(sandbox, { recursive: true, force: true });
+if (!failures.length) sb.clean();
 process.exit(failures.length ? 1 : 0);

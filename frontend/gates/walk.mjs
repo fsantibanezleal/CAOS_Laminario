@@ -1,8 +1,8 @@
 // The pointer walk through the places built so far, against the real build and the API over the base collection.
 //
 // R-084   from the landing place, every place is reached by clicking (no keyboard, no typed address): the realms,
-//         a cabinet, a drawer, a slide, its stage, search, the map, and the way to contribute (sign in, where a
-//         visitor who opens /contribute is also sent)
+//         a cabinet, a drawer, a slide, its stage, search, the map, the Identify place, and the way to contribute
+//         (sign in, where a visitor who opens /contribute is also sent)
 // R-1107  the slide shows every image's source, record, author or rights holder, licence and, for a base slide, SHA-256
 // R-1006  after every navigation the new place's heading has the focus; a place reopened from its address (filters
 //         included) shows the same results as when it was reached by clicking
@@ -25,6 +25,11 @@ const check = (ok, message) => { if (!ok) failures.push(message); };
 
 async function arrived(page, pattern, name) {
   await page.waitForURL(pattern, { timeout: 15_000 });
+  // After a navigation inside the page, networkidle is already reached (the document loaded long ago), so the wait
+  // returns at once: a place loaded as its own chunk (Identify, Contribute) has not mounted yet. Wait for the place's
+  // heading to take the focus, then judge it.
+  await page.waitForFunction(() => document.activeElement?.tagName === "H1", null, { timeout: 10_000 })
+    .catch(() => undefined);
   await page.waitForLoadState("networkidle");
   const focus = await page.evaluate(() => ({ tag: document.activeElement?.tagName, text: document.activeElement?.textContent }));
   check(focus.tag === "H1", `${name}: the focus is on ${focus.tag} after the navigation, not the place's heading`);
@@ -164,6 +169,13 @@ try {
   // Back to the collections from the masthead's wordmark.
   await page.locator("header a[href='/']").first().click();
   await arrived(page, (url) => url.pathname === "/", "landing-again");
+
+  // The Identify place from the masthead (U13).
+  await page.locator("header").getByRole("link", { name: "Identify" }).click();
+  await arrived(page, (url) => url.pathname === "/identify", "identify");
+  steps.push("the Identify place from the masthead");
+  await page.locator("header a[href='/']").first().click();
+  await arrived(page, (url) => url.pathname === "/", "landing-after-identify");
 
   // The way to contribute: the masthead's sign-in, whose form leads to the account's places (U12).
   await page.locator("header").getByRole("link", { name: "Sign in" }).click();

@@ -1,10 +1,10 @@
 // /s/<id>: a slide. At the top the slide as an object (its drawing, with its label and QR) and what can be done with
 // it (print the label at 1:1, read the label, download the drawing, the IIIF manifest); then what can be looked at
 // under the microscope, the photographs, the record, and where every image came from (R-1107).
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Link, useParams } from "wouter";
 import { api, labelPdf, slideDrawing } from "../../api/client";
-import { useResource } from "../../api/useResource";
+import { forget, useResource } from "../../api/useResource";
 import type { AssetRecord, SlideRecord } from "../../contract/catalog";
 import { useI18n } from "../../i18n";
 import { en, type MessageKey } from "../../i18n/en";
@@ -21,6 +21,9 @@ import { Dialog } from "../../ui/Overlay";
 import { NotFoundPlace } from "../NotFoundPlace";
 import styles from "./SlidePlace.module.css";
 
+const IdentificationsPanel = lazy(() => import("../../community/IdentificationsPanel")
+  .then((m) => ({ default: m.IdentificationsPanel })));
+
 /** The SHA-256 of the file an image was made from: its source's (the base collection) or its upload's. */
 const originalSha = (a: SlideRecord["assets"][number]) => a.original_sha256 ?? a.source?.sha256 ?? null;
 
@@ -28,7 +31,15 @@ export function SlidePlace() {
   const { id } = useParams<{ id: string }>();
   const { t } = useI18n();
   const tree = useTree();
-  const slide = useResource(`slide:${id.toUpperCase()}`, (signal) => api.slide(id, signal));
+  // An identification can change the slide (its anchor, drawer and badge follow the community, U13): the record is
+  // then read again under a new key, and the one kept for other places is forgotten.
+  const [version, setVersion] = useState(0);
+  const key = `slide:${id.toUpperCase()}`;
+  const slide = useResource(version ? `${key}:${version}` : key, (signal) => api.slide(id, signal));
+  const changed = () => {
+    forget(key);
+    setVersion((v) => v + 1);
+  };
   if (slide.state === "error") {
     return (slide.error as { status?: number }).status === 404 ? <NotFoundPlace /> : (
       <Place title={t("slide.title")}><p role="alert">{t("explore.error")}</p></Place>
@@ -37,7 +48,7 @@ export function SlidePlace() {
   if (!slide.value || tree.state !== "ready") {
     return <Place title={t("state.loading")} ready={false}><Skeleton lines={6} /></Place>;
   }
-  return <SlideView record={slide.value} tree={tree.tree} />;
+  return <SlideView record={slide.value} tree={tree.tree} onChanged={changed} />;
 }
 
 export function SlideName({ record }: { record: Pick<SlideRecord, "anchor"> }) {
@@ -50,7 +61,7 @@ export function SlideName({ record }: { record: Pick<SlideRecord, "anchor"> }) {
   );
 }
 
-function SlideView({ record, tree }: { record: SlideRecord; tree: TreeIndex }) {
+function SlideView({ record, tree, onChanged }: { record: SlideRecord; tree: TreeIndex; onChanged: () => void }) {
   const { t, lang } = useI18n();
   const [reading, setReading] = useState(false);
   const [photo, setPhoto] = useState<AssetRecord | null>(null);
@@ -97,6 +108,13 @@ function SlideView({ record, tree }: { record: SlideRecord; tree: TreeIndex }) {
                 {items.map((item) => <li key={item.key}><StageCard slideId={record.id} item={item} tree={tree} /></li>)}
               </ul>
             ) : <EmptyState icon={record.placement.node} title={t("slide.micro.none")}>{t("slide.micro.none.body")}</EmptyState>}
+          </section>
+
+          <section aria-labelledby="identifications">
+            <h2 id="identifications" className={styles.sectionTitle}>{t("community.title")}</h2>
+            <Suspense fallback={<Skeleton lines={4} />}>
+              <IdentificationsPanel record={record} onChanged={onChanged} />
+            </Suspense>
           </section>
 
           {macro.length ? (

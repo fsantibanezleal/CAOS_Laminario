@@ -10,7 +10,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class _Record(BaseModel):
@@ -102,9 +102,13 @@ class QualityCheckRecord(_Record):
 
 
 class QualityRecord(_Record):
-    #: verified needs community agreement (identifications); until then a slide is needs_id or reference.
+    #: verified: every check passes and the identifications agree as far as the anchor's kind needs (U13);
+    #: reference: a check fails, or the community said an anchor too coarse is as good as it can be; else needs_id.
     badge: Literal["verified", "needs_id", "reference"]
     checks: list[QualityCheckRecord]
+    #: The node the identifications agree on (a lineage node id such as taxon:1032608), and its rank for a taxon.
+    community_node: str | None = None
+    community_rank: str | None = None
 
 
 class LicenceRecord(_Record):
@@ -488,3 +492,89 @@ class PlacementResult(_Record):
     path: list[NodeRef] = []
     accepting: list[str] = []
     errors: list[ValidationError] = []
+
+
+# --- the community (U13) ------------------------------------------------------------------------------------------
+
+class IdentificationRecord(_Record):
+    """An identification on a slide, as a viewer may see it (``GET /api/slides/{id}/identifications``)."""
+
+    id: str
+    anchor: AnchorRecord
+    #: The lineage node it names (``taxon:1032608``, ``rock:igneous.coarse/granite``).
+    node: str
+    #: The account's display name; None for the source's determination of a base slide.
+    by: str | None = None
+    source: bool = False
+    mine: bool = False
+    body: str | None = None
+    #: For an identification of an ancestor of the slide's anchor: whether it disagreed with the finer one.
+    disagreement: bool | None = None
+    current: bool
+    hidden: bool = False
+    #: leading, improving, supporting or maverick (iNaturalist's categories), for a current visible identification.
+    category: Literal["leading", "improving", "supporting", "maverick"] | None = None
+    created_at: datetime
+
+
+class NodeScoreRecord(_Record):
+    node: str
+    depth: int
+    cumulative: int
+    disagreements: int
+    ancestor_disagreements: int
+    score: float
+
+
+class CommunityRecord(_Record):
+    """How the identifications agree (R-088): the node, its anchor when Laminario can name it, and every score."""
+
+    node: str | None = None
+    anchor: AnchorRecord | None = None
+    #: How many current, visible identifications counted.
+    identifications: int
+    #: The community node's score, and the cutoff it had to exceed.
+    score: float | None = None
+    cutoff: float
+    scores: list[NodeScoreRecord] = Field(default_factory=list)
+    as_good_as_it_can_be: int = 0
+    needs_more: int = 0
+    #: The signed-in account's own vote, if any.
+    my_vote: bool | None = None
+    badge: Literal["verified", "needs_id", "reference"]
+
+
+class IdentificationList(_Record):
+    community: CommunityRecord
+    identifications: list[IdentificationRecord]
+
+
+class FlagRecord(_Record):
+    """A flag as the curators see it (``GET /api/flags``)."""
+
+    id: str
+    target_kind: Literal["slide", "identification", "annotation"]
+    target_id: str
+    slide_id: str
+    slide_name: str
+    category: Literal["spam", "inappropriate", "copyright", "wrong", "other"]
+    comment: str | None = None
+    by: str | None = None
+    created_at: datetime
+    resolved_by: str | None = None
+    resolved_at: datetime | None = None
+    resolution: str | None = None
+    #: Whether the flagged item is hidden now.
+    hidden: bool = False
+
+
+class ModerationActionRecord(_Record):
+    """A curator's hiding or restoring, with the reason."""
+
+    action: Literal["hide", "unhide"]
+    target_kind: Literal["slide", "identification", "annotation"]
+    target_id: str
+    slide_id: str
+    reason: str
+    by: str | None = None
+    created_at: datetime

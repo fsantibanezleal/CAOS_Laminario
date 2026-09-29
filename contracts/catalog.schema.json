@@ -65,6 +65,15 @@
     },
     "caseSummary": {
       "$ref": "#/$defs/CaseSummary"
+    },
+    "identifications": {
+      "$ref": "#/$defs/IdentificationList"
+    },
+    "flag": {
+      "$ref": "#/$defs/FlagRecord"
+    },
+    "moderationAction": {
+      "$ref": "#/$defs/ModerationActionRecord"
     }
   },
   "additionalProperties": false,
@@ -731,6 +740,91 @@
       "title": "CollectionTreeRecord",
       "type": "object"
     },
+    "CommunityRecord": {
+      "additionalProperties": false,
+      "description": "How the identifications agree (R-088): the node, its anchor when Laminario can name it, and every score.",
+      "properties": {
+        "node": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "anchor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AnchorRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "identifications": {
+          "type": "integer"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "cutoff": {
+          "type": "number"
+        },
+        "scores": {
+          "items": {
+            "$ref": "#/$defs/NodeScoreRecord"
+          },
+          "type": "array"
+        },
+        "as_good_as_it_can_be": {
+          "default": 0,
+          "type": "integer"
+        },
+        "needs_more": {
+          "default": 0,
+          "type": "integer"
+        },
+        "my_vote": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "badge": {
+          "enum": [
+            "verified",
+            "needs_id",
+            "reference"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "identifications",
+        "cutoff",
+        "badge"
+      ],
+      "title": "CommunityRecord",
+      "type": "object"
+    },
     "CoverslipRecord": {
       "additionalProperties": false,
       "properties": {
@@ -945,6 +1039,117 @@
       "title": "FacetValueRecord",
       "type": "object"
     },
+    "FlagRecord": {
+      "additionalProperties": false,
+      "description": "A flag as the curators see it (``GET /api/flags``).",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "target_kind": {
+          "enum": [
+            "slide",
+            "identification",
+            "annotation"
+          ],
+          "type": "string"
+        },
+        "target_id": {
+          "type": "string"
+        },
+        "slide_id": {
+          "type": "string"
+        },
+        "slide_name": {
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "spam",
+            "inappropriate",
+            "copyright",
+            "wrong",
+            "other"
+          ],
+          "type": "string"
+        },
+        "comment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "resolved_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "resolved_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "resolution": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "hidden": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "target_kind",
+        "target_id",
+        "slide_id",
+        "slide_name",
+        "category",
+        "created_at"
+      ],
+      "title": "FlagRecord",
+      "type": "object"
+    },
     "FormatRecord": {
       "additionalProperties": false,
       "properties": {
@@ -968,6 +1173,119 @@
         "height_mm"
       ],
       "title": "FormatRecord",
+      "type": "object"
+    },
+    "IdentificationList": {
+      "additionalProperties": false,
+      "properties": {
+        "community": {
+          "$ref": "#/$defs/CommunityRecord"
+        },
+        "identifications": {
+          "items": {
+            "$ref": "#/$defs/IdentificationRecord"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "community",
+        "identifications"
+      ],
+      "title": "IdentificationList",
+      "type": "object"
+    },
+    "IdentificationRecord": {
+      "additionalProperties": false,
+      "description": "An identification on a slide, as a viewer may see it (``GET /api/slides/{id}/identifications``).",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "anchor": {
+          "$ref": "#/$defs/AnchorRecord"
+        },
+        "node": {
+          "type": "string"
+        },
+        "by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source": {
+          "default": false,
+          "type": "boolean"
+        },
+        "mine": {
+          "default": false,
+          "type": "boolean"
+        },
+        "body": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "disagreement": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "current": {
+          "type": "boolean"
+        },
+        "hidden": {
+          "default": false,
+          "type": "boolean"
+        },
+        "category": {
+          "anyOf": [
+            {
+              "enum": [
+                "leading",
+                "improving",
+                "supporting",
+                "maverick"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "anchor",
+        "node",
+        "current",
+        "created_at"
+      ],
+      "title": "IdentificationRecord",
       "type": "object"
     },
     "InvitationRecord": {
@@ -1481,6 +1799,61 @@
       "title": "MediaRecord",
       "type": "object"
     },
+    "ModerationActionRecord": {
+      "additionalProperties": false,
+      "description": "A curator's hiding or restoring, with the reason.",
+      "properties": {
+        "action": {
+          "enum": [
+            "hide",
+            "unhide"
+          ],
+          "type": "string"
+        },
+        "target_kind": {
+          "enum": [
+            "slide",
+            "identification",
+            "annotation"
+          ],
+          "type": "string"
+        },
+        "target_id": {
+          "type": "string"
+        },
+        "slide_id": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "target_kind",
+        "target_id",
+        "slide_id",
+        "reason",
+        "created_at"
+      ],
+      "title": "ModerationActionRecord",
+      "type": "object"
+    },
     "NodeRef": {
       "additionalProperties": false,
       "properties": {
@@ -1500,6 +1873,39 @@
         "icon"
       ],
       "title": "NodeRef",
+      "type": "object"
+    },
+    "NodeScoreRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "depth": {
+          "type": "integer"
+        },
+        "cumulative": {
+          "type": "integer"
+        },
+        "disagreements": {
+          "type": "integer"
+        },
+        "ancestor_disagreements": {
+          "type": "integer"
+        },
+        "score": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "node",
+        "depth",
+        "cumulative",
+        "disagreements",
+        "ancestor_disagreements",
+        "score"
+      ],
+      "title": "NodeScoreRecord",
       "type": "object"
     },
     "PartRecord": {
@@ -1768,6 +2174,28 @@
             "$ref": "#/$defs/QualityCheckRecord"
           },
           "type": "array"
+        },
+        "community_node": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "community_rank": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "required": [
