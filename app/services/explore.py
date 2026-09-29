@@ -59,7 +59,9 @@ def _match(expression: str):
 
 
 def _asset_exists(*conditions):
-    return exists(select(Asset.id).where(Asset.slide_id == Slide.id, *conditions))
+    # Correlated to the slide only: a facet query that itself joins the assets (modality, licence) must not make this
+    # subquery read the outer asset row, which leaves it without a FROM (a 500 on the facets under a modality filter).
+    return exists(select(Asset.id).where(Asset.slide_id == Slide.id, *conditions).correlate(Slide))
 
 
 def conditions(f: Filters) -> list:
