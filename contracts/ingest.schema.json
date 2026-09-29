@@ -457,6 +457,11 @@
           "expected": "one of: iso_76x26, us_75x25, petro_27x46, us_2x3in, custom",
           "type": "string"
         },
+        "format_assumed": {
+          "default": false,
+          "expected": "true or false",
+          "type": "boolean"
+        },
         "custom_mm": {
           "anyOf": [
             {

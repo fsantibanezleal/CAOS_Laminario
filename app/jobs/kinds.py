@@ -22,8 +22,11 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import pickle
 import shutil
+import threading
 import time
+import traceback
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -67,7 +70,21 @@ def content_key(short_id: str, asset_id: int, parts: list[str], extension: str) 
 # --- probe --------------------------------------------------------------------------------------------------
 
 
+class _Unpicklable(Exception):
+    """An error holding a lock, as a native library's error may hold a handle: it cannot be pickled."""
+
+    def __init__(self) -> None:
+        super().__init__("an error that cannot be pickled")
+        self.handle = threading.Lock()
+
+
 def probe(ctx: Context, payload: dict) -> dict:
+    """Sleeps in steps and writes a small file; ``fail`` makes it fail (``error``, or ``unpicklable``: an error the
+    worker could not receive as it is), for the worker's tests."""
+    if payload.get("fail") == "unpicklable":
+        raise _Unpicklable()
+    if payload.get("fail") == "error":
+        raise ValueError("the probe was asked to fail")
     steps = int(payload.get("steps", 3))
     seconds = float(payload.get("seconds", 1.0))
     for step in range(steps):
@@ -141,14 +158,14 @@ def process_asset(ctx: Context, payload: dict) -> dict:
                       "codec": f"{codec}-q{quality}", "mpp": mpp, "id": asset.id})
     ctx.progress(step="stored", key=key, bytes=size, psnr_db=psnr)
     if asset.role == "z_plane" and asset.stack:
-        fusion = queue_fusion_when_complete(ctx.engine, asset.slide_id, asset.stack)
+        fusion = queue_fusion_when_complete(ctx.engine, asset.slide_id, asset.stack, ctx.settings.fuse_timeout_s)
         if fusion:
             ctx.progress(step="fusion queued", job=fusion)
     return {"asset_id": asset.id, "storage_key": key, "width": image.width, "height": image.height, "bytes": size,
             "sha256": sha, "psnr_db": psnr, "codec": codec, "quality": quality}
 
 
-def queue_fusion_when_complete(engine: Engine, slide_id: int, stack: str) -> str | None:
+def queue_fusion_when_complete(engine: Engine, slide_id: int, stack: str, timeout_s: int | None = None) -> str | None:
     """Queue the stack's fusion once its last plane is ready; returns the new job's public id, if one was queued."""
     from app.jobs import queue
 
@@ -161,7 +178,8 @@ def queue_fusion_when_complete(engine: Engine, slide_id: int, stack: str) -> str
                                     "AND json_extract(payload_json, '$.stack') = :st"), where).scalar()
     if pending or waiting:
         return None
-    _, public_id = queue.enqueue(engine, "fuse_stack", {"slide_id": slide_id, "stack": stack}, slide_id=slide_id)
+    _, public_id = queue.enqueue(engine, "fuse_stack", {"slide_id": slide_id, "stack": stack}, slide_id=slide_id,
+                                 timeout_s=timeout_s)
     return public_id
 
 
@@ -377,14 +395,30 @@ KINDS: dict[str, Callable[[Context, dict], dict]] = {
 }
 
 
-def execute(job_id: int, public_id: str, kind: str, payload: dict) -> dict:
-    """Entry point in the child process: open the database, run the job, return its result."""
+def execute(job_id: int, public_id: str, kind: str, payload: dict, settings: Settings | None = None) -> dict:
+    """Entry point in the child process: open the database, run the job, return its result.
+
+    ``settings`` are the worker's own (pickled to the child). Without them the child would read its settings from the
+    environment, which differs from the worker's whenever the worker was given settings explicitly, as the base bake
+    does: the child then opened another database (finding F-036).
+    """
     os.environ.setdefault("OMP_NUM_THREADS", "1")
-    settings = Settings()
+    settings = settings or Settings()
     engine = make_sync_engine(database_path(settings))
     try:
         ctx = Context(job_id=job_id, public_id=public_id, settings=settings, engine=engine)
         ctx.progress("log", pid=os.getpid(), kind=kind)
-        return KINDS[kind](ctx, payload)
+        result = KINDS[kind](ctx, payload)
+        pickle.dumps(result)  # what cannot travel back to the worker fails here, as this job's error
+        return result
+    except Exception as exc:
+        # The worker receives the job's error by pickling. An error that does not pickle (a library's exception
+        # holding a handle) broke the pool and stopped the worker; its text always travels.
+        tail = "".join(traceback.format_exception(type(exc), exc, exc.__traceback__)[-3:]).strip()
+        raise JobError(f"{type(exc).__name__}: {exc}\n{tail}") from None
     finally:
         engine.dispose()
+
+
+class JobError(RuntimeError):
+    """A job's failure as text: always picklable."""

@@ -21,6 +21,7 @@ Schema: [`contracts/ingest.schema.json`](../../contracts/ingest.schema.json) (JS
 | Field | Type | Required | Accepted | Default |
 |---|---|---|---|---|
 | `format` | string (enumerated) | yes | one of: iso_76x26, us_75x25, petro_27x46, us_2x3in, custom |  |
+| `format_assumed` | boolean | no | true or false | `false` |
 | `custom_mm` | [SizeMm](#sizemm) or null | no | a size, only for the custom format | null |
 | `coverslip` | string (enumerated) | no | one of: none, 18x18, 22x22, 22x40, 22x50, 24x50, 24x60, custom | `"none"` |
 | `coverslip_custom_mm` | [CoverslipSizeMm](#coverslipsizemm) or null | no | a size, only for a custom coverslip | null |

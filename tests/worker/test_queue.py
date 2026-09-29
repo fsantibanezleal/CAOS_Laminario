@@ -107,8 +107,36 @@ def test_interrupted_too_often_fails(tmp_path):
     assert row.status == "failed" and row.error == "interrupted 2 times; not retried again"
 
 
+def test_the_job_process_uses_the_worker_settings(tmp_path, monkeypatch):
+    # The environment names another data root: the job must still run against the worker's (the base bake's case).
+    settings, engine = sandbox(tmp_path)
+    elsewhere = tmp_path / "elsewhere"
+    monkeypatch.setenv("LAMINARIO_DATA_ROOT", str(elsewhere))
+    job_id, public_id = queue.enqueue(engine, "probe", {"steps": 1, "seconds": 0})
+    Worker(settings).run(max_jobs=1)
+    row = job(engine, job_id)
+    assert row.status == "succeeded", row.error
+    assert (settings.data_root / "probes" / f"{public_id}.txt").exists()
+    assert not elsewhere.exists()
+
+
 def test_unknown_kind_fails_cleanly(tmp_path, monkeypatch):
     settings, engine = sandbox(tmp_path, monkeypatch)
     job_id, _ = queue.enqueue(engine, "no_such_kind", {})
     Worker(settings).run(max_jobs=1)
     assert job(engine, job_id).error == "unknown job kind 'no_such_kind'"
+
+
+def test_a_job_that_fails_unreadably_does_not_stop_the_worker(tmp_path, monkeypatch):
+    """A job's error that cannot be pickled back to the worker broke pebble's pool, and every job after it failed to
+    start: the base bake stopped at a DICOM archive. The error now travels as text, and a failed pool is replaced."""
+    settings, engine = sandbox(tmp_path, monkeypatch)
+    unreadable, _ = queue.enqueue(engine, "probe", {"fail": "unpicklable"})
+    plain, _ = queue.enqueue(engine, "probe", {"fail": "error"})
+    fine, _ = queue.enqueue(engine, "probe", {"steps": 1, "seconds": 0.1})
+    assert Worker(settings).run(max_jobs=3) == 3
+    first = job(engine, unreadable)
+    assert first.status == "failed" and first.error.startswith("app.jobs.kinds.JobError: _Unpicklable")
+    second = job(engine, plain)
+    assert second.status == "failed" and "ValueError: the probe was asked to fail" in second.error
+    assert job(engine, fine).status == "succeeded"

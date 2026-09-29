@@ -1,0 +1,29 @@
+# Insects, reviewed on the life.insects harvest sheet (60 candidates) on 2026-09-29. The NHM slides are the
+# museum's own photographs of each slide with its labels, and a microscope scan; the anchor comes from the record's
+# GBIF occurrence, the type status from the record. Hosts, localities and dates were read on the slide labels
+# (photographs fetched at 900 px); a date that is not a calendar date on the label (30.ii) is left out. Excluded:
+# SEM images, figure plates, stereo photographs of whole beetles, two records whose images did not load.
+[life.insects]
+nhm NHMUK010173454 | | whole_mount | | brightfield | | | human head lice from village natives | host=Homo sapiens@species; locality=Niupani, Rennell Island; collected=1962-08-31
+nhm NHMUK010173452 | | whole_mount | | brightfield | | | label: human | host=Homo sapiens@species
+nhm NHMUK010173435 | | whole_mount | | brightfield | | | label host Ateles ater, from London Zoo | host=Ateles@genus@Animalia; locality=London Zoo (host from South and Central America); collected=1966
+nhm NHMUK010155449 | | whole_mount | | brightfield | | | Slide Digitisation Pilot: slide photograph and two microscope images
+nhm NHMUK010155561 | | whole_mount | | brightfield
+nhm NHMUK010175464 | | whole_mount | | brightfield | | | female | host=Otomys orestes@species; locality=Mt Kenya, East Africa; collected=1966-03-21; collector=R. Harmsen
+nhm NHMUK010684185 | | whole_mount | | brightfield | | | collected from a living bird in London Zoo | host=Pelecanus erythrorhynchos@species; locality=Louisiana, U.S.A.; collected=1953-10-20
+nhm NHMUK010679495 | | whole_mount | | brightfield | | | Meinertzhagen collection | host=Crypturellus soui@species; locality=British Guiana
+nhm NHMUK010672808 | | whole_mount | | brightfield | | | | host=Turdus falcklandii@species; locality=Kidney Island, Falkland Islands; collected=1961-11-21; collector=R. W. Woods
+nhm NHMUK010671467 | | whole_mount | | brightfield | | | neotype and neallotype, Meinertzhagen collection | host=Columba palumbus@species; locality=Somerset, England; collected=1934-05
+nhm NHMUK010679559 | | whole_mount | | brightfield | | | neotype, Meinertzhagen collection | host=Cygnus cygnus@species; locality=South Uist; collected=1934-01
+nhm NHMUK010690240 | | whole_mount | | brightfield | | | paratype; the label names the host Notornis mantelli, the takahe | host=Porphyrio hochstetteri@species; locality=Takahe Valley, Lake Te Anau, New Zealand
+nhm NHMUK010668672 | | whole_mount | | brightfield | | | holotype | host=Eudyptes@genus@Animalia; locality=Kidney Isle
+nhm NHMUK010155747 | | whole_mount | | brightfield | | | from Vicia cracca flowers | locality=Nancledra, Cornwall; collected=1990-08-10
+nhm NHMUK010154064 | | whole_mount | | brightfield
+life.insects 33 | taxon=Acheta domesticus@species | whole_mount | | brightfield | | | right forewing with the stridulatory file, 100 um bar
+life.insects 34 | taxon=Diptera@order | whole_mount | | brightfield | | | wing, Yale Peabody Museum
+life.insects 38 | taxon=Diptera@order | whole_mount | | darkfield | | | fly wing
+life.insects 42 | taxon=Apis mellifera@species | whole_mount | | brightfield | | | wing, 100x
+life.insects 41 | taxon=Palomena prasina@species | whole_mount | | brightfield | | | wing
+life.insects 54 | taxon=Lepidoptera@order | whole_mount | | brightfield | | | proboscis (galea)
+life.insects 59 | taxon=Lepidoptera@order | whole_mount | | brightfield | | | head of a caterpillar, Yale Peabody Museum
+life.insects 43 | taxon=Acalles camelus@species | whole_mount | | darkfield | | | metatarsus

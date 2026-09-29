@@ -1,0 +1,40 @@
+# Crystals, reviewed on the matter.crystals harvest sheet (95 candidates) on 2026-09-29. The snow crystals are
+# Wilson Bentley photomicrographs (public domain), classified by their shape in the Kikuchi et al. (2013) global
+# classification (P plane crystals, CP combinations of column and plane); the modified copies of Bentley images
+# are left out in favour of the originals. Chemical crystals recrystallised on a slide are recorded in crossed polars
+# when the source says polarised light and the image shows interference colours. Excluded: images whose
+# illumination is not stated, ascorbic and tartaric acid photographed on a blue ground (no analyser), artistic
+# titles duplicating other picks, a 3D-microscope composite, and the urine cytology images misfiled here (two of
+# them go to the mammals).
+[matter.crystals]
+matter.crystals 10 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | plate with sectors, Wilson Bentley | name=snow crystal
+matter.crystals 11 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | stellar dendrite, Wilson Bentley | name=snow crystal
+matter.crystals 12 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | hexagonal plate, Wilson Bentley | name=snow crystal
+matter.crystals 13 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | fern-like stellar dendrite, Wilson Bentley | name=snow crystal
+matter.crystals 14 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | broad branches, Wilson Bentley | name=snow crystal
+matter.crystals 15 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | stellar plate, Wilson Bentley | name=snow crystal
+matter.crystals 17 | crystal=ice/hexagonal:CP | whole_mount | | brightfield | | | column capped with plates at both ends, Wilson Bentley | name=snow crystal
+matter.crystals 18 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | triangular plate, Wilson Bentley | name=snow crystal
+matter.crystals 19 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | simple star, Wilson Bentley | name=snow crystal
+matter.crystals 22 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | fern-like dendrite, Wilson Bentley | name=snow crystal
+matter.crystals 30 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | stellar plate with ribs, Wilson Bentley | name=snow crystal
+matter.crystals 34 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | stellar dendrite, Wilson Bentley | name=snow crystal
+matter.crystals 45 | crystal=chemical | whole_mount | | polarised_xpl | | | spherulites of ascorbic acid in polarised light | name=ascorbic acid
+matter.crystals 52 | crystal=chemical | whole_mount | | polarised_xpl | | | citric acid in polarised transmitted light | name=citric acid
+matter.crystals 54 | crystal=chemical/cubic | whole_mount | | brightfield | | | crystallised sea salt | name=sodium chloride
+matter.crystals 57 | crystal=chemical/cubic | whole_mount | | brightfield | | | crystallised sodium chloride | name=sodium chloride
+matter.crystals 63 | crystal=chemical | whole_mount | | polarised_xpl | | | tartaric acid in polarised light | name=tartaric acid
+matter.crystals 64 | crystal=chemical | whole_mount | | polarised_xpl | | | tartaric acid crystal, 800x with a polarising filter, field about 120 x 80 um | name=tartaric acid
+matter.crystals 65 | crystal=chemical | whole_mount | | polarised_xpl | | | vanillin crystals | name=vanillin
+matter.crystals 69 | crystal=chemical | whole_mount | | polarised_xpl | | | vanillin in polarised light | name=vanillin
+matter.crystals 71 | crystal=chemical | whole_mount | | polarised_xpl | | | beta-alanine, 10x objective | name=beta-alanine
+matter.crystals 73 | crystal=chemical | whole_mount | | polarised_xpl | | | crystalline film of an amino-acid derivative | name=H-beta-(2-pyridyl)-Ala-OH
+matter.crystals 76 | crystal=chemical | whole_mount | | polarised_xpl | | | amino acid crystals in polarised light | name=amino acid
+matter.crystals 79 | crystal=biogenic | section | | polarised_xpl | | | orchid root in polarised light: pith, vascular bundles, cortex, velamen and raphides, 50x | name=calcium oxalate raphides
+matter.crystals 80 | crystal=biogenic | whole_mount | | brightfield | | | raphides in banana peel | name=calcium oxalate raphides
+matter.crystals 82 | crystal=biogenic | fluid_mount | | brightfield | | | raphides from liquidised variegated ivy, 600x | name=calcium oxalate raphides
+matter.crystals 83 | crystal=biogenic | fluid_mount | | brightfield | | | needle crystals in an idioblast sac, 600x | name=calcium oxalate raphides
+
+[life.mammals]
+matter.crystals 87 | taxon=Homo sapiens@species | smear | | brightfield | Papanicolaou | | benign urine cytology, high magnification
+matter.crystals 88 | taxon=Homo sapiens@species | smear | | brightfield | Papanicolaou | | benign urine cytology, very high magnification

@@ -9,6 +9,8 @@ rule semantics and the placement engine are in the wiki page
 |---|---|
 | [tree.md](tree.md) | every node with its English and Spanish names, its description and its rule, generated from the file the product serves |
 | [svg/icons.svg](svg/icons.svg) | the contact sheet of the 186 icons at 48 and 16 pixels, both themes |
+| [base-report.md](base-report.md) | the base collection's validation: floors, slides per collection, every slide with its node and verdict |
+| [coverage.md](coverage.md) | every node of the tree with its base slides; a node with none is open for contribution |
 
 ## Where the tree and its vocabularies live
 

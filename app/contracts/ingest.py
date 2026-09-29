@@ -127,6 +127,8 @@ class CoverslipSizeMm(_Model):
 
 class SlideSpec(_Model):
     format: SlideFormat = Field(json_schema_extra=_expect(_one_of(SlideFormat)))
+    #: True when the source does not record the physical slide and the format shown is the standard one assumed.
+    format_assumed: bool = Field(False, json_schema_extra=_expect("true or false"))
     custom_mm: SizeMm | None = Field(None, json_schema_extra=_expect("a size, only for the custom format"))
     coverslip: Coverslip = Field("none", json_schema_extra=_expect(_one_of(Coverslip)))
     coverslip_custom_mm: CoverslipSizeMm | None = Field(

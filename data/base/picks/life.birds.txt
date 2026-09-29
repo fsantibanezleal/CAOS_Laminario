@@ -1,0 +1,27 @@
+# Birds, reviewed on the life.birds harvest sheet (37 candidates) on 2026-09-29. Feathers photographed on a dark
+# ground under incident light are recorded as reflected light. Excluded: an electron micrograph of chromatin, an
+# AFM relief, whole embryos photographed in a dish, a dorsal-root-ganglion image without a description, a
+# two-panel parasite figure, the Lamiot close-up photographs (taken with a camera, not a microscope, as their
+# description says), and two feather images whose illumination cannot be told.
+[life.birds]
+life.birds 1 | taxon=Aves@class | section | bone | brightfield | | | bird bone cross-section, Josef Reischig archive, 0.1 mm bar
+life.birds 3 | taxon=Struthio camelus@species | section | trachea | brightfield | | | ostrich trachea
+life.birds 4 | taxon=Struthio camelus@species | section | trachea | brightfield | | | ostrich trachea, wall with cartilage
+life.birds 5 | taxon=Aves@class | smear | blood | brightfield | | | blood film, Josef Reischig archive, 10 um bar
+life.birds 6 | taxon=Gallus gallus@species | smear | blood | brightfield | | | chicken red blood cells, 1000x
+life.birds 9 | taxon=Gallus gallus@species | section | eye | brightfield | haematoxylin and eosin | | chicken embryo, brain vesicle and optic cup with the lens
+life.birds 13 | taxon=Gallus gallus@species | whole_mount | spinal-cord | fluorescence | DAPI and propidium iodide | | organotypic culture of chicken spinal cord
+life.birds 20 | taxon=Aves@class | whole_mount | feather | reflected | | | feather under the microscope
+life.birds 21 | taxon=Garrulus glandarius@species | whole_mount | feather | reflected | | | jay feather with the blue barbs
+life.birds 22 | taxon=Pavo cristatus@species | whole_mount | feather | reflected | | | peacock feather under the microscope
+life.birds 24 | taxon=Corvus corax@species | whole_mount | feather | reflected | | | raven feather
+life.birds 25 | taxon=Pavo cristatus@species | whole_mount | feather | reflected | | | peacock tail feather
+life.birds 31 | taxon=Aves@class | whole_mount | feather | brightfield | | | barbules, 700x
+life.birds 32 | taxon=Aves@class | whole_mount | feather | brightfield | | | barbules, 1400x
+life.birds 33 | taxon=Aves@class | whole_mount | feather | brightfield | | | brown feather, 5x
+life.birds 34 | taxon=Aves@class | whole_mount | feather | reflected | | | rachis, stereo microscope, 40x
+life.birds 36 | taxon=Aves@class | whole_mount | feather | brightfield | | | wing feather carrying two pollen grains
+life.birds 37 | taxon=Milvus migrans@species | whole_mount | feather | reflected | | | black kite feather
+
+[life.microbes]
+life.birds 8 | taxon=#11378615 | smear | blood | brightfield | Giemsa | | male (upper left) and female gametocytes in pigeon blood | host=Columba livia@species; name=Haemoproteus columbae

@@ -21,6 +21,8 @@ class FormatRecord(_Record):
     code: str
     width_mm: float
     height_mm: float
+    #: The source did not record the physical slide; the format is the standard one, shown as assumed.
+    assumed: bool = False
 
 
 class CoverslipRecord(_Record):

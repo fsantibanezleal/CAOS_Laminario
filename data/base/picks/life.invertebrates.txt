@@ -1,0 +1,44 @@
+# Other invertebrates, reviewed on the life.invertebrates harvest sheet (98 candidates) on 2026-09-29. The annelid,
+# hydra, nematode and nemertean slides are Yale Peabody Museum photographs (CC0). Excluded: stereo photographs of
+# coral skeletons (GCMP), live tardigrades photographed on moss, SEM, figure panels, engravings, a map, the
+# Encyclopaedia Britannica plates. No open echinoderm-larva slide was found; it stays open for contribution.
+[life.invertebrates]
+life.invertebrates 2 | taxon=Adelodrilus anisosetosus@species | whole_mount | | brightfield | | | whole oligochaete, 1 mm bar
+life.invertebrates 5 | taxon=Aglaophamus circinata@species | whole_mount | | brightfield | | | parapodium
+life.invertebrates 9 | taxon=Alitta succinea@species | whole_mount | | brightfield | | | parapodium, 0.5 mm bar
+life.invertebrates 12 | taxon=Alitta succinea@species | whole_mount | | brightfield | | | stained parapodium, image by E. A. Lazo-Wasem
+life.invertebrates 14 | taxon=Allolobophora@genus | section | | brightfield | | | earthworm section
+life.invertebrates 17 | taxon=Amphinomidae@family | whole_mount | | brightfield | | | fireworm parapodium
+life.invertebrates 20 | taxon=Catostylus tagi@species | smear | | brightfield | | | jellyfish cells
+life.invertebrates 23 | taxon=Catostylus tagi@species | smear | | brightfield | | | discharged eurytele nematocyst
+life.invertebrates 33 | taxon=#9811888 | section | | brightfield | | | serial sections
+life.invertebrates 34 | taxon=#9811888 | whole_mount | | brightfield | | | with a bud
+life.invertebrates 35 | taxon=#9811888 | whole_mount | | brightfield
+life.invertebrates 37 | taxon=#9811888 | whole_mount | | brightfield | | | tentacles
+life.invertebrates 42 | taxon=Nematoda@phylum | fluid_mount | | brightfield | | | anterior end
+life.invertebrates 47 | taxon=Caenorhabditis elegans@species | whole_mount | | fluorescence | Nile red | | lipid staining, 200 um bar
+life.invertebrates 49 | taxon=Caenorhabditis elegans@species | whole_mount | | fluorescence | DAPI | | nuclei
+life.invertebrates 52 | taxon=Caenorhabditis elegans@species | whole_mount | | fluorescence | | | green fluorescent protein, photograph by Heiti Paves
+life.invertebrates 53 | taxon=Ancylostoma@genus | whole_mount | | brightfield | | | hookworms
+life.invertebrates 55 | taxon=Ancylostoma caninum@species | whole_mount | | brightfield | | | dog hookworm, stained anterior end
+life.invertebrates 57 | taxon=Cerebratulus marginatus@species | section | | brightfield | | | transverse section
+life.invertebrates 59 | taxon=Cerebratulus marginatus@species | section | | brightfield | | | transverse section
+life.invertebrates 60 | taxon=Nemertea@phylum | whole_mount | | fluorescence | | | confocal, actin, Russian Science Photo Competition 2021
+life.invertebrates 61 | taxon=Nemertopsis gracilis@species | section | | brightfield | | | serial sections, 1 mm bar
+life.invertebrates 62 | taxon=Nemertopsis gracilis@species | section | | brightfield | | | transverse section, 0.125 mm bar
+life.invertebrates 64 | taxon=#2240872 | strew | | brightfield | | | spicules, 100x; the backbone treats Acervochalina as a synonym of Chalinula | name=Acervochalina copperingi
+life.invertebrates 66 | taxon=Uruguaya@genus | strew | | brightfield | | | spicules; the backbone lists the genus only | name=Uruguaya coralloides
+life.invertebrates 67 | taxon=Leucosolenia@genus | whole_mount | | brightfield | | | skeleton
+life.invertebrates 73 | taxon=Batillipes adriaticus@species | fluid_mount | | brightfield | | | marine tardigrade
+life.invertebrates 74 | taxon=#12205770 | whole_mount | | brightfield | | | paratype; the accepted name is Grevenius malawiensis | type=paratype; name=Isohypibius malawiensis
+life.invertebrates 79 | taxon=Echiniscoidea@order | fluid_mount | | brightfield
+life.invertebrates 80 | taxon=Echiniscoidea@order | fluid_mount | | darkfield
+life.invertebrates 81 | taxon=Tardigrada@phylum | fluid_mount | | darkfield | | | darkfield with polarised light
+life.invertebrates 82 | taxon=Milnesium@genus | fluid_mount | | darkfield
+life.invertebrates 83 | taxon=Rotifera@phylum | fluid_mount | | brightfield | | | loricate rotifer against an eyepiece scale
+life.invertebrates 88 | taxon=Asplanchna priodonta@species | fluid_mount | | brightfield | | | | name=Asplancha priodonta
+life.invertebrates 89 | taxon=Bdelloidea@order | fluid_mount | | brightfield | | | feeding
+life.invertebrates 90 | taxon=Brachionus quadridentatus@species | fluid_mount | | brightfield
+life.invertebrates 94 | taxon=#2502872 | whole_mount | | brightfield | | | anterior end
+life.invertebrates 95 | taxon=#2502872 | whole_mount | | brightfield | | | pharynx
+life.invertebrates 97 | taxon=#2502872 | whole_mount | | brightfield | | | intestinal ceca

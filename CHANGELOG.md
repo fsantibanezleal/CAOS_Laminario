@@ -3,6 +3,37 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.08.000] - 2026-09-29
+
+### Added
+
+- The base collection: 505 slides over the 18 collections from open sources (Wikimedia Commons, the Natural History
+  Museum's Data Portal, Smithsonian Open Access, Zenodo's NMNH focal stacks, the OpenSlide test data), 14
+  whole-slide scans, a registered polarised pair for every rock family, every image with its licence, author or
+  rights holder, source record, retrieval date and SHA-256; Reptiles hold seven, the open supply recorded (F-031).
+- The base-collection lane (`python -m app.base`): harvest with review sheets, the picks notation, the lock with
+  GBIF names and lineages (`data/base/taxa.json`, no later step calls GBIF), resumable acquisition into the vault with
+  SHA-256, offline validation through the same contract and tree checks a contribution meets (the report and the
+  coverage per collection and sub-collection in `docs/collections/`), the bake through the product's own pipeline
+  into a declared root, and the import that refuses a failed or tampered bake and adds nothing twice.
+- The Smithsonian Open Access adapter (CC0), with Wilson Bentley's snow crystals typed by his own categories.
+- `slide.format_assumed` (migration 0007): a format the source does not record is assumed and said so.
+- Wiki page 10 with its diagram, the operator guide, the U8 design and requirements.
+
+### Changed
+
+- The fusion timeout is a setting (two hours by default; the base bake allows six).
+- A Commons credit keeps the people and drops the file page's furniture (F-046); an OpenSlide sample credits whom
+  OpenSlide's index credits (F-047).
+
+### Fixed
+
+- NDPI focal planes are read without libtiff's allocation guard (a plane is one very large strip).
+- The job process runs with the worker's settings, not the environment's; the bake fails when a job fails.
+- Whole-slide files take the extension of the source's file name, so the reader sees an NDPI's focal planes.
+- Samples the pipeline cannot read are replaced: DICOM 3DHISTECH-2 (over the 200,000 px guard, F-043) by Philips-2,
+  Ventana-1 (tiles joined LEFT, which no OpenSlide release reads, F-045) by Philips-3.
+
 ## [0.07.000] - 2026-09-29
 
 ### Added
