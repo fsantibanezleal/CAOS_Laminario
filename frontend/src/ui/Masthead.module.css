@@ -1,0 +1,54 @@
+.masthead {
+  border-bottom: 1px solid var(--c-rule);
+  background: var(--c-surface);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4) var(--s-6);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--s-4) var(--s-5);
+}
+
+.wordmark {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--s-3);
+  align-items: center;
+  color: var(--c-ink);
+  text-decoration: none;
+  min-width: 0;
+}
+
+.wordmark svg {
+  grid-row: span 2;
+  color: var(--c-accent);
+}
+
+.name {
+  font-family: var(--f-display);
+  font-size: var(--fs-6);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.tagline {
+  font-size: var(--fs-1);
+  color: var(--c-ink-muted);
+}
+
+.switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+.trail {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--s-5) var(--s-4);
+}

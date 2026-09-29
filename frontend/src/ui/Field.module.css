@@ -1,0 +1,130 @@
+.field {
+  display: grid;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.label {
+  font-weight: 600;
+  font-size: var(--fs-2);
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--c-ink-muted);
+}
+
+.input {
+  width: 100%;
+  min-height: 40px;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+  color: var(--c-ink);
+  font: inherit;
+  transition: border-color var(--t-quick) var(--ease-out), background-color var(--t-quick) var(--ease-out);
+}
+
+.input::placeholder {
+  color: var(--c-ink-muted);
+  opacity: 1;
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--c-ink-muted);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+  background: var(--c-surface);
+}
+
+.input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.field[data-invalid] .input {
+  border-color: var(--c-bad);
+  border-width: 2px;
+}
+
+.hint {
+  font-size: var(--fs-2);
+  color: var(--c-ink-muted);
+}
+
+.error {
+  display: flex;
+  gap: var(--s-2);
+  align-items: flex-start;
+  font-size: var(--fs-2);
+  color: var(--c-bad);
+  font-weight: 600;
+}
+
+.error svg {
+  margin-top: 2px;
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search .input {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.search .input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.searchGlyph {
+  position: absolute;
+  left: 10px;
+  color: var(--c-ink-muted);
+  pointer-events: none;
+}
+
+.clear {
+  position: absolute;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: var(--r-control);
+  background: transparent;
+  color: var(--c-ink-muted);
+  cursor: pointer;
+}
+
+.clear:hover {
+  color: var(--c-ink);
+  background: color-mix(in oklab, var(--c-ink) 8%, transparent);
+}
+
+.selectWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  appearance: none;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.chevron {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+  color: var(--c-ink-muted);
+}

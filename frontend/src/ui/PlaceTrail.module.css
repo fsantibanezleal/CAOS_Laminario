@@ -1,0 +1,44 @@
+.trail ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1) var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-2);
+}
+
+.trail li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.trail a,
+.trail span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 24px;
+}
+
+.trail a {
+  color: var(--c-ink-muted);
+  text-decoration: none;
+}
+
+.trail a:hover {
+  color: var(--c-ink);
+  text-decoration: underline;
+}
+
+.current {
+  color: var(--c-ink);
+  font-weight: 600;
+}
+
+.sep {
+  color: var(--c-ink-muted);
+}
