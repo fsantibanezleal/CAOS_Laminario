@@ -218,6 +218,21 @@ dome stack tiled and whole composites have Tenengrad sharpness 1811 and 1804 and
 Measured times on this machine: dome (20 planes) 2.8 s, fly eye (32 planes) 8.6 s for the wavelet fusion,
 0.2 s and 0.6 s for variance selection.
 
+### Windows in parallel
+
+The windows are independent (each writes only its core), so a stack's fusion computes their height maps in parallel
+processes: `fuse_workers` of them, 2 on the four-core host, which the API shares, and as many as leave four cores free
+(at most 12) in the base bake on a workstation. The job's own process reads each window from the plane pyramids,
+hands its stack to a pool process (spawn context: the images it reads from stay in the job's process), and places the
+returned height map and the composite it selects in the window's core. At most two windows per worker are in flight,
+so memory stays bounded whatever the stack's size: a window of eleven colour planes, with its margins, is 54 MB of
+pixels and about half a gigabyte while its wavelet transform runs. The arrays equal those of the one-window-at-a-time
+loop exactly, grey and colour, for both methods and in the order of the progress it reports (tested).
+
+If no window finishes within 20 minutes, the fusion stops its pool's processes and fails with that reason, instead of
+waiting for the job's timeout of hours: in a benchmark on Windows one pool process hung at start-up and the fusion
+waited on it without end (tested with a height map that sleeps past a short limit).
+
 ## 6. Derivatives
 
 - **Thumbnails** at 320 and 1024 px on the long side, JPEG quality 80, never enlarged.

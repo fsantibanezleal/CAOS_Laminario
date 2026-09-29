@@ -177,3 +177,69 @@ def test_a_stalled_parallel_fusion_fails_and_stops_its_processes(monkeypatch):
     monkeypatch.setattr(edf, "window_height_map", _sleepy_height_map)
     with pytest.raises(RuntimeError, match="stalled"):
         edf.fuse_array(stack, edf.METHOD_VARIANCE, tile=64, margin=8, workers=2, stall_s=2)
+
+
+_POOL_CHILD = """
+import os, sys, time
+sys.path.insert(0, sys.argv[1])
+from app.imaging import edf
+if __name__ == "__main__":
+    executor = edf.pool(2)
+    pids = sorted({executor.submit(os.getpid).result() for _ in range(8)})
+    print(" ".join(map(str, pids)), flush=True)
+    time.sleep(600)
+"""
+
+
+def _alive(pid: int) -> bool:
+    import os
+    import sys
+
+    if sys.platform == "win32":
+        import ctypes
+
+        handle = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not handle:
+            return False
+        code = ctypes.c_ulong()
+        ctypes.windll.kernel32.GetExitCodeProcess(handle, ctypes.byref(code))
+        ctypes.windll.kernel32.CloseHandle(handle)
+        return code.value == 259  # STILL_ACTIVE
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+    try:
+        with open(f"/proc/{pid}/stat") as f:
+            return f.read().rsplit(")", 1)[1].split()[0] != "Z"
+    except OSError:
+        return True
+
+
+def test_the_pool_processes_end_when_the_job_process_is_killed(tmp_path):
+    """A job's timeout kills the job's process; its fusion's pool processes must not outlive it."""
+    import subprocess
+    import sys
+    import time
+    from pathlib import Path
+
+    script = tmp_path / "pool_child.py"
+    script.write_text(_POOL_CHILD, encoding="utf-8")
+    root = str(Path(edf.__file__).resolve().parents[2])
+    job = subprocess.Popen([sys.executable, str(script), root], stdout=subprocess.PIPE, text=True)
+    try:
+        pids = [int(p) for p in job.stdout.readline().split()]
+        assert pids and all(_alive(p) for p in pids)
+    finally:
+        job.kill()
+        job.wait()
+    deadline = time.time() + 30
+    while time.time() < deadline and any(_alive(p) for p in pids):
+        time.sleep(0.5)
+    left = [p for p in pids if _alive(p)]
+    for p in left:
+        import os
+        import signal
+
+        os.kill(p, signal.SIGTERM)
+    assert not left, f"pool processes {left} outlived the killed job process"

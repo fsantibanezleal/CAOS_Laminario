@@ -64,7 +64,8 @@ of a focal stack ready, it queues that stack's fusion, once.
 
 **`fuse_stack`** reads the stored plane pyramids through the engine's tiled fusion and writes three assets: the
 complex-wavelet composite (the default image), the variance composite, and the variance height map as a 16-bit
-PNG (the depth readout's data, with the planes' depths in its caption). The stored height map equals the
+PNG (the depth readout's data, with the planes' depths in its caption). The job's process fuses the windows in
+`fuse_workers` processes of its own, which the job's timeout and a stop take down with it (page 04, section 5). The stored height map equals the
 engine's fusion of the stored planes, and on a synthetic stack it is within one plane of the known focus on at
 least 90 percent of pixels.
 

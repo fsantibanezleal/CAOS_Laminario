@@ -353,6 +353,35 @@ def _tile_windows(size: int, tile: int, margin: int) -> list[tuple[int, int, int
     return windows
 
 
+def _exit_with_parent() -> None:
+    """In a pool process: end at once when the process that made the pool ends. A job's timeout terminates the job's
+    process without a word to its pool, and the pool's processes, which hold both ends of their task queue, would
+    otherwise wait on it for good (measured on the host: alive two minutes after SIGTERM, then killed by hand)."""
+    import os
+    import threading
+    from multiprocessing import parent_process
+    from multiprocessing.connection import wait as wait_ready
+
+    parent = parent_process()
+    if parent is None:
+        return
+
+    def watch() -> None:
+        wait_ready([parent.sentinel])
+        os._exit(1)
+
+    threading.Thread(target=watch, name="exit-with-parent", daemon=True).start()
+
+
+def pool(workers: int):
+    """A pool of ``workers`` spawned processes that end with the process that made them, even when it is killed."""
+    import multiprocessing
+    from concurrent.futures import ProcessPoolExecutor
+
+    return ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context("spawn"),
+                               initializer=_exit_with_parent)
+
+
 def window_height_map(stack: np.ndarray, method: str, plugin_axes: bool = False) -> np.ndarray:
     """The height map of one window's stack (planes, h, w[, 3]); a process of the fusion's pool runs it."""
     grey = luminance(stack) if stack.ndim == 4 else stack.astype(np.float64)
@@ -409,11 +438,10 @@ def fuse(read: PlaneReader, planes: int, width: int, height: int, method: str = 
             if progress:
                 progress(done + 1, len(windows))
     else:
-        import multiprocessing
-        from concurrent.futures import FIRST_COMPLETED, ProcessPoolExecutor, wait
+        from concurrent.futures import FIRST_COMPLETED, wait
 
         done = 0
-        pool = ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context("spawn"))
+        executor = pool(workers)
         stalled = False
         try:
             pending: dict = {}
@@ -426,7 +454,7 @@ def fuse(read: PlaneReader, planes: int, width: int, height: int, method: str = 
                         exhausted = True
                         break
                     stack = read_window(spec)
-                    pending[pool.submit(window_height_map, stack, method, plugin_axes)] = (spec, stack)
+                    pending[executor.submit(window_height_map, stack, method, plugin_axes)] = (spec, stack)
                 finished, _ = wait(pending, timeout=stall_s, return_when=FIRST_COMPLETED)
                 if not finished:
                     stalled = True
@@ -440,11 +468,11 @@ def fuse(read: PlaneReader, planes: int, width: int, height: int, method: str = 
         finally:
             if stalled:
                 # A stalled process never answers a shutdown: stop every one first.
-                for process in list(getattr(pool, "_processes", {}).values()):
+                for process in list(getattr(executor, "_processes", {}).values()):
                     process.terminate()
-                pool.shutdown(wait=False, cancel_futures=True)
+                executor.shutdown(wait=False, cancel_futures=True)
             else:
-                pool.shutdown(wait=True)
+                executor.shutdown(wait=True)
     parameters = {"tile": tile, "margin": margin, "planes": planes}
     if method == METHOD_WAVELET:
         parameters |= {"length": WAVELET_LENGTH, "subband_check": True, "majority_check": True,
