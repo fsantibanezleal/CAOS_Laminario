@@ -26,7 +26,8 @@
     "gate:scalebar": "node gates/scalebar.mjs",
     "gate:stage": "node gates/stage.mjs",
     "gate:contribute": "node gates/contribute.mjs",
-    "gate:identify": "node gates/identify.mjs"
+    "gate:identify": "node gates/identify.mjs",
+    "gate:cabinet": "node gates/cabinet.mjs"
   },
   "dependencies": {
     "@annotorious/openseadragon": "3.9.3",
