@@ -164,3 +164,42 @@
   content: "";
   opacity: 0.8;
 }
+
+/* On a phone the cabinets stand two across, compact: the icon smaller, no drawer lines. */
+@media (max-width: 599px) {
+  .cabinets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+
+  .cabinet {
+    min-height: 0;
+    padding: var(--s-5) var(--s-3) var(--s-4);
+  }
+
+  .cabinetIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .cabinetName {
+    font-size: var(--fs-4);
+    hyphens: auto;
+  }
+
+  .cabinetFacts {
+    font-size: var(--fs-1);
+  }
+
+  .drawerLines {
+    display: none;
+  }
+
+  .realmHead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .realmCount {
+    grid-column: 1;
+  }
+}
