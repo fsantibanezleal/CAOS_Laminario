@@ -81,3 +81,15 @@ def test_library_loads_with_openslide(vips):
     assert found.openslide, "this libvips build cannot read scanner formats"
     major, minor, _ = (int(part) for part in found.version.split("."))
     assert (major, minor) >= (8, 15)  # keep= metadata control used by every writer
+
+
+def test_an_ndpi_plane_from_its_jpeg_stream_is_the_plane_libtiff_reads(vips, samples):
+    """Past 4 GB an NDPI file's planes are out of libtiff's reach (F-041); the reader then decodes the plane from its
+    own JPEG stream. Where libtiff can read the plane too, both routes give the same pixels."""
+    info = reader.read_info(samples / "si_ostracod_A.ndpi")
+    for plane in (info.planes[0], info.planes[-1]):
+        streamed = reader._ndpi_stream(info.path, plane.page)
+        direct = vips.Image.tiffload(info.path, page=plane.page, unlimited=True)
+        assert (streamed.width, streamed.height) == (direct.width, direct.height) == (3840, 4608)
+        for x, y in ((0, 0), (1600, 2000), (3328, 4096)):
+            assert (streamed.crop(x, y, 512, 512) - direct.crop(x, y, 512, 512)).abs().max() == 0
