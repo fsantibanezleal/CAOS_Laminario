@@ -228,6 +228,10 @@ function Record({ record, tree }: { record: SlideRecord; tree: TreeIndex }) {
   const node = tree.byId.get(record.placement.node);
   if (node) rows.push([t("slide.field.drawer"), <Link href={nodeHref(node.id)}>{localised(node.name, lang)}</Link>]);
   if (record.published_at) rows.push([t("slide.field.published"), day(record.published_at.slice(0, 10))]);
+  if (record.contributor) {
+    rows.push([t("slide.field.contributor"), <Link href={`/people/${record.contributor.handle}`}
+      data-contributor={record.contributor.handle}>{record.contributor.name}</Link>]);
+  }
 
   return (
     <aside className={styles.record} aria-labelledby="record">
