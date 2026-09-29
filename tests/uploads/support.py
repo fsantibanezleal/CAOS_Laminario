@@ -157,3 +157,20 @@ def compose_tusd(quarantine: Path, port: int, api_port: int, project: str):
         yield f"{project}-tusd-1"
     finally:
         subprocess.run([*base, "down"], capture_output=True, env=env, timeout=120)
+
+
+def wait_for_upload(settings: Settings, status: str, seconds: float = 30.0) -> None:
+    """Until some upload has ``status``: tusd sends post-finish after answering the client, not before."""
+    from sqlalchemy import create_engine, text
+
+    engine = create_engine(f"sqlite:///{(settings.data_root / 'laminario.sqlite3').as_posix()}")
+    deadline = time.monotonic() + seconds
+    try:
+        while time.monotonic() < deadline:
+            with engine.connect() as conn:
+                if conn.execute(text("SELECT COUNT(*) FROM upload WHERE status = :s"), {"s": status}).scalar():
+                    return
+            time.sleep(0.2)
+    finally:
+        engine.dispose()
+    raise TimeoutError(f"no upload reached {status!r} within {seconds:g} s")

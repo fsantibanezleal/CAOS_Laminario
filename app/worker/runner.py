@@ -21,6 +21,7 @@ import os
 import signal
 import socket
 import threading
+import time
 import traceback
 
 from pebble import ProcessExpired, ProcessPool
@@ -50,8 +51,9 @@ class Worker:
         for sig in (signal.SIGINT, signal.SIGTERM):
             signal.signal(sig, self.stop)
 
-    def run(self, max_jobs: int | None = None) -> int:
-        """Process jobs until stopped (or after ``max_jobs``); returns how many were run."""
+    def run(self, max_jobs: int | None = None, deadline: float | None = None) -> int:
+        """Process jobs until stopped, after ``max_jobs``, or past ``deadline`` (``time.monotonic``); returns how many
+        were run. The service runs without either; tests pass both so a missing job cannot hang them."""
         upgrade_to_head(self.database)
         engine = make_sync_engine(self.database)
         done = 0
@@ -60,7 +62,8 @@ class Worker:
                 log.info("job %s was interrupted and is queued again", job_id)
             context = multiprocessing.get_context("spawn")
             with ProcessPool(max_workers=1, max_tasks=MAX_TASKS_PER_PROCESS, context=context) as pool:
-                while not self._stop.is_set() and (max_jobs is None or done < max_jobs):
+                while (not self._stop.is_set() and (max_jobs is None or done < max_jobs)
+                       and (deadline is None or time.monotonic() < deadline)):
                     job = queue.claim(engine, self.name)
                     if job is None:
                         self._stop.wait(POLL_SECONDS)

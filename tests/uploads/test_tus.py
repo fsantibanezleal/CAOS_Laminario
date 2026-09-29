@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import time
 
 import numpy as np
 import pytest
@@ -12,7 +13,9 @@ from sqlalchemy import create_engine, text
 
 from app.worker.runner import Worker
 
-from .support import contributor, create, interrupted_patch, offset, patch, settings_for, upload_stack
+from .support import (
+    contributor, create, interrupted_patch, offset, patch, settings_for, upload_stack, wait_for_upload,
+)
 
 
 def photo_bytes(width: int = 1600, height: int = 1100, seed: int = 0) -> bytes:
@@ -33,7 +36,7 @@ def rows(settings, sql: str, **params):
 
 def run_worker(settings, monkeypatch, jobs: int) -> int:
     monkeypatch.setenv("LAMINARIO_DATA_ROOT", str(settings.data_root))
-    return Worker(settings).run(max_jobs=jobs)
+    return Worker(settings).run(max_jobs=jobs, deadline=time.monotonic() + 300)
 
 
 # R-040
@@ -52,6 +55,7 @@ def test_resume_after_interruption(tmp_path, monkeypatch):
         finished = patch(location, reached, data[reached:], cookie)
         assert finished.status_code == 204 and int(finished.headers["Upload-Offset"]) == len(data)
         settings = stack["settings"]
+        wait_for_upload(settings, "received")
     assert run_worker(settings, monkeypatch, 2) == 2  # verification, then processing
     upload = rows(settings, "SELECT status, sha256, sniffed, source_path, reason FROM upload")[0]
     assert upload.status == "accepted", upload.reason
@@ -73,6 +77,7 @@ def test_disallowed_type_rejected(tmp_path, monkeypatch):
                           filename="innocent.jpg").headers["Location"]
         assert patch(location, 0, program, cookie).status_code == 204
         settings = stack["settings"]
+        wait_for_upload(settings, "received")
     assert run_worker(settings, monkeypatch, 1) == 1
     upload = rows(settings, "SELECT status, sniffed, reason FROM upload")[0]
     assert upload.status == "rejected" and upload.sniffed == "refused"
