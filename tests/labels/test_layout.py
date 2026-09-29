@@ -103,3 +103,14 @@ def test_collection_dates():
     assert collections_date("1934-05") == "V.1934"
     assert collections_date("1966") == "1966"
     assert collections_date(None) is None
+
+
+def test_a_photograph_lies_the_way_the_window_does():
+    standing = slide_layout(record(overview=(1000, 3000)))
+    assert standing.mount and standing.mount.turned and standing.mount.href.endswith("/media/9422P6AW/1-photo.jpg")
+    lying = slide_layout(record(overview=(3000, 1000)))
+    assert lying.mount and not lying.mount.turned
+    from app.labels import svg
+
+    drawn = svg.render(standing, standalone=False)
+    assert 'transform="rotate(90' in drawn and "<style>" not in drawn

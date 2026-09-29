@@ -13,7 +13,8 @@ HOST = "https://laminario.ml.fasl-work.com"
 
 
 def record(short_id: str = "9422P6AW", *, slide: dict | None = None, specimen: dict | None = None,
-           drop: tuple[str, ...] = ()) -> c.SlideRecord:
+           drop: tuple[str, ...] = (), overview: tuple[int, int] | None = None) -> c.SlideRecord:
+    """``overview`` stores the slide photograph as a plain image of that width and height in pixels."""
     payload = payloads.contribution()
     payload["slide"].update(slide or {})
     payload["specimen"].update(specimen or {})
@@ -25,4 +26,7 @@ def record(short_id: str = "9422P6AW", *, slide: dict | None = None, specimen: d
     row.status = "published"
     for i, asset in enumerate(row.assets):
         asset.id, asset.status = i + 1, "ready"
+        if overview and asset.role == "slide_overview":
+            asset.media_kind, asset.storage_key = "image", f"{short_id}/{i + 1}-photo.jpg"
+            asset.width_px, asset.height_px = overview
     return catalog.slide_record(row, Settings(_env_file=None, public_base_url=HOST))

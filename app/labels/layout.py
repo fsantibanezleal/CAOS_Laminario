@@ -87,6 +87,9 @@ class Mount:
     w: float
     h: float
     href: str
+    #: The photograph is turned a quarter turn: its orientation differs from the window's (a slide photographed
+    #: standing up, shown lying down).
+    turned: bool = False
 
 
 @dataclass(frozen=True)
@@ -249,20 +252,23 @@ def _data_runs(record: c.SlideRecord, lang: str) -> list[tuple[list[Run], str]]:
     return entries
 
 
-def _mount_href(record: c.SlideRecord) -> str | None:
+def _mount_asset(record: c.SlideRecord) -> c.AssetRecord | None:
     ready = [a for a in record.assets if a.status == "ready"]
     order = [lambda a: a.family == "macro" and a.role == "slide_overview",
              lambda a: a.family == "macro" and a.role == "specimen",
              lambda a: a.family == "micro"]
     for test in order:
         for asset in ready:
-            if test(asset):
-                media = asset.media
-                if media.iiif_info_url:
-                    return media.iiif_info_url.removesuffix("/info.json") + "/full/!800,800/0/default.jpg"
-                if media.image_url:
-                    return media.image_url
+            if test(asset) and (asset.media.iiif_info_url or asset.media.image_url):
+                return asset
     return None
+
+
+def _href(asset: c.AssetRecord) -> str:
+    media = asset.media
+    if media.iiif_info_url:
+        return media.iiif_info_url.removesuffix("/info.json") + "/full/!800,800/0/default.jpg"
+    return media.image_url or ""
 
 
 def _place_lines(entries: list[tuple[list[Run], str]], x: float, y0: float, y1: float, width_mm: float,
@@ -354,9 +360,11 @@ def slide_layout(record: c.SlideRecord, lang: str = "en") -> Layout:
         window = (box.x + 0.5, box.y + 0.5, box.w - 1, box.h - 1)
     else:
         window = (free_x0 + 2, 2, free_x1 - free_x0 - 4, short - 4)
-    href = _mount_href(record)
-    if href:
-        lay.mount = Mount(*window, href=href)
+    asset = _mount_asset(record)
+    if asset:
+        w, h = asset.media.width_px, asset.media.height_px
+        turned = bool(w and h and (h > w) != (window[3] > window[2]))
+        lay.mount = Mount(*window, href=_href(asset), turned=turned)
 
     if lay.assumed:
         note = {"en": "Format assumed: the source does not record the slide.",

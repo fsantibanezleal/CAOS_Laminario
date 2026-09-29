@@ -1,0 +1,379 @@
+.heading {
+  font-size: inherit;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-4);
+  margin-top: var(--s-4);
+}
+
+.id {
+  font-family: var(--f-label);
+  font-size: var(--fs-3);
+  letter-spacing: 0.04em;
+}
+
+.origin {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+}
+
+.objectArea {
+  max-width: 980px;
+  margin: var(--s-4) auto var(--s-7);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 40px;
+  padding: 0 var(--s-4);
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-control);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.action:hover {
+  background: var(--c-sunken);
+}
+
+.permalink {
+  margin-top: var(--s-4);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+  overflow-wrap: anywhere;
+}
+
+.permalink a {
+  font-family: var(--f-label);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-7);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-7);
+  min-width: 0;
+}
+
+.sectionTitle {
+  margin-bottom: var(--s-4);
+  font-size: var(--fs-6);
+}
+
+.items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A stage item: what the eyepiece would show, on the stage's dark ground. */
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  text-decoration: none;
+  box-shadow: var(--lift);
+  transition: transform var(--t-quick) var(--ease-out);
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-2px);
+}
+
+.cardImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  background: var(--c-stage);
+}
+
+.cardImage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.cardText {
+  display: grid;
+  gap: var(--s-1);
+  padding: var(--s-4);
+}
+
+.cardTitle {
+  font-family: var(--f-display);
+  font-size: var(--fs-4);
+}
+
+.cardFacts {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+}
+
+.cardOpen {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  margin-top: var(--s-2);
+  color: var(--c-accent);
+  font-weight: 600;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.photo {
+  display: grid;
+  gap: var(--s-2);
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-ink-muted);
+  font: inherit;
+  font-size: var(--fs-2);
+  text-align: left;
+  cursor: zoom-in;
+}
+
+.photo img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+}
+
+.photoLarge {
+  margin: 0;
+}
+
+.photoLarge img {
+  display: block;
+  max-width: 100%;
+  max-height: 70dvh;
+  margin: 0 auto;
+}
+
+.record dl {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+}
+
+.row {
+  display: grid;
+  gap: var(--s-1);
+}
+
+.row dt {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-1);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.row dd {
+  margin: 0;
+}
+
+.muted {
+  color: var(--c-ink-muted);
+}
+
+.mono {
+  font-family: var(--f-label);
+}
+
+.type {
+  color: var(--c-bad);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.quality {
+  margin-top: var(--s-5);
+  padding: var(--s-4);
+  border: 1px solid var(--c-rule);
+  border-left: 4px solid var(--c-good);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+}
+
+.quality[data-badge="reference"] {
+  border-left-color: var(--c-warn);
+}
+
+.badge {
+  margin-bottom: var(--s-2);
+  font-weight: 700;
+}
+
+.quality ul {
+  display: grid;
+  gap: var(--s-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-2);
+}
+
+.quality li {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.quality li[data-passed="true"] svg {
+  color: var(--c-good);
+}
+
+.quality li[data-passed="false"] svg {
+  color: var(--c-warn);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-panel);
+}
+
+.provenance table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-2);
+}
+
+.provenance th,
+.provenance td {
+  padding: var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--c-rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.provenance thead th {
+  background: var(--c-sunken);
+  font-weight: 600;
+}
+
+.provenance tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.readingPair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: var(--s-5);
+}
+
+.readingPair figure {
+  margin: 0;
+}
+
+.readingPair figcaption {
+  margin-top: var(--s-2);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+  text-align: center;
+}
+
+.readingPair img {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 1100px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+
+  .record {
+    align-self: start;
+    position: sticky;
+    top: var(--s-5);
+  }
+}
+
+/* On a phone every image of the provenance is a small block, each field with its name. */
+@media (max-width: 699px) {
+  .tableWrap {
+    border: 0;
+  }
+
+  .provenance table,
+  .provenance tbody,
+  .provenance tr,
+  .provenance th,
+  .provenance td {
+    display: block;
+  }
+
+  .provenance thead {
+    display: none;
+  }
+
+  .provenance tr {
+    margin-bottom: var(--s-3);
+    border: 1px solid var(--c-rule);
+    border-radius: var(--r-panel);
+  }
+
+  .provenance th,
+  .provenance td {
+    display: grid;
+    grid-template-columns: 9.5em minmax(0, 1fr);
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--c-rule);
+  }
+
+  .provenance th::before,
+  .provenance td::before {
+    content: attr(data-label);
+    color: var(--c-ink-muted);
+    font-family: var(--f-reading);
+    font-size: var(--fs-1);
+    font-weight: 400;
+  }
+
+  .provenance tr > :last-child {
+    border-bottom: 0;
+  }
+}

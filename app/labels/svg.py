@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 from xml.sax.saxutils import escape, quoteattr
 
-from app.labels.layout import Layout, Line
+from app.labels.layout import Layout, Line, label_width
 
 PRINT = json.loads((Path(__file__).parent / "print-colours.json").read_text(encoding="utf-8"))
 FACE = "'Courier Prime', 'Courier New', monospace"
@@ -68,7 +68,7 @@ def render(lay: Layout, standalone: bool = True) -> str:
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {_n(lay.long)} {_n(lay.height)}" '
         f'width="{_n(lay.long)}mm" height="{_n(lay.height)}mm" role="img" aria-labelledby="{sid}-title" '
-        f'data-slide="{sid}" data-format="{_n(lay.long)}x{_n(lay.short)}" '
+        f'data-slide="{sid}" data-format="{_n(lay.long)}x{_n(lay.short)}" data-label-mm="{_n(label_width(lay.long))}" '
         f'style="--band: var(--h-{slug}, {hue})">',
         f'<title id="{sid}-title">{escape(lay.title)}</title>',
     ]
@@ -80,8 +80,16 @@ def render(lay: Layout, standalone: bool = True) -> str:
         m = lay.mount
         out.append(f'<clipPath id="{sid}-mount"><rect x="{_n(m.x)}" y="{_n(m.y)}" width="{_n(m.w)}" '
                    f'height="{_n(m.h)}"/></clipPath>')
-        out.append(f'<image class="lam-mount" href={quoteattr(m.href)} x="{_n(m.x)}" y="{_n(m.y)}" width="{_n(m.w)}" '
-                   f'height="{_n(m.h)}" preserveAspectRatio="xMidYMid meet" clip-path="url(#{sid}-mount)"/>')
+        if m.turned:
+            # Drawn in a box of the window's size turned a quarter, then turned back into the window.
+            cx, cy = m.x + m.w / 2, m.y + m.h / 2
+            out.append(f'<g clip-path="url(#{sid}-mount)"><image class="lam-mount" href={quoteattr(m.href)} '
+                       f'x="{_n(cx - m.h / 2)}" y="{_n(cy - m.w / 2)}" width="{_n(m.h)}" height="{_n(m.w)}" '
+                       f'preserveAspectRatio="xMidYMid meet" transform="rotate(90 {_n(cx)} {_n(cy)})"/></g>')
+        else:
+            out.append(f'<image class="lam-mount" href={quoteattr(m.href)} x="{_n(m.x)}" y="{_n(m.y)}" '
+                       f'width="{_n(m.w)}" height="{_n(m.h)}" preserveAspectRatio="xMidYMid meet" '
+                       f'clip-path="url(#{sid}-mount)"/>')
     for box in lay.boxes:
         if box.role == "coverslip":
             out.append(f'<rect class="lam-cover" x="{_n(box.x)}" y="{_n(box.y)}" width="{_n(box.w)}" '

@@ -1,11 +1,14 @@
 // The API, typed by the generated contract. Every call takes an AbortSignal, so a place that is left, or a query
 // that is replaced while the visitor types, stops its request instead of drawing a stale answer.
 import type {
+  AccountRecord,
+  AnnotationRecord,
   CollectionTreeRecord,
   FacetCounts,
   FacetRecord,
   MapRecord,
   SlidePage,
+  SlideRecord,
 } from "../contract/catalog";
 
 export class ApiError extends Error {
@@ -35,6 +38,17 @@ export interface CountryShapes {
   }[];
 }
 
+async function send<T>(method: string, url: string, body?: unknown): Promise<T | null> {
+  const response = await fetch(url, {
+    method, headers: body === undefined ? {} : { "Content-Type": "application/json", Accept: "application/json" },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  if (!response.ok) throw new ApiError(response.status, url);
+  return response.status === 204 ? null : ((await response.json()) as T);
+}
+
+const slidePath = (id: string) => `/api/slides/${encodeURIComponent(id)}`;
+
 export const api = {
   tree: (signal?: AbortSignal) => getJson<CollectionTreeRecord>("/api/collections", signal),
   facetNames: (signal?: AbortSignal) => getJson<FacetRecord[]>("/api/facets", signal),
@@ -44,6 +58,29 @@ export const api = {
   facets: (query: URLSearchParams, signal?: AbortSignal) =>
     getJson<FacetCounts>(`/api/explore/facets?${query}`, signal),
   map: (query: URLSearchParams, signal?: AbortSignal) => getJson<MapRecord>(`/api/explore/map?${query}`, signal),
+  slide: (id: string, signal?: AbortSignal) => getJson<SlideRecord>(slidePath(id), signal),
+  /** The slide drawn by the server, to inline: its colours come from the page (standalone=false). */
+  slideSvg: async (id: string, lang: string, signal?: AbortSignal) => {
+    const url = `${slidePath(id)}/slide.svg?standalone=false&lang=${lang}`;
+    const response = await fetch(url, { signal });
+    if (!response.ok) throw new ApiError(response.status, url);
+    return response.text();
+  },
+  annotations: (slide: string, asset: number, signal?: AbortSignal) =>
+    getJson<AnnotationRecord[]>(`${slidePath(slide)}/assets/${asset}/annotations`, signal),
+  addAnnotation: (slide: string, asset: number, annotation: unknown) =>
+    send<AnnotationRecord>("POST", `${slidePath(slide)}/assets/${asset}/annotations`, annotation),
+  removeAnnotation: (id: string) => send<null>("DELETE", `/api/annotations/${encodeURIComponent(id)}`),
+  /** The signed-in account, or null for a visitor. */
+  me: async (signal?: AbortSignal): Promise<AccountRecord | null> => {
+    const response = await fetch("/api/users/me", { signal, headers: { Accept: "application/json" } });
+    if (response.status === 401) return null;
+    if (!response.ok) throw new ApiError(response.status, "/api/users/me");
+    return (await response.json()) as AccountRecord;
+  },
 };
+
+export const labelPdf = (id: string, lang: string) => `${slidePath(id)}/label.pdf?lang=${lang}`;
+export const slideDrawing = (id: string, lang: string) => `${slidePath(id)}/slide.svg?standalone=true&lang=${lang}`;
 
 export const BASEMAP_URL = "/api/explore/basemap.pmtiles";

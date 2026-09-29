@@ -1,0 +1,220 @@
+/* The stage: the image on the near-neutral stage ground (a stain is judged against grey, not tinted by the frame),
+   its controls beside it from 1100 px, below it on narrower screens. */
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-5);
+}
+
+.viewport {
+  position: relative;
+  height: clamp(420px, 72dvh, 1100px);
+  overflow: hidden;
+  border-radius: var(--r-panel);
+  background: var(--c-stage);
+  color: var(--c-on-stage);
+}
+
+.viewer {
+  position: absolute;
+  inset: 0;
+}
+
+.viewer:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: -2px;
+}
+
+.failed {
+  position: absolute;
+  inset: 40% var(--s-6) auto;
+  text-align: center;
+}
+
+.scale {
+  position: absolute;
+  left: var(--s-5);
+  bottom: var(--s-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-control);
+  background: rgb(0 0 0 / 0.55);
+  color: var(--c-on-stage);
+  font-family: var(--f-label);
+  font-size: var(--fs-2);
+  pointer-events: none;
+}
+
+.bar {
+  display: block;
+  height: 4px;
+  border: 1px solid var(--c-on-stage);
+  border-top: 0;
+  background: var(--c-on-stage);
+}
+
+.unscaled,
+.readout {
+  position: absolute;
+  bottom: var(--s-5);
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-control);
+  background: rgb(0 0 0 / 0.55);
+  font-size: var(--fs-2);
+  pointer-events: none;
+}
+
+.unscaled {
+  left: var(--s-5);
+}
+
+.readout {
+  right: var(--s-5);
+  font-family: var(--f-label);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  min-width: 0;
+}
+
+.turret {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.turret legend {
+  margin-bottom: var(--s-2);
+  padding: 0;
+  font-weight: 600;
+}
+
+/* An objective is a ring: its power engraved, brass for the optical steps, dashed for digital zoom. */
+.turret button {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  min-height: 48px;
+  padding: var(--s-1) var(--s-3);
+  border: 2px solid var(--c-accent);
+  border-radius: 999px;
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font: inherit;
+  font-family: var(--f-label);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.turret button[aria-pressed="true"] {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+.turret .digital {
+  border-style: dashed;
+  border-color: var(--c-edge);
+}
+
+.digitalMark {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.angle {
+  font-family: var(--f-label);
+}
+
+.planes {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.planes input[type="range"] {
+  width: 100%;
+  accent-color: var(--c-accent);
+}
+
+.muted {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+}
+
+.notes {
+  display: grid;
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--c-rule);
+}
+
+.notesHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.notesHead h2 {
+  font-size: var(--fs-5);
+}
+
+.notes ul {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notes li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.noteText {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-accent);
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+/* OpenSeadragon's navigator (the little map of the whole image) in the room's colours. */
+.viewer :global(.navigator) {
+  border: 1px solid var(--c-edge) !important;
+  background: rgb(0 0 0 / 0.4) !important;
+}
+
+.viewer :global(.displayregion) {
+  border-color: var(--c-focus) !important;
+}
+
+@media (min-width: 1100px) {
+  .stage {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+}
