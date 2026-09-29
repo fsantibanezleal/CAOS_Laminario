@@ -149,17 +149,22 @@ def docker() -> str:
     return exe
 
 
-def wait_for_http(url: str, seconds: float = 30.0) -> None:
+def wait_for_http(url: str, seconds: float = 30.0, expect: int | None = None) -> None:
+    """Until ``url`` answers (with status ``expect`` when given), or raise after ``seconds``."""
     import httpx2
 
     deadline = time.monotonic() + seconds
+    last = "no answer"
     while time.monotonic() < deadline:
         try:
-            httpx2.get(url, timeout=2.0)
-            return
-        except httpx2.HTTPError:
-            time.sleep(0.5)
-    raise TimeoutError(f"{url} did not answer within {seconds:g} s")
+            status = httpx2.get(url, timeout=2.0).status_code
+            if expect is None or status == expect:
+                return
+            last = f"HTTP {status}"
+        except httpx2.HTTPError as exc:
+            last = type(exc).__name__
+        time.sleep(0.5)
+    raise TimeoutError(f"{url} did not answer as expected within {seconds:g} s (last: {last})")
 
 
 @contextlib.contextmanager

@@ -10,8 +10,8 @@ from __future__ import annotations
 import math
 import os
 import subprocess
+import sys
 import threading
-import time
 from pathlib import Path
 
 import numpy as np
@@ -112,7 +112,7 @@ def tile_server(tmp_path_factory, vips_module):
     name = f"laminario-test-iipsrv-{os.getpid()}"
     subprocess.run([exe, "pull", "-q", IIPSRV_IMAGE], capture_output=True, timeout=300)
     with container(["-p", f"127.0.0.1:{port}:80", "-v", f"{store}:/images:ro", IIPSRV_IMAGE], name):
-        wait_for_http(f"http://127.0.0.1:{port}/iiif/")
+        wait_for_http(f"http://127.0.0.1:{port}/iiif/{key}/info.json", expect=200)  # lighttpd answers first
         yield {"url": f"http://127.0.0.1:{port}", "store": store, "key": key, "file": target, "written": written,
                "name": name}
 
@@ -129,15 +129,22 @@ def vips_module():
     return module
 
 
+def level_size(size: int, factor: int) -> int:
+    """A side of a pyramid level: libvips halves each level from the one above, rounding down."""
+    while factor > 1:
+        size, factor = size // 2, factor // 2
+    return size
+
+
 def tile_requests(width: int, height: int, factors: list[int]):
     """(factor, level column, level row, region, size) for the corner, middle and edge tiles of each level."""
     for factor in factors:
-        level_w, level_h = math.ceil(width / factor), math.ceil(height / factor)
+        level_w, level_h = level_size(width, factor), level_size(height, factor)
         cols, rows = math.ceil(level_w / 512), math.ceil(level_h / 512)
         for col, row in {(0, 0), (cols - 1, 0), (0, rows - 1), (cols - 1, rows - 1), (cols // 2, rows // 2)}:
+            tw, th = min(512, level_w - col * 512), min(512, level_h - row * 512)
             x, y = col * 512 * factor, row * 512 * factor
-            w, h = min(512 * factor, width - x), min(512 * factor, height - y)
-            tw, th = math.ceil(w / factor), math.ceil(h / factor)
+            w, h = min(tw * factor, width - x), min(th * factor, height - y)
             yield factor, col, row, f"{x},{y},{w},{h}", f"{tw},{th}"
 
 
@@ -170,67 +177,65 @@ def test_tile_equals_crop(tmp_path, tile_server, vips_module):
 
 # R-301
 def test_nginx_caches_tiles_and_refuses_unpublished(tmp_path, tile_server):
+    """The production site file, run by the pinned nginx on the host network as on the production host.
+
+    Host networking puts nginx, the API and iipsrv on loopback, the production topology; it needs a Linux
+    container engine (on Docker Desktop the "host" is the virtual machine).
+    """
     exe = docker()
-    network = f"laminario-test-net-{os.getpid()}"
-    subprocess.run([exe, "network", "create", network], capture_output=True, check=True, timeout=60)
+    if sys.platform != "linux":
+        pytest.skip("host networking for the nginx container needs a Linux container engine")
+    api_port, nginx_port = free_port(), free_port()
+    iip_port = int(tile_server["url"].rsplit(":", 1)[1])
+    settings = make_settings(tmp_path, iipsrv_url=tile_server["url"])
+    seed_slide(settings, [asset(tile_server["key"], CC_BY)])
+    draft_key = "T7EST0/1-draft.tif"
+    seed_slide(settings, [asset(draft_key, CC_BY)], publish=False)
+
+    import httpx2
+    import uvicorn
+
+    server = uvicorn.Server(uvicorn.Config(create_app(settings), host="127.0.0.1", port=api_port,
+                                           log_level="warning"))
+    thread = threading.Thread(target=server.run, daemon=True)
+    thread.start()
     try:
-        subprocess.run([exe, "network", "connect", "--alias", "iip", network, tile_server["name"]],
-                       capture_output=True, check=True, timeout=60)
-        gateway = subprocess.run([exe, "network", "inspect", network, "--format",
-                                  "{{(index .IPAM.Config 0).Gateway}}"],
-                                 capture_output=True, text=True, check=True, timeout=60).stdout.strip()
-        api_port = free_port(gateway)
-        settings = make_settings(tmp_path, iipsrv_url=tile_server["url"])
-        seed_slide(settings, [asset(tile_server["key"], CC_BY)])
-        draft_key = "T7EST0/1-draft.tif"
-        seed_slide(settings, [asset(draft_key, CC_BY)], publish=False)
-
-        import uvicorn
-
-        server = uvicorn.Server(uvicorn.Config(create_app(settings), host=gateway, port=api_port,
-                                               log_level="warning"))
-        thread = threading.Thread(target=server.run, daemon=True)
-        thread.start()
-        try:
-            deadline = time.monotonic() + 20
-            while not server.started and time.monotonic() < deadline:
-                time.sleep(0.1)
-            conf = (ROOT / "deploy" / "nginx" / "laminario.conf").read_text(encoding="utf-8")
-            conf = (conf.replace("server 127.0.0.1:8147;", f"server {gateway}:{api_port};")
-                    .replace("server 127.0.0.1:8149;", "server iip:80;")
-                    .replace("/srv/laminario/cache", "/var/cache/laminario")
-                    .replace("    listen [::]:80;\n", ""))
-            conf_file = tmp_path / "laminario.conf"
-            conf_file.write_text(conf, encoding="utf-8")
-            os.chmod(conf_file, 0o644)
-            nginx_port = free_port()
-            subprocess.run([exe, "pull", "-q", NGINX_IMAGE], capture_output=True, timeout=300)
-            with container(["--network", network, "-p", f"127.0.0.1:{nginx_port}:80",
-                            "-v", f"{conf_file}:/etc/nginx/conf.d/default.conf:ro",
-                            "--tmpfs", "/var/cache/laminario", NGINX_IMAGE], f"laminario-test-nginx-{os.getpid()}"):
-                base = f"http://127.0.0.1:{nginx_port}"
-                wait_for_http(base + "/api/health")
-                import httpx2
-
-                encoded = tile_server["key"].replace("/", "%2F")
-                tile = f"{base}/iiif/{encoded}/0,0,1024,1024/512,/0/default.jpg"
-                first, second = httpx2.get(tile, timeout=30), httpx2.get(tile, timeout=30)
-                assert first.status_code == second.status_code == 200
-                assert (first.headers["x-cache-status"], second.headers["x-cache-status"]) == ("MISS", "HIT")
-                assert first.content == second.content
-                assert first.headers["access-control-allow-origin"] == "*"
-                direct = httpx2.get(f"{tile_server['url']}/iiif/{tile_server['key']}/0,0,1024,1024/512,/0/default.jpg",
-                                    timeout=30)
-                assert first.content == direct.content, "nginx serves iipsrv's bytes"
-                draft = httpx2.get(f"{base}/iiif/{draft_key.replace('/', '%2F')}/full/256,/0/default.jpg", timeout=30)
-                assert draft.status_code == 403, "an unpublished image is refused before the cache"
-                info = httpx2.get(f"{base}/iiif/{encoded}/info.json", timeout=30)
-                assert info.status_code == 200 and info.json()["rights"] == "http://creativecommons.org/licenses/by/4.0/"
-                hidden = httpx2.get(f"{base}/api/_internal/iiif-access/{tile_server['key']}", timeout=30)
-                assert hidden.status_code == 404, "the access check is not reachable from outside"
-        finally:
-            server.should_exit = True
-            thread.join(10)
+        wait_for_http(f"http://127.0.0.1:{api_port}/api/health", expect=200)
+        conf = (ROOT / "deploy" / "nginx" / "laminario.conf").read_text(encoding="utf-8")
+        conf = (conf.replace("server 127.0.0.1:8147;", f"server 127.0.0.1:{api_port};")
+                .replace("server 127.0.0.1:8149;", f"server 127.0.0.1:{iip_port};")
+                .replace("/srv/laminario/cache", "/var/cache/laminario")
+                .replace("    listen 80;", f"    listen 127.0.0.1:{nginx_port};")
+                .replace("    listen [::]:80;", ""))
+        assert f"listen 127.0.0.1:{nginx_port};" in conf
+        conf_file = tmp_path / "laminario.conf"
+        conf_file.write_text(conf, encoding="utf-8")
+        os.chmod(conf_file, 0o644)
+        empty = tmp_path / "empty.conf"
+        empty.write_text("", encoding="utf-8")  # replaces the image's default site, which listens on port 80
+        os.chmod(empty, 0o644)
+        subprocess.run([exe, "pull", "-q", NGINX_IMAGE], capture_output=True, timeout=300)
+        with container(["--network", "host", "-v", f"{conf_file}:/etc/nginx/conf.d/laminario.conf:ro",
+                        "-v", f"{empty}:/etc/nginx/conf.d/default.conf:ro", "--tmpfs", "/var/cache/laminario",
+                        NGINX_IMAGE], f"laminario-test-nginx-{os.getpid()}"):
+            base = f"http://127.0.0.1:{nginx_port}"
+            wait_for_http(base + "/api/health", expect=200)
+            encoded = tile_server["key"].replace("/", "%2F")
+            tile = f"{base}/iiif/{encoded}/0,0,1024,1024/512,/0/default.jpg"
+            first, second = httpx2.get(tile, timeout=30), httpx2.get(tile, timeout=30)
+            assert first.status_code == second.status_code == 200, first.text[:200]
+            assert (first.headers["x-cache-status"], second.headers["x-cache-status"]) == ("MISS", "HIT")
+            assert first.content == second.content
+            assert first.headers["access-control-allow-origin"] == "*"
+            direct = httpx2.get(f"{tile_server['url']}/iiif/{tile_server['key']}/0,0,1024,1024/512,/0/default.jpg",
+                                timeout=30)
+            assert first.content == direct.content, "nginx serves iipsrv's bytes"
+            draft = httpx2.get(f"{base}/iiif/{draft_key.replace('/', '%2F')}/full/256,/0/default.jpg", timeout=30)
+            assert draft.status_code == 403, "an unpublished image is refused before the cache"
+            info = httpx2.get(f"{base}/iiif/{encoded}/info.json", timeout=30)
+            assert info.status_code == 200 and info.json()["rights"] == "http://creativecommons.org/licenses/by/4.0/"
+            hidden = httpx2.get(f"{base}/api/_internal/iiif-access/{tile_server['key']}", timeout=30)
+            assert hidden.status_code == 404, "the access check is not reachable from outside"
     finally:
-        subprocess.run([exe, "network", "disconnect", network, tile_server["name"]], capture_output=True, timeout=60)
-        subprocess.run([exe, "network", "rm", network], capture_output=True, timeout=60)
+        server.should_exit = True
+        thread.join(10)
