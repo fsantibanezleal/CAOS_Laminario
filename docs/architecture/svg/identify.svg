@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario identification and moderation</title>
+  <desc id="desc">Every anchor becomes a lineage of node ids under its kind's root: GBIF backbone keys for a taxon, the Nickel-Strunz path for a mineral, the family path for a rock or a material, the origin, category and system for a crystal. Identifications (the contributor's or the source's first, then identifiers', one current per account) feed the agreement rule: for every node, the cumulative count, the disagreements outside its branch and the explicit disagreements with a finer anchor give a score; the deepest node with at least two identifications and a score above two thirds is the community anchor. The slide follows it and the tree places it again; the badge adds the slide checks and the vote on whether the name can still be improved. Curators resolve flags and hide or restore slides, identifications and annotations with a reason, every action kept; a hidden slide leaves every public place.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --bad: #b3261e; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; --bad: #f08a80; }
+    }
+    .bg { fill: var(--bg); }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .no { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--bad); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .head { fill: var(--line); }
+    .node { fill: var(--box); stroke: var(--edge); stroke-width: 1.2; }
+    .agreed { fill: var(--box); stroke: var(--good); stroke-width: 2.2; }
+    .wire { stroke: var(--line); stroke-width: 1.2; fill: none; }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="600"/>
+
+  <!-- lineages -->
+  <rect class="lane" x="16" y="16" width="440" height="330" rx="10"/>
+  <text class="h" x="32" y="38">EVERY ANCHOR AS A LINEAGE</text>
+  <text class="m" x="32" y="62">taxon  / taxon:1 / ... / taxon:1032563 / taxon:1032608</text>
+  <text class="m" x="32" y="80">mineral / mineral:9 / 9.A / 9.A.C / 9.A.C.05 / forsterite</text>
+  <text class="m" x="32" y="98">rock / rock:igneous / igneous.exotic / carbonatite</text>
+  <text class="m" x="32" y="116">crystal / crystal:ice / ice.P / ice.P/hexagonal</text>
+  <text class="m" x="32" y="134">material / material:fibre / fibre/cotton</text>
+  <!-- a small tree: genus with two species -->
+  <rect class="node" x="190" y="156" width="110" height="30" rx="6"/>
+  <text class="t" x="206" y="176">Polyplacidae</text>
+  <rect class="agreed" x="190" y="210" width="110" height="30" rx="6"/>
+  <text class="t" x="220" y="230">Polyplax</text>
+  <rect class="node" x="80" y="266" width="140" height="30" rx="6"/>
+  <text class="t" x="94" y="286">P. borealis (1)</text>
+  <rect class="node" x="250" y="266" width="160" height="30" rx="6"/>
+  <text class="t" x="262" y="286">P. alaskensis (2)</text>
+  <path class="wire" d="M245 186 L245 210"/>
+  <path class="wire" d="M245 240 L245 252 L150 252 L150 266"/>
+  <path class="wire" d="M245 252 L330 252 L330 266"/>
+  <text class="s" x="32" y="320">P. alaskensis: 2 / (2 + 1) = 2/3, not more; Polyplax: 3 / 3.</text>
+  <text class="ok" x="32" y="338">The community anchor is the genus, the deepest above 2/3.</text>
+
+  <!-- the rule -->
+  <rect class="lane" x="472" y="16" width="472" height="330" rx="10"/>
+  <text class="h" x="488" y="38">THE AGREEMENT RULE (R-088)</text>
+  <rect class="key" x="488" y="52" width="440" height="120" rx="8"/>
+  <text class="t" x="500" y="74">for every node t named or on a lineage</text>
+  <text class="s" x="500" y="96">c(t): identifications of t or below it</text>
+  <text class="s" x="500" y="114">d(t): identifications outside t's branch</text>
+  <text class="s" x="500" y="132">a(t): explicit disagreements with a finer anchor</text>
+  <text class="m" x="500" y="156">score = c / (c + d + a); c &gt; 1, score &gt; 2/3, deepest</text>
+  <rect class="box" x="488" y="184" width="212" height="146" rx="8"/>
+  <text class="t" x="500" y="206">identifications</text>
+  <text class="s" x="500" y="226">the contributor's anchor,</text>
+  <text class="s" x="500" y="244">or the source's (base)</text>
+  <text class="s" x="500" y="262">identifiers: one current</text>
+  <text class="s" x="500" y="280">each; withdraw, restore</text>
+  <text class="s" x="500" y="298">an ancestor says whether</text>
+  <text class="s" x="500" y="316">it disagrees (R-1302)</text>
+  <rect class="store" x="716" y="184" width="212" height="146" rx="8"/>
+  <text class="t" x="728" y="206">the slide follows</text>
+  <text class="s" x="728" y="226">a nameable community</text>
+  <text class="s" x="728" y="244">anchor becomes the slide's;</text>
+  <text class="s" x="728" y="262">the tree places it again,</text>
+  <text class="s" x="728" y="280">keeping a drawer that</text>
+  <text class="s" x="728" y="298">accepts it (R-1303)</text>
+  <path class="arrow" d="M700 256 L714 256"/>
+
+  <!-- badge and moderation -->
+  <rect class="lane" x="16" y="362" width="440" height="222" rx="10"/>
+  <text class="h" x="32" y="384">THE BADGE (R-1304)</text>
+  <text class="ok" x="32" y="410">verified: every check passes, the anchor as fine as its kind</text>
+  <text class="s" x="32" y="428">needs (species, mineral species, rock, crystal system or</text>
+  <text class="s" x="32" y="446">category, material), or coarser when voted as good as it</text>
+  <text class="s" x="32" y="464">can be (below family, a mineral group, a crystal origin)</text>
+  <text class="t" x="32" y="494">needs ID: the rest, and a "needs more" majority</text>
+  <text class="no" x="32" y="522">reference: a check fails, or voted at a coarser anchor</text>
+  <text class="s" x="32" y="548">A new community anchor clears the votes.</text>
+  <text class="m" x="32" y="570">/identify lists needs ID, oldest first (R-1307)</text>
+
+  <rect class="lane" x="472" y="362" width="472" height="222" rx="10"/>
+  <text class="h" x="488" y="384">MODERATION (R-1305, R-1306)</text>
+  <rect class="box" x="488" y="398" width="212" height="170" rx="8"/>
+  <text class="t" x="500" y="420">flags</text>
+  <text class="s" x="500" y="440">any signed-in account:</text>
+  <text class="s" x="500" y="458">wrong, copyright,</text>
+  <text class="s" x="500" y="476">inappropriate, spam, other</text>
+  <text class="s" x="500" y="494">curators resolve each</text>
+  <text class="s" x="500" y="512">with a comment</text>
+  <text class="m" x="500" y="540">/moderate</text>
+  <rect class="key" x="716" y="398" width="212" height="170" rx="8"/>
+  <text class="t" x="728" y="420">hide and restore</text>
+  <text class="s" x="728" y="440">a reason of 10 characters</text>
+  <text class="s" x="728" y="458">or more; restored by the</text>
+  <text class="s" x="728" y="476">curator who hid, or an admin</text>
+  <text class="s" x="728" y="494">a hidden slide leaves every</text>
+  <text class="s" x="728" y="512">public place; its author</text>
+  <text class="s" x="728" y="530">sees the reason; all kept</text>
+  <path class="arrow" d="M700 484 L714 484"/>
+</svg>
