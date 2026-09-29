@@ -58,7 +58,7 @@ is kept in the management repository's vault.
 
 The bake runs where the processing time is: the NMNH focal stacks fuse for hours each on a workstation. A bake root is
 a complete data root (database, store, manifest). After the lock changes only in records (credits, countries), the
-bake refreshes those records without processing images again (`--digests-from` the lock it was baked from). The root
+bake refreshes those records without processing images again (the pixels fingerprint, page 10 section 3.6). The root
 is copied to `/srv/laminario/bake/` and imported by `python -m app.base import --bake`: every stored file is checked
 against the manifest's SHA-256 and size before anything is written, a bake with a failed job is refused, and a second
 import adds nothing.

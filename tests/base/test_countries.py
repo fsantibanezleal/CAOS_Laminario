@@ -3,8 +3,8 @@ bake and the import without processing its images again.
 
 The committed lock is checked offline: every country is a code of the vocabulary and comes with the locality or the
 NHM record that states it. The bake's two fingerprints are checked on lock entries, and a sandboxed bake of two small
-slides (vault and libvips, skipped otherwise) gains a country with no processing job queued, then the import updates
-the served rows.
+slides (vault and libvips, skipped otherwise) gains a country and a new credit line with no processing job queued, then
+the import updates the served rows.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ import pytest
 import yaml
 
 from app.base import bake as bake_module
-from app.base.bake import _stale, adopt_digests, digest, images_digest
+from app.base.bake import _stale, digest, pixels_digest
 from app.base.lock import LOCK
 from app.collections import places
 
@@ -53,18 +53,18 @@ def test_country_names_map_to_codes():
 
 
 def test_a_record_change_keeps_the_images():
-    slide = {"id": "x", "specimen": {"anchor": {"name": "Granite"}}, "assets": [{"url": "https://a", "role": "image"}]}
-    index = {"x": {"short_id": "AAAAAAAA", "digest": digest(slide)}}
-    # An entry baked before the images digest: adopted from the lock it was baked from.
-    assert adopt_digests(index, [slide]) == 1 and index["x"]["images"] == images_digest(slide)
-
+    slide = {"id": "x", "specimen": {"anchor": {"name": "Granite"}},
+             "assets": [{"url": "https://a", "role": "single", "licence": "CC-BY-4.0", "creator": "Unknown"}]}
+    index = {"x": {"short_id": "AAAAAAAA", "digest": digest(slide), "pixels": pixels_digest(slide)}}
     placed = {**slide, "specimen": {**slide["specimen"], "country": "GB"}}
     assert _stale(index, [placed], set()) == ([], ["x"])  # the record changed, the images did not
-    moved = {**slide, "assets": [{"url": "https://b", "role": "image"}]}
+    credited = {**slide, "assets": [{**slide["assets"][0], "creator": "A. Collector", "licence": "CC0-1.0"}]}
+    assert _stale(index, [credited], set()) == ([], ["x"])  # so did a credit line and a licence
+    moved = {**slide, "assets": [{**slide["assets"][0], "url": "https://b"}]}
     assert _stale(index, [moved], set()) == (["x"], [])  # new images: baked again
     assert _stale(index, [slide], {"x"}) == (["x"], [])  # named: baked again
     legacy = {"x": {"short_id": "AAAAAAAA", "digest": digest(slide)}}
-    assert _stale(legacy, [placed], set()) == (["x"], [])  # no images digest: what changed cannot be told
+    assert _stale(legacy, [placed], set()) == (["x"], [])  # no pixels fingerprint, not upgraded: baked again
 
 
 def test_a_country_reaches_the_bake_and_the_import_without_processing(fixtures: Path, vips, tmp_path: Path,
@@ -92,11 +92,13 @@ def test_a_country_reaches_the_bake_and_the_import_without_processing(fixtures: 
     target = Settings(data_root=tmp_path / "server")
     assert import_bake(out, target)["imported"] == 2
 
-    # The lock gains a country for both slides (a copy, never the committed file).
+    # The lock gains a country and a new credit line for both slides (a copy, never the committed file).
     changed = yaml.safe_load(LOCK.read_text(encoding="utf-8"))
     for s in changed["slides"]:
         if s["id"] in chosen:
             s["specimen"]["country"] = "GP"
+            for a in s["assets"]:
+                a["creator"] = "A credit rewritten in the lock"
     patched = tmp_path / "lock.yaml"
     patched.write_text(yaml.safe_dump(changed, sort_keys=False, allow_unicode=True), encoding="utf-8")
     monkeypatch.setattr(bake_module, "LOCK", patched)
@@ -113,6 +115,21 @@ def test_a_country_reaches_the_bake_and_the_import_without_processing(fixtures: 
     assert jobs() == before, "a record change queued processing"
     index = json.loads((out / bake_module.INDEX).read_text(encoding="utf-8"))
     assert all(index[i]["digest"] == digest(next(s for s in changed["slides"] if s["id"] == i)) for i in chosen)
+    engine = make_sync_engine(out / "laminario.sqlite3")
+    try:
+        with engine.connect() as conn:
+            creators = set(conn.execute(text("SELECT creator FROM asset")).scalars())
+    finally:
+        engine.dispose()
+    assert creators == {"A credit rewritten in the lock"}, creators
+
+    # An index made before the pixels fingerprint (plain short ids) is judged by the stored images: the same
+    # files, so nothing is processed and the records stay as the lock has them.
+    (out / bake_module.INDEX).write_text(json.dumps({i: index[i]["short_id"] for i in chosen}), encoding="utf-8")
+    bake_module.bake(out, vault, only=set(chosen))
+    assert jobs() == before, "an old index entry with unchanged files queued processing"
+    upgraded = json.loads((out / bake_module.INDEX).read_text(encoding="utf-8"))
+    assert all(upgraded[i]["short_id"] == index[i]["short_id"] and upgraded[i]["pixels"] for i in chosen)
 
     result = import_bake(out, target)
     assert result["updated"] == 2 and result["imported"] == 0
@@ -125,4 +142,11 @@ def test_a_country_reaches_the_bake_and_the_import_without_processing(fixtures: 
     finally:
         engine.dispose()
     assert countries == ["GP", "GP"] and found == 2
+    engine = make_sync_engine(target.data_root / "laminario.sqlite3")
+    try:
+        with engine.connect() as conn:
+            served = set(conn.execute(text("SELECT creator FROM asset")).scalars())
+    finally:
+        engine.dispose()
+    assert served == {"A credit rewritten in the lock"}, served
     assert import_bake(out, target)["skipped"] == 2  # nothing changed since: repeated, it does nothing

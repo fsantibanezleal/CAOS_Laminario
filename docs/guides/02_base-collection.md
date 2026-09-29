@@ -89,16 +89,16 @@ pyramids, the z-plane policy, derivatives). It can take hours for the whole-slid
 so a stopped bake continues where it stopped. It ends by writing `manifest.json` and reports the number of failed
 jobs, which must be zero before an import.
 
-The index keeps two fingerprints of each baked slide: of its assets and of its whole lock entry. After the lock
-changes, a slide whose assets changed is baked again, and a slide whose record alone changed (a country, a locality, a
-determination) has its rows rewritten in place with its images kept, so a corrected label never fuses a focal stack
-again. `--refresh <slide id>` bakes a slide again whatever changed. A bake root made before the images fingerprint
-existed learns it once from the lock it was baked from:
+The index keeps two fingerprints of each baked slide: of its pixels (its assets without their credits) and of its
+whole lock entry. After the lock changes, a slide whose pixels changed (a new file, a new role, a new plane policy) is
+baked again, and a slide whose record alone changed (a country, a locality, a determination, a licence, a credit line)
+has its rows rewritten in place with its images kept, the credits of every stored image included, so a corrected label
+never fuses a focal stack again. `--refresh <slide id>` bakes a slide again whatever changed.
 
-```powershell
-git show <commit of that lock>:data/base/lock.yaml > (Join-Path $env:TEMP "baked-from.yaml")
-.\.venv\Scripts\python -m app.base bake --out <bake root> --digests-from (Join-Path $env:TEMP "baked-from.yaml")
-```
+A bake root made before the pixels fingerprint needs nothing: the next bake judges each old entry by its own rows. When
+the stored images come from exactly the files the lock now names (source address and SHA-256 of the retrieved bytes),
+the entry gains the fingerprint and only its record is rewritten; otherwise the slide is baked again. The bake prints
+how many old entries it found and how many of each.
 
 ## 5. Import on the server
 
