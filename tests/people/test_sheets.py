@@ -15,6 +15,7 @@ def test_stocks_and_sheets(tmp_path):
         assert [s["id"] for s in listed] == list(stocks())
         plain = next(s for s in listed if s["id"] == "a4-plain")
         assert plain["per_sheet"] == 72 and plain["kind"] == "plain" and plain["warnings"] == ["plain_paper"]
+        assert plain["name"] == {"en": "Plain paper, A4", "es": "Papel común, A4"}
 
         p = people(client, settings)
         sids = [published(client, settings, p["maker"]) for _ in range(2)]

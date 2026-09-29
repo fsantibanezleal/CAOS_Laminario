@@ -631,7 +631,7 @@ export interface PersonIdentificationRecord {
  */
 export interface StockRecord {
   id: string;
-  name: string;
+  name: LocalisedText;
   kind: "plain" | "stock";
   page: "A4" | "Letter";
   width_mm: number;

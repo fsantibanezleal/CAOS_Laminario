@@ -74,6 +74,22 @@ def _new(stock: Stock, title: str) -> tuple[canvas.Canvas, io.BytesIO, float]:
     return pdf, out, page_h
 
 
+# The line at a page's foot, in the sheet's language.
+FOOTERS = {
+    "sheet": {"en": "Laminario, {name}: print at 100 %, cut along the dashed lines",
+              "es": "Laminario, {name}: imprima al 100 %, corte por las líneas discontinuas"},
+    "test": {"en": "Laminario test page, {name}: print at 100 % on plain paper and hold it against a sheet of the "
+                   "labels",
+             "es": "Página de prueba de Laminario, {name}: imprima al 100 % en papel común y sosténgala contra un "
+                   "pliego de etiquetas"},
+}
+
+
+def _words(which: str, stock: Stock, lang: str) -> str:
+    lang = lang if lang in ("en", "es") else "en"
+    return FOOTERS[which][lang].format(name=stock.name_es if lang == "es" else stock.name)
+
+
 def _footer(pdf: canvas.Canvas, stock: Stock, page_h: float, text: str) -> None:
     pdf.setFillColor(HexColor(PRINT["muted"]))
     pdf.setFont(FACES["regular"], 7)
@@ -95,7 +111,7 @@ def render(records: list[c.SlideRecord], stock: Stock, start: int = 0, offset: t
     for cell, place in zip(cells, places, strict=True):
         if place.page != page:
             if stock.kind == "plain":
-                _footer(pdf, stock, page_h, f"Laminario, {stock.name}: print at 100 %, cut along the dashed lines")
+                _footer(pdf, stock, page_h, _words("sheet", stock, lang))
             pdf.showPage()
             page = place.page
         if stock.kind == "plain":
@@ -106,13 +122,13 @@ def render(records: list[c.SlideRecord], stock: Stock, start: int = 0, offset: t
             pdf.setDash()
         _draw_cell(pdf, cell, place.x, place.y, page_h)
     if stock.kind == "plain":
-        _footer(pdf, stock, page_h, f"Laminario, {stock.name}: print at 100 %, cut along the dashed lines")
+        _footer(pdf, stock, page_h, _words("sheet", stock, lang))
     pdf.showPage()
     pdf.save()
     return out.getvalue()
 
 
-def test_page(stock: Stock, offset: tuple[float, float] = (0.0, 0.0)) -> bytes:
+def test_page(stock: Stock, offset: tuple[float, float] = (0.0, 0.0), lang: str = "en") -> bytes:
     """Every label's outline at the stock's own size and position, moved by ``offset``, on one page."""
     pdf, out, page_h = _new(stock, f"Laminario test page: {stock.name}")
     pdf.setStrokeColor(HexColor(PRINT["ink"]))
@@ -120,8 +136,7 @@ def test_page(stock: Stock, offset: tuple[float, float] = (0.0, 0.0)) -> bytes:
     for place in positions(stock, stock.per_sheet, 0, offset):
         pdf.rect(place.x * MM, page_h - (place.y + stock.height) * MM, stock.width * MM, stock.height * MM,
                  stroke=1, fill=0)
-    _footer(pdf, stock, page_h, f"Laminario test page, {stock.name}: print at 100 % on plain paper and hold it "
-                                f"against a sheet of the labels")
+    _footer(pdf, stock, page_h, _words("test", stock, lang))
     pdf.showPage()
     pdf.save()
     return out.getvalue()

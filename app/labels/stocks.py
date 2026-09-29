@@ -20,7 +20,8 @@ PAGES = {"A4": (210.0, 297.0), "Letter": (215.9, 279.4)}
 @dataclass(frozen=True)
 class Stock:
     id: str
-    name: str
+    name: str  # in English
+    name_es: str
     kind: str  # plain or stock
     page: str
     width: float
@@ -64,7 +65,9 @@ def stocks() -> dict[str, Stock]:
     raw = yaml.safe_load((HERE / "stocks.yaml").read_text(encoding="utf-8"))
     out = {}
     for key, s in raw.items():
-        out[key] = Stock(id=key, name=s["name"], kind=s["kind"], page=s["page"], width=float(s["label"][0]),
+        names = s["name"] if isinstance(s["name"], dict) else {"en": s["name"], "es": s["name"]}
+        out[key] = Stock(id=key, name=names["en"], name_es=names["es"], kind=s["kind"], page=s["page"],
+                         width=float(s["label"][0]),
                          height=float(s["label"][1]), columns=int(s["grid"][0]), rows=int(s["grid"][1]),
                          top=float(s["margin"][0]), left=float(s["margin"][1]), pitch_x=float(s["pitch"][0]),
                          pitch_y=float(s["pitch"][1]), radius=float(s.get("radius", 0)), source=s["source"],

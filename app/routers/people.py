@@ -27,9 +27,9 @@ from app.labels.stocks import stocks
 from app.services import catalog, people, slides
 
 def stock_record(s) -> c.StockRecord:
-    return c.StockRecord(id=s.id, name=s.name, kind=s.kind, page=s.page, width_mm=s.width, height_mm=s.height,
-                         columns=s.columns, rows=s.rows, per_sheet=s.per_sheet, source=s.source,
-                         warnings=list(s.warnings))
+    return c.StockRecord(id=s.id, name=c.LocalisedText(en=s.name, es=s.name_es), kind=s.kind, page=s.page,
+                         width_mm=s.width, height_mm=s.height, columns=s.columns, rows=s.rows,
+                         per_sheet=s.per_sheet, source=s.source, warnings=list(s.warnings))
 
 
 def routers(accounts: Accounts) -> list[APIRouter]:
@@ -93,7 +93,7 @@ def routers(accounts: Accounts) -> list[APIRouter]:
         if found is None:
             raise HTTPException(status_code=404, detail="no such label stock")
         if test:
-            data = sheet.test_page(found, (dx, dy))
+            data = sheet.test_page(found, (dx, dy), lang)
             name = f"laminario-test-{found.id}.pdf"
         else:
             ids = [i for i in slides_.split(",") if i.strip()]

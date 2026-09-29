@@ -11,6 +11,7 @@ import { Dialog } from "../ui/Overlay";
 import { Select } from "../ui/Field";
 import { Glyph } from "../ui/Icon";
 import { Skeleton } from "../ui/Feedback";
+import { localised } from "../tree/TreeProvider";
 import { clampOffset, OFFSET_LIMIT, OFFSET_STEP, pagesFor, savedOffset, savedStock, saveOffset,
   saveStock } from "./printing";
 import styles from "./PrintDialog.module.css";
@@ -60,7 +61,7 @@ export function PrintDialog({ open, onClose, slides }: PrintDialogProps) {
 
   const groups = stocks ? (["plain", "stock"] as const).map((kind) => ({
     label: t(`labels.kind.${kind}`),
-    options: stocks.filter((s) => s.kind === kind).map((s) => ({ value: s.id, label: s.name })),
+    options: stocks.filter((s) => s.kind === kind).map((s) => ({ value: s.id, label: localised(s.name, lang) })),
   })).filter((g) => g.options.length) : [];
   const pages = stock ? pagesFor(slides.length, start, stock.per_sheet) : 0;
 

@@ -630,7 +630,7 @@ class StockRecord(_Record):
     """A label stock a sheet is printed on (``GET /api/labels/stocks``)."""
 
     id: str
-    name: str
+    name: LocalisedText
     kind: Literal["plain", "stock"]
     page: Literal["A4", "Letter"]
     width_mm: float

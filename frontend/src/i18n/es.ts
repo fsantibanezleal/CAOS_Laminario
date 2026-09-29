@@ -872,7 +872,7 @@ export const es: Record<MessageKey, string> = {
   "labels.page.Letter": "carta (US Letter)",
   "labels.facts": "Etiquetas de {w} x {h} mm, {across} a lo ancho y {down} a lo alto: {count} en cada pliego {page}.",
   "labels.source": "Medidas: {source}",
-  "labels.warning.plain_paper": "Papel común: corte por las marcas de los márgenes y fije cada etiqueta en el extremo de etiqueta de la lámina.",
+  "labels.warning.plain_paper": "Papel común: corte por las líneas discontinuas y fije cada etiqueta en el extremo de etiqueta de la lámina.",
   "labels.warning.laser_xylene": "La prueba del propio fabricante muestra que el xilol borra el tóner láser en este tipo de pliego: etiquete la lámina después del montaje y mantenga el xilol lejos de la etiqueta.",
   "labels.warning.longer_than_label_end": "La etiqueta es más larga que el extremo de etiqueta de 20 mm: sobrepasa hacia el cubreobjetos.",
   "labels.warning.wider_than_us_slide": "La etiqueta mide 25,4 mm de ancho: 0,4 mm más que una lámina estadounidense de 25 mm.",

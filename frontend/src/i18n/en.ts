@@ -872,7 +872,7 @@ export const en = {
   "labels.page.Letter": "US Letter",
   "labels.facts": "Labels of {w} x {h} mm, {across} across and {down} down: {count} on each {page} sheet.",
   "labels.source": "Measurements: {source}",
-  "labels.warning.plain_paper": "Plain paper: cut along the marks in the gutters and fix each label on the slide's label end.",
+  "labels.warning.plain_paper": "Plain paper: cut along the dashed lines and fix each label on the slide's label end.",
   "labels.warning.laser_xylene": "The maker's own test shows xylene erasing laser toner on this kind of stock: label the slide after mounting and keep xylene off the label.",
   "labels.warning.longer_than_label_end": "The label is longer than the 20 mm label end: it reaches past it toward the coverslip.",
   "labels.warning.wider_than_us_slide": "The label is 25.4 mm across: 0.4 mm wider than a 25 mm US slide.",

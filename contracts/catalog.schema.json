@@ -2648,7 +2648,7 @@
           "type": "string"
         },
         "name": {
-          "type": "string"
+          "$ref": "#/$defs/LocalisedText"
         },
         "kind": {
           "enum": [

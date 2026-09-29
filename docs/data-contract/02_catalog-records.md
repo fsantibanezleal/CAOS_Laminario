@@ -394,7 +394,7 @@ A label stock a sheet is printed on (``GET /api/labels/stocks``).
 | Field | Type | Required | Accepted | Default |
 |---|---|---|---|---|
 | `id` | string | yes |  |  |
-| `name` | string | yes |  |  |
+| `name` | [LocalisedText](#localisedtext) | yes |  |  |
 | `kind` | string (enumerated) | yes | one of: `plain`, `stock` |  |
 | `page` | string (enumerated) | yes | one of: `A4`, `Letter` |  |
 | `width_mm` | number | yes |  |  |

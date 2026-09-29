@@ -5,10 +5,13 @@
 # or a die drawing (a dimensioned die-cut drawing). The plain-paper grids are Laminario's own (section 2.2): 20 x 26 mm
 # labels with 2 mm gutters inside 10 mm margins, centred on the page.
 #
-# kind: plain (paper cut by hand: cut marks in the gutters) or stock (die-cut labels: nothing drawn outside them).
+# kind: plain (paper cut by hand: a dashed cut line around each label, in the gutters) or stock (die-cut labels:
+# nothing drawn outside them). name: in English and Spanish.
 
 a4-plain:
-  name: Plain paper, A4
+  name:
+    en: Plain paper, A4
+    es: Papel común, A4
   kind: plain
   page: A4
   label: [20.0, 26.0]
@@ -20,7 +23,9 @@ a4-plain:
   warnings: [plain_paper]
 
 letter-plain:
-  name: Plain paper, US Letter
+  name:
+    en: Plain paper, US Letter
+    es: Papel común, carta (US Letter)
   kind: plain
   page: Letter
   label: [26.0, 20.0]  # on their side
@@ -32,7 +37,9 @@ letter-plain:
   warnings: [plain_paper]
 
 divbio-misl-1000:
-  name: Diversified Biotech MISL-1000 (Tough-Tags for microscope slides)
+  name:
+    en: Diversified Biotech MISL-1000 (Tough-Tags for microscope slides)
+    es: Diversified Biotech MISL-1000 (Tough-Tags para láminas de microscopio)
   kind: stock
   page: Letter
   label: [22.225, 22.225]  # 0.875 in
@@ -44,7 +51,9 @@ divbio-misl-1000:
   warnings: [laser_xylene, longer_than_label_end]
 
 labtag-cla-4wh:
-  name: LabTAG CLA-4WH (Cryo-LazrTAG, 0.94 x 0.77 in)
+  name:
+    en: LabTAG CLA-4WH (Cryo-LazrTAG, 0.94 x 0.77 in)
+    es: LabTAG CLA-4WH (Cryo-LazrTAG, 0,94 x 0,77 pulg.)
   kind: stock
   page: Letter
   label: [23.9, 19.6]
@@ -56,7 +65,9 @@ labtag-cla-4wh:
   warnings: [laser_xylene]
 
 a4-25-66:
-  name: 25.4 mm squares, 66 per A4 (HERMA 8831, 10107; LabTAG A4CL-112)
+  name:
+    en: 25.4 mm squares, 66 per A4 (HERMA 8831, 10107; LabTAG A4CL-112)
+    es: Cuadrados de 25,4 mm, 66 por A4 (HERMA 8831, 10107; LabTAG A4CL-112)
   kind: stock
   page: A4
   label: [25.4, 25.4]

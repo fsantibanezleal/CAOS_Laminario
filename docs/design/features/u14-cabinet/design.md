@@ -43,9 +43,9 @@ its source). How the parts fit is the wiki page [16 Cabinet and labels](../../..
   takes it on the right. The QR is 14 mm, shrinking to no less than 11 mm (29 modules of 0.3 mm with the quiet zone)
   to let text fit. Content keeps 0.8 mm inside the label's edge, since printers and stocks both drift.
 - **Printing onto stock.** Nothing is drawn outside the labels, and no outline on stock (it would print on the labels);
-  the plain-paper grid has cut marks in its gutters. The sheet starts at a chosen position (to use a part-used sheet)
-  and moves by a printer offset in 0.1 mm steps, which the page keeps on the device per stock (the offset belongs to
-  the printer, not the account). The test page draws every label's outline, the stock's name and the instruction to
+  the plain-paper grid has a dashed cut line around each label, in its gutters. The sheet starts at a chosen position
+  (to use a part-used sheet) and moves by a printer offset in 0.1 mm steps, which the page keeps on the device per
+  stock (the offset belongs to the printer, not the account). The test page draws every label's outline, the stock's name and the instruction to
   print at 100 % on plain paper and hold it against a sheet, as Diversified Biotech's instructions ask. Laser toner
   on stock is not xylene-proof (LabTAG's own test): the dialog says so, and a 25.4 mm label is wider than a US slide.
 - **Anyone prints a published slide's labels**, as anyone opens its single sheet (U11); a sheet takes up to 500

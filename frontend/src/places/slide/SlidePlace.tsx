@@ -198,7 +198,8 @@ function Record({ record, tree }: { record: SlideRecord; tree: TreeIndex }) {
   };
   const label = record.label;
   const prep = tree.facets.get("preparation")?.values.find((v) => v.id === label.preparation);
-  const country = record.place.country ? tree.countries[record.place.country]?.[lang] : undefined;
+  const names = record.place.country ? tree.countries[record.place.country] : undefined;
+  const country = names?.[lang];
   const day = (value?: string | null) => (value ? date(value, value.length > 7
     ? { year: "numeric", month: "long", day: "numeric" } : value.length > 4 ? { year: "numeric", month: "long" }
     : { year: "numeric" }) : null);
@@ -213,7 +214,10 @@ function Record({ record, tree }: { record: SlideRecord; tree: TreeIndex }) {
   if (label.type_status) rows.push([t("slide.field.type"), <span className={styles.type}>{label.type_status}</span>]);
   rows.push([t("facet.preparation"), [prep ? localised(prep.name, lang) : label.preparation, label.stain, label.mountant]
     .filter(Boolean).join(" · ")]);
-  const where = [label.locality_text ?? record.place.locality_text, country].filter(Boolean).join(", ");
+  const locality = label.locality_text ?? record.place.locality_text ?? "";
+  // The country only when the locality does not already end with it, in either language.
+  const named = names && [names.en, names.es].some((n) => locality.toLowerCase().trimEnd().endsWith(n.toLowerCase()));
+  const where = [locality, named ? "" : country].filter(Boolean).join(", ");
   if (where) rows.push([t("slide.field.place"), where]);
   if (label.collected_on || label.collector) {
     rows.push([t("slide.field.collected"), [day(label.collected_on), label.collector].filter(Boolean).join(" · ")]);
