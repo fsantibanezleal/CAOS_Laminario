@@ -5,7 +5,7 @@ role; each role includes everything the roles below it may do:
 
 | Role | Adds |
 |---|---|
-| contributor | submit slide cases (drafts of their own) |
+| contributor | submit slide cases (drafts of their own), annotate any published slide (U11) |
 | identifier | propose and support identifications on any slide (U13) |
 | curator | moderate (hide, restore, verify), override a placement with a reason, invite up to identifier |
 | admin | manage invitations and accounts, issue invitations for any role |
@@ -25,6 +25,7 @@ RANK = {role: rank for rank, role in enumerate(ROLES, start=1)}
 CAPABILITIES: dict[str, Role | None] = {
     "read": None,
     "submit": "contributor",
+    "annotate": "contributor",
     "identify": "identifier",
     "moderate": "curator",
     "override_placement": "curator",

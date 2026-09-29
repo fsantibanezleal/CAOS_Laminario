@@ -53,6 +53,9 @@
     },
     "map": {
       "$ref": "#/$defs/MapRecord"
+    },
+    "annotation": {
+      "$ref": "#/$defs/AnnotationRecord"
     }
   },
   "additionalProperties": false,
@@ -196,6 +199,37 @@
         "name"
       ],
       "title": "AnchorSuggestion",
+      "type": "object"
+    },
+    "AnnotationRecord": {
+      "additionalProperties": false,
+      "description": "An annotation as the stage reads it: the W3C Web Annotation, who wrote it, and whether the reader may remove\nit (its author, or a curator).",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "asset_id": {
+          "type": "integer"
+        },
+        "author": {
+          "type": "string"
+        },
+        "removable": {
+          "default": false,
+          "type": "boolean"
+        },
+        "annotation": {
+          "additionalProperties": true,
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "author",
+        "annotation"
+      ],
+      "title": "AnnotationRecord",
       "type": "object"
     },
     "AssetRecord": {

@@ -9,13 +9,14 @@ from tests import payloads
 
 from .support import ORIGIN, account, app_client, settings_for
 
-# The design document's sentence, as a table: visitor reads, contributor submits, identifier identifies, curator
-# moderates and overrides placement, admin manages invitations (and accounts). Each role includes the ones below.
+# The design document's sentence, as a table: visitor reads, contributor submits and annotates (U11), identifier
+# identifies, curator moderates and overrides placement, admin manages invitations (and accounts). Each role includes
+# the ones below.
 EXPECTED = {
     None:          {"read"},
-    "contributor": {"read", "submit"},
-    "identifier":  {"read", "submit", "identify"},
-    "curator":     {"read", "submit", "identify", "moderate", "override_placement", "invite"},
+    "contributor": {"read", "submit", "annotate"},
+    "identifier":  {"read", "submit", "annotate", "identify"},
+    "curator":     {"read", "submit", "annotate", "identify", "moderate", "override_placement", "invite"},
     "admin":       set(roles.CAPABILITIES),
 }
 

@@ -8,7 +8,7 @@ mirrored in TypeScript, so any change here is visible to the web build.
 from __future__ import annotations
 
 from datetime import date, datetime
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict
 
@@ -205,6 +205,17 @@ class SlidePage(_Record):
     total: int
     offset: int
     limit: int
+
+
+class AnnotationRecord(_Record):
+    """An annotation as the stage reads it: the W3C Web Annotation, who wrote it, and whether the reader may remove
+    it (its author, or a curator)."""
+
+    id: str
+    asset_id: int
+    author: str
+    removable: bool = False
+    annotation: dict[str, Any]
 
 
 class FacetCounts(_Record):
