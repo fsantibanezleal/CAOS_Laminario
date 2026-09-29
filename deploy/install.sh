@@ -42,7 +42,7 @@ test -x "$REPO/.venv/bin/python" || python3.12 -m venv "$REPO/.venv"
 "$REPO/.venv/bin/pip" install --quiet -r "$REPO/requirements-api.txt"
 
 # 4. The web app.
-(cd "$REPO/frontend" && npm ci --no-audit --no-fund --loglevel=error && npm run build --silent)
+(cd "$REPO/frontend" && PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci --no-audit --no-fund --loglevel=error \n  && npm run build --silent)
 
 # 5. The database, as the service account, with the service's settings.
 set -a; . "$ENV_FILE"; set +a
