@@ -117,6 +117,21 @@ Open the link in the web app (or `POST /api/auth/register` with its token) to cr
 sender in `.env`, invitation links appear once to the person who issues them. Password-reset links are signed with
 `LAMINARIO_SECRET_KEY`; leave it unset locally (a random key per run) and set it in production.
 
+## 8. Uploads
+
+Uploads go through tusd, the tus server. Locally, download the v2.10.1 release for your system from
+[github.com/tus/tusd/releases](https://github.com/tus/tusd/releases), check it against its `.sha256`, and start it
+next to the API with the flags of `deploy/tusd/compose.yaml`:
+
+```powershell
+tusd.exe -host=127.0.0.1 -port=8148 -base-path=/files/ -upload-dir=.data\quarantine `
+  -hooks-http=http://127.0.0.1:8147/api/_internal/tus-hook -hooks-http-forward-headers=Cookie `
+  -hooks-enabled-events=pre-create,post-finish,post-terminate -disable-download -show-greeting=false
+```
+
+The worker verifies each finished upload and processes it. The upload tests start their own tusd from
+`LAMINARIO_TUSD_BIN` and skip without it.
+
 ## Tests and guards
 
 The full test suite runs locally; continuous integration runs only the lint and the guards.

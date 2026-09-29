@@ -11,5 +11,6 @@ How Laminario is put together. Each page covers one part in depth.
 | [05 IIIF delivery](architecture/05_delivery.md) | iipsrv behind nginx with a tile cache and an access check; info.json with each asset's rights; identifiers; IIIF Presentation 3 manifests with places by geoprivacy; the remote-asset contract and the link check. |
 | [06 The processing worker](architecture/06_worker.md) | The durable job queue and journal in SQLite, the worker process and its one-process pool with killing timeouts, crash recovery, the Server-Sent Events stream, the processing jobs and content-addressed storage keys. |
 | [07 Accounts and roles](architecture/07_accounts.md) | Invitation-only registration, sessions in a cookie, cross-site writes, password reset, roles and the capability table, contributing a slide case. |
+| [08 Uploads](architecture/08_uploads.md) | tus 1.0 through tusd, the pre-create policy (ownership, sizes, quotas, the disk rule), verification in the worker (checksum, sniffing, safe unpacking, a readable header), the source store, tusd in production. |
 
-Pages for uploads, the collection tree and the interface are added by the units that build them.
+Pages for the collection tree and the interface are added by the units that build them.
