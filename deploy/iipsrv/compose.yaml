@@ -32,5 +32,9 @@ services:
       # lighttpd (uid 102, gid 103 in the image) opens its log after dropping root; a root-owned tmpfs
       # stops it with "Permission denied" (measured 2026-09-29).
       - /var/log/lighttpd:uid=102,gid=103,mode=0750
+      # lighttpd buffers FastCGI answers over 64 KB in /var/tmp; read-only, it cut every larger tile at 64 KB
+      # ("opening temp-file failed: /var/tmp/lighttpd-upload-XXXXXX: Read-only file system", 2026-09-29).
+      - /var/tmp:mode=1777,size=256m
+      - /tmp:mode=1777,size=64m
     mem_limit: 768m
     cpus: 2.0
