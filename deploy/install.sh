@@ -55,7 +55,12 @@ if [ ! -d "/etc/letsencrypt/live/$DOMAIN" ]; then
 fi
 install -m 0644 "$REPO/deploy/nginx/laminario.conf" /etc/nginx/sites-available/laminario.conf
 ln -sf ../sites-available/laminario.conf /etc/nginx/sites-enabled/laminario.conf
-nginx -t
+# A site that fails the test must not stay enabled: the next reload of any site on the host would fail on it.
+if ! nginx -t; then
+  rm -f /etc/nginx/sites-enabled/laminario.conf
+  echo "the nginx site failed its test and was disabled again" >&2
+  exit 1
+fi
 systemctl reload nginx
 
 # 7. The services, when they are registered, on the new code.
