@@ -25,7 +25,9 @@
 | R-1506 the map links OpenStreetMap's copyright page | `frontend/gates/about.mjs` | pass |
 | R-1507 the vocabularies, software and fonts with licences and citations | `frontend/src/about/content.test.ts`; `tests/about/test_about.py` | pass |
 
-The About gate passes 46 of 46. The web typecheck, build and 66 unit tests pass.
+The About gate passes 46 of 46. The web typecheck, build and 66 unit tests pass. On this branch, which holds U12 to
+U15, the sandbox gates pass again (contribute 206 of 206, identify 60 of 60, cabinet 83 of 83) and the backend suite
+passes (387 tests, 11 skipped for Docker); CI's checks pass locally.
 
 Building it found what the design could not: two credit defects of the base collection, fixed in U8 (Commons credits
 that carried their file page, one with an email, F-046; OpenSlide scans credited to their host, F-047); the map's
