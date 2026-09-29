@@ -305,7 +305,12 @@ def check_tree(tree: Tree, icons: set[str] | None = None) -> list[str]:
             defects.append(f"{where}: a container cannot name taxa or paths")
         if not node.is_view:
             tried = witnesses(node, tree)
-            placed = [place_facts(tree, f) for f in tried]
+            placed = []
+            for f in tried:
+                try:
+                    placed.append(place_facts(tree, f))
+                except TreeError as exc:
+                    defects.append(f"{where}: a tie on the way down, {exc}")
             if not any(p == node.id or (p or "").startswith(node.id + ".") for p in placed):
                 defects.append(f"{where}: unreachable, its witnesses are placed at {sorted(set(map(str, placed)))}")
     for siblings in [tree.roots] + [n.children for n in tree.walk()]:

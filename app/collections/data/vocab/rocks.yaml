@@ -26,6 +26,8 @@
 #   lam    Laminario terms, for material the three volumes do not name (ore textures, soil).
 #
 # chromitite, ilmenitite and magnetitite are rcs-1 names without a group; Laminario places them with the ores.
+# printed: how the volume prints a name its appendix wraps across a line, for the check; the appendix's
+# "melitlite-bearing" is a misprint of melilite-bearing, which the text uses.
 source_labels:
   rcs-1: BGS Rock Classification Scheme, Vol. 1 (igneous)
   rcs-2: BGS Rock Classification Scheme, Vol. 2 (metamorphic)
@@ -199,7 +201,7 @@ terms:
   pyroclastic-breccia: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
   pyroclastic-rock: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
   pyroclastic-sediment: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
-  pyroxene-hornblende-cpx-norite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pyroxene-hornblende-cpx-norite: {family: igneous.coarse, source: rcs-1, group: cgr, printed: "pyroxene-hornblende- cgr 10# 13, 14 cpx-norite"}
   pyroxene-hornblende-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
   pyroxene-hornblende-gabbronorite: {family: igneous.coarse, source: rcs-1, group: cgr}
   pyroxene-hornblende-norite: {family: igneous.coarse, source: rcs-1, group: cgr}
@@ -257,7 +259,7 @@ terms:
   ultramafitite: {family: igneous.fine, source: rcs-1, group: fgr}
   vogesite: {family: igneous.exotic, source: rcs-1, group: lamp}
   volcaniclastic-igneous-rock: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
-  volcaniclastic-igneous-sediment: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  volcaniclastic-igneous-sediment: {family: igneous.volcaniclastic, source: rcs-1, group: vclast, printed: "volcaniclastic-igneous- vclast 1 sediment"}
   volcaniclastic-sediment: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
   volcaniclastic-sedimentary-rock: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
   websterite: {family: igneous.coarse, source: rcs-1, group: cgr}
