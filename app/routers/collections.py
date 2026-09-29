@@ -8,6 +8,7 @@
 | `GET /api/facets` | preparation, modality, plant organ and crystal system, with their icons |
 | `GET /api/anchors/search?kind=&q=` | names for the anchor field: GBIF backbone taxa or a vocabulary |
 | `POST /api/placement` | the suggested node for an anchor, and every node that accepts it |
+| `GET /api/vocab/parts` | the parts of an organism a slide can show, by organ system |
 """
 
 from __future__ import annotations
@@ -70,6 +71,13 @@ async def read_iiif_collection(node_id: str, request: Request, db: Db) -> JSONRe
     """The node as a IIIF Presentation 3 Collection, for any IIIF viewer or aggregator."""
     document = await svc.iiif_collection(db, load_tree(), _node(node_id), request.app.state.settings.public_base_url)
     return JSONResponse(document, media_type=MANIFEST_MEDIA_TYPE, headers={"Access-Control-Allow-Origin": "*"})
+
+
+@router.get("/vocab/parts", response_model=list[c.PartRecord])
+def read_parts() -> list[c.PartRecord]:
+    """The parts vocabulary in its file's order (grouped by organ system), each name in English and Spanish."""
+    return [c.PartRecord(id=key, group=term["group"], name=c.LocalisedText(en=term["en"], es=term["es"]))
+            for key, term in vocab.load().parts.items()]
 
 
 @router.get("/facets", response_model=list[c.FacetRecord])

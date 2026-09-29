@@ -469,6 +469,14 @@ class AnchorSuggestion(_Record):
     context: str | None = None
 
 
+class PartRecord(_Record):
+    """A part of an organism the part field offers (``GET /api/vocab/parts``), with its organ system."""
+
+    id: str
+    group: str
+    name: LocalisedText
+
+
 class PlacementResult(_Record):
     """Where a slide belongs (``POST /api/placement``): the suggestion, and every node that accepts it."""
 

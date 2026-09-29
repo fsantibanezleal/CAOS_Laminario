@@ -45,6 +45,9 @@
     "anchorSuggestion": {
       "$ref": "#/$defs/AnchorSuggestion"
     },
+    "partRecord": {
+      "$ref": "#/$defs/PartRecord"
+    },
     "placement": {
       "$ref": "#/$defs/PlacementResult"
     },
@@ -1486,6 +1489,28 @@
         "icon"
       ],
       "title": "NodeRef",
+      "type": "object"
+    },
+    "PartRecord": {
+      "additionalProperties": false,
+      "description": "A part of an organism the part field offers (``GET /api/vocab/parts``), with its organ system.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "name": {
+          "$ref": "#/$defs/LocalisedText"
+        }
+      },
+      "required": [
+        "id",
+        "group",
+        "name"
+      ],
+      "title": "PartRecord",
       "type": "object"
     },
     "PlaceRecord": {

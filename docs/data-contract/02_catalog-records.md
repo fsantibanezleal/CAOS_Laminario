@@ -24,6 +24,7 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `collectionNode` | [CollectionNodeDetail](#collectionnodedetail) | no |  |  |
 | `facet` | [FacetRecord](#facetrecord) | no |  |  |
 | `anchorSuggestion` | [AnchorSuggestion](#anchorsuggestion) | no |  |  |
+| `partRecord` | [PartRecord](#partrecord) | no |  |  |
 | `placement` | [PlacementResult](#placementresult) | no |  |  |
 | `facetCounts` | [FacetCounts](#facetcounts) | no |  |  |
 | `map` | [MapRecord](#maprecord) | no |  |  |
@@ -218,6 +219,16 @@ A name the anchor field can offer (``GET /api/anchors/search``).
 | `rank` | string or null | no |  | null |
 | `classification` | string or null | no |  | null |
 | `context` | string or null | no |  | null |
+
+### PartRecord
+
+A part of an organism the part field offers (``GET /api/vocab/parts``), with its organ system.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `group` | string | yes |  |  |
+| `name` | [LocalisedText](#localisedtext) | yes |  |  |
 
 ### PlacementResult
 
