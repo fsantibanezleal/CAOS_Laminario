@@ -3,6 +3,23 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.10.000] - 2026-09-29
+
+### Added
+
+- The places a visitor walks: the realms with their collections as cabinets, a cabinet's drawers, a drawer's tray
+  (slides at their format's proportion, one scale per tray, label end first), filters with faceted counts kept in
+  the address, search, the map; wouter routing with the focus on each place's heading and the scroll restored on
+  back.
+- A slide's country, stated by its source or implied by its coordinates against Natural Earth 1:50m shapes, named
+  in English and Spanish from Unicode CLDR 48.2.2; the base slides placed in the countries their sources state.
+- FTS5 search over a text composed from the anchor, the tree's names in both languages, the locality, the catalogue
+  number and the short id, kept in step by triggers (migration 0008); disjunctive facet counts; the map's countries
+  and points after geoprivacy; the country shapes.
+- The map over a pinned, verified Protomaps extract served with byte ranges, in the rooms' colours, labelled in
+  Laminario Sans, with the country list as its keyboard equivalent and a fallback without the basemap.
+- The walk gate; wiki page 12 with its diagram; the U10 design and requirements.
+
 ## [0.09.000] - 2026-09-29
 
 ### Added

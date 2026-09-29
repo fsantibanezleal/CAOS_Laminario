@@ -34,7 +34,7 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.09.000`. Released, each with its wiki page:
+Version `0.10.000`. Released, each with its wiki page:
 
 - U0, the repository base: versioning, guards, the design document with a gate per requirement.
 - U1, the data model and both contracts (ingestion and catalog), exported as JSON Schema and TypeScript ([`02_data-contracts.md`](docs/architecture/02_data-contracts.md)).
@@ -46,6 +46,7 @@ Version `0.09.000`. Released, each with its wiki page:
 - U7, the collection tree: 3 realms, 18 collections, 130 sub-collections and groups, anchors and placement, 186 icons ([`09_collections.md`](docs/architecture/09_collections.md)).
 - U8, the base collection: 505 slides from open sources, each image with its licence and provenance ([`10_base-collection.md`](docs/architecture/10_base-collection.md)).
 - U9, the interface's own design system: two rooms, three faces, 18 collection hues checked for contrast ([`11_interface.md`](docs/architecture/11_interface.md)).
+- U10, Explore: the realms, cabinets and drawers, search, faceted filters and the map ([`12_explore.md`](docs/architecture/12_explore.md)).
 
 The units that follow are listed in the design document.
 
