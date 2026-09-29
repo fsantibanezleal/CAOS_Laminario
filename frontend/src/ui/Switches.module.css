@@ -1,0 +1,55 @@
+.segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 2px;
+  border: 1px solid var(--c-edge);
+  border-radius: 20px;
+  background: var(--c-sunken);
+  min-width: 0;
+}
+
+.option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-width: 36px;
+  height: 32px;
+  padding: 0 var(--s-3);
+  border-radius: 16px;
+  color: var(--c-ink-muted);
+  cursor: pointer;
+  transition: background-color var(--t-quick) var(--ease-out), color var(--t-quick) var(--ease-out);
+}
+
+.option input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.option:hover {
+  color: var(--c-ink);
+}
+
+.option:has(input:checked) {
+  background: var(--c-surface);
+  color: var(--c-ink);
+  box-shadow: var(--lift);
+}
+
+.option:has(input:focus-visible) {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 1px;
+}
+
+.short {
+  font-weight: 700;
+  font-size: var(--fs-2);
+  letter-spacing: 0.04em;
+}

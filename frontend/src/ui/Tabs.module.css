@@ -1,0 +1,49 @@
+.tabs {
+  display: grid;
+  gap: var(--s-5);
+  min-width: 0;
+}
+
+.list {
+  display: flex;
+  gap: var(--s-2);
+  border-bottom: 1px solid var(--c-rule);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.tab {
+  position: relative;
+  flex: none;
+  min-height: 40px;
+  padding: 0 var(--s-5);
+  border: 0;
+  background: none;
+  color: var(--c-ink-muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--c-ink);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--c-ink);
+}
+
+.tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: var(--s-4);
+  right: var(--s-4);
+  bottom: -1px;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+  background: var(--c-accent);
+}
+
+.panel:focus-visible {
+  outline-offset: 4px;
+}

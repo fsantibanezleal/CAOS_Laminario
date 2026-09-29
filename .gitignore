@@ -71,3 +71,6 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 *.db
+
+# Browser gate output: screenshots and reports (frontend/gates)
+frontend/.gates/

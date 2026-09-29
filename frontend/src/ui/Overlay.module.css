@@ -1,0 +1,100 @@
+.tipAnchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.tip {
+  position: fixed;
+  z-index: 20;
+  display: none;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 16px));
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-control);
+  background: var(--c-ink);
+  color: var(--c-bg);
+  font-size: var(--fs-2);
+  line-height: 1.35;
+  box-shadow: var(--float);
+}
+
+.tip[data-open] {
+  display: block;
+}
+
+.dialog {
+  width: min(520px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  box-shadow: var(--float);
+}
+
+.dialog::backdrop {
+  background: color-mix(in oklab, var(--c-stage) 55%, transparent);
+}
+
+.dialogHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-5) var(--s-5) 0 var(--s-6);
+}
+
+.dialogTitle {
+  padding-top: var(--s-3);
+  font-size: var(--fs-6);
+}
+
+.dialogBody {
+  padding: var(--s-4) var(--s-6) var(--s-5);
+}
+
+.dialogActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--s-3);
+  padding: var(--s-4) var(--s-6) var(--s-6);
+}
+
+.toasts {
+  position: fixed;
+  right: var(--s-5);
+  bottom: var(--s-5);
+  left: var(--s-5);
+  z-index: 50;
+  display: grid;
+  justify-items: end;
+  gap: var(--s-3);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  width: min(420px, 100%);
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-5);
+  border: 1px solid var(--c-edge);
+  border-left: 4px solid var(--tone);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+  box-shadow: var(--float);
+  pointer-events: auto;
+}
+
+.toast p {
+  flex: 1;
+}
+
+.toast > svg {
+  color: var(--tone);
+}
+
+.good { --tone: var(--c-good); }
+.warn { --tone: var(--c-warn); }
+.bad { --tone: var(--c-bad); }
+.info { --tone: var(--c-accent); }
