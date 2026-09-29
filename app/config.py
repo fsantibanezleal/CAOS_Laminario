@@ -46,6 +46,8 @@ class Settings(BaseSettings):
     smtp_starttls: bool = True
     #: A CA bundle to trust for the mail server's certificate (a private relay); unset: the system's roots.
     smtp_cafile: Path | None = None
+    #: The GBIF API, read for the lineage of taxon anchors (cached in the database) and for taxon names.
+    gbif_api_url: str = "https://api.gbif.org/v1"
     #: The tus upload server (tusd), on loopback; nginx exposes it at /files/.
     tusd_url: str = "http://127.0.0.1:8148"
     #: Per-account upload quotas and limits (dossier 04: a whole-slide image is about 1.6 GB, so twenty fit in 40 GB).

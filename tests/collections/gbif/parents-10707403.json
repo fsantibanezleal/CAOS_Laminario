@@ -1,0 +1,27 @@
+[
+ {
+  "key": 3,
+  "nubKey": 3,
+  "nameKey": 130277260,
+  "taxonID": "gbif:3",
+  "sourceTaxonKey": 3,
+  "kingdom": "Bacteria",
+  "kingdomKey": 3,
+  "datasetKey": "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c",
+  "constituentKey": "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c",
+  "scientificName": "Bacteria",
+  "canonicalName": "Bacteria",
+  "vernacularName": "Bacteria",
+  "authorship": "",
+  "nameType": "SCIENTIFIC",
+  "rank": "KINGDOM",
+  "origin": "SOURCE",
+  "taxonomicStatus": "ACCEPTED",
+  "nomenclaturalStatus": [],
+  "remarks": "",
+  "numDescendants": 67224,
+  "lastCrawled": "2023-08-22T23:20:59.545+00:00",
+  "lastInterpreted": "2023-08-22T22:52:35.110+00:00",
+  "issues": []
+ }
+]

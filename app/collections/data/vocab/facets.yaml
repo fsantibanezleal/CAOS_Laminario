@@ -1,0 +1,27 @@
+# Facets cut across the tree: a property a slide has wherever it is placed. Each facet value has its own icon, drawn
+# in a square frame so it reads as a property and not as a place (dossier 03, section 5).
+#   preparation   the ten preparation types of the ingestion contract (slide.preparation)
+#   modality      the nine imaging modalities of the ingestion contract (asset.modality)
+#   plant-organ   the plant organs of the part vocabulary (parts.yaml, facet: true)
+#   crystal-system the seven crystal systems (crystals.yaml)
+preparation:
+  whole_mount: {en: Whole mount, es: Montaje completo}
+  section: {en: Section, es: Corte}
+  smear: {en: Smear, es: Frotis}
+  squash: {en: Squash, es: Aplastado}
+  strew: {en: Strew, es: Esparcido}
+  thin_section: {en: Thin section, es: Lámina delgada}
+  polished_section: {en: Polished section, es: Sección pulida}
+  peel: {en: Peel, es: Película (peel)}
+  cast: {en: Cast, es: Molde}
+  fluid_mount: {en: Fluid mount, es: Montaje en fluido}
+modality:
+  brightfield: {en: Brightfield, es: Campo claro}
+  darkfield: {en: Darkfield, es: Campo oscuro}
+  phase_contrast: {en: Phase contrast, es: Contraste de fases}
+  dic: {en: Differential interference contrast, es: Contraste interferencial diferencial}
+  polarised_ppl: {en: Plane-polarised light, es: Luz polarizada plana}
+  polarised_xpl: {en: Crossed polars, es: Nícoles cruzados}
+  reflected: {en: Reflected light, es: Luz reflejada}
+  fluorescence: {en: Fluorescence, es: Fluorescencia}
+  sem_external: {en: Scanning electron microscope, es: Microscopio electrónico de barrido}

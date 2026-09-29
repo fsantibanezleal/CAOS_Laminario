@@ -1,0 +1,39 @@
+# Mineral names in common use on slides that are not IMA species: group, series and varietal names (olivine,
+# biotite, plagioclase). A mineral anchor may use them with rank "group". Each takes its Nickel-Strunz code either
+# from its own Wikidata item (wikidata: true) or from a named member species in the same Wikidata extract, cut to
+# the level the group spans (level: class, division, subdivision or group; default: the member's full code).
+# scripts/build_minerals.py resolves every entry and fails when a member or a code is missing.
+groups:
+  Olivine: {member: Forsterite}
+  Garnet: {member: Almandine}
+  Apatite: {member: Fluorapatite}
+  Tourmaline: {member: Schorl}
+  Chlorite: {member: Clinochlore}
+  Serpentine: {member: Antigorite}
+  Plagioclase: {member: Albite}
+  Alkali feldspar: {member: Sanidine}
+  Feldspar: {member: Albite, level: subdivision}
+  Pyroxene: {member: Augite, level: subdivision}
+  Amphibole: {member: Magnesio-hornblende, level: subdivision}
+  Mica: {member: Muscovite, level: subdivision}
+  Zeolite: {member: Natrolite, level: division}
+  Scapolite: {member: Marialite}
+  Wolframite: {member: Ferberite}
+  Chalcedony: {member: Quartz}
+  Agate: {member: Quartz}
+  Limonite: {member: Goethite}
+  Hypersthene: {member: Enstatite}
+  Bronzite: {member: Enstatite}
+  Stilbite: {member: Stilbite-Ca}
+  Biotite: {wikidata: true}
+  Hornblende: {wikidata: true}
+  Labradorite: {wikidata: true}
+  Bytownite: {wikidata: true}
+  Andesine: {wikidata: true}
+  Oligoclase: {wikidata: true}
+# IMA species the Wikidata extract gives no code for, and that slides use often. Gold belongs to the copper
+# group of the native elements with silver and copper.
+species_codes:
+  Gold: {member: Silver}
+synonyms:
+  Barite: Baryte

@@ -43,6 +43,8 @@ Schema: [`contracts/ingest.schema.json`](../../contracts/ingest.schema.json) (JS
 | `coordinates` | [Coordinates](#coordinates) or null | no |  | null |
 | `geoprivacy` | string (enumerated) | no | one of: open, obscured, private | `"open"` |
 | `host` | [Anchor](#anchor) or null | no | a taxon anchor | null |
+| `part` | string or null | no | a part of the parts vocabulary, such as blood or feather | null |
+| `preservation` | string (enumerated) | no | one of: recent, fossil, in_amber | `"recent"` |
 | `type_status` | string (enumerated) or null | no | one of: holotype, paratype, allotype, syntype, lectotype, paralectotype, neotype, topotype, other | null |
 
 ### PlacementSpec
@@ -99,6 +101,7 @@ What the slide shows: a taxon, a rock, a mineral, a crystal or a material.
 | `ref` | string | yes | 1 to 200 characters; for a taxon, its GBIF usage key |  |
 | `name` | string | yes | 1 to 200 characters |  |
 | `rank` | string or null | no | at most 32 characters | null |
+| `classification` | string or null | no | a Nickel-Strunz code for a mineral (9, 9.A or 9.AF.15) or a snow-crystal category for ice (C, P, CP, A, R, I, G, H) | null |
 
 ### Coordinates
 

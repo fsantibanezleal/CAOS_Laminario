@@ -1,5 +1,5 @@
 """Tables for the slide case (``slide``, ``asset``), processing (``job``, ``job_event``) and accounts (``user``,
-``accesstoken``, ``invitation``) and uploads (``upload``).
+``accesstoken``, ``invitation``), uploads (``upload``) and the GBIF taxon cache (``taxon``).
 
 Other tables arrive with the units that need them (users and invitations, jobs, uploads, identifications),
 each with its own migration. Columns mirror the ingestion contract; the catalog record is assembled from them.
@@ -49,6 +49,11 @@ class Slide(Base):
     anchor_ref: Mapped[str] = mapped_column(String(200), nullable=False)
     anchor_name: Mapped[str] = mapped_column(String(200), nullable=False)
     anchor_rank: Mapped[str | None] = mapped_column(String(32))
+    #: The Nickel-Strunz code of a mineral (from the vocabulary or declared) or the Kikuchi category of an ice crystal.
+    anchor_classification: Mapped[str | None] = mapped_column(String(16))
+    #: The part of the organism the slide shows (parts vocabulary), and whether it is recent, fossil or in amber.
+    part: Mapped[str | None] = mapped_column(String(40))
+    preservation: Mapped[str] = mapped_column(String(10), nullable=False, default="recent")
     host_ref: Mapped[str | None] = mapped_column(String(200))
     host_name: Mapped[str | None] = mapped_column(String(200))
     host_rank: Mapped[str | None] = mapped_column(String(32))
@@ -248,3 +253,23 @@ class Upload(Base):
     finished_at: Mapped[datetime | None] = mapped_column(DateTime)
 
     __table_args__ = (Index(None, "user_id", "status"), Index(None, "asset_id"))
+
+
+class Taxon(Base):
+    """A GBIF backbone taxon a slide or a host refers to, with its lineage, so placement never waits on the network.
+
+    Filled on first use from the GBIF API (``app.collections.taxa``); ``accepted_key`` is set when the key a slide
+    gives is a synonym, and placement then uses the accepted taxon.
+    """
+
+    __tablename__ = "taxon"
+
+    key: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=False)
+    name: Mapped[str] = mapped_column(String(200), nullable=False)
+    rank: Mapped[str] = mapped_column(String(32), nullable=False)
+    #: accepted, doubtful or synonym
+    status: Mapped[str] = mapped_column(String(16), nullable=False)
+    accepted_key: Mapped[int | None] = mapped_column(Integer)
+    #: The keys of the accepted taxon's ancestors, kingdom first, as a JSON list.
+    lineage_json: Mapped[str] = mapped_column(Text, nullable=False)
+    fetched_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)

@@ -1,0 +1,1161 @@
+# The Laminario collection tree: Realm > Collection > Sub-collection > Group (dossiers 03 and 09).
+#
+# Every node has a name and a description in English and Spanish, an icon (a symbol of the sprite, by default the
+# node id) and a rule. A slide is placed by walking down from the realms: at each level the children whose rule
+# accepts the slide are candidates, the highest priority wins, and a tie between two accepting siblings is a defect
+# of the tree (the tree guard, R-061, refuses siblings that overlap without different priorities).
+#
+# Rule fields (all optional, all must hold):
+#   taxa: [Name@rank]     the anchor is a taxon inside one of these GBIF backbone taxa (keys locked in taxa.lock.json)
+#   exclude: [Name@rank]  and inside none of these
+#   kind: taxon | rock | mineral | crystal | material   the anchor kind (implied by taxa)
+#   paths: [a.b]          the anchor's vocabulary path starts with one of these: rock family (rocks.yaml), Nickel-Strunz
+#                         code as class.division.subdivision.group (minerals), crystal origin and Kikuchi category,
+#                         material family
+#   parts: [term]         specimen.part is one of these (parts.yaml)
+#   preservation: [recent | fossil | in_amber]   specimen.preservation is one of these
+#   any: [rule, ...]      alternatives: one of them holds (with the other fields of this rule)
+#   priority: n           among accepting siblings the highest priority wins (default 0)
+#   relation: host        a view, not a place: the slides whose host taxon is inside the parent's taxa
+# A node with children and no anchor condition (no taxa, kind, paths or any) is a container: it accepts what one of
+# its children accepts. Its own parts and preservation conditions still apply.
+#
+# The ten vertebrate organ systems are shared by the five vertebrate collections (shared: vertebrate-organ-systems);
+# the dossier counts them once, like their icons.
+
+shared:
+  vertebrate-organ-systems:
+    - id: integument
+      level: sub-collection
+      icon: organ.integument
+      name: {en: Integument, es: Tegumento}
+      about:
+        en: Skin and what grows from it, sectioned or mounted whole. Class-specific structures such as feathers, hair and scales have their own sub-collections where the class has them.
+        es: La piel y lo que crece de ella, en cortes o montajes completos. Las estructuras propias de cada clase, como plumas, pelo y escamas, tienen su propia subcolección cuando la clase las tiene.
+      rule: {parts: [skin, hair, feather, scale, osteoderm, claw]}
+    - id: blood-immune
+      level: sub-collection
+      icon: organ.blood-immune
+      name: {en: Blood and immune system, es: Sangre y sistema inmune}
+      about:
+        en: Blood smears, bone marrow and the lymphoid organs. Blood smears are the commonest vertebrate slide and the first place many parasites are seen.
+        es: Frotis de sangre, médula ósea y órganos linfoides. El frotis de sangre es la lámina de vertebrado más común y el primer lugar donde se ven muchos parásitos.
+      rule: {parts: [blood, bone-marrow, lymph-node, spleen, thymus]}
+    - id: development
+      level: sub-collection
+      icon: organ.development
+      name: {en: Development and embryology, es: Desarrollo y embriología}
+      about:
+        en: Eggs, embryos and larvae in whole mount or serial section, the classic material of embryology teaching.
+        es: Huevos, embriones y larvas en montaje completo o cortes seriados, el material clásico de la enseñanza de la embriología.
+      rule: {parts: [embryo, larva, egg]}
+    - id: respiratory
+      level: sub-collection
+      icon: organ.respiratory
+      name: {en: Respiratory system, es: Sistema respiratorio}
+      about:
+        en: Lungs, tracheae and gills in section.
+        es: Pulmones, tráqueas y branquias en corte.
+      rule: {parts: [lung, trachea, gill]}
+    - id: digestive
+      level: sub-collection
+      icon: organ.digestive
+      name: {en: Digestive system, es: Sistema digestivo}
+      about:
+        en: The digestive tract from tongue and teeth to intestine, with the liver and the pancreas.
+        es: El tubo digestivo desde la lengua y los dientes hasta el intestino, con el hígado y el páncreas.
+      rule: {parts: [tongue, tooth, oesophagus, stomach, intestine, liver, pancreas]}
+    - id: circulatory
+      level: sub-collection
+      icon: organ.circulatory
+      name: {en: Circulatory system, es: Sistema circulatorio}
+      about:
+        en: Heart and blood vessels in section.
+        es: Corazón y vasos sanguíneos en corte.
+      rule: {parts: [heart, blood-vessel]}
+    - id: nervous-sensory
+      level: sub-collection
+      icon: organ.nervous-sensory
+      name: {en: Nervous system and senses, es: Sistema nervioso y sentidos}
+      about:
+        en: Brain, spinal cord and nerves, and the sense organs, eye and ear.
+        es: Encéfalo, médula espinal y nervios, y los órganos de los sentidos, ojo y oído.
+      rule: {parts: [brain, spinal-cord, nerve, eye, ear]}
+    - id: musculoskeletal
+      level: sub-collection
+      icon: organ.musculoskeletal
+      name: {en: Musculoskeletal system, es: Sistema musculoesquelético}
+      about:
+        en: Muscle, bone and cartilage, in section or ground thin section.
+        es: Músculo, hueso y cartílago, en corte o en lámina delgada por desgaste.
+      rule: {parts: [muscle, bone, cartilage]}
+    - id: urogenital
+      level: sub-collection
+      icon: organ.urogenital
+      name: {en: Urogenital and reproductive system, es: Sistema urogenital y reproductor}
+      about:
+        en: Kidney and bladder, gonads, uterus and placenta.
+        es: Riñón y vejiga, gónadas, útero y placenta.
+      rule: {parts: [kidney, bladder, testis, ovary, uterus, placenta]}
+    - id: parasites-hosts
+      level: sub-collection
+      icon: organ.parasites-hosts
+      name: {en: Parasites and hosts, es: Parásitos y hospedadores}
+      about:
+        en: A view, not a place. The slides of parasites whose recorded host belongs to this class, such as the lice of a bird, which live in their own collection and appear here through their host.
+        es: Una vista, no un lugar. Las láminas de parásitos cuyo hospedador registrado pertenece a esta clase, como los piojos de un ave, que viven en su propia colección y aparecen aquí por su hospedador.
+      rule: {relation: host}
+
+nodes:
+  - id: life
+    level: realm
+    name: {en: Life, es: Vida}
+    about:
+      en: Living and recently living organisms, anchored to the GBIF backbone taxonomy, and the mixed pollen samples of palynology. Fossils live in the Earth realm. A taxon too broad for any collection, such as the kingdom Animalia, stays here.
+      es: Organismos vivos o muertos recientemente, anclados a la taxonomía de referencia de GBIF, y las muestras mixtas de polen de la palinología. Los fósiles están en el reino Tierra. Un taxón demasiado amplio para cualquier colección, como el reino Animalia, queda aquí.
+    rule:
+      any:
+        - {kind: taxon, preservation: [recent]}
+        - {kind: material, paths: [pollen-sample]}
+    children:
+      - id: plants
+        level: collection
+        name: {en: Plants, es: Plantas}
+        about:
+          en: Green algae and land plants, the GBIF kingdom Plantae. Sub-collections follow the main lineages; the organ a slide shows is a facet.
+          es: Algas verdes y plantas terrestres, el reino Plantae de GBIF. Las subcolecciones siguen los linajes principales; el órgano que muestra la lámina es una faceta.
+        rule: {taxa: [Plantae@kingdom]}
+        children:
+          - id: green-algae
+            level: sub-collection
+            name: {en: Green algae, es: Algas verdes}
+            about:
+              en: Chlorophyte and charophyte algae, from single cells such as Chlamydomonas to desmids and stoneworts.
+              es: Algas clorofitas y carofitas, desde células aisladas como Chlamydomonas hasta desmidiáceas y carófitos.
+            rule: {taxa: [Chlorophyta@phylum, Charophyta@phylum]}
+          - id: bryophytes
+            level: sub-collection
+            name: {en: "Mosses, liverworts and hornworts", es: "Musgos, hepáticas y antoceros"}
+            about:
+              en: The three bryophyte lineages, often seen as whole leaves, capsules and spores.
+              es: Los tres linajes de briófitos, vistos a menudo como hojas completas, cápsulas y esporas.
+            rule: {taxa: [Bryophyta@phylum, Marchantiophyta@phylum, Anthocerotophyta@phylum]}
+          - id: lycophytes
+            level: sub-collection
+            name: {en: Clubmosses and quillworts, es: Licopodios e isoetes}
+            about:
+              en: The lycophytes, the oldest living lineage of vascular plants, with their strobili and microphylls.
+              es: Las licófitas, el linaje vivo más antiguo de plantas vasculares, con sus estróbilos y micrófilos.
+            rule: {taxa: [Lycopodiopsida@class]}
+          - id: ferns
+            level: sub-collection
+            name: {en: Ferns and horsetails, es: Helechos y colas de caballo}
+            about:
+              en: Ferns and horsetails (GBIF places Equisetum in the class Polypodiopsida), with sori, sporangia and rhizomes.
+              es: Helechos y colas de caballo (GBIF ubica Equisetum en la clase Polypodiopsida), con soros, esporangios y rizomas.
+            rule: {taxa: [Polypodiopsida@class]}
+          - id: gymnosperms
+            level: sub-collection
+            name: {en: Conifers and other gymnosperms, es: Coníferas y otras gimnospermas}
+            about:
+              en: Conifers, cycads, Ginkgo and the gnetophytes, with needles, cones and wood.
+              es: Coníferas, cícadas, Ginkgo y las gnetófitas, con acículas, conos y madera.
+            rule: {taxa: [Pinopsida@class, Cycadopsida@class, Ginkgoopsida@class, Gnetopsida@class]}
+          - id: monocots
+            level: sub-collection
+            name: {en: Monocots, es: Monocotiledóneas}
+            about:
+              en: Grasses, lilies, orchids and palms, whose scattered vascular bundles make the classic stem section.
+              es: Gramíneas, lirios, orquídeas y palmas, cuyos haces vasculares dispersos dan el corte de tallo clásico.
+            rule: {taxa: [Liliopsida@class]}
+          - id: eudicots
+            level: sub-collection
+            name: {en: Eudicots and magnoliids, es: Eudicotiledóneas y magnólidas}
+            about:
+              en: The class Magnoliopsida of the GBIF backbone, most flowering plants, with vascular bundles in a ring.
+              es: La clase Magnoliopsida de la taxonomía de GBIF, la mayoría de las plantas con flor, con haces vasculares en anillo.
+            rule: {taxa: [Magnoliopsida@class]}
+      - id: fungi
+        level: collection
+        name: {en: Fungi and lichens, es: Hongos y líquenes}
+        about:
+          en: The GBIF kingdom Fungi, lichens included. Spore prints and spore mounts belong to Pollen and spores.
+          es: El reino Fungi de GBIF, incluidos los líquenes. Las esporadas y los montajes de esporas pertenecen a Polen y esporas.
+        rule: {taxa: [Fungi@kingdom]}
+        children:
+          - id: sac-fungi
+            level: sub-collection
+            name: {en: Sac fungi, es: Ascomicetos}
+            about:
+              en: Ascomycota, with spores in asci, from yeasts and moulds to morels and cup fungi.
+              es: Ascomycota, con esporas en ascos, desde levaduras y mohos hasta colmenillas y pezizas.
+            rule: {taxa: [Ascomycota@phylum]}
+          - id: club-fungi
+            level: sub-collection
+            name: {en: "Club fungi, mushrooms and rusts", es: "Basidiomicetos, setas y royas"}
+            about:
+              en: Basidiomycota, with spores on basidia, from mushrooms and brackets to rusts and smuts.
+              es: Basidiomycota, con esporas sobre basidios, desde setas y políporos hasta royas y carbones.
+            rule: {taxa: [Basidiomycota@phylum]}
+          - id: pin-moulds
+            level: sub-collection
+            name: {en: Pin moulds, es: Mohos de alfiler}
+            about:
+              en: Mucoromycota such as Rhizopus and Mucor, with sporangia on long stalks.
+              es: Mucoromycota como Rhizopus y Mucor, con esporangios sobre pedicelos largos.
+            rule: {taxa: [Mucoromycota@phylum]}
+          - id: chytrids
+            level: sub-collection
+            name: {en: Chytrids, es: Quitridios}
+            about:
+              en: Chytridiomycota, aquatic fungi with flagellated spores, including the amphibian pathogen Batrachochytrium.
+              es: Chytridiomycota, hongos acuáticos con esporas flageladas, entre ellos el patógeno de anfibios Batrachochytrium.
+            rule: {taxa: [Chytridiomycota@phylum]}
+          - id: lichens
+            level: sub-collection
+            name: {en: Lichens, es: Líquenes}
+            about:
+              en: Lichenised fungi, placed by the three classes where lichens predominate; the sections show fungus and alga together.
+              es: Hongos liquenizados, ubicados por las tres clases donde predominan los líquenes; los cortes muestran el hongo y el alga juntos.
+            rule: {taxa: [Lecanoromycetes@class, Arthoniomycetes@class, Lichinomycetes@class], priority: 1}
+      - id: microbes
+        level: collection
+        name: {en: Microbes, es: Microbios}
+        about:
+          en: Microorganisms across kingdoms, the GBIF kingdoms Bacteria, Archaea, Protozoa and Chromista, each slide still anchored to its own taxon. Green algae are with the plants; chromists without a sub-collection, such as brown algae and water moulds, stay at this level.
+          es: Microorganismos de varios reinos, los reinos Bacteria, Archaea, Protozoa y Chromista de GBIF, cada lámina anclada a su propio taxón. Las algas verdes están con las plantas; los cromistas sin subcolección, como las algas pardas y los oomicetos, quedan en este nivel.
+        rule: {taxa: [Bacteria@kingdom, Archaea@kingdom, Protozoa@kingdom, Chromista@kingdom]}
+        children:
+          - id: bacteria
+            level: sub-collection
+            name: {en: Bacteria and archaea, es: Bacterias y arqueas}
+            about:
+              en: The kingdoms Bacteria and Archaea except the cyanobacteria, which have their own sub-collection. Groups follow the phyla most seen in stained smears.
+              es: Los reinos Bacteria y Archaea salvo las cianobacterias, que tienen su propia subcolección. Los grupos siguen los filos más vistos en frotis teñidos.
+            rule: {taxa: [Bacteria@kingdom, Archaea@kingdom], exclude: [Cyanobacteria@phylum]}
+            children:
+              - id: bacillota
+                level: group
+                name: {en: Bacillota (Firmicutes), es: Bacillota (Firmicutes)}
+                about:
+                  en: Mostly Gram-positive rods and cocci such as Bacillus, Staphylococcus and Streptococcus. The GBIF backbone still names the phylum Firmicutes.
+                  es: Sobre todo bacilos y cocos grampositivos como Bacillus, Staphylococcus y Streptococcus. La taxonomía de GBIF aún llama al filo Firmicutes.
+                rule: {taxa: [Firmicutes@phylum]}
+              - id: actinomycetota
+                level: group
+                name: {en: Actinomycetota, es: Actinomycetota}
+                about:
+                  en: Gram-positive, often branching bacteria, among them Streptomyces and Mycobacterium (backbone name Actinobacteriota).
+                  es: Bacterias grampositivas, a menudo ramificadas, entre ellas Streptomyces y Mycobacterium (nombre en la taxonomía, Actinobacteriota).
+                rule: {taxa: [Actinobacteriota@phylum]}
+              - id: pseudomonadota
+                level: group
+                name: {en: Pseudomonadota (Proteobacteria), es: Pseudomonadota (Proteobacteria)}
+                about:
+                  en: The largest group of Gram-negative bacteria, from Escherichia to Pseudomonas (backbone name Proteobacteria).
+                  es: El mayor grupo de bacterias gramnegativas, de Escherichia a Pseudomonas (nombre en la taxonomía, Proteobacteria).
+                rule: {taxa: [Proteobacteria@phylum]}
+              - id: spirochaetota
+                level: group
+                name: {en: Spirochaetes, es: Espiroquetas}
+                about:
+                  en: Helical bacteria such as Treponema, Borrelia and Leptospira, seen best in darkfield.
+                  es: Bacterias helicoidales como Treponema, Borrelia y Leptospira, que se ven mejor en campo oscuro.
+                rule: {taxa: [Spirochaetota@phylum]}
+          - id: cyanobacteria
+            level: sub-collection
+            name: {en: Cyanobacteria, es: Cianobacterias}
+            about:
+              en: Photosynthetic bacteria in filaments and colonies, Nostoc, Oscillatoria and Anabaena.
+              es: Bacterias fotosintéticas en filamentos y colonias, Nostoc, Oscillatoria y Anabaena.
+            rule: {taxa: [Cyanobacteria@phylum]}
+          - id: amoebae
+            level: sub-collection
+            name: {en: Amoebae, es: Amebas}
+            about:
+              en: Amoebozoa, lobose amoebae and slime moulds; the backbone also places Naegleria here.
+              es: Amoebozoa, amebas lobosas y mohos mucilaginosos; la taxonomía también ubica aquí a Naegleria.
+            rule: {taxa: [Amoebozoa@phylum]}
+          - id: ciliates
+            level: sub-collection
+            name: {en: Ciliates, es: Ciliados}
+            about:
+              en: Ciliophora such as Paramecium, Vorticella and Stentor, the classic pond-water protists.
+              es: Ciliophora como Paramecium, Vorticella y Stentor, los protistas clásicos del agua de charca.
+            rule: {taxa: [Ciliophora@phylum]}
+          - id: flagellates
+            level: sub-collection
+            name: {en: Flagellates, es: Flagelados}
+            about:
+              en: Euglenozoa, Metamonada and Choanozoa, from Euglena to Giardia. Trypanosomes are with the blood parasites.
+              es: Euglenozoa, Metamonada y Choanozoa, de Euglena a Giardia. Los tripanosomas están con los parásitos de la sangre.
+            rule: {taxa: [Euglenozoa@phylum, Metamonada@phylum, Choanozoa@phylum]}
+          - id: apicomplexans
+            level: sub-collection
+            name: {en: Apicomplexans and blood parasites, es: Apicomplejos y parásitos de la sangre}
+            about:
+              en: Apicomplexans such as Plasmodium, Toxoplasma and the gregarines, and the trypanosomatids of blood smears.
+              es: Apicomplejos como Plasmodium, Toxoplasma y las gregarinas, y los tripanosomátidos de los frotis de sangre.
+            rule: {taxa: [Aconoidasida@class, Conoidasida@class, Trypanosomatidae@family], priority: 1}
+          - id: diatoms
+            level: sub-collection
+            name: {en: Diatoms, es: Diatomeas}
+            about:
+              en: Living diatoms, Bacillariophyceae, with their silica frustules. Fossil diatoms are in the Earth realm.
+              es: Diatomeas vivas, Bacillariophyceae, con sus frústulos de sílice. Las diatomeas fósiles están en el reino Tierra.
+            rule: {taxa: [Bacillariophyceae@class]}
+          - id: dinoflagellates
+            level: sub-collection
+            name: {en: Dinoflagellates, es: Dinoflagelados}
+            about:
+              en: Dinophyceae, armoured and naked, including the organisms of red tides.
+              es: Dinophyceae, tecados y desnudos, incluidos los organismos de la marea roja.
+            rule: {taxa: [Dinophyceae@class]}
+          - id: microalgae
+            level: sub-collection
+            name: {en: Microalgae, es: Microalgas}
+            about:
+              en: Chromist microalgae other than diatoms and dinoflagellates, golden and yellow-green algae, haptophytes and cryptophytes.
+              es: Microalgas cromistas distintas de diatomeas y dinoflagelados, algas doradas y verde amarillentas, haptofitas y criptofitas.
+            rule: {taxa: [Chrysophyceae@class, Xanthophyceae@class, Eustigmatophyceae@class, Synurophyceae@class, Raphidophyceae@class, Haptophyta@phylum, Cryptophyta@phylum]}
+          - id: forams-radiolarians
+            level: sub-collection
+            name: {en: Foraminifera and radiolarians, es: Foraminíferos y radiolarios}
+            about:
+              en: Living foraminifera and radiolarians (Polycystina, Acantharia) from plankton and sediment. Their fossils are in the Earth realm.
+              es: Foraminíferos y radiolarios vivos (Polycystina, Acantharia) del plancton y del sedimento. Sus fósiles están en el reino Tierra.
+            rule: {taxa: [Foraminifera@phylum, Polycystina@class, Acantharia@class]}
+      - id: insects
+        level: collection
+        name: {en: Insects, es: Insectos}
+        about:
+          en: The class Insecta, mounted whole or as parts, wings, mouthparts, genitalia and legs.
+          es: La clase Insecta, montada completa o por partes, alas, piezas bucales, genitalia y patas.
+        rule: {taxa: [Insecta@class]}
+        children:
+          - id: beetles
+            level: sub-collection
+            name: {en: Beetles, es: Escarabajos}
+            about:
+              en: Coleoptera, the largest insect order.
+              es: Coleoptera, el orden de insectos más grande.
+            rule: {taxa: [Coleoptera@order]}
+          - id: flies
+            level: sub-collection
+            name: {en: Flies and mosquitoes, es: Moscas y mosquitos}
+            about:
+              en: Diptera, including the mosquitoes, sandflies and blackflies of medical entomology.
+              es: Diptera, incluidos los mosquitos, flebótomos y jejenes de la entomología médica.
+            rule: {taxa: [Diptera@order]}
+          - id: lice
+            level: sub-collection
+            name: {en: Lice, es: Piojos}
+            about:
+              en: Parasitic lice (Phthiraptera). The GBIF backbone has no Phthiraptera; lice are placed by their 26 families inside the order Psocodea. Their hosts show them under Parasites and hosts.
+              es: Piojos parásitos (Phthiraptera). La taxonomía de GBIF no tiene Phthiraptera; los piojos se ubican por sus 26 familias dentro del orden Psocodea. Sus hospedadores los muestran en Parásitos y hospedadores.
+            rule:
+              taxa: &lice-families [Echinophthiriidae@family, Enderleinellidae@family, Haematopinidae@family, Hamophthiriidae@family,
+                     Hoplopleuridae@family, Linognathidae@family, Microthoraciidae@family, Neolinognathidae@family,
+                     Pecaroecidae@family, Pedicinidae@family, Pediculidae@family, Polyplacidae@family, Pthiridae@family,
+                     Ratemiidae@family, Abrocomophagidae@family, Boopiidae@family, Gyropidae@family,
+                     Laemobothriidae@family, Menoponidae@family, Ricinidae@family, Trimenoponidae@family,
+                     Philopteridae@family, Trichodectidae@family, Goniodidae@family, Heptapsogastridae@family,
+                     Haematomyzidae@family]
+          - id: fleas
+            level: sub-collection
+            name: {en: Fleas, es: Pulgas}
+            about:
+              en: Siphonaptera, cleared and mounted whole, a staple of parasitology collections.
+              es: Siphonaptera, aclaradas y montadas completas, un clásico de las colecciones de parasitología.
+            rule: {taxa: [Siphonaptera@order]}
+          - id: hymenoptera
+            level: sub-collection
+            name: {en: "Bees, wasps and ants", es: "Abejas, avispas y hormigas"}
+            about:
+              en: Hymenoptera, with the stings, mouthparts and wing venation used to identify them.
+              es: Hymenoptera, con el aguijón, las piezas bucales y la venación alar que sirven para identificarlos.
+            rule: {taxa: [Hymenoptera@order]}
+          - id: lepidoptera
+            level: sub-collection
+            name: {en: Butterflies and moths, es: Mariposas y polillas}
+            about:
+              en: Lepidoptera, often as wing scales and genitalia mounts.
+              es: Lepidoptera, a menudo como escamas alares y montajes de genitalia.
+            rule: {taxa: [Lepidoptera@order]}
+          - id: hemiptera
+            level: sub-collection
+            name: {en: "True bugs, aphids and whiteflies", es: "Chinches, pulgones y moscas blancas"}
+            about:
+              en: Hemiptera, among them the aphids, scale insects and whiteflies that are identified from slide mounts.
+              es: Hemiptera, entre ellos los pulgones, cochinillas y moscas blancas que se identifican en montajes.
+            rule: {taxa: [Hemiptera@order]}
+          - id: other-orders
+            level: sub-collection
+            name: {en: Other insect orders, es: Otros órdenes de insectos}
+            about:
+              en: Every other insect order, from dragonflies to thrips and the free-living bark lice. An anchor at class level stays with Insects.
+              es: Todos los demás órdenes de insectos, de libélulas a trips y los psócidos de vida libre. Un ancla a nivel de clase queda en Insectos.
+            rule:
+              taxa: [Insecta@class]
+              exclude: [Coleoptera@order, Diptera@order, Siphonaptera@order, Hymenoptera@order, Lepidoptera@order,
+                        Hemiptera@order, *lice-families]
+      - id: arthropods
+        level: collection
+        name: {en: Arachnids and other arthropods, es: Arácnidos y otros artrópodos}
+        about:
+          en: Arthropods other than insects, mites and spiders, crustaceans, myriapods and the springtails.
+          es: Artrópodos que no son insectos, ácaros y arañas, crustáceos, miriápodos y colémbolos.
+        rule: {taxa: [Arthropoda@phylum], exclude: [Insecta@class]}
+        children:
+          - id: mites-ticks
+            level: sub-collection
+            name: {en: Mites and ticks, es: Ácaros y garrapatas}
+            about:
+              en: The six mite and tick orders of the backbone, from dust mites to ticks, nearly always mounted on slides.
+              es: Los seis órdenes de ácaros y garrapatas de la taxonomía, de los ácaros del polvo a las garrapatas, casi siempre montados en lámina.
+            rule: {taxa: [Ixodida@order, Mesostigmata@order, Trombidiformes@order, Sarcoptiformes@order, Opilioacarida@order, Holothyrida@order]}
+          - id: spiders
+            level: sub-collection
+            name: {en: Spiders, es: Arañas}
+            about:
+              en: Araneae, with the eyes, spinnerets and genitalia used in identification.
+              es: Araneae, con los ojos, las hileras y la genitalia que se usan para identificarlas.
+            rule: {taxa: [Araneae@order]}
+          - id: scorpions
+            level: sub-collection
+            name: {en: Scorpions and pseudoscorpions, es: Escorpiones y pseudoescorpiones}
+            about:
+              en: Scorpiones and Pseudoscorpiones, the small ones mounted whole.
+              es: Scorpiones y Pseudoscorpiones, los pequeños montados completos.
+            rule: {taxa: [Scorpiones@order, Pseudoscorpiones@order]}
+          - id: crustaceans
+            level: sub-collection
+            name: {en: Crustaceans, es: Crustáceos}
+            about:
+              en: Water fleas, copepods, living ostracods and other crustaceans; fossil ostracods are in the Earth realm.
+              es: Pulgas de agua, copépodos, ostrácodos vivos y otros crustáceos; los ostrácodos fósiles están en el reino Tierra.
+            rule: {taxa: [Branchiopoda@class, Copepoda@class, Maxillopoda@class, Ostracoda@class, Malacostraca@class, Remipedia@class, Cephalocarida@class]}
+          - id: myriapods
+            level: sub-collection
+            name: {en: Millipedes and centipedes, es: Milpiés y ciempiés}
+            about:
+              en: Diplopoda, Chilopoda and the small symphylans and pauropods.
+              es: Diplopoda, Chilopoda y los pequeños sínfilos y paurópodos.
+            rule: {taxa: [Diplopoda@class, Chilopoda@class, Symphyla@class, Pauropoda@class]}
+          - id: springtails
+            level: sub-collection
+            name: {en: Springtails and other hexapods, es: Colémbolos y otros hexápodos}
+            about:
+              en: Collembola, Protura and Diplura, six-legged soil animals that are not insects.
+              es: Collembola, Protura y Diplura, animales del suelo de seis patas que no son insectos.
+            rule: {taxa: [Collembola@class, Protura@class, Diplura@class]}
+      - id: molluscs
+        level: collection
+        name: {en: Molluscs, es: Moluscos}
+        about:
+          en: The phylum Mollusca, as radula mounts, shell and tissue sections and larvae.
+          es: El filo Mollusca, en montajes de rádula, cortes de concha y de tejido, y larvas.
+        rule: {taxa: [Mollusca@phylum]}
+        children:
+          - id: snails
+            level: sub-collection
+            name: {en: Snails and slugs, es: Caracoles y babosas}
+            about:
+              en: Gastropoda, whose radulae are among the classic mollusc slides.
+              es: Gastropoda, cuyas rádulas están entre las láminas clásicas de moluscos.
+            rule: {taxa: [Gastropoda@class]}
+          - id: bivalves
+            level: sub-collection
+            name: {en: Bivalves, es: Bivalvos}
+            about:
+              en: Bivalvia, gills, gonads and larvae in section.
+              es: Bivalvia, branquias, gónadas y larvas en corte.
+            rule: {taxa: [Bivalvia@class]}
+          - id: cephalopods
+            level: sub-collection
+            name: {en: Cephalopods, es: Cefalópodos}
+            about:
+              en: Cephalopoda, among them squid skin with its chromatophores.
+              es: Cephalopoda, entre ellos la piel de calamar con sus cromatóforos.
+            rule: {taxa: [Cephalopoda@class]}
+      - id: invertebrates
+        level: collection
+        name: {en: Other invertebrates, es: Otros invertebrados}
+        about:
+          en: Animals that are neither arthropods, molluscs nor vertebrates, with the tunicates and lancelets.
+          es: Animales que no son artrópodos, moluscos ni vertebrados, con los tunicados y los anfioxos.
+        rule:
+          any:
+            - {taxa: [Animalia@kingdom], exclude: [Arthropoda@phylum, Mollusca@phylum, Chordata@phylum]}
+            - {taxa: [Ascidiacea@class, Thaliacea@class, Leptocardii@class]}
+        children:
+          - id: flatworms
+            level: sub-collection
+            name: {en: Flatworms, es: Gusanos planos}
+            about:
+              en: Platyhelminthes, planarians, flukes and tapeworms, stained whole mounts above all.
+              es: Platyhelminthes, planarias, duelas y tenias, sobre todo montajes completos teñidos.
+            rule: {taxa: [Platyhelminthes@phylum]}
+          - id: roundworms
+            level: sub-collection
+            name: {en: Roundworms, es: Nematodos}
+            about:
+              en: Nematoda, free-living and parasitic, mounted whole or in section.
+              es: Nematoda, de vida libre y parásitos, montados completos o en corte.
+            rule: {taxa: [Nematoda@phylum]}
+          - id: segmented-worms
+            level: sub-collection
+            name: {en: Segmented worms, es: Gusanos segmentados}
+            about:
+              en: Annelida, earthworm cross-sections and polychaete parapodia.
+              es: Annelida, cortes transversales de lombriz y parápodos de poliquetos.
+            rule: {taxa: [Annelida@phylum]}
+          - id: cnidarians
+            level: sub-collection
+            name: {en: Cnidarians, es: Cnidarios}
+            about:
+              en: Cnidaria, Hydra, hydroids, jellyfish and coral polyps, with their nematocysts.
+              es: Cnidaria, Hydra, hidroides, medusas y pólipos de coral, con sus nematocistos.
+            rule: {taxa: [Cnidaria@phylum]}
+          - id: sponges
+            level: sub-collection
+            name: {en: Sponges, es: Esponjas}
+            about:
+              en: Porifera, above all their spicules, the characters sponges are identified by.
+              es: Porifera, sobre todo sus espículas, los caracteres por los que se identifican.
+            rule: {taxa: [Porifera@phylum]}
+          - id: echinoderms
+            level: sub-collection
+            name: {en: Echinoderms, es: Equinodermos}
+            about:
+              en: Echinodermata, larvae and the calcite ossicles of sea cucumbers and starfish.
+              es: Echinodermata, larvas y los osículos de calcita de pepinos y estrellas de mar.
+            rule: {taxa: [Echinodermata@phylum]}
+          - id: rotifers-tardigrades
+            level: sub-collection
+            name: {en: Rotifers and tardigrades, es: Rotíferos y tardígrados}
+            about:
+              en: Rotifera and Tardigrada, microscopic animals of moss, soil and fresh water.
+              es: Rotifera y Tardigrada, animales microscópicos del musgo, del suelo y del agua dulce.
+            rule: {taxa: [Rotifera@phylum, Tardigrada@phylum]}
+      - id: fishes
+        level: collection
+        name: {en: Fishes, es: Peces}
+        about:
+          en: Jawless, cartilaginous and bony fishes. The GBIF backbone has no ray-finned fish class, so the collection is the chordates less the tetrapods, tunicates and lancelets.
+          es: Peces sin mandíbula, cartilaginosos y óseos. La taxonomía de GBIF no tiene una clase de peces de aletas radiadas, así que la colección son los cordados menos los tetrápodos, tunicados y anfioxos.
+        rule:
+          taxa: [Chordata@phylum]
+          exclude: [Amphibia@class, Squamata@class, Testudines@class, Crocodylia@class, Sphenodontia@class, Aves@class,
+                    Mammalia@class, Ascidiacea@class, Thaliacea@class, Leptocardii@class]
+        shared: vertebrate-organ-systems
+        children:
+          - id: gills
+            level: sub-collection
+            name: {en: Gills, es: Branquias}
+            about:
+              en: Gill filaments and lamellae, the fish organ most often sectioned, and a site of parasites.
+              es: Filamentos y laminillas branquiales, el órgano de pez más cortado y un lugar de parásitos.
+            rule: {parts: [gill], priority: 1}
+          - id: otoliths
+            level: sub-collection
+            name: {en: Otoliths, es: Otolitos}
+            about:
+              en: Ear stones ground to thin sections, whose growth rings give the age of the fish.
+              es: Piedras del oído desgastadas en láminas delgadas, cuyos anillos de crecimiento dan la edad del pez.
+            rule: {parts: [otolith]}
+      - id: amphibians
+        level: collection
+        name: {en: Amphibians, es: Anfibios}
+        about:
+          en: The class Amphibia, frogs, salamanders and caecilians.
+          es: La clase Amphibia, ranas, salamandras y cecilias.
+        rule: {taxa: [Amphibia@class]}
+        shared: vertebrate-organ-systems
+        children:
+          - id: tadpoles
+            level: sub-collection
+            name: {en: Tadpole and egg development, es: Desarrollo del renacuajo y del huevo}
+            about:
+              en: Frog eggs and tadpoles, the series through which vertebrate development is usually taught.
+              es: Huevos y renacuajos de rana, la serie con la que se suele enseñar el desarrollo de los vertebrados.
+            rule: {parts: [larva, egg], priority: 1}
+      - id: reptiles
+        level: collection
+        name: {en: Reptiles, es: Reptiles}
+        about:
+          en: Lizards and snakes, turtles, crocodiles and the tuatara. The GBIF backbone has no class Reptilia; these are its four classes.
+          es: Lagartos y serpientes, tortugas, cocodrilos y el tuátara. La taxonomía de GBIF no tiene la clase Reptilia; estas son sus cuatro clases.
+        rule: {taxa: [Squamata@class, Testudines@class, Crocodylia@class, Sphenodontia@class]}
+        shared: vertebrate-organ-systems
+        children:
+          - id: scales
+            level: sub-collection
+            name: {en: Scales and osteoderms, es: Escamas y osteodermos}
+            about:
+              en: Shed skins, scales and the bony plates of the skin.
+              es: Mudas de piel, escamas y las placas óseas de la piel.
+            rule: {parts: [scale, osteoderm], priority: 1}
+      - id: birds
+        level: collection
+        name: {en: Birds, es: Aves}
+        about:
+          en: The class Aves. Feathers and eggshells have their own sub-collections; bird lice appear under Parasites and hosts.
+          es: La clase Aves. Las plumas y las cáscaras de huevo tienen sus propias subcolecciones; los piojos de aves aparecen en Parásitos y hospedadores.
+        rule: {taxa: [Aves@class]}
+        shared: vertebrate-organ-systems
+        children:
+          - id: feathers
+            level: sub-collection
+            name: {en: Feathers, es: Plumas}
+            about:
+              en: Barbs, barbules and their nodes, the microscopic characters that identify a bird from a feather fragment.
+              es: Barbas, bárbulas y sus nodos, los caracteres microscópicos que identifican un ave a partir de un fragmento de pluma.
+            rule: {parts: [feather], priority: 1}
+          - id: eggshell
+            level: sub-collection
+            name: {en: Eggshell, es: Cáscara de huevo}
+            about:
+              en: Eggshell in thin section, with its mammillary cones and palisade layer.
+              es: Cáscara de huevo en lámina delgada, con sus conos mamilares y su capa en empalizada.
+            rule: {parts: [eggshell]}
+      - id: mammals
+        level: collection
+        name: {en: Mammals, es: Mamíferos}
+        about:
+          en: The class Mammalia. Human tissue slides are placed here, anchored to Homo sapiens.
+          es: La clase Mammalia. Las láminas de tejido humano se ubican aquí, ancladas a Homo sapiens.
+        rule: {taxa: [Mammalia@class]}
+        shared: vertebrate-organ-systems
+        children:
+          - id: hair
+            level: sub-collection
+            name: {en: Hair, es: Pelo}
+            about:
+              en: Hair mounts and casts, whose cuticle scales and medulla identify the species.
+              es: Montajes y moldes de pelo, cuyas escamas cuticulares y médula identifican la especie.
+            rule: {parts: [hair], priority: 1}
+      - id: pollen
+        level: collection
+        name: {en: Pollen and spores, es: Polen y esporas}
+        about:
+          en: Palynology, the pollen of seed plants and the spores of ferns, mosses and fungi, and mixed pollen from air and honey. It takes precedence over the plant and fungus collections for a pollen or spore slide.
+          es: Palinología, el polen de las plantas con semilla y las esporas de helechos, musgos y hongos, y el polen mixto del aire y de la miel. Tiene prioridad sobre las colecciones de plantas y hongos para una lámina de polen o esporas.
+        rule: {priority: 1}
+        children:
+          - id: flowering-pollen
+            level: sub-collection
+            name: {en: Flowering-plant pollen, es: Polen de plantas con flor}
+            about:
+              en: Pollen of monocots and eudicots, identified by apertures and wall sculpture.
+              es: Polen de monocotiledóneas y eudicotiledóneas, identificado por sus aberturas y la escultura de su pared.
+            rule: {taxa: [Magnoliopsida@class, Liliopsida@class], parts: [pollen]}
+          - id: gymnosperm-pollen
+            level: sub-collection
+            name: {en: Gymnosperm pollen, es: Polen de gimnospermas}
+            about:
+              en: Pollen of conifers, cycads, Ginkgo and gnetophytes, many with air sacs.
+              es: Polen de coníferas, cícadas, Ginkgo y gnetófitas, muchos con sacos aéreos.
+            rule: {taxa: [Pinopsida@class, Cycadopsida@class, Ginkgoopsida@class, Gnetopsida@class], parts: [pollen]}
+          - id: fern-moss-spores
+            level: sub-collection
+            name: {en: Fern and moss spores, es: Esporas de helechos y musgos}
+            about:
+              en: Spores of ferns, lycophytes and bryophytes.
+              es: Esporas de helechos, licófitas y briófitos.
+            rule: {taxa: [Polypodiopsida@class, Lycopodiopsida@class, Bryophyta@phylum, Marchantiophyta@phylum, Anthocerotophyta@phylum], parts: [spore]}
+          - id: fungal-spores
+            level: sub-collection
+            name: {en: Fungal spores, es: Esporas de hongos}
+            about:
+              en: Spore prints and spore mounts of fungi, a key character in mushroom identification.
+              es: Esporadas y montajes de esporas de hongos, un carácter clave para identificar setas.
+            rule: {taxa: [Fungi@kingdom], parts: [spore]}
+          - id: airborne-honey
+            level: sub-collection
+            name: {en: Airborne and honey pollen, es: Polen del aire y de la miel}
+            about:
+              en: Mixed samples, air traps and honey, anchored to the sample because they hold many taxa.
+              es: Muestras mixtas, trampas de aire y miel, ancladas a la muestra porque contienen muchos taxones.
+            rule: {kind: material, paths: [pollen-sample]}
+
+  - id: earth
+    level: realm
+    name: {en: Earth, es: Tierra}
+    about:
+      en: Rocks, minerals and fossils, anchored to the BGS Rock Classification Scheme, the IMA list of minerals and the GBIF backbone.
+      es: Rocas, minerales y fósiles, anclados al esquema de clasificación de rocas del BGS, a la lista de minerales de la IMA y a la taxonomía de GBIF.
+    rule:
+      any:
+        - {kind: taxon, preservation: [fossil, in_amber]}
+        - {kind: rock}
+        - {kind: mineral}
+    children:
+      - id: fossils
+        level: collection
+        name: {en: Fossils and microfossils, es: Fósiles y microfósiles}
+        about:
+          en: Organisms preserved in rock or resin, anchored to their taxon and declared fossil. Sub-collections follow the groups micropalaeontology works with; other fossils stay at this level.
+          es: Organismos conservados en roca o resina, anclados a su taxón y declarados fósiles. Las subcolecciones siguen los grupos con que trabaja la micropaleontología; los demás fósiles quedan en este nivel.
+        rule: {kind: taxon, preservation: [fossil, in_amber]}
+        children:
+          - id: foraminifera
+            level: sub-collection
+            name: {en: Foraminifera, es: Foraminíferos}
+            about:
+              en: Fossil foraminifera, picked or in thin section, the workhorse of biostratigraphy.
+              es: Foraminíferos fósiles, separados o en lámina delgada, la herramienta principal de la bioestratigrafía.
+            rule: {taxa: [Foraminifera@phylum], preservation: [fossil]}
+          - id: ostracods
+            level: sub-collection
+            name: {en: Ostracods, es: Ostrácodos}
+            about:
+              en: Fossil ostracod valves, on the cell slides micropalaeontologists use.
+              es: Valvas de ostrácodos fósiles, en las láminas de celdas que usan los micropaleontólogos.
+            rule: {taxa: [Ostracoda@class], preservation: [fossil]}
+          - id: radiolarians-diatomite
+            level: sub-collection
+            name: {en: Radiolarians and diatomite, es: Radiolarios y diatomita}
+            about:
+              en: Fossil radiolarians and diatoms, the siliceous microfossils of radiolarite and diatomite.
+              es: Radiolarios y diatomeas fósiles, los microfósiles silíceos de la radiolarita y la diatomita.
+            rule: {taxa: [Polycystina@class, Acantharia@class, Bacillariophyceae@class], preservation: [fossil]}
+          - id: palynomorphs
+            level: sub-collection
+            name: {en: Fossil palynomorphs, es: Palinomorfos fósiles}
+            about:
+              en: Fossil pollen and spores, and dinoflagellate cysts, recovered from rock by acid maceration.
+              es: Polen y esporas fósiles, y quistes de dinoflagelados, recuperados de la roca por maceración ácida.
+            rule:
+              preservation: [fossil]
+              priority: 1
+              any:
+                - {taxa: [Plantae@kingdom, Fungi@kingdom], parts: [pollen, spore]}
+                - {taxa: [Dinophyceae@class]}
+          - id: fossil-plants
+            level: sub-collection
+            name: {en: Fossil plants and cuticles, es: Plantas y cutículas fósiles}
+            about:
+              en: Petrified wood, coal balls, chert floras such as the Rhynie chert, and fossil leaf cuticles.
+              es: Madera petrificada, nódulos de carbón, floras en sílex como el sílex de Rhynie, y cutículas de hojas fósiles.
+            rule: {taxa: [Plantae@kingdom], preservation: [fossil]}
+          - id: fossil-fungi
+            level: sub-collection
+            name: {en: Fossil fungi, es: Hongos fósiles}
+            about:
+              en: Fossil fungi in chert and other rock sections.
+              es: Hongos fósiles en sílex y en otros cortes de roca.
+            rule: {taxa: [Fungi@kingdom], preservation: [fossil]}
+          - id: amber
+            level: sub-collection
+            name: {en: Amber and copal inclusions, es: Inclusiones en ámbar y copal}
+            about:
+              en: Any organism preserved in amber or copal, placed here whatever its taxon.
+              es: Cualquier organismo conservado en ámbar o copal, ubicado aquí sea cual sea su taxón.
+            rule: {kind: taxon, preservation: [in_amber]}
+          - id: microvertebrates
+            level: sub-collection
+            name: {en: Conodonts and microvertebrate remains, es: Conodontos y restos de microvertebrados}
+            about:
+              en: Conodont elements, fish teeth and scales, and small vertebrate bones from sieved sediment.
+              es: Elementos de conodontos, dientes y escamas de peces, y huesos pequeños de vertebrados de sedimento tamizado.
+            rule: {taxa: [Chordata@phylum], preservation: [fossil]}
+          - id: shell-sections
+            level: sub-collection
+            name: {en: Carbonate microfacies (shell and coral sections), es: Microfacies carbonatadas (cortes de conchas y corales)}
+            about:
+              en: Fossil shells, corals, bryozoans and echinoderm plates in thin section, the grains of carbonate microfacies.
+              es: Conchas, corales, briozoos y placas de equinodermos fósiles en lámina delgada, los granos de las microfacies carbonatadas.
+            rule: {taxa: [Cnidaria@phylum, Mollusca@phylum, Brachiopoda@phylum, Bryozoa@phylum, Echinodermata@phylum, Porifera@phylum], preservation: [fossil]}
+      - id: rocks
+        level: collection
+        name: {en: Rocks, es: Rocas}
+        about:
+          en: Rocks in thin and polished section, named by the BGS Rock Classification Scheme, with meteorites, ores and soils.
+          es: Rocas en lámina delgada y sección pulida, nombradas según el esquema de clasificación de rocas del BGS, con meteoritos, menas y suelos.
+        rule: {kind: rock}
+        children:
+          - id: igneous
+            level: sub-collection
+            name: {en: Igneous rocks, es: Rocas ígneas}
+            about:
+              en: Rocks crystallised from magma or built of volcanic fragments (RCS volume 1). Groups follow the scheme's first division.
+              es: Rocas cristalizadas a partir de magma o formadas por fragmentos volcánicos (volumen 1 del RCS). Los grupos siguen la primera división del esquema.
+            rule: {paths: [igneous]}
+            children:
+              - id: coarse
+                level: group
+                name: {en: Coarse-grained (plutonic), es: De grano grueso (plutónicas)}
+                about:
+                  en: Coarse-grained crystalline rocks, granite, gabbro, diorite and the ultramafic rocks, named on the QAPF diagram.
+                  es: Rocas cristalinas de grano grueso, granito, gabro, diorita y las rocas ultramáficas, nombradas en el diagrama QAPF.
+                rule: {paths: [igneous.coarse]}
+              - id: fine
+                level: group
+                name: {en: Fine-grained (volcanic), es: De grano fino (volcánicas)}
+                about:
+                  en: Fine-grained crystalline and glassy rocks, basalt, andesite, rhyolite and obsidian, named on the QAPF or TAS diagram.
+                  es: Rocas cristalinas de grano fino y vítreas, basalto, andesita, riolita y obsidiana, nombradas en el diagrama QAPF o TAS.
+                rule: {paths: [igneous.fine]}
+              - id: volcaniclastic
+                level: group
+                name: {en: Volcaniclastic (pyroclastic), es: Volcanoclásticas (piroclásticas)}
+                about:
+                  en: Tuffs, ashes, lapilli and agglomerates, rocks and sediments made of volcanic fragments.
+                  es: Tobas, cenizas, lapilli y aglomerados, rocas y sedimentos formados por fragmentos volcánicos.
+                rule: {paths: [igneous.volcaniclastic]}
+              - id: exotic
+                level: group
+                name: {en: Exotic crystalline rocks, es: Rocas cristalinas exóticas}
+                about:
+                  en: The rocks the scheme classifies apart, lamprophyres, carbonatites, kimberlites, lamproites and the melilitic, kalsilitic and leucitic rocks.
+                  es: Las rocas que el esquema clasifica aparte, lamprófidos, carbonatitas, kimberlitas, lamproítas y las rocas melilíticas, kalsilíticas y leucíticas.
+                rule: {paths: [igneous.exotic]}
+          - id: sedimentary
+            level: sub-collection
+            name: {en: Sedimentary rocks, es: Rocas sedimentarias}
+            about:
+              en: Consolidated sedimentary rocks (RCS volume 3), grouped by their composition.
+              es: Rocas sedimentarias consolidadas (volumen 3 del RCS), agrupadas por su composición.
+            rule: {paths: [sedimentary]}
+            children:
+              - id: siliciclastic
+                level: group
+                name: {en: Siliciclastic, es: Siliciclásticas}
+                about:
+                  en: Conglomerates, sandstones, wackes and mudstones, built of silicate grains.
+                  es: Conglomerados, areniscas, grauvacas y fangolitas, formadas por granos de silicatos.
+                rule: {paths: [sedimentary.siliciclastic]}
+              - id: carbonate
+                level: group
+                name: {en: Carbonate, es: Carbonatadas}
+                about:
+                  en: Limestones and dolostones, named by their texture (wackestone, packstone, grainstone).
+                  es: Calizas y dolomías, nombradas por su textura (wackestone, packstone, grainstone).
+                rule: {paths: [sedimentary.carbonate]}
+              - id: evaporite
+                level: group
+                name: {en: Evaporites, es: Evaporitas}
+                about:
+                  en: Rocks of non-carbonate salts, gypsum, anhydrite, halite and the potash salts.
+                  es: Rocas de sales no carbonatadas, yeso, anhidrita, halita y las sales potásicas.
+                rule: {paths: [sedimentary.evaporite]}
+              - id: chemical-biogenic
+                level: group
+                name: {en: Chemical and biogenic, es: Químicas y biogénicas}
+                about:
+                  en: Cherts, ironstones, phosphorites, coals and bauxite, rocks precipitated or built by organisms.
+                  es: Sílex, rocas ferruginosas, fosforitas, carbones y bauxita, rocas precipitadas o construidas por organismos.
+                rule: {paths: [sedimentary.chemical-biogenic]}
+          - id: metamorphic
+            level: sub-collection
+            name: {en: Metamorphic rocks, es: Rocas metamórficas}
+            about:
+              en: Rocks transformed in the solid state (RCS volume 2). Names defined by their fabric are grouped as foliated or not; names defined by composition stay here.
+              es: Rocas transformadas en estado sólido (volumen 2 del RCS). Los nombres definidos por su fábrica se agrupan en foliadas o no; los definidos por composición quedan aquí.
+            rule: {paths: [metamorphic]}
+            children:
+              - id: foliated
+                level: group
+                name: {en: Foliated, es: Foliadas}
+                about:
+                  en: Slate, schist, gneiss and the mylonites, with a planar fabric.
+                  es: Pizarra, esquisto, gneis y las milonitas, con una fábrica planar.
+                rule: {paths: [metamorphic.foliated]}
+              - id: non-foliated
+                level: group
+                name: {en: Non-foliated, es: No foliadas}
+                about:
+                  en: Granofels, hornfels, marble, quartzite, cataclastic and metasomatic rocks, without a planar fabric.
+                  es: Granofels, corneanas, mármol, cuarcita, rocas cataclásticas y metasomáticas, sin fábrica planar.
+                rule: {paths: [metamorphic.non-foliated]}
+          - id: ore
+            level: sub-collection
+            name: {en: Ore and economic rocks, es: Menas y rocas económicas}
+            about:
+              en: Ores in polished section for reflected-light microscopy, and the oxide cumulates mined as ore.
+              es: Menas en sección pulida para microscopía de luz reflejada, y los cumulados de óxidos que se explotan como mena.
+            rule: {paths: [ore]}
+          - id: meteorites
+            level: sub-collection
+            name: {en: Meteorites and extraterrestrial, es: Meteoritos y material extraterrestre}
+            about:
+              en: Chondrites, achondrites, stony-irons and irons, and lunar and martian meteorites.
+              es: Condritas, acondritas, siderolitos y sideritos, y meteoritos lunares y marcianos.
+            rule: {paths: [meteorite]}
+          - id: soils-sediments
+            level: sub-collection
+            name: {en: Soils and sediments, es: Suelos y sedimentos}
+            about:
+              en: Unconsolidated sediments, sand, mud and peat, and soil thin sections for micromorphology.
+              es: Sedimentos no consolidados, arena, fango y turba, y láminas delgadas de suelo para micromorfología.
+            rule: {paths: [sediment]}
+      - id: minerals
+        level: collection
+        name: {en: Minerals, es: Minerales}
+        about:
+          en: Minerals named by the IMA list, grouped by the ten classes of the Nickel-Strunz classification.
+          es: Minerales nombrados según la lista de la IMA, agrupados en las diez clases de la clasificación de Nickel-Strunz.
+        rule: {kind: mineral}
+        children:
+          - id: native-elements
+            level: sub-collection
+            name: {en: Native elements, es: Elementos nativos}
+            about:
+              en: Class 1, metals such as gold and copper, and non-metals such as sulfur, graphite and diamond.
+              es: Clase 1, metales como oro y cobre, y no metales como azufre, grafito y diamante.
+            rule: {paths: ["1"]}
+          - id: sulfides
+            level: sub-collection
+            name: {en: Sulfides and sulfosalts, es: Sulfuros y sulfosales}
+            about:
+              en: Class 2, pyrite, galena, chalcopyrite, the core of ore microscopy.
+              es: Clase 2, pirita, galena, calcopirita, el centro de la microscopía de menas.
+            rule: {paths: ["2"]}
+          - id: halides
+            level: sub-collection
+            name: {en: Halides, es: Haluros}
+            about:
+              en: Class 3, halite, sylvite and fluorite.
+              es: Clase 3, halita, silvita y fluorita.
+            rule: {paths: ["3"]}
+          - id: oxides
+            level: sub-collection
+            name: {en: Oxides and hydroxides, es: Óxidos e hidróxidos}
+            about:
+              en: Class 4, magnetite, hematite, quartz and ice among them.
+              es: Clase 4, entre ellos magnetita, hematita, cuarzo y hielo.
+            rule: {paths: ["4"]}
+          - id: carbonates
+            level: sub-collection
+            name: {en: Carbonates and nitrates, es: Carbonatos y nitratos}
+            about:
+              en: Class 5, calcite, aragonite, dolomite and malachite.
+              es: Clase 5, calcita, aragonito, dolomita y malaquita.
+            rule: {paths: ["5"]}
+          - id: borates
+            level: sub-collection
+            name: {en: Borates, es: Boratos}
+            about:
+              en: Class 6, borax, ulexite and colemanite.
+              es: Clase 6, bórax, ulexita y colemanita.
+            rule: {paths: ["6"]}
+          - id: sulfates
+            level: sub-collection
+            name: {en: Sulfates and relatives, es: Sulfatos y afines}
+            about:
+              en: Class 7, gypsum, anhydrite and baryte, with chromates, molybdates and tungstates.
+              es: Clase 7, yeso, anhidrita y barita, con cromatos, molibdatos y wolframatos.
+            rule: {paths: ["7"]}
+          - id: phosphates
+            level: sub-collection
+            name: {en: "Phosphates, arsenates and vanadates", es: "Fosfatos, arseniatos y vanadatos"}
+            about:
+              en: Class 8, apatite, turquoise and the uranyl phosphates.
+              es: Clase 8, apatito, turquesa y los fosfatos de uranilo.
+            rule: {paths: ["8"]}
+          - id: silicates
+            level: sub-collection
+            name: {en: Silicates, es: Silicatos}
+            about:
+              en: Class 9, most of the crust, grouped by how their silica tetrahedra are linked.
+              es: Clase 9, la mayor parte de la corteza, agrupados según cómo se enlazan sus tetraedros de sílice.
+            rule: {paths: ["9"]}
+            children:
+              - id: nesosilicates
+                level: group
+                name: {en: Nesosilicates, es: Nesosilicatos}
+                about:
+                  en: Isolated tetrahedra (9.A), olivine, garnet, zircon and the aluminosilicates.
+                  es: Tetraedros aislados (9.A), olivino, granate, circón y los aluminosilicatos.
+                rule: {paths: [9.A]}
+              - id: sorosilicates
+                level: group
+                name: {en: Sorosilicates, es: Sorosilicatos}
+                about:
+                  en: Paired tetrahedra (9.B), the epidote group and vesuvianite.
+                  es: Tetraedros pareados (9.B), el grupo del epidoto y la vesuvianita.
+                rule: {paths: [9.B]}
+              - id: cyclosilicates
+                level: group
+                name: {en: Cyclosilicates, es: Ciclosilicatos}
+                about:
+                  en: Rings of tetrahedra (9.C), beryl, cordierite and tourmaline.
+                  es: Anillos de tetraedros (9.C), berilo, cordierita y turmalina.
+                rule: {paths: [9.C]}
+              - id: inosilicates
+                level: group
+                name: {en: Inosilicates, es: Inosilicatos}
+                about:
+                  en: Single and double chains (9.D), the pyroxenes and amphiboles.
+                  es: Cadenas simples y dobles (9.D), los piroxenos y anfíboles.
+                rule: {paths: [9.D]}
+              - id: phyllosilicates
+                level: group
+                name: {en: Phyllosilicates, es: Filosilicatos}
+                about:
+                  en: Sheets (9.E), micas, chlorites, serpentines and clays.
+                  es: Láminas (9.E), micas, cloritas, serpentinas y arcillas.
+                rule: {paths: [9.E]}
+              - id: tectosilicates
+                level: group
+                name: {en: Tectosilicates, es: Tectosilicatos}
+                about:
+                  en: Frameworks (9.F and 9.G), the feldspars, feldspathoids and zeolites. Nickel-Strunz files quartz with the oxides.
+                  es: Armazones (9.F y 9.G), los feldespatos, feldespatoides y zeolitas. Nickel-Strunz clasifica el cuarzo con los óxidos.
+                rule: {paths: [9.F, 9.G]}
+          - id: organic
+            level: sub-collection
+            name: {en: Organic minerals, es: Minerales orgánicos}
+            about:
+              en: Class 10, organic compounds such as the calcium oxalates whewellite and weddellite.
+              es: Clase 10, compuestos orgánicos como los oxalatos de calcio whewellita y weddellita.
+            rule: {paths: ["10"]}
+
+  - id: matter
+    level: realm
+    name: {en: Matter, es: Materia}
+    about:
+      en: Crystals grown in nature and the laboratory, and made materials.
+      es: Cristales formados en la naturaleza y en el laboratorio, y materiales elaborados.
+    rule:
+      any:
+        - {kind: crystal}
+        - {kind: material, paths: [fibre, food, dust, paper]}
+    children:
+      - id: crystals
+        level: collection
+        name: {en: Crystals, es: Cristales}
+        about:
+          en: Crystals grouped by origin; the crystal system is a facet. Crystals that are minerals of a rock or a specimen belong to Minerals.
+          es: Cristales agrupados por su origen; el sistema cristalino es una faceta. Los cristales que son minerales de una roca o de un ejemplar pertenecen a Minerales.
+        rule: {kind: crystal}
+        children:
+          - id: ice
+            level: sub-collection
+            name: {en: Ice and snow crystals, es: Cristales de hielo y nieve}
+            about:
+              en: Snowflakes and ice crystals, grouped by the general categories of the global classification of Kikuchi and others (2013).
+              es: Copos de nieve y cristales de hielo, agrupados por las categorías generales de la clasificación global de Kikuchi y otros (2013).
+            rule: {paths: [ice]}
+            children:
+              - id: column
+                level: group
+                name: {en: Column crystals, es: Cristales columnares}
+                about:
+                  en: Needles, sheaths, columns and bullets (category C).
+                  es: Agujas, vainas, columnas y proyectiles (categoría C).
+                rule: {paths: [ice.C]}
+              - id: plane
+                level: group
+                name: {en: Plane crystals, es: Cristales planos}
+                about:
+                  en: Plates, sectors and dendrites, the classic six-armed snowflake (category P).
+                  es: Placas, sectores y dendritas, el copo de nieve clásico de seis brazos (categoría P).
+                rule: {paths: [ice.P]}
+              - id: combination
+                level: group
+                name: {en: Combinations of column and plane, es: Combinaciones de columna y plano}
+                about:
+                  en: Capped columns and other crystals that grew as both (category CP).
+                  es: Columnas con tapa y otros cristales que crecieron de ambas formas (categoría CP).
+                rule: {paths: [ice.CP]}
+              - id: aggregation
+                level: group
+                name: {en: Aggregates, es: Agregados}
+                about:
+                  en: Several crystals joined into one particle (category A).
+                  es: Varios cristales unidos en una sola partícula (categoría A).
+                rule: {paths: [ice.A]}
+              - id: rimed
+                level: group
+                name: {en: Rimed crystals, es: Cristales escarchados}
+                about:
+                  en: Crystals coated with frozen droplets, up to graupel (category R).
+                  es: Cristales cubiertos de gotitas congeladas, hasta el granizo blando (categoría R).
+                rule: {paths: [ice.R]}
+              - id: germ
+                level: group
+                name: {en: Germs of snow crystals, es: Gérmenes de cristales de nieve}
+                about:
+                  en: The minute ice crystals snow starts from (category G).
+                  es: Los diminutos cristales de hielo a partir de los que comienza la nieve (categoría G).
+                rule: {paths: [ice.G]}
+              - id: irregular
+                level: group
+                name: {en: Irregular particles, es: Partículas irregulares}
+                about:
+                  en: Snow particles without a recognisable form (category I).
+                  es: Partículas de nieve sin una forma reconocible (categoría I).
+                rule: {paths: [ice.I]}
+              - id: other-precipitation
+                level: group
+                name: {en: Other solid precipitation, es: Otra precipitación sólida}
+                about:
+                  en: Hail, ice pellets and the other frozen forms (category H).
+                  es: Granizo, gránulos de hielo y las demás formas congeladas (categoría H).
+                rule: {paths: [ice.H]}
+          - id: chemical
+            level: sub-collection
+            name: {en: Chemical crystals, es: Cristales químicos}
+            about:
+              en: Compounds recrystallised on a slide and seen in polarised light, salts, sugars, vitamins, amino acids and drugs.
+              es: Compuestos recristalizados sobre una lámina y vistos en luz polarizada, sales, azúcares, vitaminas, aminoácidos y fármacos.
+            rule: {paths: [chemical]}
+          - id: biogenic
+            level: sub-collection
+            name: {en: Biogenic crystals, es: Cristales biogénicos}
+            about:
+              en: Crystals made by organisms, calcium oxalate raphides and druses, otoconia and urinary crystals.
+              es: Cristales formados por organismos, rafidios y drusas de oxalato de calcio, otoconias y cristales urinarios.
+            rule: {paths: [biogenic]}
+          - id: liquid
+            level: sub-collection
+            name: {en: Liquid crystals, es: Cristales líquidos}
+            about:
+              en: Mesophases between liquid and crystal, known by their textures between crossed polars.
+              es: Mesofases entre líquido y cristal, reconocidas por sus texturas entre nícoles cruzados.
+            rule: {paths: [liquid]}
+          - id: growth
+            level: sub-collection
+            name: {en: Growth forms, es: Formas de crecimiento}
+            about:
+              en: Dendrites, spherulites and whiskers, forms that record how fast a crystal grew.
+              es: Dendritas, esferulitas y filamentos, formas que registran qué tan rápido creció un cristal.
+            rule: {paths: [growth]}
+      - id: materials
+        level: collection
+        name: {en: Materials, es: Materiales}
+        about:
+          en: Made and processed materials, fibres, food, dust and paper, from the forensic and conservation microscope.
+          es: Materiales elaborados y procesados, fibras, alimentos, polvo y papel, del microscopio forense y de conservación.
+        rule: {kind: material, paths: [fibre, food, dust, paper]}
+        children:
+          - id: fibres
+            level: sub-collection
+            name: {en: Fibres and textiles, es: Fibras y textiles}
+            about:
+              en: Natural and synthetic fibres, identified by shape, surface and birefringence.
+              es: Fibras naturales y sintéticas, identificadas por su forma, superficie y birrefringencia.
+            rule: {paths: [fibre]}
+          - id: food
+            level: sub-collection
+            name: {en: Food and starch grains, es: Alimentos y granos de almidón}
+            about:
+              en: Starch grains, flours and spices, identified by grain shape and the polarisation cross.
+              es: Granos de almidón, harinas y especias, identificados por la forma del grano y la cruz de polarización.
+            rule: {paths: [food]}
+          - id: dust
+            level: sub-collection
+            name: {en: Dust and microplastics, es: Polvo y microplásticos}
+            about:
+              en: Household and atmospheric dust and the microplastic fragments, fibres and beads found in them.
+              es: Polvo doméstico y atmosférico, y los fragmentos, fibras y esferas de microplástico que contienen.
+            rule: {paths: [dust]}
+          - id: paper
+            level: sub-collection
+            name: {en: Paper and wood products, es: Papel y derivados de la madera}
+            about:
+              en: Paper, cardboard and pulp, whose fibres show the plants and processes they come from.
+              es: Papel, cartón y pulpa, cuyas fibras muestran las plantas y los procesos de los que provienen.
+            rule: {paths: [paper]}

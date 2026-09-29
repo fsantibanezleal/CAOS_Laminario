@@ -132,7 +132,7 @@ def permalink(slide: Slide, settings: Settings) -> str:
 
 def anchor_record(slide: Slide) -> c.AnchorRecord:
     return c.AnchorRecord(kind=slide.anchor_kind, ref=slide.anchor_ref, name=slide.anchor_name,
-                          rank=slide.anchor_rank)
+                          rank=slide.anchor_rank, classification=slide.anchor_classification)
 
 
 def format_record(slide: Slide) -> c.FormatRecord:
@@ -164,6 +164,8 @@ def slide_record(slide: Slide, settings: Settings) -> c.SlideRecord:
         ),
         anchor=anchor_record(slide),
         host=host,
+        part=slide.part,
+        preservation=slide.preservation or "recent",
         place=place_record(slide),
         placement=c.PlacementRecord(node=slide.placement_node,
                                     overridden=bool(slide.placement_override_reason)),

@@ -1,0 +1,406 @@
+# Rock names a rock anchor may use, each with the family that places it in the tree.
+#
+# Sources (every term marked rcs-1, rcs-2 or rcs-3 is checked to occur in its volume by
+# scripts/check_rock_terms.py, which reads the PDFs from the data vault):
+#   rcs-1  Gillespie MR, Styles MT (1999) BGS Rock Classification Scheme, Vol. 1, Classification of igneous rocks,
+#          2nd ed. British Geological Survey Research Report RR 99-06. https://nora.nerc.ac.uk/3223/
+#          Terms and groups transcribed from its appendix, "List of approved names for igneous rocks". Group codes:
+#          cgr coarse-grained crystalline, fgr fine-grained crystalline, vclast volcaniclastic, lamp lamprophyres,
+#          meli melilitic, leuci leucitic, carb carbonatites, kimb kimberlites, kal kalsilitic, lamproite, charn
+#          charnockitic, field field names. Figure 1 of the volume groups lamprophyres, melilitic, kalsilitic and
+#          leucitic rocks, carbonatites, kimberlites and lamproites as the "exotic" crystalline rocks: the
+#          igneous.exotic family. Field names follow the diagram they belong to (coarse or fine grained).
+#   rcs-2  Robertson S (1999) BGS Rock Classification Scheme, Vol. 2, Classification of metamorphic rocks.
+#          RR 99-02. https://nora.nerc.ac.uk/id/eprint/3226/  Root names from its appendix; the section is recorded.
+#          Fabric groups: names defined by a schistosity or a mylonitic foliation are foliated; granofels, hornfels,
+#          marble, quartzite, the cataclastic rocks and the metasomatic rocks are non-foliated; names defined by
+#          protolith or composition alone (pelite, amphibolite, eclogite) stay at the metamorphic level.
+#          The appendix prints "Ultramylonitite" and "Rodinsite"; the text of the volume spells them ultramylonite
+#          and rodingite, which are used here.
+#   rcs-3  Hallsworth CR, Knox RWO'B (1999) BGS Rock Classification Scheme, Vol. 3, Classification of sediments and
+#          sedimentary rocks. RR 99-03. http://nora.nerc.ac.uk/3227/  Consolidated rocks are placed by their section
+#          (2 siliciclastic; 3 carbonate; 7 non-carbonate salts as evaporites; 4, 5, 6, 8 and 9 as chemical and
+#          biogenic); unconsolidated sediments go to soils and sediments. The scheme leaves breccia out on purpose.
+#   met    Weisberg MK, McCoy TJ, Krot AN (2006) Systematics and evaluation of meteorite classification. In Lauretta
+#          DS, McSween HY (eds) Meteorites and the Early Solar System II, 19-52. doi:10.2307/j.ctv1v7zdmm.8
+#   lam    Laminario terms, for material the three volumes do not name (ore textures, soil).
+#
+# chromitite, ilmenitite and magnetitite are rcs-1 names without a group; Laminario places them with the ores.
+source_labels:
+  rcs-1: BGS Rock Classification Scheme, Vol. 1 (igneous)
+  rcs-2: BGS Rock Classification Scheme, Vol. 2 (metamorphic)
+  rcs-3: BGS Rock Classification Scheme, Vol. 3 (sediments and sedimentary rocks)
+  met: Weisberg, McCoy and Krot (2006), meteorite classification
+  lam: Laminario term
+terms:
+  agglomerate: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  alkali-feldspar-granite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  alkali-feldspar-rhyolite: {family: igneous.fine, source: rcs-1, group: fgr}
+  alkali-feldspar-syenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  alkali-feldspar-trachyte: {family: igneous.fine, source: rcs-1, group: fgr}
+  andesite: {family: igneous.fine, source: rcs-1, group: fgr}
+  andesitic-rock: {family: igneous.fine, source: rcs-1, group: field}
+  anorthosite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  anorthositic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  ash: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  ash-breccia: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  basalt: {family: igneous.fine, source: rcs-1, group: fgr}
+  basaltic-andesite: {family: igneous.fine, source: rcs-1, group: fgr}
+  basaltic-rock: {family: igneous.fine, source: rcs-1, group: field}
+  basaltic-trachyandesite: {family: igneous.fine, source: rcs-1, group: fgr}
+  basanite: {family: igneous.fine, source: rcs-1, group: fgr}
+  basanitic-foidite: {family: igneous.fine, source: rcs-1, group: fgr}
+  benmoreite: {family: igneous.fine, source: rcs-1, group: fgr}
+  block-tephra: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  bomb-tephra: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  boninite: {family: igneous.fine, source: rcs-1, group: fgr}
+  calciocarbonatite: {family: igneous.exotic, source: rcs-1, group: carb}
+  calcite-carbonatite: {family: igneous.exotic, source: rcs-1, group: carb}
+  camptonite: {family: igneous.exotic, source: rcs-1, group: lamp}
+  carbonatite: {family: igneous.exotic, source: rcs-1, group: carb}
+  charnockitic-rock: {family: igneous.coarse, source: rcs-1, group: charn}
+  chromitite: {family: ore, source: rcs-1, group: none}
+  clinopyroxene-norite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  clinopyroxenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  coarse-grained-normal-crystalline-rock: {family: igneous.coarse, source: rcs-1, group: none}
+  comenditic-rhyolite: {family: igneous.fine, source: rcs-1, group: fgr}
+  comenditic-trachyte: {family: igneous.fine, source: rcs-1, group: fgr}
+  crystalline-igneous-rock: {family: igneous, source: rcs-1, group: none}
+  cumulate-rock: {family: igneous.coarse, source: rcs-1, group: none}
+  dacite: {family: igneous.fine, source: rcs-1, group: fgr}
+  dacitic-rock: {family: igneous.fine, source: rcs-1, group: field}
+  diorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  dioritic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  dolerite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  dolomite-carbonatite: {family: igneous.exotic, source: rcs-1, group: carb}
+  dunite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  exotic-crystalline-igneous-rock: {family: igneous.exotic, source: rcs-1, group: none}
+  felsite: {family: igneous.fine, source: rcs-1, group: field}
+  ferroan-carbonatite: {family: igneous.exotic, source: rcs-1, group: carb}
+  ferrocarbonatite: {family: igneous.exotic, source: rcs-1, group: carb}
+  fine-grained-normal-crystalline-rock: {family: igneous.fine, source: rcs-1, group: none}
+  foid-bearing-alkali-feldspar-syenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-bearing-alkali-feldspar-trachyte: {family: igneous.fine, source: rcs-1, group: fgr}
+  foid-bearing-anorthosite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-bearing-diorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-bearing-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-bearing-latite: {family: igneous.fine, source: rcs-1, group: fgr}
+  foid-bearing-monzodiorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-bearing-monzogabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-bearing-monzonite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-bearing-syenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-bearing-trachyte: {family: igneous.fine, source: rcs-1, group: fgr}
+  foid-diorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-dioritic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  foid-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-gabbroic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  foid-monzodiorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-monzogabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-monzosyenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-syenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foid-syenitic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  foidite: {family: igneous.fine, source: rcs-1, group: fgr}
+  foiditic-rock: {family: igneous.fine, source: rcs-1, group: field}
+  foidolite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  foidolitic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  fragmental-igneous-rock: {family: igneous.volcaniclastic, source: rcs-1, group: none}
+  fragmental-igneous-sediment: {family: igneous.volcaniclastic, source: rcs-1, group: none}
+  gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  gabbroic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  gabbronorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  glassy-igneous-rock: {family: igneous, source: rcs-1, group: none}
+  granite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  granitic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  granodiorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  group-1-kimberlite: {family: igneous.exotic, source: rcs-1, group: kimb}
+  group-2-kimberlite: {family: igneous.exotic, source: rcs-1, group: kimb}
+  harzburgite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  hawaiite: {family: igneous.fine, source: rcs-1, group: fgr}
+  hornblende-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  hornblende-peridotite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  hornblende-pyroxenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  hornblendite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  igneous-rock: {family: igneous, source: rcs-1, group: none}
+  igneous-sediment: {family: igneous, source: rcs-1, group: none}
+  ilmenitite: {family: ore, source: rcs-1, group: none}
+  kalsilitic-rock: {family: igneous.exotic, source: rcs-1, group: kal}
+  kalsilitite: {family: igneous.exotic, source: rcs-1, group: kal}
+  kalsilitolite: {family: igneous.exotic, source: rcs-1, group: kal}
+  kersantite: {family: igneous.exotic, source: rcs-1, group: lamp}
+  kimberlite: {family: igneous.exotic, source: rcs-1, group: kimb}
+  komatiite: {family: igneous.fine, source: rcs-1, group: fgr}
+  lamproite: {family: igneous.exotic, source: rcs-1, group: lamproite}
+  lamprophyre: {family: igneous.exotic, source: rcs-1, group: lamp}
+  lapilli-ash: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  lapilli-tephra: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  lapilli-tuff: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  lapillistone: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  latite: {family: igneous.fine, source: rcs-1, group: fgr}
+  leucitic-rock: {family: igneous.exotic, source: rcs-1, group: leuci}
+  leucitite: {family: igneous.fine, source: rcs-1, group: fgr}
+  leucitolite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  lherzolite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  mafite: {family: igneous.fine, source: rcs-1, group: field}
+  magnesiocarbonatite: {family: igneous.exotic, source: rcs-1, group: carb}
+  magnetitite: {family: ore, source: rcs-1, group: none}
+  meimechite: {family: igneous.fine, source: rcs-1, group: fgr}
+  melilite-bearing-ultramafic-volcanic-rock: {family: igneous.exotic, source: rcs-1, group: meli}
+  melilitic-rock: {family: igneous.exotic, source: rcs-1, group: meli}
+  melilitite: {family: igneous.exotic, source: rcs-1, group: meli}
+  melilitolite: {family: igneous.exotic, source: rcs-1, group: meli}
+  minette: {family: igneous.exotic, source: rcs-1, group: lamp}
+  monchiquite: {family: igneous.exotic, source: rcs-1, group: lamp}
+  monzodiorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  monzogabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  monzogranite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  monzonite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  mugearite: {family: igneous.fine, source: rcs-1, group: fgr}
+  natrocarbonatite: {family: igneous.exotic, source: rcs-1, group: carb}
+  nephelinite: {family: igneous.fine, source: rcs-1, group: fgr}
+  nephelinolite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  non-ultramafic-melilitic-rock: {family: igneous.exotic, source: rcs-1, group: meli}
+  norite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  normal-crystalline-igneous-rock: {family: igneous, source: rcs-1, group: none}
+  obsidian: {family: igneous.fine, source: rcs-1, group: field}
+  olivine-clinopyroxene-norite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-clinopyroxenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-gabbronorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-hornblende-pyroxenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-hornblendite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-melilitite: {family: igneous.exotic, source: rcs-1, group: meli}
+  olivine-melilitolite: {family: igneous.exotic, source: rcs-1, group: meli}
+  olivine-norite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-orthopyroxene-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-orthopyroxenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-pyroxene-hornblendite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-pyroxene-melilitolite: {family: igneous.exotic, source: rcs-1, group: meli}
+  olivine-pyroxenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  olivine-websterite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  orthopyroxene-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  orthopyroxenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pantelleritic-rhyolite: {family: igneous.fine, source: rcs-1, group: fgr}
+  pantelleritic-trachyte: {family: igneous.fine, source: rcs-1, group: fgr}
+  pegmatite: {family: igneous.coarse, source: rcs-1, group: field}
+  peridotite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  phono-tephrite: {family: igneous.fine, source: rcs-1, group: fgr}
+  phonolite: {family: igneous.fine, source: rcs-1, group: fgr}
+  phonolitic-basanite: {family: igneous.fine, source: rcs-1, group: fgr}
+  phonolitic-foidite: {family: igneous.fine, source: rcs-1, group: fgr}
+  phonolitic-leucitite: {family: igneous.fine, source: rcs-1, group: fgr}
+  phonolitic-rock: {family: igneous.fine, source: rcs-1, group: field}
+  phonolitic-tephrite: {family: igneous.fine, source: rcs-1, group: fgr}
+  picrite: {family: igneous.fine, source: rcs-1, group: fgr}
+  picritic-rock: {family: igneous.fine, source: rcs-1, group: fgr}
+  picrobasalt: {family: igneous.fine, source: rcs-1, group: fgr}
+  pitchstone: {family: igneous.fine, source: rcs-1, group: field}
+  porphyry: {family: igneous, source: rcs-1, group: field}
+  potassic-trachybasalt: {family: igneous.fine, source: rcs-1, group: fgr}
+  pyroclastic-breccia: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  pyroclastic-rock: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  pyroclastic-sediment: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  pyroxene-hornblende-cpx-norite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pyroxene-hornblende-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pyroxene-hornblende-gabbronorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pyroxene-hornblende-norite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pyroxene-hornblende-opx-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pyroxene-hornblende-peridotite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pyroxene-hornblendite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pyroxene-melilitolite: {family: igneous.exotic, source: rcs-1, group: meli}
+  pyroxene-olivine-melilitolite: {family: igneous.exotic, source: rcs-1, group: meli}
+  pyroxene-peridotite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  pyroxenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-alkali-feldspar-syenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-alkali-feldspar-trachyte: {family: igneous.fine, source: rcs-1, group: fgr}
+  quartz-anorthosite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-diorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-gabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-latite: {family: igneous.fine, source: rcs-1, group: fgr}
+  quartz-monzodiorite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-monzogabbro: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-monzonite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-rich-coarse-grained-crystalline-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  quartz-rich-granitic-rock: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-syenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  quartz-trachyte: {family: igneous.fine, source: rcs-1, group: fgr}
+  quartzolite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  rhyodacite: {family: igneous.fine, source: rcs-1, group: fgr}
+  rhyolite: {family: igneous.fine, source: rcs-1, group: fgr}
+  rhyolitic-rock: {family: igneous.fine, source: rcs-1, group: field}
+  sannaite: {family: igneous.exotic, source: rcs-1, group: lamp}
+  shoshonite: {family: igneous.fine, source: rcs-1, group: fgr}
+  spessartite: {family: igneous.exotic, source: rcs-1, group: lamp}
+  syenite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  syenitic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  syenogranite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  tephra: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  tephri-phonolite: {family: igneous.fine, source: rcs-1, group: fgr}
+  tephrite: {family: igneous.fine, source: rcs-1, group: fgr}
+  tephritic-foidite: {family: igneous.fine, source: rcs-1, group: fgr}
+  tephritic-leucitite: {family: igneous.fine, source: rcs-1, group: fgr}
+  tephritic-phonolite: {family: igneous.fine, source: rcs-1, group: fgr}
+  tephritic-rock: {family: igneous.fine, source: rcs-1, group: field}
+  tonalite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  trachyandesite: {family: igneous.fine, source: rcs-1, group: fgr}
+  trachybasalt: {family: igneous.fine, source: rcs-1, group: fgr}
+  trachydacite: {family: igneous.fine, source: rcs-1, group: fgr}
+  trachyte: {family: igneous.fine, source: rcs-1, group: fgr}
+  trachytic-rock: {family: igneous.fine, source: rcs-1, group: field}
+  troctolite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  tuff: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  tuff-breccia: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  tuffaceous-sediment: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  tuffaceous-sedimentary-rock: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  tuffite: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  ultramafic-melilitic-rock: {family: igneous.exotic, source: rcs-1, group: meli}
+  ultramafic-rock: {family: igneous.coarse, source: rcs-1, group: field}
+  ultramafitite: {family: igneous.fine, source: rcs-1, group: fgr}
+  vogesite: {family: igneous.exotic, source: rcs-1, group: lamp}
+  volcaniclastic-igneous-rock: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  volcaniclastic-igneous-sediment: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  volcaniclastic-sediment: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  volcaniclastic-sedimentary-rock: {family: igneous.volcaniclastic, source: rcs-1, group: vclast}
+  websterite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  wehrlite: {family: igneous.coarse, source: rcs-1, group: cgr}
+  amphibolite: {family: metamorphic, source: rcs-2, section: "6.1"}
+  blastomylonite: {family: metamorphic.foliated, source: rcs-2, section: "7.3"}
+  broken-rock: {family: metamorphic.non-foliated, source: rcs-2, section: "7.1"}
+  calcsilicate-rock: {family: metamorphic, source: rcs-2, section: "3.2.3"}
+  cataclasite: {family: metamorphic.non-foliated, source: rcs-2, section: "7.2"}
+  eclogite: {family: metamorphic, source: rcs-2, section: "6.2.2"}
+  fault-breccia: {family: metamorphic.non-foliated, source: rcs-2, section: "7.1"}
+  fault-gouge: {family: metamorphic.non-foliated, source: rcs-2, section: "7.1"}
+  fenite: {family: metamorphic.non-foliated, source: rcs-2, section: "8"}
+  gneiss: {family: metamorphic.foliated, source: rcs-2, section: "6.1"}
+  granofels: {family: metamorphic.non-foliated, source: rcs-2, section: "6.1"}
+  greisen: {family: metamorphic.non-foliated, source: rcs-2, section: "8"}
+  hornfels: {family: metamorphic.non-foliated, source: rcs-2, section: "6.1"}
+  hydrothermal-rock: {family: metamorphic, source: rcs-2, section: "8"}
+  marble: {family: metamorphic.non-foliated, source: rcs-2, section: "6.2.3"}
+  meta-ultramafic-rock: {family: metamorphic, source: rcs-2, section: "5.2.3"}
+  meta-ultramafite: {family: metamorphic, source: rcs-2, section: "5.2.3"}
+  metacarbonate-rock: {family: metamorphic, source: rcs-2, section: "3.2.3"}
+  metafelsic-rock: {family: metamorphic, source: rcs-2, section: "5.2.1"}
+  metafelsite: {family: metamorphic, source: rcs-2, section: "5.2.1"}
+  metamafic-rock: {family: metamorphic, source: rcs-2, section: "5.2.2"}
+  metamafite: {family: metamorphic, source: rcs-2, section: "5.2.2"}
+  metasedimentary-rock: {family: metamorphic, source: rcs-2, section: "3"}
+  metasomatic-rock: {family: metamorphic.non-foliated, source: rcs-2, section: "8"}
+  metavolcaniclastic-breccia: {family: metamorphic, source: rcs-2, section: "4"}
+  metavolcaniclastic-conglomerate: {family: metamorphic, source: rcs-2, section: "4"}
+  metavolcaniclastic-mudstone: {family: metamorphic, source: rcs-2, section: "4"}
+  metavolcaniclastic-rock: {family: metamorphic, source: rcs-2, section: "4"}
+  metavolcaniclastic-sandstone: {family: metamorphic, source: rcs-2, section: "4"}
+  mylonite: {family: metamorphic.foliated, source: rcs-2, section: "7.3"}
+  ortho-amphibolite: {family: metamorphic, source: rcs-2, section: "5.2.2"}
+  orthogneiss: {family: metamorphic.foliated, source: rcs-2, section: "5.3"}
+  orthogranofels: {family: metamorphic.non-foliated, source: rcs-2, section: "5.3"}
+  orthoschist: {family: metamorphic.foliated, source: rcs-2, section: "5.3"}
+  para-amphibolite: {family: metamorphic, source: rcs-2, section: "3.2.3"}
+  paragneiss: {family: metamorphic.foliated, source: rcs-2, section: "3.3"}
+  paragranofels: {family: metamorphic.non-foliated, source: rcs-2, section: "3.3"}
+  paraschist: {family: metamorphic.foliated, source: rcs-2, section: "3.3"}
+  pelite: {family: metamorphic, source: rcs-2, section: "3.2.1"}
+  phyllonite: {family: metamorphic.foliated, source: rcs-2, section: "7.3"}
+  protocataclasite: {family: metamorphic.non-foliated, source: rcs-2, section: "7.2"}
+  protomylonite: {family: metamorphic.foliated, source: rcs-2, section: "7.3"}
+  psammite: {family: metamorphic, source: rcs-2, section: "3.2.1"}
+  pseudotachylite: {family: metamorphic.non-foliated, source: rcs-2, section: "7.4"}
+  quartzite: {family: metamorphic.non-foliated, source: rcs-2, section: "3.2.1"}
+  rodingite: {family: metamorphic.non-foliated, source: rcs-2, section: "8"}
+  schist: {family: metamorphic.foliated, source: rcs-2, section: "6.1"}
+  semipelite: {family: metamorphic, source: rcs-2, section: "3.2.1"}
+  serpentinite: {family: metamorphic, source: rcs-2, section: "5.2.3"}
+  skarn: {family: metamorphic.non-foliated, source: rcs-2, section: "8"}
+  slate: {family: metamorphic.foliated, source: rcs-2, section: "6.1"}
+  ultracataclasite: {family: metamorphic.non-foliated, source: rcs-2, section: "7.2"}
+  ultramafite: {family: metamorphic, source: rcs-2, section: "5.2.3"}
+  ultramylonite: {family: metamorphic.foliated, source: rcs-2, section: "7.3"}
+  conglomerate: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.1.2"}
+  sandstone: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.2.2"}
+  arenite: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.2.2"}
+  quartz-arenite: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.2.2"}
+  lithic-arenite: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.2.2"}
+  feldspathic-arenite: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.2.2"}
+  wacke: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.2.2.2"}
+  quartz-wacke: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.2.2.2"}
+  lithic-wacke: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.2.2.2"}
+  feldspathic-wacke: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.2.2.2"}
+  mudstone: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.3.2"}
+  siltstone: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.3.2"}
+  claystone: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.3.2"}
+  diamictite: {family: sedimentary.siliciclastic, source: rcs-3, section: "2.1.2"}
+  limestone: {family: sedimentary.carbonate, source: rcs-3, section: "3.1.2"}
+  lime-mudstone: {family: sedimentary.carbonate, source: rcs-3, section: "3.1.2"}
+  wackestone: {family: sedimentary.carbonate, source: rcs-3, section: "3.1.2"}
+  packstone: {family: sedimentary.carbonate, source: rcs-3, section: "3.1.2"}
+  grainstone: {family: sedimentary.carbonate, source: rcs-3, section: "3.1.2"}
+  boundstone: {family: sedimentary.carbonate, source: rcs-3, section: "3.1.2"}
+  rudstone: {family: sedimentary.carbonate, source: rcs-3, section: "3.1.2"}
+  floatstone: {family: sedimentary.carbonate, source: rcs-3, section: "3.1.2"}
+  chalk: {family: sedimentary.carbonate, source: rcs-3, section: "3.1.2"}
+  dolostone: {family: sedimentary.carbonate, source: rcs-3, section: "3.2.2"}
+  magnesite-stone: {family: sedimentary.carbonate, source: rcs-3, section: "3.2.3"}
+  gypsum-stone: {family: sedimentary.evaporite, source: rcs-3, section: "7.1"}
+  anhydrite-stone: {family: sedimentary.evaporite, source: rcs-3, section: "7.1"}
+  halite-stone: {family: sedimentary.evaporite, source: rcs-3, section: "7.1"}
+  sylvite-stone: {family: sedimentary.evaporite, source: rcs-3, section: "7.1"}
+  carnallite-stone: {family: sedimentary.evaporite, source: rcs-3, section: "7.1"}
+  kieserite-stone: {family: sedimentary.evaporite, source: rcs-3, section: "7.1"}
+  polyhalite-stone: {family: sedimentary.evaporite, source: rcs-3, section: "7.1"}
+  phosphorite: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "4.2"}
+  ironstone: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "5.2"}
+  banded-ironstone: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "5.3"}
+  coal: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "6.1"}
+  lignite: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "6.1.1.1"}
+  anthracite: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "6.1.1"}
+  cannel-coal: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "6.2"}
+  sapropelite: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "6.3.2.1"}
+  chert: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "8.2"}
+  flint: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "8.2"}
+  porcellanite: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "8.2"}
+  diatomite: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "8.2"}
+  radiolarite: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "8.2"}
+  sinter: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "8.2"}
+  bauxite: {family: sedimentary.chemical-biogenic, source: rcs-3, section: "9.2"}
+  gravel: {family: sediment, source: rcs-3, section: "2.1.1"}
+  sand: {family: sediment, source: rcs-3, section: "2.2.1"}
+  mud: {family: sediment, source: rcs-3, section: "2.3.1"}
+  silt: {family: sediment, source: rcs-3, section: "2.3.1"}
+  clay: {family: sediment, source: rcs-3, section: "2.3.1"}
+  diamicton: {family: sediment, source: rcs-3, section: "2.1.1"}
+  lime-mud: {family: sediment, source: rcs-3, section: "3.1.1"}
+  lime-sand: {family: sediment, source: rcs-3, section: "3.1.1"}
+  lime-gravel: {family: sediment, source: rcs-3, section: "3.1.1"}
+  dolomite-sediment: {family: sediment, source: rcs-3, section: "3.2.1"}
+  phosphate-sediment: {family: sediment, source: rcs-3, section: "4.1"}
+  iron-sediment: {family: sediment, source: rcs-3, section: "5.1"}
+  peat: {family: sediment, source: rcs-3, section: "6.1"}
+  soil: {family: sediment, source: lam, note: "a soil or regolith sample, usually impregnated and cut as a thin section for micromorphology"}
+  massive-sulfide: {family: ore, source: lam, note: "ore made mostly of sulfide minerals, studied in polished section"}
+  disseminated-sulfide: {family: ore, source: lam, note: "sulfide grains scattered through a host rock"}
+  vein-ore: {family: ore, source: lam, note: "ore minerals in a vein or veinlet cutting a host rock"}
+  chondrite: {family: meteorite, source: met}
+  carbonaceous-chondrite: {family: meteorite, source: met}
+  ordinary-chondrite: {family: meteorite, source: met}
+  enstatite-chondrite: {family: meteorite, source: met}
+  rumuruti-chondrite: {family: meteorite, source: met}
+  primitive-achondrite: {family: meteorite, source: met}
+  achondrite: {family: meteorite, source: met}
+  howardite: {family: meteorite, source: met}
+  eucrite: {family: meteorite, source: met}
+  diogenite: {family: meteorite, source: met}
+  angrite: {family: meteorite, source: met}
+  aubrite: {family: meteorite, source: met}
+  ureilite: {family: meteorite, source: met}
+  lunar-meteorite: {family: meteorite, source: met}
+  martian-meteorite: {family: meteorite, source: met}
+  pallasite: {family: meteorite, source: met}
+  mesosiderite: {family: meteorite, source: met}
+  iron-meteorite: {family: meteorite, source: met}
+synonyms:
+  # Names in common use that the scheme files under another term (rcs-3 section 3.1.2, and its sapropelites).
+  tufa: limestone
+  travertine: limestone
+  shale: mudstone
+  oil-shale: sapropelite

@@ -1,0 +1,59 @@
+# The part of an organism a slide shows (specimen.part). Vertebrate slides are prepared by tissue, so the
+# vertebrate collections are divided by organ system and each system lists the parts it holds (dossier 03); plant
+# organs are a facet with their own icons. A slide without a part stays at its collection.
+#
+# group: the organ system (vertebrates) or plant organ facet the term belongs to, for documentation and forms.
+terms:
+  skin: {group: integument, en: Skin, es: Piel}
+  hair: {group: integument, en: Hair, es: Pelo}
+  feather: {group: integument, en: Feather, es: Pluma}
+  scale: {group: integument, en: Scale, es: Escama}
+  osteoderm: {group: integument, en: Osteoderm, es: Osteodermo}
+  claw: {group: integument, en: "Claw, nail or hoof", es: "Garra, uña o pezuña"}
+  blood: {group: blood-immune, en: Blood, es: Sangre}
+  bone-marrow: {group: blood-immune, en: Bone marrow, es: Médula ósea}
+  lymph-node: {group: blood-immune, en: Lymph node, es: Ganglio linfático}
+  spleen: {group: blood-immune, en: Spleen, es: Bazo}
+  thymus: {group: blood-immune, en: Thymus, es: Timo}
+  embryo: {group: development, en: Embryo, es: Embrión}
+  larva: {group: development, en: Larva or tadpole, es: Larva o renacuajo}
+  egg: {group: development, en: Egg, es: Huevo}
+  eggshell: {group: eggshell, en: Eggshell, es: Cáscara de huevo}
+  lung: {group: respiratory, en: Lung, es: Pulmón}
+  trachea: {group: respiratory, en: Trachea, es: Tráquea}
+  gill: {group: respiratory, en: Gill, es: Branquia}
+  tongue: {group: digestive, en: Tongue, es: Lengua}
+  tooth: {group: digestive, en: Tooth, es: Diente}
+  oesophagus: {group: digestive, en: Oesophagus, es: Esófago}
+  stomach: {group: digestive, en: Stomach, es: Estómago}
+  intestine: {group: digestive, en: Intestine, es: Intestino}
+  liver: {group: digestive, en: Liver, es: Hígado}
+  pancreas: {group: digestive, en: Pancreas, es: Páncreas}
+  heart: {group: circulatory, en: Heart, es: Corazón}
+  blood-vessel: {group: circulatory, en: Blood vessel, es: Vaso sanguíneo}
+  brain: {group: nervous-sensory, en: Brain, es: Encéfalo}
+  spinal-cord: {group: nervous-sensory, en: Spinal cord, es: Médula espinal}
+  nerve: {group: nervous-sensory, en: Nerve, es: Nervio}
+  eye: {group: nervous-sensory, en: Eye, es: Ojo}
+  ear: {group: nervous-sensory, en: Ear, es: Oído}
+  otolith: {group: otoliths, en: Otolith, es: Otolito}
+  muscle: {group: musculoskeletal, en: Muscle, es: Músculo}
+  bone: {group: musculoskeletal, en: Bone, es: Hueso}
+  cartilage: {group: musculoskeletal, en: Cartilage, es: Cartílago}
+  kidney: {group: urogenital, en: Kidney, es: Riñón}
+  bladder: {group: urogenital, en: Bladder, es: Vejiga}
+  testis: {group: urogenital, en: Testis, es: Testículo}
+  ovary: {group: urogenital, en: Ovary, es: Ovario}
+  uterus: {group: urogenital, en: Uterus, es: Útero}
+  placenta: {group: urogenital, en: Placenta, es: Placenta}
+  root: {group: plant-organ, en: Root, es: Raíz, facet: true}
+  stem: {group: plant-organ, en: Stem, es: Tallo, facet: true}
+  leaf: {group: plant-organ, en: Leaf, es: Hoja, facet: true}
+  flower: {group: plant-organ, en: Flower, es: Flor, facet: true}
+  anther: {group: plant-organ, en: Anther, es: Antera, facet: true}
+  ovary-and-ovule: {group: plant-organ, en: Ovary and ovule, es: Ovario y óvulo, facet: true}
+  fruit-and-seed: {group: plant-organ, en: Fruit and seed, es: Fruto y semilla, facet: true}
+  wood: {group: plant-organ, en: Wood, es: Madera, facet: true}
+  meristem: {group: plant-organ, en: Meristem, es: Meristema, facet: true}
+  pollen: {group: palynology, en: Pollen, es: Polen}
+  spore: {group: palynology, en: Spore, es: Espora}

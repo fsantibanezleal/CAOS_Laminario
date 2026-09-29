@@ -14,6 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.contracts import licences
+from app.collections.service import ResolvedAnchor
 from app.contracts.ingest import SlideCaseSubmission, coverslip_size_mm, slide_size_mm
 from app.db import short_id
 from app.db.models import Asset, Slide
@@ -27,8 +28,10 @@ def _media_kind(asset) -> str:
     return "pyramid" if asset.family == "micro" else "image"
 
 
-def slide_from_submission(sub: SlideCaseSubmission, *, new_id: str, contributor_id: str | None = None) -> Slide:
-    """The rows for a validated submission (not yet added to a session)."""
+def slide_from_submission(sub: SlideCaseSubmission, *, new_id: str, contributor_id: str | None = None,
+                          resolved: ResolvedAnchor | None = None) -> Slide:
+    """The rows for a validated submission (not yet added to a session); ``resolved`` is the anchor's canonical
+    form from the collection tree (U7), stored in place of the reference as typed."""
     width, height = slide_size_mm(sub.slide)
     cover = coverslip_size_mm(sub.slide)
     sp = sub.specimen
@@ -50,9 +53,12 @@ def slide_from_submission(sub: SlideCaseSubmission, *, new_id: str, contributor_
         prepared_on=sub.slide.prepared_on,
         preparer=sub.slide.preparer,
         anchor_kind=sp.anchor.kind,
-        anchor_ref=sp.anchor.ref,
+        anchor_ref=resolved.ref if resolved else sp.anchor.ref,
         anchor_name=sp.anchor.name,
-        anchor_rank=sp.anchor.rank,
+        anchor_rank=resolved.rank if resolved else sp.anchor.rank,
+        anchor_classification=resolved.classification if resolved else sp.anchor.classification,
+        part=sp.part,
+        preservation=sp.preservation,
         host_ref=sp.host.ref if sp.host else None,
         host_name=sp.host.name if sp.host else None,
         host_rank=sp.host.rank if sp.host else None,
@@ -96,10 +102,11 @@ def slide_from_submission(sub: SlideCaseSubmission, *, new_id: str, contributor_
 
 
 async def create_slide(session: AsyncSession, sub: SlideCaseSubmission, *, contributor_id: str | None = None,
-                       generate: Callable[[], str] = short_id.generate) -> Slide:
+                       generate: Callable[[], str] = short_id.generate,
+                       resolved: ResolvedAnchor | None = None) -> Slide:
     """Store a validated submission as a draft slide with pending assets; retry on a short-id collision."""
     for _ in range(MAX_ID_ATTEMPTS):
-        slide = slide_from_submission(sub, new_id=generate(), contributor_id=contributor_id)
+        slide = slide_from_submission(sub, new_id=generate(), contributor_id=contributor_id, resolved=resolved)
         session.add(slide)
         try:
             await session.flush()

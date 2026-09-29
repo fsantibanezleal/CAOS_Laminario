@@ -14,6 +14,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.contracts.ingest import validate_submission
+from app.config import Settings
+from app.db.migrate import upgrade_to_head
 from app.main import create_app
 from tests import payloads
 
@@ -366,8 +368,10 @@ def test_no_flags_when_nothing_to_flag():
     assert report.valid and report.flags == []
 
 
-def test_validate_endpoint_answers_422_with_errors_and_200_with_flags():
-    with TestClient(create_app()) as client:
+def test_validate_endpoint_answers_422_with_errors_and_200_with_flags(tmp_path):
+    settings = Settings(data_root=tmp_path / "data")
+    upgrade_to_head(settings.data_root / "laminario.sqlite3")
+    with TestClient(create_app(settings)) as client:
         bad = client.post("/api/slide-cases/validate", json=set_path(payloads.contribution(), "slide.format", "glass"))
         assert bad.status_code == 422
         assert bad.json()["valid"] is False

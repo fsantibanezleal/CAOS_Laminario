@@ -38,6 +38,11 @@ CATALOG_ROOTS = {
     "invitation": c.InvitationRecord,
     "createdSlideCase": c.CreatedSlideCase,
     "upload": c.UploadRecord,
+    "collectionTree": c.CollectionTreeRecord,
+    "collectionNode": c.CollectionNodeDetail,
+    "facet": c.FacetRecord,
+    "anchorSuggestion": c.AnchorSuggestion,
+    "placement": c.PlacementResult,
 }
 
 

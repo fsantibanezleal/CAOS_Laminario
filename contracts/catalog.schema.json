@@ -32,6 +32,21 @@
     },
     "upload": {
       "$ref": "#/$defs/UploadRecord"
+    },
+    "collectionTree": {
+      "$ref": "#/$defs/CollectionTreeRecord"
+    },
+    "collectionNode": {
+      "$ref": "#/$defs/CollectionNodeDetail"
+    },
+    "facet": {
+      "$ref": "#/$defs/FacetRecord"
+    },
+    "anchorSuggestion": {
+      "$ref": "#/$defs/AnchorSuggestion"
+    },
+    "placement": {
+      "$ref": "#/$defs/PlacementResult"
     }
   },
   "additionalProperties": false,
@@ -105,6 +120,17 @@
             }
           ],
           "default": null
+        },
+        "classification": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "required": [
@@ -113,6 +139,57 @@
         "name"
       ],
       "title": "AnchorRecord",
+      "type": "object"
+    },
+    "AnchorSuggestion": {
+      "additionalProperties": false,
+      "description": "A name the anchor field can offer (``GET /api/anchors/search``).",
+      "properties": {
+        "ref": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "rank": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "classification": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "context": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "ref",
+        "name"
+      ],
+      "title": "AnchorSuggestion",
       "type": "object"
     },
     "AssetRecord": {
@@ -274,6 +351,117 @@
       "title": "CellRecord",
       "type": "object"
     },
+    "CollectionNodeDetail": {
+      "additionalProperties": false,
+      "description": "One node (``GET /api/collections/{id}``): itself with its children, and the path down to it.",
+      "properties": {
+        "node": {
+          "$ref": "#/$defs/CollectionNodeRecord"
+        },
+        "path": {
+          "items": {
+            "$ref": "#/$defs/NodeRef"
+          },
+          "type": "array"
+        },
+        "iiif_collection_url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "node",
+        "path",
+        "iiif_collection_url"
+      ],
+      "title": "CollectionNodeDetail",
+      "type": "object"
+    },
+    "CollectionNodeRecord": {
+      "additionalProperties": false,
+      "description": "A node of the collection tree (``GET /api/collections``), with its published slides counted.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "realm",
+            "collection",
+            "sub-collection",
+            "group"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "$ref": "#/$defs/LocalisedText"
+        },
+        "about": {
+          "$ref": "#/$defs/LocalisedText"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "view": {
+          "default": false,
+          "type": "boolean"
+        },
+        "priority": {
+          "default": 0,
+          "type": "integer"
+        },
+        "defined_by": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/DefinitionRecord"
+          },
+          "type": "array"
+        },
+        "slide_count": {
+          "default": 0,
+          "type": "integer"
+        },
+        "children": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/CollectionNodeRecord"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "level",
+        "name",
+        "about",
+        "icon"
+      ],
+      "title": "CollectionNodeRecord",
+      "type": "object"
+    },
+    "CollectionTreeRecord": {
+      "additionalProperties": false,
+      "description": "The whole tree: the three realms and everything under them.",
+      "properties": {
+        "realms": {
+          "items": {
+            "$ref": "#/$defs/CollectionNodeRecord"
+          },
+          "type": "array"
+        },
+        "counts": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "realms",
+        "counts"
+      ],
+      "title": "CollectionTreeRecord",
+      "type": "object"
+    },
     "CoverslipRecord": {
       "additionalProperties": false,
       "properties": {
@@ -318,6 +506,103 @@
         "status"
       ],
       "title": "CreatedSlideCase",
+      "type": "object"
+    },
+    "DefinitionRecord": {
+      "additionalProperties": false,
+      "description": "One condition of a node's rule, for people: a taxon with its GBIF page, a rock family, a part.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "taxon",
+            "excluded-taxon",
+            "kind",
+            "rock",
+            "mineral",
+            "crystal",
+            "material",
+            "part",
+            "preservation",
+            "relation"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "kind",
+        "value",
+        "label"
+      ],
+      "title": "DefinitionRecord",
+      "type": "object"
+    },
+    "FacetRecord": {
+      "additionalProperties": false,
+      "description": "A property that cuts across the tree, with the icon of each value.",
+      "properties": {
+        "id": {
+          "enum": [
+            "preparation",
+            "modality",
+            "plant-organ",
+            "crystal-system"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "$ref": "#/$defs/LocalisedText"
+        },
+        "values": {
+          "items": {
+            "$ref": "#/$defs/FacetValueRecord"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "values"
+      ],
+      "title": "FacetRecord",
+      "type": "object"
+    },
+    "FacetValueRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "$ref": "#/$defs/LocalisedText"
+        },
+        "icon": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "icon"
+      ],
+      "title": "FacetValueRecord",
       "type": "object"
     },
     "FormatRecord": {
@@ -694,6 +979,23 @@
       "title": "LicenceRecord",
       "type": "object"
     },
+    "LocalisedText": {
+      "additionalProperties": false,
+      "properties": {
+        "en": {
+          "type": "string"
+        },
+        "es": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "en",
+        "es"
+      ],
+      "title": "LocalisedText",
+      "type": "object"
+    },
     "MediaRecord": {
       "additionalProperties": false,
       "properties": {
@@ -769,6 +1071,27 @@
         "kind"
       ],
       "title": "MediaRecord",
+      "type": "object"
+    },
+    "NodeRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "$ref": "#/$defs/LocalisedText"
+        },
+        "icon": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "icon"
+      ],
+      "title": "NodeRef",
       "type": "object"
     },
     "PlaceRecord": {
@@ -849,6 +1172,57 @@
         "node"
       ],
       "title": "PlacementRecord",
+      "type": "object"
+    },
+    "PlacementResult": {
+      "additionalProperties": false,
+      "description": "Where a slide belongs (``POST /api/placement``): the suggestion, and every node that accepts it.",
+      "properties": {
+        "anchor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AnchorRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "suggestion": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "path": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/NodeRef"
+          },
+          "type": "array"
+        },
+        "accepting": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "errors": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ValidationError"
+          },
+          "type": "array"
+        }
+      },
+      "title": "PlacementResult",
       "type": "object"
     },
     "PlaneRecord": {
@@ -1048,6 +1422,26 @@
             }
           ],
           "default": null
+        },
+        "part": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "preservation": {
+          "default": "recent",
+          "enum": [
+            "recent",
+            "fossil",
+            "in_amber"
+          ],
+          "type": "string"
         },
         "place": {
           "$ref": "#/$defs/PlaceRecord"

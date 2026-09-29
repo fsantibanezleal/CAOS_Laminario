@@ -10,10 +10,11 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from app.accounts.users import build as build_accounts
+from app.collections import taxa
 from app.config import Settings, get_settings
 from app.db.engine import async_sessions, database_path, make_async_engine, make_sync_engine
 from app.delivery.iiif import InfoCache
-from app.routers import accounts, iiif, jobs, slides, uploads
+from app.routers import accounts, collections, iiif, jobs, slides, uploads
 from app.version import VERSION
 
 
@@ -28,9 +29,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.state.sync_engine = make_sync_engine(database_path(settings))  # the job queue's writes
         app.state.tile_client = httpx2.AsyncClient(base_url=settings.iipsrv_url, timeout=30.0)
         app.state.iiif_info_cache = InfoCache()
+        app.state.gbif_client = taxa.new_client(settings.gbif_api_url)
         try:
             yield
         finally:
+            await app.state.gbif_client.aclose()
             await app.state.tile_client.aclose()
             app.state.sync_engine.dispose()
             await engine.dispose()
@@ -70,6 +73,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(slides.router)
     app.include_router(iiif.router)
     app.include_router(jobs.router)
+    app.include_router(collections.router)
     return app
 
 

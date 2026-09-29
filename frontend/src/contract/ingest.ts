@@ -56,6 +56,8 @@ export interface SpecimenSpec {
   coordinates?: Coordinates | null;
   geoprivacy?: "open" | "obscured" | "private";
   host?: Anchor | null;
+  part?: string | null;
+  preservation?: "recent" | "fossil" | "in_amber";
   type_status?:
     | (
         | "holotype"
@@ -78,6 +80,7 @@ export interface Anchor {
   ref: string;
   name: string;
   rank?: string | null;
+  classification?: string | null;
 }
 export interface Coordinates {
   lat: number;

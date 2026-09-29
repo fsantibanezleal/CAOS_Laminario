@@ -40,6 +40,7 @@ Modality = Literal[
     "polarised_xpl", "reflected", "fluorescence", "sem_external",
 ]
 AnchorKind = Literal["taxon", "rock", "mineral", "crystal", "material"]
+Preservation = Literal["recent", "fossil", "in_amber"]
 Geoprivacy = Literal["open", "obscured", "private"]
 TypeStatus = Literal[
     "holotype", "paratype", "allotype", "syntype", "lectotype", "paralectotype", "neotype", "topotype", "other",
@@ -149,6 +150,10 @@ class Anchor(_Model):
                      json_schema_extra=_expect("1 to 200 characters; for a taxon, its GBIF usage key"))
     name: str = Field(min_length=1, max_length=200, json_schema_extra=_expect("1 to 200 characters"))
     rank: str | None = Field(None, max_length=32, json_schema_extra=_expect("at most 32 characters"))
+    classification: str | None = Field(
+        None, max_length=12, pattern=r"^[0-9A-Za-z.]{1,12}$",
+        json_schema_extra=_expect("a Nickel-Strunz code for a mineral (9, 9.A or 9.AF.15) or a snow-crystal "
+                                  "category for ice (C, P, CP, A, R, I, G, H)"))
 
 
 class Coordinates(_Model):
@@ -165,6 +170,9 @@ class SpecimenSpec(_Model):
     coordinates: Coordinates | None = None
     geoprivacy: Geoprivacy = Field("open", json_schema_extra=_expect(_one_of(Geoprivacy)))
     host: Anchor | None = Field(None, json_schema_extra=_expect("a taxon anchor"))
+    part: str | None = Field(None, max_length=40, pattern=r"^[a-z]+(?:-[a-z]+)*$",
+                             json_schema_extra=_expect("a part of the parts vocabulary, such as blood or feather"))
+    preservation: Preservation = Field("recent", json_schema_extra=_expect(_one_of(Preservation)))
     type_status: TypeStatus | None = Field(None, json_schema_extra=_expect(_one_of(TypeStatus)))
 
 
@@ -308,6 +316,13 @@ def rule_errors(sub: SlideCaseSubmission) -> list[Issue]:
     if anchor.kind == "taxon" and not anchor.ref.isdigit():
         issues.append(Issue("specimen.anchor.ref", "a taxon is referenced by its GBIF usage key",
                             "the GBIF usage key, digits only"))
+    if anchor.classification and anchor.kind not in ("mineral", "crystal"):
+        issues.append(Issue("specimen.anchor.classification", f"a {anchor.kind} takes no classification",
+                            "no classification"))
+    if sub.specimen.part and anchor.kind != "taxon":
+        issues.append(Issue("specimen.part", "only an organism has parts", "no part"))
+    if sub.specimen.preservation != "recent" and anchor.kind != "taxon":
+        issues.append(Issue("specimen.preservation", "only an organism is fossil or in amber", "recent"))
     host = sub.specimen.host
     if host is not None:
         if host.kind != "taxon":
