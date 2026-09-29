@@ -11,6 +11,7 @@ from app.db import models  # noqa: F401
 from app.db.base import Base
 from app.db.engine import make_sync_engine
 from app.db.migrate import alembic_config, upgrade_to_head
+from app.services.search import FTS_TABLES
 
 
 def test_head_matches_models(tmp_path: Path):
@@ -18,7 +19,8 @@ def test_head_matches_models(tmp_path: Path):
     upgrade_to_head(database)
     engine = make_sync_engine(database)
     inspector = inspect(engine)
-    live_tables = set(inspector.get_table_names()) - {"alembic_version"}
+    # The FTS5 index (a virtual table and its shadow tables) is created by migration 0008, not by the models.
+    live_tables = set(inspector.get_table_names()) - {"alembic_version"} - set(FTS_TABLES)
     assert live_tables == set(Base.metadata.tables)
     for name, table in Base.metadata.tables.items():
         live_cols = {c["name"]: c for c in inspector.get_columns(name)}
@@ -41,6 +43,31 @@ def test_upgrade_is_idempotent(tmp_path: Path):
         assert conn.execute(text("select version_num from alembic_version")).scalar_one() == head
     engine.dispose()
     assert head is not None and int(head) >= 2  # 0002 records remote IIIF versions (U3)
+
+
+def test_slides_older_than_the_search_index_are_indexed(tmp_path: Path):
+    """Migration 0008 composes the search text and the country of the slides that existed before it."""
+    from alembic import command
+
+    from tests import payloads
+    from tests.explore.test_explore import seed
+    from tests.accounts.support import settings_for
+
+    settings = settings_for(tmp_path)
+    database = settings.data_root / "laminario.sqlite3"
+    seed(settings, [{"preparation": "smear"}])
+    command.downgrade(alembic_config(database), "0007")
+    upgrade_to_head(database)
+    engine = make_sync_engine(database)
+    try:
+        with engine.connect() as conn:
+            country, composed = conn.execute(text("SELECT country, search_text FROM slide")).one()
+            hits = conn.execute(text("SELECT count(*) FROM slide_search WHERE slide_search MATCH :q"),
+                                {"q": '"piojos"*'}).scalar_one()
+    finally:
+        engine.dispose()
+    assert country == "CL"  # from the contribution's coordinates in Santiago
+    assert payloads.contribution()["specimen"]["anchor"]["name"] in composed and hits == 1
 
 
 def test_sqlite_pragmas_on_every_connection(tmp_path: Path):

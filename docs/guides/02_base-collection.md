@@ -38,7 +38,10 @@ If a category sheet must be harvested again, compare the first columns of the ol
 Open the sheet and its `.tsv`, and read each chosen record's description (in the `.jsonl`) for the organism, the
 illumination and the stain. Write one line per slide in `data/base/picks/<sheet>.txt` (the notation is in the
 design page, section 3.2), with a comment block at the top saying what was reviewed and what was excluded and why.
-Then:
+When the source states where the specimen came from, write it as `locality=` the way the source gives it, and add
+`country=` with the ISO 3166-1 code when the locality names a country or a place inside exactly one country
+(`locality=Ponza, Italy; country=IT`, `locality=South Uist; country=GB`); never infer a country from anything else.
+An NHM record's own country is taken by `lock` and must agree with a `country=` the pick states. Then:
 
 ```powershell
 .\.venv\Scripts\python -m app.base select
@@ -55,6 +58,9 @@ Then:
 | `the source records no author or rights holder` | drop the pick: it cannot be attributed |
 | `<node> does not take it; suggested <node>` | remove the node, or name an accepting one |
 | `duplicate slide id` | the same file was picked twice (from two sheets) |
+| `the record's country ... is not a CLDR name` | the NHM record writes the country its own way: state `country=` on the pick |
+| `the pick's country XX is not the record's ...` | the pick and the NHM record disagree: read the record again |
+| `country 'XX' is not an ISO 3166-1 code of the vocabulary` | a typing error in `country=` |
 
 ## 3. Acquire and validate
 
@@ -83,6 +89,17 @@ pyramids, the z-plane policy, derivatives). It can take hours for the whole-slid
 so a stopped bake continues where it stopped. It ends by writing `manifest.json` and reports the number of failed
 jobs, which must be zero before an import.
 
+The index keeps two fingerprints of each baked slide: of its assets and of its whole lock entry. After the lock
+changes, a slide whose assets changed is baked again, and a slide whose record alone changed (a country, a locality, a
+determination) has its rows rewritten in place with its images kept, so a corrected label never fuses a focal stack
+again. `--refresh <slide id>` bakes a slide again whatever changed. A bake root made before the images fingerprint
+existed learns it once from the lock it was baked from:
+
+```powershell
+git show <commit of that lock>:data/base/lock.yaml > (Join-Path $env:TEMP "baked-from.yaml")
+.\.venv\Scripts\python -m app.base bake --out <bake root> --digests-from (Join-Path $env:TEMP "baked-from.yaml")
+```
+
 ## 5. Import on the server
 
 Copy the bake root to the server's staging folder, then import (on the server):
@@ -92,5 +109,7 @@ cd /opt/laminario && sudo -u laminario .venv/bin/python -m app.base import --bak
 ```
 
 The import verifies every stored file against the manifest before it writes anything, copies the files into the
-store, inserts the slides and assets as baked, and prints what it imported, skipped and copied. Running it again
-imports nothing new. Remove the staging copy afterwards.
+store, inserts the slides and assets as baked, composes their search text with the server's tree, and prints what it
+imported, updated, skipped and copied. A base slide already on the server is brought to the bake's rows when its
+record or its assets changed since, and skipped otherwise, so running the import again changes nothing. Remove the
+staging copy afterwards.

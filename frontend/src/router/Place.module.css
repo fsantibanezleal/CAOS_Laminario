@@ -1,0 +1,28 @@
+.main {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: var(--s-6) var(--s-5) var(--s-9);
+}
+
+.wide {
+  max-width: none;
+}
+
+.heading {
+  font-size: var(--fs-7);
+  outline-offset: 4px;
+}
+
+.heading:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding: var(--s-7) var(--s-6) var(--s-9);
+  }
+
+  .heading {
+    font-size: var(--fs-8);
+  }
+}

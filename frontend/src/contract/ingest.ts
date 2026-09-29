@@ -55,6 +55,7 @@ export interface SpecimenSpec {
   collector?: string | null;
   locality_text?: string | null;
   coordinates?: Coordinates | null;
+  country?: string | null;
   geoprivacy?: "open" | "obscured" | "private";
   host?: Anchor | null;
   part?: string | null;

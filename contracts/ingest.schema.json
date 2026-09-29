@@ -694,6 +694,19 @@
           ],
           "default": null
         },
+        "country": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z]{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "an ISO 3166-1 alpha-2 code in capitals, such as CL"
+        },
         "geoprivacy": {
           "default": "open",
           "enum": [

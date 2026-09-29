@@ -83,8 +83,14 @@ One line per slide, written against the sheet:
 Anchors are `taxon=Name@rank[@Kingdom]` or `taxon=#<backbone key>`, `rock=`, `mineral=Name[:class]`,
 `crystal=origin[/system][:category]`, `material=`, with `~fossil` or `~in_amber` when needed. Extras record facts
 read on a label or a source sheet: `host`, `locality`, `collected`, `collector`, `preparer`, `name` (the
-determination as written), `type`, `catalogue`, `stack=policy`, `pixel` (micrometres per pixel, when stated). The
+determination as written), `type`, `catalogue`, `stack=policy`, `pixel` (micrometres per pixel, when stated),
+`country` (the ISO 3166-1 code, when the stated locality names a country or a place inside exactly one country). The
 section header of the file (`[life.fishes]`) is the collection the pick is meant for; the tree decides the node.
+
+A base slide carries a country only where its source states one (R-1009): the locality the curator transcribed, or
+the NHM record's own country, whose name `lock` maps to its code through the CLDR names and checks against a code the
+pick states. Nothing is geocoded from free text. 69 of the 505 slides have one (dossier 12): the NHM slides, the
+NMNH, USDA and Field Museum scans, and the Commons and Smithsonian images whose sheets name their locality.
 
 What the curator records as illumination is what the source states, or what the image shows beyond doubt
 (interference colours on an extinct black ground are crossed polars). An image whose illumination can be neither
@@ -150,10 +156,18 @@ points each asset at its acquired file in the vault, queues the processing jobs 
 is empty. It writes nothing outside `ROOT` (R-073). `manifest.json` lists every slide and asset row and the file
 behind every storage key with its SHA-256 and size.
 
+`bake-index.json` keeps, for each baked slide, its short id and two fingerprints (SHA-256 of canonical JSON): of the
+lock entry's assets, which is what its images are made from, and of the whole entry. When the lock changes, a slide
+whose assets changed is removed and baked again; a slide whose record alone changed is rewritten in place from its
+submission (every slide column, none of the assets) with no job queued. An entry made before the assets fingerprint
+existed cannot tell what changed and is baked again, unless `--digests-from` names the lock it was baked from, which
+records the fingerprint for the entries that match it.
+
 The server never bakes. `import --bake ROOT` verifies every stored file against the manifest, refuses a bake with a
 failed job or a changed file, copies the files under their storage keys (content addresses, so an identical file is
-left in place), and inserts the rows as baked. An import can be repeated: a slide already imported is skipped, and a
-short id held by another slide is refused.
+left in place), and inserts the rows as baked. The search text of every slide it writes is composed again with the
+server's tree. An import can be repeated: a base slide already imported is brought to the bake's rows when its record
+or its assets changed since, and skipped otherwise; a short id held by another slide is refused.
 
 ## 4. Tests
 
@@ -167,4 +181,5 @@ short id held by another slide is refused.
 | `tests/base/test_picks.py` | every head form, anchor form and extra of the notation |
 | `tests/base/test_importer.py` | a changed or missing file, or a failed job, stops the import |
 | `tests/base/test_sources.py` | Commons, NHM and Smithsonian answers become candidates only under the base licence policy |
-| `tests/base/test_bake_sandbox.py::test_tests_never_write_canonical_outputs` | two slides baked and imported in temporary folders, the repository's records unchanged (local, with the vault) |
+| `tests/base/test_bake_sandbox.py::test_tests_never_write_canonical_outputs` | two slides baked and imported in temporary folders, the repository's records unchanged, the imported slides found by search (local, with the vault) |
+| `tests/base/test_countries.py` | every country in the lock is a vocabulary code stated by a locality or an NHM record; the two fingerprints tell a record change from an image change; a country added to two baked slides rewrites their rows with no job queued and reaches the served rows and the search on the next import (local, with the vault) |

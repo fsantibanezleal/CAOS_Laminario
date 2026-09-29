@@ -14,7 +14,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.contracts import licences
+from app.collections import places
 from app.collections.service import ResolvedAnchor
+from app.services import search
 from app.contracts.ingest import SlideCaseSubmission, coverslip_size_mm, slide_size_mm
 from app.db import short_id
 from app.db.models import Asset, Slide
@@ -69,12 +71,17 @@ def slide_from_submission(sub: SlideCaseSubmission, *, new_id: str, contributor_
         locality_text=sp.locality_text,
         lat=sp.coordinates.lat if sp.coordinates else None,
         lon=sp.coordinates.lon if sp.coordinates else None,
+        country=sp.country or (places.locate(sp.coordinates.lat, sp.coordinates.lon) if sp.coordinates else None),
         uncertainty_m=sp.coordinates.uncertainty_m if sp.coordinates else None,
         geoprivacy=sp.geoprivacy,
         placement_node=sub.placement.node,
         placement_override_reason=sub.placement.override_reason,
         contributor_id=contributor_id,
     )
+    slide.search_text = search.compose(
+        short_id=new_id, anchor_name=slide.anchor_name, host_name=slide.host_name,
+        catalogue_number=slide.catalogue_number, locality_text=slide.locality_text, country=slide.country,
+        placement_node=slide.placement_node, preparation=slide.preparation, stain=slide.stain)
     for order, a in enumerate(sub.assets):
         slide.assets.append(Asset(
             family=a.family,
@@ -121,6 +128,14 @@ async def create_slide(session: AsyncSession, sub: SlideCaseSubmission, *, contr
 
 def _with_assets():
     return select(Slide).options(selectinload(Slide.assets))
+
+
+async def slides_by_ids(session: AsyncSession, ids: list[int]) -> list[Slide]:
+    """Slides with their assets, in the order of ``ids``."""
+    if not ids:
+        return []
+    rows = {s.id: s for s in (await session.execute(_with_assets().where(Slide.id.in_(ids)))).scalars().all()}
+    return [rows[i] for i in ids if i in rows]
 
 
 async def get_slide(session: AsyncSession, raw_id: str, *, published_only: bool = True) -> Slide | None:

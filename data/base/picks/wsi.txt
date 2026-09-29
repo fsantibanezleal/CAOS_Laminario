@@ -6,14 +6,14 @@
 # OpenSlide test data (CC0 1.0): only the items whose index entry names the tissue and the organism is identifiable;
 # the CMU-n slides, whose tissue is not recorded, are left out, and Zeiss CZI, which OpenSlide 4.0.1 does not read.
 [life.plants]
-zenodo 18397703 7_Colorados_8_2024_05_15_14_45_00.ndpi | taxon=Tracheophyta@phylum | section | wood | brightfield | | | wood tissue, sample 8 of the Colorados series, Instituto Alexander von Humboldt, botany; the sheet gives no determination | locality=Colombia; collector=Diana Perez; stack=policy
+zenodo 18397703 7_Colorados_8_2024_05_15_14_45_00.ndpi | taxon=Tracheophyta@phylum | section | wood | brightfield | | | wood tissue, sample 8 of the Colorados series, Instituto Alexander von Humboldt, botany; the sheet gives no determination | locality=Colombia; collector=Diana Perez; stack=policy; country=CO
 
 [life.insects]
-zenodo 18397703 10_Ctenidiosomus_perpexsus_Holotype_2025_09_08_12_31_29.ndpi | taxon=Ctenidiosomus perplexus@species | whole_mount | | brightfield | | | flea, holotype, NMNH Entomology; described by Tipton and Machado-Allison (1972); the sheet spells the name perpexsus | locality=Trujillo, Venezuela; type=holotype; catalogue=USNMENT01866405; stack=policy
-zenodo 18397703 11_Ctenidiosomus_perpexsus_Allotype_2025_09_08_12_43_17.ndpi | taxon=Ctenidiosomus perplexus@species | whole_mount | | brightfield | | | flea, allotype (the file name; the sheet's type column repeats holotype), NMNH Entomology | locality=Trujillo, Venezuela; type=allotype; catalogue=USNMENT01866406; stack=policy
-zenodo 18461326 12_Tetraleurodes_85_10304_2024-01-04 11.10.43.ndpi | taxon=Tetraleurodes@genus | whole_mount | | brightfield | | | whitefly, USDA Entomology | locality=California, USA; collector=Ian Stocks; stack=policy
-zenodo 18461326 13_Ptiliidae_FM_46745_2025_09_08_12_49_22.ndpi | taxon=Ptiliidae@family | whole_mount | | brightfield | | | featherwing beetle, Field Museum Entomology FM 46745 | locality=Florida, USA; collector=Bruno de Medeiros; stack=policy
-zenodo 18461326 14_Ptiliidae_FM_66-245_2025_09_08_12_38_40.ndpi | taxon=Ptiliidae@family | whole_mount | | brightfield | | | featherwing beetle, Field Museum Entomology FM 66-245 | locality=Florida, USA; collector=Bruno de Medeiros; stack=policy
+zenodo 18397703 10_Ctenidiosomus_perpexsus_Holotype_2025_09_08_12_31_29.ndpi | taxon=Ctenidiosomus perplexus@species | whole_mount | | brightfield | | | flea, holotype, NMNH Entomology; described by Tipton and Machado-Allison (1972); the sheet spells the name perpexsus | locality=Trujillo, Venezuela; type=holotype; catalogue=USNMENT01866405; stack=policy; country=VE
+zenodo 18397703 11_Ctenidiosomus_perpexsus_Allotype_2025_09_08_12_43_17.ndpi | taxon=Ctenidiosomus perplexus@species | whole_mount | | brightfield | | | flea, allotype (the file name; the sheet's type column repeats holotype), NMNH Entomology | locality=Trujillo, Venezuela; type=allotype; catalogue=USNMENT01866406; stack=policy; country=VE
+zenodo 18461326 12_Tetraleurodes_85_10304_2024-01-04 11.10.43.ndpi | taxon=Tetraleurodes@genus | whole_mount | | brightfield | | | whitefly, USDA Entomology | locality=California, USA; collector=Ian Stocks; stack=policy; country=US
+zenodo 18461326 13_Ptiliidae_FM_46745_2025_09_08_12_49_22.ndpi | taxon=Ptiliidae@family | whole_mount | | brightfield | | | featherwing beetle, Field Museum Entomology FM 46745 | locality=Florida, USA; collector=Bruno de Medeiros; stack=policy; country=US
+zenodo 18461326 14_Ptiliidae_FM_66-245_2025_09_08_12_38_40.ndpi | taxon=Ptiliidae@family | whole_mount | | brightfield | | | featherwing beetle, Field Museum Entomology FM 66-245 | locality=Florida, USA; collector=Bruno de Medeiros; stack=policy; country=US
 
 [life.mammals]
 # DICOM/3DHISTECH-2.zip (mouse spleen and liver) was dropped on 2026-09-29: its level 0 is 267,776 x 370,688 px,
@@ -30,7 +30,7 @@ openslide Philips-TIFF/Philips-3.tiff | taxon=Homo sapiens@species | section | l
 openslide Hamamatsu/Hamamatsu-1.ndpi | taxon=Homo sapiens@species | smear | bone-marrow | brightfield | | | bone marrow aspirate smear, scanned on a Hamamatsu NanoZoomer S360
 
 [earth.fossils]
-zenodo 18397703 5_Cuticle_2023-12-13 13.27.36.ndpi | taxon=Plantae@kingdom | whole_mount | | brightfield | | | fossil plant cuticle, Paleogene, NMNH Paleobotany; the sheet gives no determination | locality=USA; collector=Joe Milligan; stack=policy
-zenodo 18397703 6_40935_Bowmanites_moorei.ndpi | taxon=Bowmanites@genus@Plantae | section | | brightfield | | | coal ball, Pennsylvanian, NMNH Paleobotany; paratype of Bowmanites moorei Mamay, which the backbone does not list; the sheet does not say whether the preparation is a peel or a ground section | locality=Kansas, USA; type=paratype; catalogue=USNM P 40935; name=Bowmanites moorei; stack=policy
-zenodo 18397703 8_Slide_ostracod_A_specimen_fossil_NMNH.ndpi | taxon=Ostracoda@class | whole_mount | | brightfield | | | ostracod A, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt | locality=Texas, USA; stack=policy
-zenodo 18397703 9_Slide_ostracod_B_specimen_fossil_NMNH.ndpi | taxon=Ostracoda@class | whole_mount | | brightfield | | | ostracod B, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt | locality=Texas, USA; stack=policy
+zenodo 18397703 5_Cuticle_2023-12-13 13.27.36.ndpi | taxon=Plantae@kingdom | whole_mount | | brightfield | | | fossil plant cuticle, Paleogene, NMNH Paleobotany; the sheet gives no determination | locality=USA; collector=Joe Milligan; stack=policy; country=US
+zenodo 18397703 6_40935_Bowmanites_moorei.ndpi | taxon=Bowmanites@genus@Plantae | section | | brightfield | | | coal ball, Pennsylvanian, NMNH Paleobotany; paratype of Bowmanites moorei Mamay, which the backbone does not list; the sheet does not say whether the preparation is a peel or a ground section | locality=Kansas, USA; type=paratype; catalogue=USNM P 40935; name=Bowmanites moorei; stack=policy; country=US
+zenodo 18397703 8_Slide_ostracod_A_specimen_fossil_NMNH.ndpi | taxon=Ostracoda@class | whole_mount | | brightfield | | | ostracod A, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt | locality=Texas, USA; stack=policy; country=US
+zenodo 18397703 9_Slide_ostracod_B_specimen_fossil_NMNH.ndpi | taxon=Ostracoda@class | whole_mount | | brightfield | | | ostracod B, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt | locality=Texas, USA; stack=policy; country=US

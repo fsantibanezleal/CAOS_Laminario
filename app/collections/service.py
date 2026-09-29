@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 import httpx2
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.collections import taxa, vocab
+from app.collections import places, taxa, vocab
 from app.collections.placement import Placement, place
 from app.collections.rules import Facts
 from app.collections.tree import Tree, load_tree
@@ -88,6 +88,15 @@ async def check_submission(db: AsyncSession, client: httpx2.AsyncClient, sub: Sl
         if await taxa.lineage(db, client, int(sp.host.ref)) is None:
             out.errors.append(_error("specimen.host.ref", f"{sp.host.ref} is not a taxon of the GBIF backbone",
                                      "the usage key of a GBIF backbone taxon"))
+    if sp.country is not None and not places.known(sp.country):
+        out.errors.append(_error("specimen.country", f"{sp.country} is not an ISO 3166-1 country code",
+                                 "a two-letter country code such as CL, ES or GB"))
+    elif sp.country and sp.coordinates and not places.agrees(sp.country, sp.coordinates.lat, sp.coordinates.lon):
+        found = places.locate(sp.coordinates.lat, sp.coordinates.lon)
+        out.errors.append(_error("specimen.country",
+                                 f"the coordinates lie outside {places.name(sp.country)}"
+                                 + (f", in {places.name(found)}" if found else ""),
+                                 "the country the coordinates lie in, or coordinates inside the stated country"))
     node = tree.get(sub.placement.node)
     if node is None:
         out.errors.append(_error("placement.node", f"{sub.placement.node} is not a node of the collection tree",

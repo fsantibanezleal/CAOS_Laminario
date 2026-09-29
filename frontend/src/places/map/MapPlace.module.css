@@ -1,0 +1,235 @@
+.intro {
+  max-width: 70ch;
+  margin-top: var(--s-3);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-4);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+  margin-top: var(--s-6);
+}
+
+.mapColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  height: clamp(360px, 62dvh, 720px);
+  padding: var(--s-6);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-panel);
+  background: var(--c-map-water);
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  padding: var(--s-4) var(--s-5);
+  border-left: 3px solid var(--c-warn);
+  background: var(--c-surface);
+}
+
+.attribution {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-1);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  min-width: 0;
+}
+
+.summary {
+  display: grid;
+  gap: var(--s-2);
+  justify-items: start;
+}
+
+.total {
+  font-family: var(--f-display);
+  font-size: var(--fs-6);
+}
+
+.facts {
+  color: var(--c-ink-muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.legend {
+  margin: 0;
+  padding: var(--s-4);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+  font-size: var(--fs-2);
+}
+
+.legend figcaption {
+  margin-bottom: var(--s-3);
+  font-weight: 600;
+}
+
+.legend ul {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+/* A country's shade, drawn as the map draws it: the accent over the ground at the step's opacity. */
+.swatch {
+  flex: none;
+  width: 22px;
+  height: 14px;
+  border: 1px solid var(--c-map-border);
+  border-radius: 2px;
+  background:
+    linear-gradient(color-mix(in oklab, var(--c-accent) calc(var(--shade, 0) * 100%), transparent),
+      color-mix(in oklab, var(--c-accent) calc(var(--shade, 0) * 100%), transparent)),
+    var(--c-map-land);
+}
+
+.point {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  border: 1.5px solid var(--c-surface);
+  border-radius: 50%;
+  background: var(--c-focus);
+  box-shadow: 0 0 0 1px var(--c-focus);
+}
+
+.cell {
+  flex: none;
+  width: 22px;
+  height: 14px;
+  border: 1.5px dashed var(--c-focus);
+  background: color-mix(in oklab, var(--c-focus) 16%, transparent);
+}
+
+.selected {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border: 1px solid var(--c-accent);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+}
+
+.selectedHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.selectedName {
+  font-size: var(--fs-6);
+}
+
+.preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: var(--s-5) var(--s-4);
+  margin: 0;
+  padding: var(--s-4);
+  list-style: none;
+  border-top: 5px solid var(--c-wood);
+  border-radius: var(--r-panel);
+  background: var(--c-sunken);
+}
+
+.preview > li {
+  display: flex;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.searchLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-weight: 600;
+}
+
+.hint {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+}
+
+.listTitle {
+  margin-bottom: var(--s-3);
+  font-size: var(--fs-5);
+}
+
+.countries {
+  display: grid;
+  gap: var(--s-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.country {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  min-height: 36px;
+  padding: 0 var(--s-3);
+  border: 1px solid transparent;
+  border-radius: var(--r-control);
+  background: none;
+  color: var(--c-ink);
+  font: inherit;
+  font-size: var(--fs-2);
+  text-align: left;
+  cursor: pointer;
+}
+
+.country:hover {
+  background: var(--c-sunken);
+}
+
+.country[aria-pressed="true"] {
+  border-color: var(--c-accent);
+  background: color-mix(in oklab, var(--c-accent) 12%, var(--c-surface));
+  font-weight: 600;
+}
+
+.countryCount {
+  margin-left: auto;
+  color: var(--c-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    align-items: start;
+  }
+}

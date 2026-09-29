@@ -1,0 +1,196 @@
+.heading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+
+.headingIcon {
+  color: var(--tag-hue);
+}
+
+.lead {
+  display: grid;
+  gap: var(--s-4);
+  max-width: 760px;
+  margin: var(--s-4) 0 var(--s-7);
+}
+
+.rule {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.about {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-4);
+}
+
+.details summary {
+  width: fit-content;
+  color: var(--c-accent);
+  cursor: pointer;
+}
+
+.details ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  margin: var(--s-3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-2);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-5);
+  font-family: var(--f-label);
+}
+
+.ways {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-6);
+}
+
+.ways a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-weight: 600;
+}
+
+.view {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  border-left: 3px solid var(--c-accent);
+  background: var(--c-surface);
+}
+
+.sectionTitle {
+  margin-bottom: var(--s-5);
+  font-size: var(--fs-6);
+}
+
+/* The cabinet's drawers: oak fronts in columns, like a cabinet seen from the front. */
+.drawers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--s-3) var(--s-5);
+  margin: 0;
+  padding: var(--s-4);
+  list-style: none;
+  border: 1px solid color-mix(in oklab, var(--c-wood) 70%, var(--c-edge));
+  border-radius: var(--r-panel);
+  background: color-mix(in oklab, var(--c-wood) 45%, var(--c-bg));
+}
+
+.front {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-4);
+  min-height: 84px;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid color-mix(in oklab, var(--c-wood) 55%, var(--c-edge));
+  border-radius: 3px;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--c-wood) 80%, var(--c-surface)), var(--c-wood));
+  box-shadow: var(--lift);
+  color: var(--c-ink);
+  text-decoration: none;
+  transition: transform var(--t-quick) var(--ease-out), box-shadow var(--t-quick) var(--ease-out);
+}
+
+.front:hover,
+.front:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: var(--float);
+}
+
+.frontIcon {
+  color: var(--c-ink);
+}
+
+/* The brass label holder with its card. */
+.holder {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--s-2) var(--s-3);
+  border: 2px solid var(--c-accent);
+  border-radius: 2px;
+  background: var(--c-surface);
+}
+
+.frontName {
+  font-family: var(--f-display);
+  font-size: var(--fs-4);
+  line-height: 1.2;
+}
+
+.frontCount {
+  color: var(--c-ink-muted);
+  font-family: var(--f-label);
+  font-size: var(--fs-1);
+}
+
+.pull {
+  width: 28px;
+  height: 10px;
+  border: 2px solid var(--c-accent);
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+}
+
+.emptyFront .holder {
+  border-style: dashed;
+}
+
+.dividers {
+  margin-bottom: var(--s-2);
+}
+
+.dividersTitle {
+  margin-bottom: var(--s-3);
+  font-size: var(--fs-5);
+}
+
+.dividers ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.divider {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 36px;
+  padding: 0 var(--s-4);
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-control);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-size: var(--fs-2);
+  text-decoration: none;
+}
+
+.divider:hover {
+  background: var(--c-sunken);
+}
+
+.divider[aria-current="page"] {
+  border-color: var(--c-accent);
+  font-weight: 600;
+}
+
+.dividerCount {
+  color: var(--c-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
