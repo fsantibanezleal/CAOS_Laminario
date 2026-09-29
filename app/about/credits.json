@@ -1,0 +1,235 @@
+{
+  "_about": "What the About place names beyond the database (U15; dossier 17 of the planning record, read 2026-09-29). Each id has words in frontend/src/about/content.en.ts and content.es.ts.",
+  "sources": [
+    {
+      "id": "commons",
+      "name": "Wikimedia Commons",
+      "url": "https://commons.wikimedia.org/",
+      "hosts": [
+        "upload.wikimedia.org",
+        "commons.wikimedia.org"
+      ],
+      "terms": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia"
+    },
+    {
+      "id": "nhm",
+      "name": "Natural History Museum, London (Data Portal)",
+      "url": "https://data.nhm.ac.uk/",
+      "hosts": [
+        "data.nhm.ac.uk"
+      ],
+      "terms": "https://data.nhm.ac.uk/about/citation"
+    },
+    {
+      "id": "smithsonian",
+      "name": "Smithsonian Institution (Open Access)",
+      "url": "https://www.si.edu/openaccess",
+      "hosts": [
+        "ids.si.edu",
+        "collections.si.edu"
+      ],
+      "terms": "https://www.si.edu/openaccess"
+    },
+    {
+      "id": "zenodo",
+      "name": "Zenodo (Smithsonian NMNH focal stacks)",
+      "url": "https://zenodo.org/",
+      "hosts": [
+        "zenodo.org"
+      ],
+      "terms": "https://about.zenodo.org/terms/"
+    },
+    {
+      "id": "openslide",
+      "name": "OpenSlide test data",
+      "url": "https://openslide.cs.cmu.edu/download/openslide-testdata/",
+      "hosts": [
+        "openslide.cs.cmu.edu"
+      ],
+      "terms": "https://openslide.cs.cmu.edu/download/openslide-testdata/"
+    }
+  ],
+  "vocabularies": [
+    {
+      "id": "gbif",
+      "name": "GBIF Backbone Taxonomy",
+      "citation": "GBIF Secretariat (2023). GBIF Backbone Taxonomy. Checklist dataset.",
+      "doi": "10.15468/39omei",
+      "url": "https://doi.org/10.15468/39omei",
+      "licence": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "ima",
+      "name": "The New IMA List of Minerals (CNMNC)",
+      "citation": "Pasero M (2026). The New IMA List of Minerals, a work in progress. Updated January 2026. IMA Commission on New Minerals, Nomenclature and Classification.",
+      "url": "https://cnmnc.units.it/files/editor/IMA_Master_List_(2026-01).pdf",
+      "licence": "https://creativecommons.org/licenses/by-sa/3.0/"
+    },
+    {
+      "id": "wikidata",
+      "name": "Wikidata (Nickel-Strunz codes, P712 and P713)",
+      "citation": "Wikidata, properties P712 and P713.",
+      "url": "https://www.wikidata.org/wiki/Property:P713",
+      "licence": "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+      "id": "bgs",
+      "name": "BGS Rock Classification Scheme",
+      "citation": "Gillespie MR, Styles MT (1999), Vol. 1 Igneous, BGS RR 99-06; Robertson S (1999), Vol. 2 Metamorphic, BGS RR 99-02; Hallsworth CR, Knox RWO'B (1999), Vol. 3 Sediments and sedimentary rocks, BGS RR 99-03.",
+      "url": "https://nora.nerc.ac.uk/id/eprint/3223/",
+      "licence": null
+    },
+    {
+      "id": "kikuchi",
+      "name": "A global classification of snow crystals",
+      "citation": "Kikuchi K, Kameda T, Higuchi K, Yamashita A (2013). A global classification of snow crystals, ice crystals, and solid precipitation based on observations from middle latitudes to polar regions. Atmospheric Research 132-133: 460-472.",
+      "doi": "10.1016/j.atmosres.2013.06.006",
+      "url": "https://doi.org/10.1016/j.atmosres.2013.06.006",
+      "licence": null
+    }
+  ],
+  "map": [
+    {
+      "id": "osm",
+      "name": "OpenStreetMap",
+      "url": "https://www.openstreetmap.org/copyright",
+      "licence": "https://opendatacommons.org/licenses/odbl/1-0/"
+    },
+    {
+      "id": "protomaps",
+      "name": "Protomaps (basemap tiles and style)",
+      "url": "https://protomaps.com/",
+      "licence": "BSD-3-Clause"
+    },
+    {
+      "id": "natural-earth",
+      "name": "Natural Earth (1:50m admin-0 map units)",
+      "url": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "licence": "Public domain"
+    },
+    {
+      "id": "cldr",
+      "name": "Unicode CLDR 48.2.2 (country names in English and Spanish)",
+      "url": "https://cldr.unicode.org/",
+      "licence": "Unicode-3.0"
+    }
+  ],
+  "software": [
+    {
+      "id": "libvips",
+      "name": "libvips",
+      "url": "https://github.com/libvips/libvips",
+      "licence": "LGPL-2.1"
+    },
+    {
+      "id": "openslide",
+      "name": "OpenSlide",
+      "url": "https://openslide.org/",
+      "licence": "LGPL-2.1"
+    },
+    {
+      "id": "iipsrv",
+      "name": "IIPImage server (iipsrv)",
+      "url": "https://github.com/ruven/iipsrv",
+      "licence": "GPL-3.0"
+    },
+    {
+      "id": "tusd",
+      "name": "tusd",
+      "url": "https://github.com/tus/tusd",
+      "licence": "MIT"
+    },
+    {
+      "id": "fastapi",
+      "name": "FastAPI, Pydantic, Uvicorn",
+      "url": "https://github.com/fastapi/fastapi",
+      "licence": "MIT (Uvicorn: BSD-3-Clause)"
+    },
+    {
+      "id": "sqlalchemy",
+      "name": "SQLAlchemy, Alembic, aiosqlite",
+      "url": "https://www.sqlalchemy.org/",
+      "licence": "MIT"
+    },
+    {
+      "id": "fastapi-users",
+      "name": "fastapi-users",
+      "url": "https://github.com/fastapi-users/fastapi-users",
+      "licence": "MIT"
+    },
+    {
+      "id": "numpy",
+      "name": "NumPy, SciPy",
+      "url": "https://numpy.org/",
+      "licence": "BSD-3-Clause"
+    },
+    {
+      "id": "tifffile",
+      "name": "pyvips, tifffile",
+      "url": "https://github.com/libvips/pyvips",
+      "licence": "MIT (tifffile: BSD-3-Clause)"
+    },
+    {
+      "id": "pebble",
+      "name": "Pebble",
+      "url": "https://github.com/noxdafox/pebble",
+      "licence": "LGPL-3.0"
+    },
+    {
+      "id": "segno",
+      "name": "segno, ReportLab",
+      "url": "https://github.com/heuer/segno",
+      "licence": "BSD"
+    },
+    {
+      "id": "openseadragon",
+      "name": "OpenSeadragon, Annotorious",
+      "url": "https://openseadragon.github.io/",
+      "licence": "BSD-3-Clause"
+    },
+    {
+      "id": "maplibre",
+      "name": "MapLibre GL JS, PMTiles",
+      "url": "https://maplibre.org/",
+      "licence": "BSD-3-Clause"
+    },
+    {
+      "id": "react",
+      "name": "React, wouter",
+      "url": "https://react.dev/",
+      "licence": "MIT (wouter: Unlicense)"
+    },
+    {
+      "id": "uppy",
+      "name": "Uppy, exifr",
+      "url": "https://uppy.io/",
+      "licence": "MIT"
+    },
+    {
+      "id": "katex",
+      "name": "KaTeX",
+      "url": "https://katex.org/",
+      "licence": "MIT"
+    }
+  ],
+  "fonts": [
+    {
+      "id": "laminario-sans",
+      "name": "Laminario Sans (a subset of Source Sans 3, Paul D. Hunt, Adobe)",
+      "url": "https://github.com/adobe-fonts/source-sans",
+      "licence": "OFL-1.1"
+    },
+    {
+      "id": "fraunces",
+      "name": "Fraunces (Undercase Type)",
+      "url": "https://github.com/undercasetype/Fraunces",
+      "licence": "OFL-1.1"
+    },
+    {
+      "id": "courier-prime",
+      "name": "Courier Prime (Alan Dague-Greene)",
+      "url": "https://quoteunquoteapps.com/courierprime/",
+      "licence": "OFL-1.1"
+    }
+  ]
+}

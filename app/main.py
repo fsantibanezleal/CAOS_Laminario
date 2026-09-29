@@ -14,7 +14,7 @@ from app.collections import taxa
 from app.config import Settings, get_settings
 from app.db.engine import async_sessions, database_path, make_async_engine, make_sync_engine
 from app.delivery.iiif import InfoCache
-from app.routers import accounts, annotations, cases, collections, community, iiif, jobs, people, slides, uploads
+from app.routers import about, accounts, annotations, cases, collections, community, iiif, jobs, people, slides, uploads
 from app.version import VERSION
 
 
@@ -76,6 +76,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(iiif.router)
     app.include_router(jobs.router)
     app.include_router(collections.router)
+    app.include_router(about.router)
     return app
 
 

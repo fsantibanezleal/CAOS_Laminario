@@ -33,4 +33,4 @@ def test_schema_declares_expected_text_on_constrained_fields():
                                                             "partRecord", "placement", "facetCounts", "map",
                                                             "annotation", "case", "caseSummary", "identifications",
                                                             "flag", "moderationAction", "profile",
-                                                            "personIdentification", "stock"}
+                                                            "personIdentification", "stock", "about"}

@@ -107,7 +107,11 @@ function MapView({ tree, onReady }: { tree: TreeIndex; onReady: (ready: boolean)
         )}
         <p className={styles.attribution}>
           {basemap === false ? `${t("map.nobasemap")} ` : ""}
-          {basemap ? `${t("map.attribution.basemap")} ` : ""}{t("map.attribution")}
+          {basemap ? (
+            // OpenStreetMap asks for its name linked to its copyright page (dossier 17, section 6).
+            <>{t("map.attribution.basemap.before")}<a href="https://www.openstreetmap.org/copyright" rel="noreferrer"
+              data-osm-credit>OpenStreetMap</a>{t("map.attribution.basemap.after")}{" "}</>
+          ) : ""}{t("map.attribution")}
         </p>
       </div>
 

@@ -37,6 +37,7 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `profile` | [ProfileRecord](#profilerecord) | no |  |  |
 | `personIdentification` | [PersonIdentificationRecord](#personidentificationrecord) | no |  |  |
 | `stock` | [StockRecord](#stockrecord) | no |  |  |
+| `about` | [AboutRecord](#aboutrecord) | no |  |  |
 
 ### SlideRecord
 
@@ -405,6 +406,22 @@ A label stock a sheet is printed on (``GET /api/labels/stocks``).
 | `source` | string | yes |  |  |
 | `warnings` | list of string | no |  |  |
 
+### AboutRecord
+
+``GET /api/about``: the numbers, the sources and licences counted, the policy, and the credits.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `read_at` | string (date-time) | yes |  |  |
+| `numbers` | [AboutNumbers](#aboutnumbers) | yes |  |  |
+| `sources` | list of [SourceCount](#sourcecount) | no |  |  |
+| `licences` | list of [LicenceCount](#licencecount) | no |  |  |
+| `policy` | map of list of string | no |  |  |
+| `vocabularies` | list of [CreditRecord](#creditrecord) | no |  |  |
+| `map` | list of [CreditRecord](#creditrecord) | no |  |  |
+| `software` | list of [CreditRecord](#creditrecord) | no |  |  |
+| `fonts` | list of [CreditRecord](#creditrecord) | no |  |  |
+
 ### FormatRecord
 
 | Field | Type | Required | Accepted | Default |
@@ -648,6 +665,58 @@ An identification on a slide, as a viewer may see it (``GET /api/slides/{id}/ide
 | `category` | string (enumerated) or null | no | one of: `leading`, `improving`, `supporting`, `maverick` | null |
 | `created_at` | string (date-time) | yes |  |  |
 
+### AboutNumbers
+
+The collection counted when the page is read (R-1501).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `slides` | integer | yes |  |  |
+| `by_origin` | map of integer | no |  |  |
+| `realms` | list of [RealmCount](#realmcount) | no |  |  |
+| `wsi` | integer | yes |  |  |
+| `images` | integer | yes |  |  |
+| `countries` | integer | yes |  |  |
+| `contributors` | integer | yes |  |  |
+| `identifications` | integer | yes |  |  |
+
+### SourceCount
+
+Where images came from, with their count and licences (R-1502): a source of ``credits.json``, the contributors (``contribution``), or ``other``.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `name` | string or null | no |  | null |
+| `url` | string or null | no |  | null |
+| `terms` | string or null | no |  | null |
+| `slides` | integer | yes |  |  |
+| `images` | integer | yes |  |  |
+| `licences` | map of integer | no |  |  |
+
+### LicenceCount
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `uri` | string | yes |  |  |
+| `short` | string | yes |  |  |
+| `family` | string | yes |  |  |
+| `images` | integer | yes |  |  |
+
+### CreditRecord
+
+A vocabulary, a map layer, a piece of software or a font the collection stands on (R-1507).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `name` | string | yes |  |  |
+| `url` | string | yes |  |  |
+| `licence` | string or null | no |  | null |
+| `citation` | string or null | no |  | null |
+| `doi` | string or null | no |  | null |
+| `terms` | string or null | no |  | null |
+
 ### PointRecord
 
 | Field | Type | Required | Accepted | Default |
@@ -735,3 +804,13 @@ One condition of a node's rule, for people: a taxon with its GBIF page, a rock f
 | `disagreements` | integer | yes |  |  |
 | `ancestor_disagreements` | integer | yes |  |  |
 | `score` | number | yes |  |  |
+
+### RealmCount
+
+A realm's published slides, and each of its collections' (``life.insects``).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `slides` | integer | yes |  |  |
+| `collections` | map of integer | no |  |  |

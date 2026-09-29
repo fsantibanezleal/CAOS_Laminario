@@ -1,0 +1,337 @@
+.lead {
+  max-width: 68ch;
+  margin: 0 0 var(--s-6);
+  font-size: var(--fs-4);
+  color: var(--c-ink-muted);
+}
+
+.problem {
+  margin: 0 0 var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  border-left: 3px solid var(--c-bad);
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+}
+
+/* The table of contents: a card of the sections, numbered as they follow. */
+.toc {
+  grid-area: toc;
+  max-width: 68ch;
+  margin: 0 0 var(--s-7);
+  padding: var(--s-4) var(--s-5);
+  border: 1px solid var(--c-rule);
+  border-top: 4px solid var(--c-wood);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+}
+
+.tocTitle {
+  margin: 0 0 var(--s-2);
+  font-size: var(--fs-3);
+}
+
+.toc ol {
+  columns: 2 16rem;
+  column-gap: var(--s-6);
+  margin: 0;
+  padding-left: 1.4em;
+}
+
+.toc li {
+  padding: var(--s-1) 0;
+  break-inside: avoid;
+}
+
+.section {
+  max-width: 76ch;
+  margin-bottom: var(--s-8);
+  scroll-margin-top: var(--s-6);
+}
+
+.section > p,
+.section > ul {
+  margin: 0 0 var(--s-4);
+  line-height: 1.6;
+}
+
+/* Wide screens keep the contents beside the text, where it stays in reach. */
+.layout {
+  display: grid;
+  grid-template-areas: "toc" "article";
+  gap: 0 var(--s-8);
+}
+
+.article {
+  grid-area: article;
+  min-width: 0;
+}
+
+@media (min-width: 1100px) {
+  .layout {
+    grid-template-areas: "article toc";
+    grid-template-columns: minmax(0, 76ch) minmax(14rem, 20rem);
+  }
+
+  .toc {
+    position: sticky;
+    top: var(--s-5);
+    align-self: start;
+  }
+
+  .toc ol {
+    columns: auto;
+  }
+}
+
+.h2 {
+  margin: 0 0 var(--s-4);
+  padding-bottom: var(--s-2);
+  border-bottom: 1px solid var(--c-rule);
+  font-size: var(--fs-6);
+}
+
+.h3 {
+  margin: var(--s-6) 0 var(--s-2);
+  font-size: var(--fs-4);
+}
+
+.list {
+  display: grid;
+  gap: var(--s-2);
+  padding-left: 1.2em;
+}
+
+.math {
+  max-width: 100%;
+  margin: var(--s-4) 0;
+  padding: var(--s-3) var(--s-4);
+  overflow-x: auto;
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+}
+
+.code {
+  max-width: 100%;
+  margin: var(--s-3) 0 var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+  font-family: var(--f-label);
+  font-size: var(--fs-2);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.figure {
+  margin: var(--s-5) 0 var(--s-6);
+}
+
+.figureSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.figure figcaption {
+  margin-top: var(--s-2);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+}
+
+/* The collection in numbers */
+.numbers {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+  gap: var(--s-3);
+  margin: 0;
+}
+
+.stat {
+  display: grid;
+  gap: var(--s-1);
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--c-rule);
+  border-top: 4px solid var(--c-wood);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+}
+
+.stat dt {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+}
+
+.stat dd {
+  margin: 0;
+  font-family: var(--f-label);
+  font-size: var(--fs-6);
+  font-weight: 700;
+}
+
+.realms {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.realms > li {
+  display: grid;
+  grid-template-columns: minmax(6rem, auto) auto minmax(0, 1fr);
+  gap: var(--s-2) var(--s-4);
+  align-items: baseline;
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--c-rule);
+}
+
+.realmName {
+  font-weight: 700;
+}
+
+.realmCount {
+  font-family: var(--f-label);
+  font-weight: 700;
+}
+
+.realmCollections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+}
+
+.realmCollection {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+}
+
+.readAt {
+  margin: 0;
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+}
+
+/* Sources and licences as cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--s-4);
+  margin: var(--s-4) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: grid;
+  align-content: start;
+  gap: var(--s-2);
+  min-width: 0;
+  padding: var(--s-4) var(--s-5);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+}
+
+.card p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: var(--fs-4);
+  overflow-wrap: anywhere;
+}
+
+.cardNumbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-4);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+}
+
+.cardNumbers b {
+  color: var(--c-ink);
+  font-family: var(--f-label);
+}
+
+.licenceChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-2);
+}
+
+.licenceChips li {
+  padding: 0 var(--s-2);
+  border: 1px solid var(--c-edge);
+  border-radius: 999px;
+}
+
+/* Credits: vocabularies, software, fonts, map data */
+.creditGroup {
+  margin: var(--s-4) 0;
+}
+
+.credits {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credits > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-1) var(--s-4);
+  padding: var(--s-2) 0;
+  border-bottom: 1px solid var(--c-rule);
+}
+
+.creditName {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.creditLicence {
+  font-family: var(--f-label);
+  font-size: var(--fs-2);
+  color: var(--c-ink-muted);
+  text-align: right;
+}
+
+.citation {
+  grid-column: 1 / -1;
+  color: var(--c-ink-muted);
+  font-size: var(--fs-2);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .realms > li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .realmCollections {
+    grid-column: 1 / -1;
+  }
+
+  .credits > li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .creditLicence {
+    text-align: left;
+  }
+}

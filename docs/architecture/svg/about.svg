@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario About the collection</title>
+  <desc id="desc">The About answer joins what the database counts when it is read (published slides by realm and origin, whole-slide scans, images, countries, contributors, identifications, images by source and by licence) with the facts of credits.json (sources and their hosts, vocabularies with citations, map data, software and fonts with licences). The About place draws the prose of content.en.ts or content.es.ts, the same blocks in both languages, with live blocks from the answer, figures drawn inline in the room's tokens and equations typeset by KaTeX. The slide place gives a citation and each image's attribution; the footer of every place leads to About; the link check sorts every external link as reachable, broken, or not checkable by a machine.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --bad: #b3261e; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; --bad: #f08a80; }
+    }
+    .bg { fill: var(--bg); }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .no { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--bad); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .head { fill: var(--line); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="560"/>
+
+  <!-- the answer -->
+  <rect class="lane" x="16" y="16" width="440" height="300" rx="10"/>
+  <text class="h" x="32" y="38">GET /api/about: COUNTED WHEN IT IS READ</text>
+  <rect class="store" x="32" y="52" width="196" height="118" rx="8"/>
+  <text class="t" x="46" y="74">The database</text>
+  <text class="s" x="46" y="94">published slides by realm,</text>
+  <text class="s" x="46" y="110">collection and origin; scans;</text>
+  <text class="s" x="46" y="126">images (a plane counts, a</text>
+  <text class="s" x="46" y="142">composite does not); countries;</text>
+  <text class="s" x="46" y="158">contributors; identifications</text>
+  <rect class="store" x="244" y="52" width="196" height="118" rx="8"/>
+  <text class="t" x="258" y="74">app/about/credits.json</text>
+  <text class="s" x="258" y="94">sources and the hosts their</text>
+  <text class="s" x="258" y="110">files come from; vocabularies</text>
+  <text class="s" x="258" y="126">with citations and DOIs; map</text>
+  <text class="s" x="258" y="142">data; software and fonts with</text>
+  <text class="s" x="258" y="158">their licences</text>
+  <path class="arrow" d="M130 172 L 200 206"/>
+  <path class="arrow" d="M342 172 L 272 206"/>
+  <rect class="key" x="32" y="210" width="408" height="92" rx="8"/>
+  <text class="t" x="48" y="232">AboutRecord</text>
+  <text class="m" x="48" y="252">numbers · sources[id, slides, images, licences]</text>
+  <text class="m" x="48" y="270">licences[uri, short, family, images] · policy</text>
+  <text class="m" x="48" y="288">vocabularies · map · software · fonts</text>
+
+  <!-- the place -->
+  <rect class="lane" x="472" y="16" width="472" height="300" rx="10"/>
+  <text class="h" x="488" y="38">/about: THE SAME BLOCKS IN EN AND ES</text>
+  <rect class="box" x="488" y="52" width="210" height="118" rx="8"/>
+  <text class="t" x="502" y="74">content.en.ts, content.es.ts</text>
+  <text class="s" x="502" y="94">sections: what, numbers, sources,</text>
+  <text class="s" x="502" y="110">licences, cite, imaging,</text>
+  <text class="s" x="502" y="126">identification, privacy, names,</text>
+  <text class="s" x="502" y="142">software, references; words per</text>
+  <text class="s" x="502" y="158">source and licence family</text>
+  <rect class="box" x="714" y="52" width="214" height="118" rx="8"/>
+  <text class="t" x="728" y="74">Drawn in the room</text>
+  <text class="s" x="728" y="94">five figures as inline SVG in the</text>
+  <text class="s" x="728" y="110">room's tokens; six equations and</text>
+  <text class="s" x="728" y="126">the inline ones typeset by</text>
+  <text class="s" x="728" y="142">KaTeX; live blocks from the</text>
+  <text class="s" x="728" y="158">answer, never typed counts</text>
+  <path class="arrow" d="M593 172 L 640 206"/>
+  <path class="arrow" d="M821 172 L 774 206"/>
+  <path class="arrow" d="M440 256 L 486 256"/>
+  <rect class="key" x="488" y="210" width="440" height="92" rx="8"/>
+  <text class="t" x="504" y="232">The About place</text>
+  <text class="s" x="504" y="252">contents beside the text on wide screens; a section opened</text>
+  <text class="s" x="504" y="270">from its address (/about#licences) once the numbers arrive;</text>
+  <text class="s" x="504" y="288">the footer of every place leads here (R-084)</text>
+
+  <!-- citing, the map, links -->
+  <rect class="lane" x="16" y="332" width="928" height="212" rx="10"/>
+  <text class="h" x="32" y="354">CREDIT AS CREATIVE COMMONS RECOMMENDS (TASL), CITE AS THE NHM DATA PORTAL DOES</text>
+  <rect class="box" x="32" y="368" width="440" height="160" rx="8"/>
+  <text class="t" x="48" y="390">Cite this slide (the slide place)</text>
+  <text class="m" x="48" y="412">Laminario (2026). Name (catalogue), preparation</text>
+  <text class="m" x="48" y="428">[Microscope slide]. permalink. Read on date.</text>
+  <text class="m" x="48" y="452">"title" by author, from source, CC BY 4.0</text>
+  <text class="m" x="48" y="468">(licence link); adapted: re-encoded as a tiled</text>
+  <text class="m" x="48" y="484">pyramid | fused from a focal stack</text>
+  <text class="s" x="48" y="510">one line per image, each copied with one button</text>
+  <rect class="box" x="488" y="368" width="200" height="160" rx="8"/>
+  <text class="t" x="502" y="390">The map's credit</text>
+  <text class="s" x="502" y="412">"OpenStreetMap" links to</text>
+  <text class="s" x="502" y="428">openstreetmap.org/copyright,</text>
+  <text class="s" x="502" y="444">as the OSM Foundation's</text>
+  <text class="s" x="502" y="460">guidelines ask; Protomaps,</text>
+  <text class="s" x="502" y="476">Natural Earth and CLDR on</text>
+  <text class="s" x="502" y="492">the About place (R-1506)</text>
+  <rect class="store" x="704" y="368" width="224" height="160" rx="8"/>
+  <text class="t" x="718" y="390">gates/links.mjs</text>
+  <text class="ok" x="718" y="414">reachable: 2xx; a DOI registered</text>
+  <text class="s" x="718" y="432">at doi.org's handle API</text>
+  <text class="s" x="718" y="456">not checkable by a machine:</text>
+  <text class="s" x="718" y="472">a bot challenge, listed for a</text>
+  <text class="s" x="718" y="488">person to open</text>
+  <text class="no" x="718" y="512">broken: anything else (fails)</text>
+</svg>

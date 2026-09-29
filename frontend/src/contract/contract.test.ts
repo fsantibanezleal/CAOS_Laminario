@@ -47,7 +47,7 @@ describe("catalog contract", () => {
       "slide", "slidePage", "slideSummary", "validation", "job", "jobEvent", "account", "invitation",
       "createdSlideCase", "upload", "collectionTree", "collectionNode", "facet", "anchorSuggestion", "partRecord", "placement",
       "facetCounts", "map", "annotation", "case", "caseSummary", "identifications", "flag", "moderationAction",
-      "profile", "personIdentification", "stock",
+      "profile", "personIdentification", "stock", "about",
     ]);
   });
 
