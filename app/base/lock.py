@@ -19,7 +19,7 @@ import yaml
 
 from app.base import names as base_names
 from app.base.http import Polite
-from app.base.sources import nhm
+from app.base.sources import commons, nhm
 from app.collections import vocab
 from app.collections.placement import place
 from app.collections.rules import Facts
@@ -92,7 +92,10 @@ def _media_asset(media: dict, family: str, role: str, record: dict, **extra) -> 
         raise LockError("the source's record id is longer than the contract's 200 characters")
     return {"family": family, "role": role, "url": media["url"], "record_id": str(record["record_id"]),
             "record_url": record["record_url"], "licence": media["licence"],
-            "rights_holder": media.get("rights_holder"), "creator": media.get("creator"),
+            "rights_holder": media.get("rights_holder"),
+            # Candidates harvested before the credit was cleaned carry the file page's furniture: clean it here too.
+            "creator": (commons.credit(media.get("creator")) if record.get("source") == "commons"
+                        else media.get("creator")),
             "width": media.get("width"), "height": media.get("height"), **{k: v for k, v in extra.items() if v}}
 
 
