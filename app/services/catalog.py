@@ -105,7 +105,7 @@ def asset_record(asset: Asset, settings: Settings) -> c.AssetRecord:
 
 def quality_checks(origin: str, assets) -> list[c.QualityCheckRecord]:
     """The slide checks (M9), each computed from what is stored: ``assets`` are the slide's asset rows (or anything
-    with their ``family``, ``licence_uri``, ``source_url``, ``pixel_size_um`` and ``modality``)."""
+    with their ``family``, ``role``, ``licence_uri``, ``source_url``, ``pixel_size_um`` and ``modality``)."""
     assets = list(assets)
     micro = [a for a in assets if a.family == "micro"]
     macro = [a for a in assets if a.family == "macro"]
