@@ -97,6 +97,13 @@ def test_filters_and_facet_counts(explore):
     assert facets["preparation"] == {"whole_mount": 1, "smear": 2, "section": 2}
     assert facets["modality"] == {"brightfield": 1, "darkfield": 1}
     assert facets["country"] == {"CL": 1, "GP": 1}
+    # Under an asset filter, the facets that join the assets themselves still count (found by the walk: a 500).
+    darkfield = client.get("/api/explore/facets", params={"modality": "darkfield"})
+    assert darkfield.status_code == 200, darkfield.text
+    assert darkfield.json()["modality"] == {"brightfield": 5, "darkfield": 1}
+    assert sum(darkfield.json()["licence"].values()) >= 1
+    by_sa = client.get("/api/explore/facets", params={"licence": "by-sa"})
+    assert by_sa.status_code == 200 and sum(by_sa.json()["modality"].values()) == 1
     # The collection facet leaves the node out: the smears are all lice, but a search sees every cabinet.
     assert facets["collection"] == {"life.insects": 2}
     assert client.get("/api/explore/facets", params={"node": "life.insects"}).json()["collection"] == {
