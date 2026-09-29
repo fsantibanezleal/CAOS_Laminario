@@ -227,6 +227,9 @@ R-016 and R-019 were restated there with the measurements that required it; the 
 
 #### U3 delivery
 
+Moved to [`features/u03-iiif/requirements.md`](features/u03-iiif/requirements.md) on 2026-09-29. R-021 names the
+API instead of nginx as the writer of `rights` (the design explains why); the text below is the original.
+
     R-020  WHEN a tile is requested from the IIIF service, THE tile SHALL equal the libvips crop of the same region within 2 levels per channel after decoding.
            Gate: tests/delivery/test_iiif_tiles.py::test_tile_equals_crop
 

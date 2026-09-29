@@ -91,3 +91,7 @@ references are covered by R-204 (the port) and R-205 (the accuracy).
 **R-019.** Original: "... within 1 percent." A 0.9 mm specimen on a slide drawn 1200 px wide spans 14.4 px;
 whole pixels cannot come within 1 percent of that (half a pixel is 3.5 percent). The mount now lands on the
 rounded target, and the tolerance is 1 percent or half a pixel, whichever is larger.
+
+**R-012, 2026-09-29 (during U3).** A texture close to pure noise measured 37.5 dB at Q90; the ladder now climbs
+to Q95 (43.3 dB on that image) and records the PSNR if even Q95 falls short. The extended text and its gate are
+in the U3 requirements.

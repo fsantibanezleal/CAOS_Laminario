@@ -34,12 +34,13 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.02.000`: the repository base (U0), the data model with both contracts (U1), and the imaging engine
-(U2). The API validates a slide case, stores it and serves the catalog record; the engine reads scanner, TIFF and
-photo formats, writes one measured pyramid per plane, and fuses focal stacks into an all-in-focus image and a
-depth map, exact against the EPFL extended-depth-of-field plugin
-([`docs/architecture/04_imaging.md`](docs/architecture/04_imaging.md)). The units that follow are listed in the
-design document.
+Version `0.03.000`: the repository base (U0), the data model with both contracts (U1), the imaging engine (U2)
+and IIIF delivery (U3). The engine reads scanner, TIFF and photo formats, writes one measured pyramid per plane,
+and fuses focal stacks exactly as the EPFL extended-depth-of-field plugin does
+([`04_imaging.md`](docs/architecture/04_imaging.md)); iipsrv serves those pyramids over the IIIF Image API behind
+a cached, access-checked nginx site, and every slide is a IIIF Presentation 3 manifest that any IIIF viewer
+opens ([`05_delivery.md`](docs/architecture/05_delivery.md)). The units that follow are listed in the design
+document.
 
 ## Architecture at a glance
 

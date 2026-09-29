@@ -5,6 +5,8 @@
 # on loopback only; nginx sits in front (deploy/nginx/laminario.conf) and the API serves info.json.
 #
 #   docker compose -f deploy/iipsrv/compose.yaml up -d
+#
+# LAMINARIO_STORE names the slide store; unset it is the production path. Locally: <repository>/.data/store.
 name: laminario-iipsrv
 services:
   iipsrv:
@@ -13,7 +15,7 @@ services:
     ports:
       - "127.0.0.1:8149:80"
     volumes:
-      - /srv/laminario/store:/images:ro
+      - ${LAMINARIO_STORE:-/srv/laminario/store}:/images:ro
     environment:
       FILESYSTEM_PREFIX: /images/
       URI_MAP: "iiif=>IIIF"
