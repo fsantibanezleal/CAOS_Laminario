@@ -28,6 +28,48 @@ def plain(markup: str | None) -> str:
     return re.sub(r"\s+", " ", html.unescape(text)).strip()
 
 
+# A Commons "Artist" field is written for the file page: templates add a way to contact the author, a talk link, a
+# derivative's source file, an uploader's note, sometimes an email. The credit keeps the people and drops the rest.
+MUSHROOM_OBSERVER = re.compile(r"^This image was created by user (?P<who>.+?) at Mushroom Observer\s*,.*$", re.S)
+UPLOADED = re.compile(r"^The original uploader was (?P<up>.+?) at (?P<wiki>\S+) Wikipedia\s*\.?\s*"
+                      r"\(\s*Original text:\s*(?P<orig>.+?)\s*\)\s*$")
+UPLOADER_ONLY = re.compile(r"^The original uploader was (?P<up>.+?) at (?P<wiki>\S+) Wikipedia\s*\.?\s*$")
+DERIVATIVE = re.compile(r"^(?:\S+\.(?:jpe?g|png|tiff?|gif|svg|webp)\s*:\s*)?(?P<orig>.+?)\s+derivative work:\s*"
+                        r"(?P<by>.+)$", re.I)
+EMAIL = re.compile(r"\s*\(?\s*[\w.+-]+@[\w-]+(?:\.[\w-]+)+\s*\)?")
+URL = re.compile(r"\s*\(?\s*https?://\S+?\s*\)")
+BARE_URL = re.compile(r"\s*https?://\S+")
+TALK = re.compile(r"\s*\(\s*talk\s*\)", re.I)
+COPYRIGHT = re.compile(r"^\s*(?:Copyright\s*)?©\s*\d{4}\s*", re.I)
+
+
+def credit(artist: str | None) -> str | None:
+    """The people a Commons file credits, without the page's furniture (``Ron Pastorino (Ronpast), Mushroom
+    Observer``, not ``This image was created by user Ron Pastorino (Ronpast) at Mushroom Observer , a source for
+    mycological images. You can contact this user here .``)."""
+    text = re.sub(r"\s+", " ", artist or "").strip()
+    if not text:
+        return None
+    if m := MUSHROOM_OBSERVER.match(text):
+        who = COPYRIGHT.sub("", EMAIL.sub("", m["who"])).strip()
+        name, _, nick = who.partition(" (")
+        nick = nick.rstrip(")").strip()
+        who = name.strip() if not nick or nick.lower() == name.strip().lower() else f"{name.strip()} ({nick})"
+        text = f"{who}, Mushroom Observer"
+    elif m := UPLOADED.match(text):
+        text = f"{m['orig']} (uploaded to the {m['wiki']} Wikipedia by {m['up']})"
+    elif m := UPLOADER_ONLY.match(text):
+        text = f"{m['up']} (the {m['wiki']} Wikipedia)"
+    text = TALK.sub("", text)
+    text = URL.sub("", text)
+    text = BARE_URL.sub("", text)
+    text = EMAIL.sub("", text)
+    if m := DERIVATIVE.match(text):
+        text = f"{m['orig'].strip()}; derivative work by {m['by'].strip()}"
+    text = re.sub(r"\s+([.,;:])", r"\1", re.sub(r"\s+", " ", text)).strip(" ,;:")
+    return text or None
+
+
 def licence_of(meta: dict) -> str | None:
     """The canonical licence URI of a file, or None when the policy does not know it."""
     url = meta.get("LicenseUrl", {}).get("value")
@@ -113,7 +155,7 @@ def candidate(page: dict, category: str, min_side: int) -> dict | None:
             "mime": info["mime"],
             "sha1": info.get("sha1"),
             "licence": licence,
-            "creator": plain(meta.get("Artist", {}).get("value"))[:200] or None,
+            "creator": (credit(plain(meta.get("Artist", {}).get("value"))) or "")[:200] or None,
             "rights_holder": None,
             "credit": plain(meta.get("Credit", {}).get("value"))[:300] or None,
             "date": plain(meta.get("DateTimeOriginal", {}).get("value"))[:40] or None,

@@ -60,3 +60,46 @@ def test_smithsonian_candidate_from_a_record():
     assert m["licence"] == licences.CC0 and licences.allowed(m["licence"], "base")
     assert m["creator"].startswith("Bentley") and m["rights_holder"] == "Smithsonian Institution Archives"
     assert smithsonian.candidate(_si_row(access="Usage conditions apply")) is None
+
+
+def test_a_commons_credit_keeps_the_people_and_drops_the_page():
+    from app.base.sources.commons import credit
+
+    cases = {
+        "This image was created by user Ron Pastorino (Ronpast) at Mushroom Observer , a source for mycological "
+        "images. You can contact this user here .": "Ron Pastorino (Ronpast), Mushroom Observer",
+        "This image was created by user Alan Rockefeller (Alan Rockefeller) at Mushroom Observer , a source for "
+        "mycological images. You can contact this user here .": "Alan Rockefeller, Mushroom Observer",
+        "This image was created by user Bryce Kendrick (bryce@mycolog.comj) at Mushroom Observer , a source for "
+        "mycological images. You can contact this user here .": "Bryce Kendrick, Mushroom Observer",
+        "This image was created by user Copyright ©2012 Byrain at Mushroom Observer , a source for mycological "
+        "images. You can contact this user here .": "Byrain, Mushroom Observer",
+        "This image was created by user Michael W (michael w) at Mushroom Observer , a source for mycological "
+        "images. You can contact this user here .": "Michael W, Mushroom Observer",
+        "Bob Blaylock ( talk )": "Bob Blaylock",
+        "20100905_211652_Spirochetes.jpg : Bob Blaylock derivative work: F. Lamiot ( talk )":
+            "Bob Blaylock; derivative work by F. Lamiot",
+        "Traquea_avestruz.JPG : Lycaon.cl derivative work: Osado ( talk )": "Lycaon.cl; derivative work by Osado",
+        "Julien Leuthold (ETH Zürich, Switzerland) ( https://imaggeo.egu.eu/user/Julien.Leuthold/ )":
+            "Julien Leuthold (ETH Zürich, Switzerland)",
+        "The original uploader was AndiHolz at German Wikipedia . ( Original text: A.G. Heiss, Innsbruck )":
+            "A.G. Heiss, Innsbruck (uploaded to the German Wikipedia by AndiHolz)",
+        "The original uploader was Tillman at English Wikipedia .": "Tillman (the English Wikipedia)",
+        "Strekeisen": "Strekeisen",
+        "Dr. phil.nat Thomas Geier, Fachgebiet Botanik der Forschungsanstalt Geisenheim.":
+            "Dr. phil.nat Thomas Geier, Fachgebiet Botanik der Forschungsanstalt Geisenheim.",
+        "": None,
+    }
+    for raw, expected in cases.items():
+        assert credit(raw) == expected, raw
+
+
+def test_an_openslide_sample_credits_its_author():
+    from app.base.lock import openslide_credit
+
+    assert openslide_credit({"credit": "Computational Pathology Group, Radboud University Medical Center"}) == \
+        "Computational Pathology Group, Radboud University Medical Center"
+    assert openslide_credit({"credit": "Maki Sakuma, National Center For Global Health and Medicine, DOI: "
+                                       "10.5061/dryad.6m905qfzx"}) == \
+        "Maki Sakuma, National Center For Global Health and Medicine (doi:10.5061/dryad.6m905qfzx)"
+    assert openslide_credit({"credit": None}) == "Carnegie Mellon University (OpenSlide test data)"

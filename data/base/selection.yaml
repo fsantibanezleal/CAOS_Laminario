@@ -2382,13 +2382,13 @@ life.mammals:
   modality: brightfield
   stain: Papanicolaou
   note: benign urine cytology, very high magnification
-- openslide: DICOM/3DHISTECH-2.zip
-  taxon: Mus musculus@species
+- openslide: Philips-TIFF/Philips-2.tiff
+  taxon: Homo sapiens@species
   prep: section
-  part: spleen
+  part: lymph-node
   modality: brightfield
   stain: haematoxylin and eosin
-  note: mouse spleen and liver on one slide, DICOM from a 3DHISTECH scan
+  note: lymph node section from the CAMELYON16 data set, with the slide's macro image
 - openslide: Philips-TIFF/Philips-1.tiff
   taxon: Homo sapiens@species
   prep: section
@@ -2396,13 +2396,13 @@ life.mammals:
   modality: brightfield
   stain: haematoxylin and eosin
   note: lymph node section from the CAMELYON16 data set
-- openslide: Ventana/Ventana-1.bif
+- openslide: Philips-TIFF/Philips-3.tiff
   taxon: Homo sapiens@species
   prep: section
-  part: liver
+  part: lymph-node
   modality: brightfield
-  stain: trichrome
-  note: liver, scanned on a Ventana DP 200
+  stain: haematoxylin and eosin
+  note: lymph node section from the CAMELYON16 data set, with the slide's label and macro images
 - openslide: Hamamatsu/Hamamatsu-1.ndpi
   taxon: Homo sapiens@species
   prep: smear
