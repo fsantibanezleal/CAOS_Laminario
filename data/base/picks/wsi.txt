@@ -22,7 +22,11 @@ zenodo 18461326 14_Ptiliidae_FM_66-245_2025_09_08_12_38_40.ndpi | taxon=Ptiliida
 # species; Philips-2 takes its place: CC0, from CAMELYON16 (sentinel lymph nodes of patients), with a macro image.
 openslide Philips-TIFF/Philips-2.tiff | taxon=Homo sapiens@species | section | lymph-node | brightfield | haematoxylin and eosin | | lymph node section from the CAMELYON16 data set, with the slide's macro image
 openslide Philips-TIFF/Philips-1.tiff | taxon=Homo sapiens@species | section | lymph-node | brightfield | haematoxylin and eosin | | lymph node section from the CAMELYON16 data set
-openslide Ventana/Ventana-1.bif | taxon=Homo sapiens@species | section | liver | brightfield | trichrome | | liver, scanned on a Ventana DP 200
+# Ventana/Ventana-1.bif (human liver, CC0) was dropped on 2026-09-29: its tiles are joined in the LEFT direction,
+# which no OpenSlide release reads (4.0.1 knows RIGHT and UP; openslide issues 234 and 303), so the product cannot
+# open it (finding F-045). The other Ventana samples are licensed 'distributable'. Philips-3 takes its place: CC0,
+# CAMELYON16, with its label and macro images.
+openslide Philips-TIFF/Philips-3.tiff | taxon=Homo sapiens@species | section | lymph-node | brightfield | haematoxylin and eosin | | lymph node section from the CAMELYON16 data set, with the slide's label and macro images
 openslide Hamamatsu/Hamamatsu-1.ndpi | taxon=Homo sapiens@species | smear | bone-marrow | brightfield | | | bone marrow aspirate smear, scanned on a Hamamatsu NanoZoomer S360
 
 [earth.fossils]

@@ -907,7 +907,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Gabbro_from_Rum_in_Scotland_-_Thin_Section.jpg
     licence: https://creativecommons.org/licenses/by/3.0/
     rights_holder: null
-    creator: Julien Leuthold (ETH Zürich, Switzerland) ( https://imaggeo.egu.eu/user/Julien.Leuthold/ )
+    creator: Julien Leuthold (ETH Zürich, Switzerland)
     width: 1024
     height: 655
     modality: polarised_xpl
@@ -1512,7 +1512,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Bronzitite.jpg
     licence: https://creativecommons.org/licenses/by/2.0/
     rights_holder: null
-    creator: The original uploader was Tillman at English Wikipedia .
+    creator: Tillman (the English Wikipedia)
     width: 1853
     height: 1216
     modality: polarised_xpl
@@ -3322,7 +3322,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:ADRENA_1_final.jpg
     licence: https://creativecommons.org/licenses/by/3.0/
     rights_holder: null
-    creator: Doc. RNDr. Josef Reischig , CSc.
+    creator: Doc. RNDr. Josef Reischig, CSc.
     width: 3543
     height: 4742
     modality: polarised_xpl
@@ -3426,7 +3426,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Cholesterol_Crystals_Synovial_Fluid_Polarized_Light.jpg
     licence: https://creativecommons.org/licenses/by/3.0/
     rights_holder: null
-    creator: Ed Uthman, MD , pathologist, Houston, Texas, USA
+    creator: Ed Uthman, MD, pathologist, Houston, Texas, USA
     width: 1436
     height: 956
     modality: polarised_xpl
@@ -3452,7 +3452,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Citric_acid_crystals.jpg
     licence: https://creativecommons.org/licenses/by/3.0/
     rights_holder: null
-    creator: Doc. RNDr. Josef Reischig , CSc.
+    creator: Doc. RNDr. Josef Reischig, CSc.
     width: 3543
     height: 4742
     modality: polarised_xpl
@@ -3504,7 +3504,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Crystals_of_cytostatics_Refador.jpg
     licence: https://creativecommons.org/licenses/by/3.0/
     rights_holder: null
-    creator: Doc. RNDr. Josef Reischig , CSc.
+    creator: Doc. RNDr. Josef Reischig, CSc.
     width: 2074
     height: 2776
     modality: polarised_xpl
@@ -3556,7 +3556,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Crystals_of_vitamin_B6.jpg
     licence: https://creativecommons.org/licenses/by/3.0/
     rights_holder: null
-    creator: Doc. RNDr. Josef Reischig , CSc.
+    creator: Doc. RNDr. Josef Reischig, CSc.
     width: 3600
     height: 2690
     modality: polarised_xpl
@@ -3582,7 +3582,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Crystals_of_vitamin_C.jpg
     licence: https://creativecommons.org/licenses/by/3.0/
     rights_holder: null
-    creator: Doc. RNDr. Josef Reischig , CSc.
+    creator: Doc. RNDr. Josef Reischig, CSc.
     width: 3543
     height: 4742
     modality: polarised_xpl
@@ -5737,7 +5737,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Traquea_avestruz_ver.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: 'Traquea_avestruz.JPG : Lycaon.cl derivative work: Osado ( talk )'
+    creator: Lycaon.cl; derivative work by Osado
     width: 1029
     height: 1164
     modality: brightfield
@@ -6473,7 +6473,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:20100905_211652_SpirochetesZoom.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: '20100905_211652_Spirochetes.jpg : Bob Blaylock derivative work: F. Lamiot ( talk )'
+    creator: Bob Blaylock; derivative work by F. Lamiot
     width: 1577
     height: 1146
     modality: brightfield
@@ -6968,7 +6968,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:20100306_204728_Euglena.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: Bob Blaylock ( talk )
+    creator: Bob Blaylock
     width: 1187
     height: 1920
     modality: brightfield
@@ -7862,8 +7862,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2010-11-30_Ascobolus_immersus_124055.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Jason Karakehian (Jason Karakehian) at Mushroom Observer , a source for mycological
-      images. You can contact this user here .
+    creator: Jason Karakehian, Mushroom Observer
     width: 2736
     height: 3648
     modality: brightfield
@@ -7891,8 +7890,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2017-01-28_Hysterobrevium_smilacis_(Schwein.)_E._Boehm_&_C.L._Schoch_724915.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user zaca at Mushroom Observer , a source for mycological images. You can contact this
-      user here .
+    creator: zaca, Mushroom Observer
     width: 2048
     height: 1536
     modality: brightfield
@@ -7920,8 +7918,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2017-11-07_Scutellinia_umbrorum_(Fr.)_Lambotte_809081.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user lxjfx at Mushroom Observer , a source for mycological images. You can contact
-      this user here .
+    creator: lxjfx, Mushroom Observer
     width: 2175
     height: 3090
     modality: brightfield
@@ -8170,8 +8167,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2009-03-02_Entoloma_corneum_basidium_1_19047.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Michael W (michael w) at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Michael W, Mushroom Observer
     width: 973
     height: 1342
     modality: brightfield
@@ -8227,8 +8223,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2012-02-24_Galerina_clavata_(Velen.)_Kuhner_201167.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Ron Pastorino (Ronpast) at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Ron Pastorino (Ronpast), Mushroom Observer
     width: 2831
     height: 2174
     modality: brightfield
@@ -8256,8 +8251,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2011-11-12_Pluteus_salicinus_(Pers.)_P._Kumm_181970.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user zaca at Mushroom Observer , a source for mycological images. You can contact this
-      user here .
+    creator: zaca, Mushroom Observer
     width: 1202
     height: 902
     modality: brightfield
@@ -8338,8 +8332,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Dicranophora_fulva_J._Schröter_(380480).jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Bryce Kendrick (bryce@mycolog.comj) at Mushroom Observer , a source for mycological
-      images. You can contact this user here .
+    creator: Bryce Kendrick, Mushroom Observer
     width: 2048
     height: 1536
     modality: darkfield
@@ -10330,7 +10323,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:20090517_005212_VeryStrangeRotifer.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: Bob Blaylock ( talk )
+    creator: Bob Blaylock
     width: 768
     height: 1243
     modality: brightfield
@@ -11314,36 +11307,36 @@ slides:
     sha256: f606e8ef726a42840a2e0d33d3ffcd1afe9ea52ff98ef0880502958c2a07fe3c
     bytes: 326607275
   note: lymph node section from the CAMELYON16 data set
-- id: mammals-openslide-ventana-ventana-1-bif-ad7735
+- id: mammals-openslide-philips-tiff-philips-3-tiff-314920
   collection: life.mammals
   slide:
     format: iso_76x26
     format_assumed: true
     preparation: section
-    stain: trichrome
+    stain: haematoxylin and eosin
   specimen:
     anchor:
       kind: taxon
       ref: '2436436'
       name: Homo sapiens
       rank: species
-    part: liver
+    part: lymph-node
   placement:
-    node: life.mammals.digestive
+    node: life.mammals.blood-immune
   assets:
   - family: micro
     role: pyramid
-    url: https://openslide.cs.cmu.edu/download/openslide-testdata/Ventana/Ventana-1.bif
-    record_id: openslide:Ventana/Ventana-1.bif
-    record_url: https://openslide.cs.cmu.edu/download/openslide-testdata/Ventana/Ventana-1.bif
+    url: https://openslide.cs.cmu.edu/download/openslide-testdata/Philips-TIFF/Philips-3.tiff
+    record_id: openslide:Philips-TIFF/Philips-3.tiff
+    record_url: https://openslide.cs.cmu.edu/download/openslide-testdata/Philips-TIFF/Philips-3.tiff
     licence: https://creativecommons.org/publicdomain/zero/1.0/
     rights_holder: null
     creator: OpenSlide test data (Carnegie Mellon University)
     modality: brightfield
     wsi: true
-    sha256: 2eb05cd8f628c36408c3fde09beeeebaaae90181c4f840d5475ec7594bdcbbb6
-    bytes: 227377284
-  note: liver, scanned on a Ventana DP 200
+    sha256: 01b1513bfb09718d270ec02b75985b0ee32091ba2cb50d286e760bab9534ddf1
+    bytes: 3305342358
+  note: lymph node section from the CAMELYON16 data set, with the slide's label and macro images
 - id: mammals-openslide-hamamatsu-hamamatsu-1-ndpi-f8ed81
   collection: life.mammals
   slide:
@@ -11724,7 +11717,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:20090823_2027SS_Spirogyra.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: Bob Blaylock ( talk )
+    creator: Bob Blaylock
     width: 1200
     height: 960
     modality: brightfield
@@ -12282,7 +12275,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:Abies_concolor_tangential.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: 'The original uploader was AndiHolz at German Wikipedia . ( Original text: A.G. Heiss, Innsbruck )'
+    creator: A.G. Heiss, Innsbruck (uploaded to the German Wikipedia by AndiHolz)
     width: 1027
     height: 1047
     modality: brightfield
@@ -13013,8 +13006,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2009-10-30_Clitopilus_prunulus_27673.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Ron Pastorino (Ronpast) at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Ron Pastorino (Ronpast), Mushroom Observer
     width: 1681
     height: 1300
     modality: brightfield
@@ -13042,8 +13034,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2010-09-21_Scleroderma_citrinum_Pers_108904.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Ron Pastorino (Ronpast) at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Ron Pastorino (Ronpast), Mushroom Observer
     width: 1200
     height: 929
     modality: brightfield
@@ -13071,8 +13062,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2010-11-30_Ascobolus_immersus_124058.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Jason Karakehian (Jason Karakehian) at Mushroom Observer , a source for mycological
-      images. You can contact this user here .
+    creator: Jason Karakehian, Mushroom Observer
     width: 2073
     height: 1555
     modality: brightfield
@@ -13100,8 +13090,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2011-03-08_Hygrocybe_flavescens_spores_64217.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Ron Pastorino (Ronpast) at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Ron Pastorino (Ronpast), Mushroom Observer
     width: 2177
     height: 1682
     modality: brightfield
@@ -13129,8 +13118,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2011-04-26_Gyromitra_esculenta_Spores_66581.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Ron Pastorino (Ronpast) at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Ron Pastorino (Ronpast), Mushroom Observer
     width: 3072
     height: 2304
     modality: brightfield
@@ -13158,8 +13146,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2011-08-27_Ustilago_maydis_(DC.)_Corda_183839.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Alan Rockefeller (Alan Rockefeller) at Mushroom Observer , a source for mycological
-      images. You can contact this user here .
+    creator: Alan Rockefeller, Mushroom Observer
     width: 2816
     height: 2112
     modality: brightfield
@@ -13187,8 +13174,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2011-10-06_Conocybe_siliginea_(Fr._-Fr.)_Kuhner_173108.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Byrain at Mushroom Observer , a source for mycological images. You can contact
-      this user here .
+    creator: Byrain, Mushroom Observer
     width: 1545
     height: 1220
     modality: brightfield
@@ -13216,8 +13202,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2011-11-15_Royoporus_badius_(Pers.)_A.B._De_185780.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Ron Pastorino (Ronpast) at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Ron Pastorino (Ronpast), Mushroom Observer
     width: 2522
     height: 1869
     modality: brightfield
@@ -13245,8 +13230,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2011-11-30_Leucogaster_citrina_186473.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user sue.willis at Mushroom Observer , a source for mycological images. You can contact
-      this user here .
+    creator: sue.willis, Mushroom Observer
     width: 2448
     height: 3264
     modality: brightfield
@@ -13274,8 +13258,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2012-01-24_Lentinellus_ursinus_(Fr.)_Kühner_196906.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Ron Pastorino (Ronpast) at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Ron Pastorino (Ronpast), Mushroom Observer
     width: 2537
     height: 1597
     modality: brightfield
@@ -13303,8 +13286,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2012-01-28_Botryobasidium_aureum_Parmasto_197214.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Martin Livezey (MLivezey) at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Martin Livezey (MLivezey), Mushroom Observer
     width: 1400
     height: 1050
     modality: brightfield
@@ -13332,8 +13314,7 @@ slides:
     record_url: https://commons.wikimedia.org/wiki/File:2012-01-28_Hygrophoropsis_aurantiaca_var._rufa_D.A._Reid_197652.jpg
     licence: https://creativecommons.org/licenses/by-sa/3.0/
     rights_holder: null
-    creator: This image was created by user Copyright ©2012 Byrain at Mushroom Observer , a source for mycological images.
-      You can contact this user here .
+    creator: Byrain, Mushroom Observer
     width: 1137
     height: 1033
     modality: brightfield
