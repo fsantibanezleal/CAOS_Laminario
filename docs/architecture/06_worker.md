@@ -59,8 +59,9 @@ loses nothing and repeats nothing (R-032): after `Last-Event-ID: 4`, events 5 to
 
 **`process_asset`** reads an asset's source through the imaging engine (the reader's limits apply before any
 decoding), writes its pyramid with the measured-fidelity ladder (or a clean JPEG for a macro photograph, without
-EXIF), and marks the asset ready with its dimensions, bytes, SHA-256, PSNR and codec. When it makes the last plane
-of a focal stack ready, it queues that stack's fusion, once.
+EXIF), refuses the result if it is a single colour (page 04, section 1), and marks the asset ready with its
+dimensions, bytes, SHA-256, PSNR and codec. When it makes the last plane of a focal stack ready, it queues that
+stack's fusion, once.
 
 **`fuse_stack`** reads the stored plane pyramids through the engine's tiled fusion and writes three assets: the
 complex-wavelet composite (the default image), the variance composite, and the variance height map as a 16-bit

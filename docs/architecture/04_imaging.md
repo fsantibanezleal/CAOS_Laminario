@@ -54,6 +54,27 @@ What the reader returns for each fixture, equal to the files' own metadata (gate
 OpenSlide sees only one focal plane of an NDPI; the other 70 are TIFF pages that libvips reads directly
 (`tiffload(page=...)`, about 0.2 s per plane).
 
+### A plane beyond the JPEG limit
+
+A Hamamatsu scanner writes each plane as one JPEG, however large, with a restart marker after every few rows of
+blocks. libjpeg decodes at most 65,500 px on a side, and a plane beyond it was not refused: libtiff returned it
+black, without an error. A Zenodo palynology slide of 53,760 x 73,728 px with three planes (-15, 0 and 15 um) was
+stored and fused black in the base bake before the check below existed (2026-09-29).
+
+Such a plane is decoded by its restart intervals. tifffile locates them (the file's MCU starts; here 129,024
+intervals of 8 x 3,840 px, 14 to a row) and gives the plane's JPEG header. The plane is cut into bands of whole
+intervals, at most 1,024 px tall and 65,500 px wide; each band is a JPEG of its own, made of that header with the
+band's size, the band's intervals with their restart markers numbered again from RST0 (a decoder checks their
+order), and an end marker. libvips decodes the bands and joins them in place. A block's pixels depend only on its
+coefficients when the chroma is at full resolution (4:4:4, as in these files), so the result is the whole JPEG's:
+the plane at depth 0 equals OpenSlide's level 0, which is the scanner's default plane, to the last value, across
+the bands' seams (tested on that slide, and on a synthetic JPEG cut into tiles of every shape). Each plane opens in
+3 to 9 s and holds only its compressed bands, about 700 MB for that file's.
+
+Any stored image is also read back once, on the pyramid's smallest level or on a photograph's thumbnail: one colour
+in every band means its decoder failed without an error, or the file holds no image. The file is removed and the job
+fails with that reason, so a slide is never shown black (tested with a blank scan and a blank photograph).
+
 ## 2. Limits
 
 A decompression bomb is a small file that expands to an image far larger than the machine can hold. The header
