@@ -1,5 +1,6 @@
 // The trail of places a visitor stands in (realm > cabinet > drawer > slide > stage): a breadcrumb whose last place is
 // the current one. Each earlier place is a link back to it.
+import { Link } from "wouter";
 import { useI18n } from "../i18n";
 import styles from "./PlaceTrail.module.css";
 import { Glyph, Icon } from "./Icon";
@@ -26,10 +27,10 @@ export function PlaceTrail({ places }: { places: Place[] }) {
                   {place.label}
                 </span>
               ) : (
-                <a href={place.href}>
+                <Link href={place.href}>
                   {place.icon ? <Icon name={place.icon} size={16} /> : null}
                   {place.label}
-                </a>
+                </Link>
               )}
             </li>
           );

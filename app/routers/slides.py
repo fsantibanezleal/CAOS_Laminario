@@ -131,7 +131,14 @@ async def country_shapes() -> FileResponse:
                         headers={"Cache-Control": "public, max-age=86400"})
 
 
-@router.get("/explore/basemap.pmtiles")
+@router.get("/explore/country-names")
+async def country_names() -> FileResponse:
+    """Every ISO 3166-1 code with its English and Spanish name (Unicode CLDR 48.2.2), the names search matches."""
+    return FileResponse(PLACES_DATA / "vocab" / "countries.json", media_type="application/json",
+                        headers={"Cache-Control": "public, max-age=86400"})
+
+
+@router.api_route("/explore/basemap.pmtiles", methods=["GET", "HEAD"])
 async def basemap(request: Request) -> FileResponse:
     """The world basemap (Protomaps, OpenStreetMap data, ODbL), read by the map with byte ranges. Absent when the
     extract is not installed: the map then draws the countries on their own."""

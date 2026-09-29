@@ -20,11 +20,16 @@
     "check:i18n": "node scripts/check-i18n.mjs",
     "gate:fit": "node gates/fit.mjs",
     "gate:motion": "node gates/motion.mjs",
-    "gate:states": "node gates/states.mjs"
+    "gate:states": "node gates/states.mjs",
+    "gate:walk": "node gates/walk.mjs"
   },
   "dependencies": {
+    "@protomaps/basemaps": "5.7.2",
+    "maplibre-gl": "6.11.2",
+    "pmtiles": "4.5.0",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "wouter": "3.11.0"
   },
   "devDependencies": {
     "@types/node": "^24.19.0",

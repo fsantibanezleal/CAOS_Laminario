@@ -15,5 +15,9 @@ export default defineConfig({
     },
   },
   preview: { port: 4909, strictPort: true },
+  // MapLibre's worker is a module worker (it imports its shared chunk).
+  worker: { format: "es" },
+  // The map chunk (MapLibre, about 280 KB compressed) loads only on the map place.
+  build: { chunkSizeWarningLimit: 1100 },
   test: { environment: "node", include: ["src/**/*.test.ts"] },
 });

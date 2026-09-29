@@ -11,6 +11,30 @@ export const ORIGIN = `http://127.0.0.1:${PORT}`;
 export const WIDTHS = [360, 768, 1280, 1920];
 export const ROOMS = ["daylight", "lamplit"];
 export const LANGS = ["en", "es"];
+export const API = "http://127.0.0.1:8147";
+
+/** Every place built so far, each gate walks them all (U11 to U15 add theirs). */
+export const PLACES = ["/", "/c/insects", "/c/insects/lice", "/c/rocks/igneous", "/search?q=granite",
+  "/search?preparation=thin_section&node=earth.rocks", "/map", "/design", "/nowhere"];
+
+/**
+ * The places read the API through the preview's proxy. Refuse to run unless the API on 8147 is Laminario's and its
+ * collection has slides: a gate against another product on the port, or an empty collection, would pass vacuously.
+ * Start it with scripts/local/03_dev over a data root that holds the base collection.
+ */
+export async function requireApi() {
+  let health;
+  try {
+    health = await (await fetch(`${API}/api/health`)).json();
+  } catch {
+    throw new Error(`no API on ${API}: start it over a data root holding the base collection (scripts/local/03_dev)`);
+  }
+  if (health.product !== "laminario") throw new Error(`the API on ${API} is ${health.product}, not Laminario`);
+  const tree = await (await fetch(`${API}/api/collections`)).json();
+  const slides = tree.realms.reduce((n, r) => n + (r.slide_count ?? 0), 0);
+  if (slides < 300) throw new Error(`the API's collection holds ${slides} slides; the gates need the base collection`);
+  return { version: health.version, slides };
+}
 
 /** Where a gate writes its screenshots and reports (ignored by git). */
 export function outDir(gate) {

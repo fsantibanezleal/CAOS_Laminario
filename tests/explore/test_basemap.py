@@ -15,8 +15,12 @@ def test_the_basemap_is_served_by_byte_ranges(tmp_path):
         assert part.content == bytes(range(127, 255))
         assert part.headers["content-range"] == "bytes 127-254/4096"
         assert client.get("/api/explore/basemap.pmtiles").content == archive.read_bytes()
+        # The map asks with HEAD whether the basemap is installed.
+        head = client.head("/api/explore/basemap.pmtiles")
+        assert head.status_code == 200 and head.headers["accept-ranges"] == "bytes"
 
 
 def test_a_missing_basemap_is_a_404(tmp_path):
     with app_client(settings_for(tmp_path)) as client:
         assert client.get("/api/explore/basemap.pmtiles").status_code == 404
+        assert client.head("/api/explore/basemap.pmtiles").status_code == 404

@@ -134,6 +134,9 @@ def test_map_after_geoprivacy(explore):
     assert obscured["obscured"] and obscured["cell"]["south"] <= obscured["lat"] <= obscured["cell"]["north"]
     assert (obscured["lat"], obscured["lon"]) != (-33.4489, -70.6693)
 
+    names = client.get("/api/explore/country-names").json()["countries"]
+    assert names["GP"] == {"en": "Guadeloupe", "es": "Guadalupe"} and len(names) == 257
+
     shapes = client.get("/api/explore/countries")
     assert shapes.status_code == 200 and shapes.headers["cache-control"] == "public, max-age=86400"
     features = shapes.json()["features"]

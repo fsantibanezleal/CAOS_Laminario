@@ -11,12 +11,17 @@ export interface FacetChipProps {
   onChange: (pressed: boolean) => void;
   icon?: string;
   count?: number;
+  /** No slide has this value under the other filters: shown in its place, not offered. */
+  disabled?: boolean;
+  /** The facet and value the chip stands for ("preparation:smear"), for the gates. */
+  value?: string;
 }
 
-export function FacetChip({ label, pressed, onChange, icon, count }: FacetChipProps) {
+export function FacetChip({ label, pressed, onChange, icon, count, disabled, value }: FacetChipProps) {
   const { number } = useI18n();
   return (
-    <button type="button" className={styles.chip} aria-pressed={pressed} onClick={() => onChange(!pressed)}>
+    <button type="button" className={styles.chip} aria-pressed={pressed} disabled={disabled} data-value={value}
+      onClick={() => onChange(!pressed)}>
       {pressed ? <Glyph name="check" size={16} /> : icon ? <Icon name={icon} size={16} /> : null}
       <span>{label}</span>
       {count !== undefined ? <span className={styles.count}>{number(count)}</span> : null}
