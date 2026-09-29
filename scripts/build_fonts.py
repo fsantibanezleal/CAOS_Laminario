@@ -135,9 +135,11 @@ def build() -> dict[str, bytes]:
     for style in ("Regular", "Italic", "Bold"):
         font = TTFont(io.BytesIO(upstream(f"courierprime/CourierPrime-{style}.ttf")))
         files[f"courier-prime-{style.lower()}.woff2"] = woff2(font)
-    files["laminario-sans-OFL.txt"] = upstream("sourcesans3/OFL.txt")
-    files["fraunces-OFL.txt"] = upstream("fraunces/OFL.txt")
-    files["courier-prime-OFL.txt"] = upstream("courierprime/OFL.txt")
+    # The licence texts are stored with LF line endings, as git keeps text in this repository (upstream has CRLF).
+    for name, src in (("laminario-sans", "sourcesans3"), ("fraunces", "fraunces"), ("courier-prime", "courierprime")):
+        files[f"{name}-OFL.txt"] = upstream(f"{src}/OFL.txt").replace(b"
+", b"
+")
     return files
 
 
