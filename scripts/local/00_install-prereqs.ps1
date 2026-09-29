@@ -68,6 +68,23 @@ if ($node -and $node -ge $NodeMin -and $node -lt $NodeMaxExclusive) {
 if (Test-Cmd "git") { Write-Host ("  git {0}" -f (Get-Ver "git" @("--version"))) -ForegroundColor Green }
 else { Write-Host "  git not found" -ForegroundColor Red; $missing = $true; Install-Winget "Git.Git" "Git" }
 
+# libvips with OpenSlide (the imaging engine, from U2 on): the official Windows build "vips-dev-w64-all",
+# unzipped anywhere, its bin folder named by LAMINARIO_VIPS_BIN in the environment or in .env.
+$vipsBin = $env:LAMINARIO_VIPS_BIN
+$envFile = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) ".env"
+if (-not $vipsBin -and (Test-Path $envFile)) {
+    $line = Get-Content $envFile | Where-Object { $_ -match '^LAMINARIO_VIPS_BIN=(.+)$' } | Select-Object -First 1
+    if ($line) { $vipsBin = ($line -split '=', 2)[1].Trim() }
+}
+if ($vipsBin -and (Test-Path (Join-Path $vipsBin "libvips-42.dll")) -and (Test-Path (Join-Path $vipsBin "libopenslide-1.dll"))) {
+    Write-Host "  libvips with OpenSlide ($vipsBin)" -ForegroundColor Green
+} else {
+    Write-Host "  libvips with OpenSlide not found (LAMINARIO_VIPS_BIN: '$vipsBin')" -ForegroundColor Red
+    Write-Host "    Download vips-dev-w64-all-<version>.zip from https://github.com/libvips/build-win64-mxe/releases,"
+    Write-Host "    unzip it, and set LAMINARIO_VIPS_BIN in .env to its bin folder."
+    $missing = $true
+}
+
 # Docker runs the IIIF tile server locally (from U3 on).
 if (Test-Cmd "docker") { Write-Host ("  Docker {0}" -f (Get-Ver "docker" @("--version"))) -ForegroundColor Green }
 else { Write-Host "  Docker not found (needed for the local tile server)" -ForegroundColor Yellow }

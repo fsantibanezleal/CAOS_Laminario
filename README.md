@@ -34,10 +34,12 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.01.000`: the repository base (U0) and the data model with both contracts (U1). The API validates a
-slide case (`POST /api/slide-cases/validate`), stores it, and serves the catalog record (`GET /api/slides/{id}`,
-`GET /api/slides`); the JSON Schemas of both contracts are committed and mirrored as TypeScript types. The units
-that follow are listed in the design document.
+Version `0.02.000`: the repository base (U0), the data model with both contracts (U1), and the imaging engine
+(U2). The API validates a slide case, stores it and serves the catalog record; the engine reads scanner, TIFF and
+photo formats, writes one measured pyramid per plane, and fuses focal stacks into an all-in-focus image and a
+depth map, exact against the EPFL extended-depth-of-field plugin
+([`docs/architecture/04_imaging.md`](docs/architecture/04_imaging.md)). The units that follow are listed in the
+design document.
 
 ## Architecture at a glance
 
