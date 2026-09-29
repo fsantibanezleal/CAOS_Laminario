@@ -33,4 +33,5 @@
 <symbol id="pause" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v14M20 9v14"/></symbol>
 <symbol id="play" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11 8.5v15L23.5 16z"/></symbol>
 <symbol id="retry" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M24.5 16a8.5 8.5 0 1 1-2.5-6"/><path d="M22.5 5.5V10H18"/></symbol>
+<symbol id="identify" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="13.5" r="8"/><path d="M19.5 19.5L26 26"/><path d="M10 16.5c1-3.8 3.8-5.8 7-6-.3 3.4-2.6 6-7 6z"/><path d="M10 16.5l3.5-3" opacity=".7"/></symbol>
 </svg>

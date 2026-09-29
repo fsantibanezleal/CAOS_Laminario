@@ -14,6 +14,7 @@ const WAYS = [
   { href: "/", glyph: "cabinet", key: "nav.collections", matches: (p: string) => p === "/" || p.startsWith("/c/") },
   { href: "/search", glyph: "search", key: "nav.search", matches: (p: string) => p.startsWith("/search") },
   { href: "/map", glyph: "map", key: "nav.map", matches: (p: string) => p.startsWith("/map") },
+  { href: "/identify", glyph: "identify", key: "nav.identify", matches: (p: string) => p.startsWith("/identify") },
 ] as const;
 const CONTRIBUTE = { href: "/contribute", glyph: "upload", key: "nav.contribute",
   matches: (p: string) => p.startsWith("/contribute") } as const;

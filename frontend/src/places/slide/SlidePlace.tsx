@@ -1,7 +1,7 @@
 // /s/<id>: a slide. At the top the slide as an object (its drawing, with its label and QR) and what can be done with
 // it (print the label at 1:1, read the label, download the drawing, the IIIF manifest); then what can be looked at
 // under the microscope, the photographs, the record, and where every image came from (R-1107).
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Link, useParams } from "wouter";
 import { api, labelPdf, slideDrawing } from "../../api/client";
 import { useResource } from "../../api/useResource";
@@ -20,6 +20,9 @@ import { Glyph } from "../../ui/Icon";
 import { Dialog } from "../../ui/Overlay";
 import { NotFoundPlace } from "../NotFoundPlace";
 import styles from "./SlidePlace.module.css";
+
+const IdentificationsPanel = lazy(() => import("../../community/IdentificationsPanel")
+  .then((m) => ({ default: m.IdentificationsPanel })));
 
 /** The SHA-256 of the file an image was made from: its source's (the base collection) or its upload's. */
 const originalSha = (a: SlideRecord["assets"][number]) => a.original_sha256 ?? a.source?.sha256 ?? null;
@@ -97,6 +100,13 @@ function SlideView({ record, tree }: { record: SlideRecord; tree: TreeIndex }) {
                 {items.map((item) => <li key={item.key}><StageCard slideId={record.id} item={item} tree={tree} /></li>)}
               </ul>
             ) : <EmptyState icon={record.placement.node} title={t("slide.micro.none")}>{t("slide.micro.none.body")}</EmptyState>}
+          </section>
+
+          <section aria-labelledby="identifications">
+            <h2 id="identifications" className={styles.sectionTitle}>{t("community.title")}</h2>
+            <Suspense fallback={<Skeleton lines={4} />}>
+              <IdentificationsPanel record={record} />
+            </Suspense>
           </section>
 
           {macro.length ? (

@@ -1,5 +1,6 @@
 // The app: the room, the language, the session, the tree and the toast region around the place the address names.
-// The identify, profile and about places arrive with U13 to U15. The contribute places load as their own chunk.
+// The profile and about places arrive with U14 and U15. The contribute, identify and moderation places load as
+// their own chunks.
 import { lazy, Suspense } from "react";
 import { Route, Switch } from "wouter";
 import { SessionProvider } from "./account/session";
@@ -21,6 +22,8 @@ import { Skeleton } from "./ui/Feedback";
 
 const ContributeList = lazy(() => import("./places/contribute/ContributeList").then((m) => ({ default: m.ContributeList })));
 const CaseEditor = lazy(() => import("./places/contribute/CaseEditor").then((m) => ({ default: m.CaseEditor })));
+const IdentifyPlace = lazy(() => import("./places/identify/IdentifyPlace").then((m) => ({ default: m.IdentifyPlace })));
+const ModeratePlace = lazy(() => import("./places/identify/ModeratePlace").then((m) => ({ default: m.ModeratePlace })));
 const waiting = <Skeleton lines={6} />;
 
 export function App() {
@@ -44,6 +47,8 @@ export function App() {
               <Route path="/contribute"><Suspense fallback={waiting}><ContributeList /></Suspense></Route>
               <Route path="/contribute/new"><Suspense fallback={waiting}><CaseEditor /></Suspense></Route>
               <Route path="/contribute/:id"><Suspense fallback={waiting}><CaseEditor /></Suspense></Route>
+              <Route path="/identify"><Suspense fallback={waiting}><IdentifyPlace /></Suspense></Route>
+              <Route path="/moderate"><Suspense fallback={waiting}><ModeratePlace /></Suspense></Route>
               <Route path="/design" component={DesignPlace} />
               <Route component={NotFoundPlace} />
             </Switch>
