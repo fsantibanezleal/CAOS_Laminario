@@ -8,11 +8,15 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.collections import taxa
+from app.collections.service import check_submission
+from app.collections.tree import load_tree
 from app.contracts import catalog as c
 from app.contracts.ingest import validate_submission
 from app.db.session import session
 from app.delivery import manifest as iiif_manifest
 from app.services import catalog, slides
+from app.services.collections import host_view_slides
 
 router = APIRouter(prefix="/api", tags=["slides"])
 
@@ -24,11 +28,21 @@ NODE_QUERY = r"^[a-z0-9]+(?:-[a-z0-9]+)*(?:\.[a-z0-9]+(?:-[a-z0-9]+)*)*$"
     response_model=c.ValidationResult,
     responses={422: {"model": c.ValidationResult, "description": "the submission breaks a rule of the contract"}},
 )
-async def validate_slide_case(payload: Annotated[Any, Body()]) -> JSONResponse:
-    """Run the ingestion contract on a slide case without storing anything."""
+async def validate_slide_case(payload: Annotated[Any, Body()], request: Request,
+                              db: Annotated[AsyncSession, Depends(session)]) -> JSONResponse:
+    """Run the ingestion contract and the tree's checks (anchor, part, host, placement) without storing a
+    slide; a taxon seen for the first time is cached."""
     report = validate_submission(payload)
     if not report.valid:
         body = c.ValidationResult(valid=False, errors=report.errors)
+        return JSONResponse(status_code=422, content=body.model_dump())
+    try:
+        checked = await check_submission(db, request.app.state.gbif_client, report.submission)
+    except taxa.TaxonServiceUnavailable as exc:
+        raise HTTPException(status_code=503, detail=f"the GBIF taxonomy did not answer; try again ({exc})") from exc
+    await db.commit()
+    if checked.errors:
+        body = c.ValidationResult(valid=False, errors=checked.errors)
         return JSONResponse(status_code=422, content=body.model_dump())
     return JSONResponse(status_code=200, content=c.ValidationResult(valid=True, flags=report.flags).model_dump())
 
@@ -52,8 +66,14 @@ async def list_slides(
     offset: Annotated[int, Query(ge=0)] = 0,
     limit: Annotated[int, Query(ge=1, le=200)] = 48,
 ) -> c.SlidePage:
-    """Published slides, newest first, optionally under a collection node or of one anchor kind."""
-    rows, total = await slides.list_slides(db, node=node, kind=kind, offset=offset, limit=limit)
+    """Published slides, newest first, optionally under a collection node or of one anchor kind. Under a view
+    (Parasites and hosts) they are the slides whose host lies inside the view's collection."""
+    view = load_tree().get(node) if node else None
+    if view is not None and view.is_view:
+        shown = [s for s in await host_view_slides(db, load_tree(), view) if not kind or s.anchor_kind == kind]
+        rows, total = shown[offset:offset + limit], len(shown)
+    else:
+        rows, total = await slides.list_slides(db, node=node, kind=kind, offset=offset, limit=limit)
     settings = request.app.state.settings
     return c.SlidePage(items=[catalog.slide_summary(s, settings) for s in rows],
                        total=total, offset=offset, limit=limit)

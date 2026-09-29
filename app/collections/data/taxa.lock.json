@@ -1,0 +1,1360 @@
+{
+ "about": "GBIF backbone keys and lineages of the taxa the collection tree names. Built by scripts/lock_taxa.py; the backbone is CC BY 4.0.",
+ "backbone": {
+  "dataset": "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c",
+  "api": "https://api.gbif.org/v1",
+  "resolved_on": "2026-09-29"
+ },
+ "taxa": {
+  "Plantae@kingdom": {
+   "key": 6,
+   "name": "Plantae",
+   "rank": "kingdom",
+   "status": "accepted",
+   "lineage": []
+  },
+  "Chlorophyta@phylum": {
+   "key": 36,
+   "name": "Chlorophyta",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    6
+   ]
+  },
+  "Charophyta@phylum": {
+   "key": 7819616,
+   "name": "Charophyta",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    6
+   ]
+  },
+  "Bryophyta@phylum": {
+   "key": 35,
+   "name": "Bryophyta",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    6
+   ]
+  },
+  "Marchantiophyta@phylum": {
+   "key": 9,
+   "name": "Marchantiophyta",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    6
+   ]
+  },
+  "Anthocerotophyta@phylum": {
+   "key": 13,
+   "name": "Anthocerotophyta",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    6
+   ]
+  },
+  "Lycopodiopsida@class": {
+   "key": 245,
+   "name": "Lycopodiopsida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    6,
+    7707728
+   ]
+  },
+  "Polypodiopsida@class": {
+   "key": 7228684,
+   "name": "Polypodiopsida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    6,
+    7707728
+   ]
+  },
+  "Pinopsida@class": {
+   "key": 194,
+   "name": "Pinopsida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    6,
+    7707728
+   ]
+  },
+  "Cycadopsida@class": {
+   "key": 228,
+   "name": "Cycadopsida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    6,
+    7707728
+   ]
+  },
+  "Ginkgoopsida@class": {
+   "key": 244,
+   "name": "Ginkgoopsida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    6,
+    7707728
+   ]
+  },
+  "Gnetopsida@class": {
+   "key": 282,
+   "name": "Gnetopsida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    6,
+    7707728
+   ]
+  },
+  "Liliopsida@class": {
+   "key": 196,
+   "name": "Liliopsida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    6,
+    7707728
+   ]
+  },
+  "Magnoliopsida@class": {
+   "key": 220,
+   "name": "Magnoliopsida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    6,
+    7707728
+   ]
+  },
+  "Fungi@kingdom": {
+   "key": 5,
+   "name": "Fungi",
+   "rank": "kingdom",
+   "status": "accepted",
+   "lineage": []
+  },
+  "Ascomycota@phylum": {
+   "key": 95,
+   "name": "Ascomycota",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    5
+   ]
+  },
+  "Basidiomycota@phylum": {
+   "key": 34,
+   "name": "Basidiomycota",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    5
+   ]
+  },
+  "Mucoromycota@phylum": {
+   "key": 12238325,
+   "name": "Mucoromycota",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    5
+   ]
+  },
+  "Chytridiomycota@phylum": {
+   "key": 94,
+   "name": "Chytridiomycota",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    5
+   ]
+  },
+  "Lecanoromycetes@class": {
+   "key": 180,
+   "name": "Lecanoromycetes",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    5,
+    95
+   ]
+  },
+  "Arthoniomycetes@class": {
+   "key": 313,
+   "name": "Arthoniomycetes",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    5,
+    95
+   ]
+  },
+  "Lichinomycetes@class": {
+   "key": 314,
+   "name": "Lichinomycetes",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    5,
+    95
+   ]
+  },
+  "Bacteria@kingdom": {
+   "key": 3,
+   "name": "Bacteria",
+   "rank": "kingdom",
+   "status": "accepted",
+   "lineage": []
+  },
+  "Archaea@kingdom": {
+   "key": 2,
+   "name": "Archaea",
+   "rank": "kingdom",
+   "status": "accepted",
+   "lineage": []
+  },
+  "Protozoa@kingdom": {
+   "key": 7,
+   "name": "Protozoa",
+   "rank": "kingdom",
+   "status": "accepted",
+   "lineage": []
+  },
+  "Chromista@kingdom": {
+   "key": 4,
+   "name": "Chromista",
+   "rank": "kingdom",
+   "status": "accepted",
+   "lineage": []
+  },
+  "Cyanobacteria@phylum": {
+   "key": 68,
+   "name": "Cyanobacteria",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    3
+   ]
+  },
+  "Firmicutes@phylum": {
+   "key": 87,
+   "name": "Firmicutes",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    3
+   ]
+  },
+  "Actinobacteriota@phylum": {
+   "key": 10813635,
+   "name": "Actinobacteriota",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    3
+   ]
+  },
+  "Proteobacteria@phylum": {
+   "key": 111,
+   "name": "Proteobacteria",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    3
+   ]
+  },
+  "Spirochaetota@phylum": {
+   "key": 10707403,
+   "name": "Spirochaetota",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    3
+   ]
+  },
+  "Amoebozoa@phylum": {
+   "key": 7509337,
+   "name": "Amoebozoa",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    7
+   ]
+  },
+  "Ciliophora@phylum": {
+   "key": 7765738,
+   "name": "Ciliophora",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    4
+   ]
+  },
+  "Euglenozoa@phylum": {
+   "key": 41,
+   "name": "Euglenozoa",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    7
+   ]
+  },
+  "Metamonada@phylum": {
+   "key": 7813133,
+   "name": "Metamonada",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    7
+   ]
+  },
+  "Choanozoa@phylum": {
+   "key": 97,
+   "name": "Choanozoa",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    7
+   ]
+  },
+  "Aconoidasida@class": {
+   "key": 9196674,
+   "name": "Aconoidasida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    4,
+    8770992
+   ]
+  },
+  "Conoidasida@class": {
+   "key": 7531158,
+   "name": "Conoidasida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    4,
+    8770992
+   ]
+  },
+  "Trypanosomatidae@family": {
+   "key": 6009069,
+   "name": "Trypanosomatidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    7,
+    41,
+    7687234,
+    7692064
+   ]
+  },
+  "Bacillariophyceae@class": {
+   "key": 7947184,
+   "name": "Bacillariophyceae",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    4,
+    98
+   ]
+  },
+  "Dinophyceae@class": {
+   "key": 9049014,
+   "name": "Dinophyceae",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    4,
+    8770992
+   ]
+  },
+  "Chrysophyceae@class": {
+   "key": 7073563,
+   "name": "Chrysophyceae",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    4,
+    98
+   ]
+  },
+  "Xanthophyceae@class": {
+   "key": 7073629,
+   "name": "Xanthophyceae",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    4,
+    98
+   ]
+  },
+  "Eustigmatophyceae@class": {
+   "key": 286,
+   "name": "Eustigmatophyceae",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    4,
+    98
+   ]
+  },
+  "Synurophyceae@class": {
+   "key": 7073604,
+   "name": "Synurophyceae",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    4,
+    98
+   ]
+  },
+  "Raphidophyceae@class": {
+   "key": 7073554,
+   "name": "Raphidophyceae",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    4,
+    98
+   ]
+  },
+  "Haptophyta@phylum": {
+   "key": 70,
+   "name": "Haptophyta",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    4
+   ]
+  },
+  "Cryptophyta@phylum": {
+   "key": 69,
+   "name": "Cryptophyta",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    4
+   ]
+  },
+  "Foraminifera@phylum": {
+   "key": 8376456,
+   "name": "Foraminifera",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    4
+   ]
+  },
+  "Polycystina@class": {
+   "key": 8065737,
+   "name": "Polycystina",
+   "rank": "class",
+   "status": "doubtful",
+   "lineage": [
+    4
+   ]
+  },
+  "Acantharia@class": {
+   "key": 234,
+   "name": "Acantharia",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    7
+   ]
+  },
+  "Insecta@class": {
+   "key": 216,
+   "name": "Insecta",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Coleoptera@order": {
+   "key": 1470,
+   "name": "Coleoptera",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216
+   ]
+  },
+  "Diptera@order": {
+   "key": 811,
+   "name": "Diptera",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216
+   ]
+  },
+  "Echinophthiriidae@family": {
+   "key": 7926,
+   "name": "Echinophthiriidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Enderleinellidae@family": {
+   "key": 7927,
+   "name": "Enderleinellidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Haematopinidae@family": {
+   "key": 4362,
+   "name": "Haematopinidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Hamophthiriidae@family": {
+   "key": 4363,
+   "name": "Hamophthiriidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Hoplopleuridae@family": {
+   "key": 7928,
+   "name": "Hoplopleuridae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Linognathidae@family": {
+   "key": 4365,
+   "name": "Linognathidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Microthoraciidae@family": {
+   "key": 7929,
+   "name": "Microthoraciidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Neolinognathidae@family": {
+   "key": 4366,
+   "name": "Neolinognathidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Pecaroecidae@family": {
+   "key": 4367,
+   "name": "Pecaroecidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Pedicinidae@family": {
+   "key": 4368,
+   "name": "Pedicinidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Pediculidae@family": {
+   "key": 7930,
+   "name": "Pediculidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Polyplacidae@family": {
+   "key": 4369,
+   "name": "Polyplacidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Pthiridae@family": {
+   "key": 4370,
+   "name": "Pthiridae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Ratemiidae@family": {
+   "key": 4371,
+   "name": "Ratemiidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Abrocomophagidae@family": {
+   "key": 4804453,
+   "name": "Abrocomophagidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216
+   ]
+  },
+  "Boopiidae@family": {
+   "key": 2786,
+   "name": "Boopiidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Gyropidae@family": {
+   "key": 2785,
+   "name": "Gyropidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Laemobothriidae@family": {
+   "key": 2784,
+   "name": "Laemobothriidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Menoponidae@family": {
+   "key": 2783,
+   "name": "Menoponidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Ricinidae@family": {
+   "key": 3259853,
+   "name": "Ricinidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Trimenoponidae@family": {
+   "key": 3259890,
+   "name": "Trimenoponidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Philopteridae@family": {
+   "key": 2782,
+   "name": "Philopteridae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Trichodectidae@family": {
+   "key": 6040,
+   "name": "Trichodectidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Goniodidae@family": {
+   "key": 3259886,
+   "name": "Goniodidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Heptapsogastridae@family": {
+   "key": 11373606,
+   "name": "Heptapsogastridae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Haematomyzidae@family": {
+   "key": 4361,
+   "name": "Haematomyzidae",
+   "rank": "family",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216,
+    7612838
+   ]
+  },
+  "Siphonaptera@order": {
+   "key": 1366,
+   "name": "Siphonaptera",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216
+   ]
+  },
+  "Hymenoptera@order": {
+   "key": 1457,
+   "name": "Hymenoptera",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216
+   ]
+  },
+  "Lepidoptera@order": {
+   "key": 797,
+   "name": "Lepidoptera",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216
+   ]
+  },
+  "Hemiptera@order": {
+   "key": 809,
+   "name": "Hemiptera",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    216
+   ]
+  },
+  "Arthropoda@phylum": {
+   "key": 54,
+   "name": "Arthropoda",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Ixodida@order": {
+   "key": 1425,
+   "name": "Ixodida",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    367
+   ]
+  },
+  "Mesostigmata@order": {
+   "key": 1109,
+   "name": "Mesostigmata",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    367
+   ]
+  },
+  "Trombidiformes@order": {
+   "key": 543,
+   "name": "Trombidiformes",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    367
+   ]
+  },
+  "Sarcoptiformes@order": {
+   "key": 542,
+   "name": "Sarcoptiformes",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    367
+   ]
+  },
+  "Opilioacarida@order": {
+   "key": 1158,
+   "name": "Opilioacarida",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    367
+   ]
+  },
+  "Holothyrida@order": {
+   "key": 373,
+   "name": "Holothyrida",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    367
+   ]
+  },
+  "Araneae@order": {
+   "key": 1496,
+   "name": "Araneae",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    367
+   ]
+  },
+  "Scorpiones@order": {
+   "key": 872,
+   "name": "Scorpiones",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    367
+   ]
+  },
+  "Pseudoscorpiones@order": {
+   "key": 1161,
+   "name": "Pseudoscorpiones",
+   "rank": "order",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54,
+    367
+   ]
+  },
+  "Branchiopoda@class": {
+   "key": 281,
+   "name": "Branchiopoda",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Copepoda@class": {
+   "key": 11545536,
+   "name": "Copepoda",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Maxillopoda@class": {
+   "key": 203,
+   "name": "Maxillopoda",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Ostracoda@class": {
+   "key": 353,
+   "name": "Ostracoda",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Malacostraca@class": {
+   "key": 229,
+   "name": "Malacostraca",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Remipedia@class": {
+   "key": 236,
+   "name": "Remipedia",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Cephalocarida@class": {
+   "key": 235,
+   "name": "Cephalocarida",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Diplopoda@class": {
+   "key": 361,
+   "name": "Diplopoda",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Chilopoda@class": {
+   "key": 360,
+   "name": "Chilopoda",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Symphyla@class": {
+   "key": 7742773,
+   "name": "Symphyla",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Pauropoda@class": {
+   "key": 143,
+   "name": "Pauropoda",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Collembola@class": {
+   "key": 10713444,
+   "name": "Collembola",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Protura@class": {
+   "key": 11377931,
+   "name": "Protura",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Diplura@class": {
+   "key": 11374670,
+   "name": "Diplura",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    54
+   ]
+  },
+  "Mollusca@phylum": {
+   "key": 52,
+   "name": "Mollusca",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Gastropoda@class": {
+   "key": 225,
+   "name": "Gastropoda",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    52
+   ]
+  },
+  "Bivalvia@class": {
+   "key": 137,
+   "name": "Bivalvia",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    52
+   ]
+  },
+  "Cephalopoda@class": {
+   "key": 136,
+   "name": "Cephalopoda",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    52
+   ]
+  },
+  "Animalia@kingdom": {
+   "key": 1,
+   "name": "Animalia",
+   "rank": "kingdom",
+   "status": "accepted",
+   "lineage": []
+  },
+  "Chordata@phylum": {
+   "key": 44,
+   "name": "Chordata",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Ascidiacea@class": {
+   "key": 356,
+   "name": "Ascidiacea",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Thaliacea@class": {
+   "key": 207,
+   "name": "Thaliacea",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Leptocardii@class": {
+   "key": 7375758,
+   "name": "Leptocardii",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Platyhelminthes@phylum": {
+   "key": 108,
+   "name": "Platyhelminthes",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Nematoda@phylum": {
+   "key": 5967481,
+   "name": "Nematoda",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Annelida@phylum": {
+   "key": 42,
+   "name": "Annelida",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Cnidaria@phylum": {
+   "key": 43,
+   "name": "Cnidaria",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Porifera@phylum": {
+   "key": 105,
+   "name": "Porifera",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Echinodermata@phylum": {
+   "key": 50,
+   "name": "Echinodermata",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Rotifera@phylum": {
+   "key": 91,
+   "name": "Rotifera",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Tardigrada@phylum": {
+   "key": 14,
+   "name": "Tardigrada",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Amphibia@class": {
+   "key": 131,
+   "name": "Amphibia",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Squamata@class": {
+   "key": 11592253,
+   "name": "Squamata",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Testudines@class": {
+   "key": 11418114,
+   "name": "Testudines",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Crocodylia@class": {
+   "key": 11493978,
+   "name": "Crocodylia",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Sphenodontia@class": {
+   "key": 11569602,
+   "name": "Sphenodontia",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Aves@class": {
+   "key": 212,
+   "name": "Aves",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Mammalia@class": {
+   "key": 359,
+   "name": "Mammalia",
+   "rank": "class",
+   "status": "accepted",
+   "lineage": [
+    1,
+    44
+   ]
+  },
+  "Brachiopoda@phylum": {
+   "key": 110,
+   "name": "Brachiopoda",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  },
+  "Bryozoa@phylum": {
+   "key": 53,
+   "name": "Bryozoa",
+   "rank": "phylum",
+   "status": "accepted",
+   "lineage": [
+    1
+   ]
+  }
+ }
+}

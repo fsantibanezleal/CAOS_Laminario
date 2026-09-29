@@ -132,6 +132,24 @@ tusd.exe -host=127.0.0.1 -port=8148 -base-path=/files/ -upload-dir=.data\quarant
 The worker verifies each finished upload and processes it. The upload tests start their own tusd from
 `LAMINARIO_TUSD_BIN` and skip without it.
 
+## 9. The collection tree
+
+The tree, its vocabularies and the icons are files in the repository; the API reads them at start. Taxon anchors are
+looked up on GBIF the first time a key is seen (`LAMINARIO_GBIF_API_URL`, default `https://api.gbif.org/v1`) and kept
+in the database. After changing the tree or the icons:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\lock_taxa.py            # resolve new taxa on GBIF (network)
+.\.venv\Scripts\python.exe scripts\build_icons.py          # the sprite and the contact sheet
+.\.venv\Scripts\python.exe scripts\render_tree_docs.py     # docs/collections/tree.md
+.\.venv\Scripts\python.exe -m pytest tests\collections    # the guard, placement, icons, API
+```
+
+The mineral and rock vocabularies are rebuilt and checked from their sources in the data vault
+(`LAMINARIO_FIXTURES\vocab`): `scripts\build_minerals.py --vault $env:LAMINARIO_FIXTURES` and
+`scripts\check_rock_terms.py --vault $env:LAMINARIO_FIXTURES`; the two vault tests skip without it. The tests never call
+GBIF: a local server replays recorded answers (`tests\gbif_replay.py`).
+
 ## Tests and guards
 
 The full test suite runs locally; continuous integration runs only the lint and the guards.

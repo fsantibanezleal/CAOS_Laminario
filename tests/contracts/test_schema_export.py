@@ -28,4 +28,6 @@ def test_schema_declares_expected_text_on_constrained_fields():
     assert "20 to 100" in schema["$defs"]["SizeMm"]["properties"]["w_mm"]["expected"]
     assert exporter.catalog_schema()["properties"].keys() == {"slide", "slidePage", "slideSummary", "validation",
                                                             "job", "jobEvent", "account", "invitation",
-                                                            "createdSlideCase", "upload"}
+                                                            "createdSlideCase", "upload", "collectionTree",
+                                                            "collectionNode", "facet", "anchorSuggestion",
+                                                            "placement"}

@@ -28,7 +28,7 @@ def contribution() -> dict:
             "locality_text": "Near a stream",
             "coordinates": {"lat": -33.4489, "lon": -70.6693, "uncertainty_m": 30},
             "geoprivacy": "open",
-            "host": {"kind": "taxon", "ref": "2437295", "name": "Thomomys", "rank": "genus"},
+            "host": {"kind": "taxon", "ref": "2439381", "name": "Thomomys", "rank": "genus"},
         },
         "placement": {"node": "life.insects.lice"},
         "assets": [

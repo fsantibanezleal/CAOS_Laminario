@@ -11,6 +11,11 @@ export interface LaminarioCatalog {
   invitation?: InvitationRecord;
   createdSlideCase?: CreatedSlideCase;
   upload?: UploadRecord;
+  collectionTree?: CollectionTreeRecord;
+  collectionNode?: CollectionNodeDetail;
+  facet?: FacetRecord;
+  anchorSuggestion?: AnchorSuggestion;
+  placement?: PlacementResult;
 }
 export interface SlideRecord {
   id: string;
@@ -23,6 +28,8 @@ export interface SlideRecord {
   label: LabelRecord;
   anchor: AnchorRecord;
   host?: AnchorRecord | null;
+  part?: string | null;
+  preservation?: "recent" | "fossil" | "in_amber";
   place: PlaceRecord;
   placement: PlacementRecord;
   quality: QualityRecord;
@@ -64,6 +71,7 @@ export interface AnchorRecord {
   ref: string;
   name: string;
   rank?: string | null;
+  classification?: string | null;
 }
 /**
  * Where the specimen was collected, after geoprivacy.
@@ -258,4 +266,97 @@ export interface UploadRecord {
   job_id?: string | null;
   created_at: string;
   finished_at?: string | null;
+}
+/**
+ * The whole tree: the three realms and everything under them.
+ */
+export interface CollectionTreeRecord {
+  realms: CollectionNodeRecord[];
+  counts: {
+    [k: string]: number;
+  };
+}
+/**
+ * A node of the collection tree (``GET /api/collections``), with its published slides counted.
+ */
+export interface CollectionNodeRecord {
+  id: string;
+  level: "realm" | "collection" | "sub-collection" | "group";
+  name: LocalisedText;
+  about: LocalisedText;
+  icon: string;
+  view?: boolean;
+  priority?: number;
+  defined_by?: DefinitionRecord[];
+  slide_count?: number;
+  children?: CollectionNodeRecord[];
+}
+export interface LocalisedText {
+  en: string;
+  es: string;
+}
+/**
+ * One condition of a node's rule, for people: a taxon with its GBIF page, a rock family, a part.
+ */
+export interface DefinitionRecord {
+  kind:
+    | "taxon"
+    | "excluded-taxon"
+    | "kind"
+    | "rock"
+    | "mineral"
+    | "crystal"
+    | "material"
+    | "part"
+    | "preservation"
+    | "relation";
+  value: string;
+  label: string;
+  url?: string | null;
+}
+/**
+ * One node (``GET /api/collections/{id}``): itself with its children, and the path down to it.
+ */
+export interface CollectionNodeDetail {
+  node: CollectionNodeRecord;
+  path: NodeRef[];
+  iiif_collection_url: string;
+}
+export interface NodeRef {
+  id: string;
+  name: LocalisedText;
+  icon: string;
+}
+/**
+ * A property that cuts across the tree, with the icon of each value.
+ */
+export interface FacetRecord {
+  id: "preparation" | "modality" | "plant-organ" | "crystal-system";
+  name: LocalisedText;
+  values: FacetValueRecord[];
+}
+export interface FacetValueRecord {
+  id: string;
+  name: LocalisedText;
+  icon: string;
+}
+/**
+ * A name the anchor field can offer (``GET /api/anchors/search``).
+ */
+export interface AnchorSuggestion {
+  ref: string;
+  name: string;
+  rank?: string | null;
+  classification?: string | null;
+  context?: string | null;
+}
+/**
+ * Where a slide belongs (``POST /api/placement``): the suggestion, and every node that accepts it.
+ */
+export interface PlacementResult {
+  anchor?: AnchorRecord | null;
+  suggestion?: string | null;
+  path?: NodeRef[];
+  accepting?: string[];
+  errors?: ValidationError[];
 }

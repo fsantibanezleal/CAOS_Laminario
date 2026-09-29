@@ -28,6 +28,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.accounts import invitations, mail, roles
 from app.accounts.users import Accounts, UserCreate, UserRead, UserUpdate, get_user_manager
+from app.collections import taxa
+from app.collections.service import check_submission
 from app.contracts import catalog as c
 from app.contracts.ingest import validate_submission
 from app.db.models import Invitation, User
@@ -176,7 +178,7 @@ def routers(accounts: Accounts) -> list[APIRouter]:
 
     @api.post("/api/slide-cases", status_code=201, response_model=c.CreatedSlideCase,
               responses={422: {"model": c.ValidationResult}})
-    async def create_slide_case(payload: Annotated[Any, Body()], db: Db, contributor: Contributor):
+    async def create_slide_case(payload: Annotated[Any, Body()], request: Request, db: Db, contributor: Contributor):
         """Store a slide case as a draft of the signed-in contributor (images arrive through uploads, U5)."""
         report = validate_submission(payload)
         if not report.valid:
@@ -187,7 +189,16 @@ def routers(accounts: Accounts) -> list[APIRouter]:
             raise HTTPException(status_code=403, detail="only a curator can override a placement")
         if submission.origin == "base" and not roles.allowed(contributor.role, "manage_accounts"):
             raise HTTPException(status_code=403, detail="base-collection cases come from the import, not from a person")
-        slide = await slides.create_slide(db, submission, contributor_id=str(contributor.id))
+        try:
+            checked = await check_submission(db, request.app.state.gbif_client, submission)
+        except taxa.TaxonServiceUnavailable as exc:
+            raise HTTPException(status_code=503, detail=f"the GBIF taxonomy did not answer; try again ({exc})") from exc
+        if checked.errors:
+            await db.commit()  # keep the taxa just cached
+            return JSONResponse(status_code=422, content=c.ValidationResult(valid=False, errors=checked.errors)
+                                .model_dump())
+        slide = await slides.create_slide(db, submission, contributor_id=str(contributor.id),
+                                          resolved=checked.anchor)
         return c.CreatedSlideCase(id=slide.short_id, status=slide.status, flags=report.flags)
 
     return [auth, users, api]

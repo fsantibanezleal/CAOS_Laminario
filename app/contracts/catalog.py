@@ -34,6 +34,8 @@ class AnchorRecord(_Record):
     ref: str
     name: str
     rank: str | None = None
+    #: The Nickel-Strunz code of a mineral or the snow-crystal category of an ice crystal.
+    classification: str | None = None
 
 
 class LabelRecord(_Record):
@@ -158,6 +160,9 @@ class SlideRecord(_Record):
     label: LabelRecord
     anchor: AnchorRecord
     host: AnchorRecord | None = None
+    #: The part of the organism the slide shows, and whether the specimen is recent, fossil or in amber.
+    part: str | None = None
+    preservation: Literal["recent", "fossil", "in_amber"] = "recent"
     place: PlaceRecord
     placement: PlacementRecord
     quality: QualityRecord
@@ -286,3 +291,94 @@ class UploadRecord(_Record):
     job_id: str | None = None
     created_at: datetime
     finished_at: datetime | None = None
+
+
+class LocalisedText(_Record):
+    en: str
+    es: str
+
+
+class DefinitionRecord(_Record):
+    """One condition of a node's rule, for people: a taxon with its GBIF page, a rock family, a part."""
+
+    kind: Literal["taxon", "excluded-taxon", "kind", "rock", "mineral", "crystal", "material", "part",
+                  "preservation", "relation"]
+    value: str
+    label: str
+    url: str | None = None
+
+
+class CollectionNodeRecord(_Record):
+    """A node of the collection tree (``GET /api/collections``), with its published slides counted."""
+
+    id: str
+    level: Literal["realm", "collection", "sub-collection", "group"]
+    name: LocalisedText
+    about: LocalisedText
+    #: The symbol id in the icon sprite.
+    icon: str
+    #: A view (Parasites and hosts) lists slides placed elsewhere; nothing is placed in it.
+    view: bool = False
+    priority: int = 0
+    #: The conditions of the node's rule; a node without any takes what its children take.
+    defined_by: list[DefinitionRecord] = []
+    #: Published slides placed at this node or below (for a view, the slides it shows).
+    slide_count: int = 0
+    children: list[CollectionNodeRecord] = []
+
+
+class NodeRef(_Record):
+    id: str
+    name: LocalisedText
+    icon: str
+
+
+class CollectionTreeRecord(_Record):
+    """The whole tree: the three realms and everything under them."""
+
+    realms: list[CollectionNodeRecord]
+    #: Realms, collections, and sub-collections and groups (each shared set counted once).
+    counts: dict[str, int]
+
+
+class CollectionNodeDetail(_Record):
+    """One node (``GET /api/collections/{id}``): itself with its children, and the path down to it."""
+
+    node: CollectionNodeRecord
+    path: list[NodeRef]
+    iiif_collection_url: str
+
+
+class FacetValueRecord(_Record):
+    id: str
+    name: LocalisedText
+    icon: str
+
+
+class FacetRecord(_Record):
+    """A property that cuts across the tree, with the icon of each value."""
+
+    id: Literal["preparation", "modality", "plant-organ", "crystal-system"]
+    name: LocalisedText
+    values: list[FacetValueRecord]
+
+
+class AnchorSuggestion(_Record):
+    """A name the anchor field can offer (``GET /api/anchors/search``)."""
+
+    ref: str
+    name: str
+    rank: str | None = None
+    classification: str | None = None
+    #: For a taxon, its higher classification (kingdom to family).
+    context: str | None = None
+
+
+class PlacementResult(_Record):
+    """Where a slide belongs (``POST /api/placement``): the suggestion, and every node that accepts it."""
+
+    anchor: AnchorRecord | None = None
+    suggestion: str | None = None
+    path: list[NodeRef] = []
+    accepting: list[str] = []
+    errors: list[ValidationError] = []

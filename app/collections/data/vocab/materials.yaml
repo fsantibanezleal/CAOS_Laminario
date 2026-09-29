@@ -1,0 +1,39 @@
+# Materials a material anchor may name, each with the family that places it. A Laminario controlled vocabulary:
+# the Materials collection holds what is neither an organism, a rock, a mineral nor a crystal, and the pollen
+# samples of the Pollen and spores collection (a honey or air sample holds many taxa, so the sample is the anchor).
+families:
+  fibre: {en: Fibres and textiles, es: Fibras y textiles}
+  food: {en: Food and starch grains, es: Alimentos y granos de almidón}
+  dust: {en: Dust and microplastics, es: Polvo y microplásticos}
+  paper: {en: Paper and wood products, es: Papel y derivados de la madera}
+  pollen-sample: {en: Airborne and honey pollen, es: Polen del aire y de la miel}
+terms:
+  cotton: {family: fibre, en: Cotton, es: Algodón}
+  flax: {family: fibre, en: Flax (linen), es: Lino}
+  hemp: {family: fibre, en: Hemp, es: Cáñamo}
+  jute: {family: fibre, en: Jute, es: Yute}
+  wool: {family: fibre, en: Wool, es: Lana}
+  silk: {family: fibre, en: Silk, es: Seda}
+  polyester: {family: fibre, en: Polyester, es: Poliéster}
+  polyamide: {family: fibre, en: Polyamide (nylon), es: Poliamida (nailon)}
+  acrylic: {family: fibre, en: Acrylic, es: Acrílico}
+  viscose: {family: fibre, en: Viscose, es: Viscosa}
+  glass-fibre: {family: fibre, en: Glass fibre, es: Fibra de vidrio}
+  fibre-blend: {family: fibre, en: Fibre blend, es: Mezcla de fibras}
+  starch: {family: food, en: Starch grains, es: Granos de almidón}
+  potato-starch: {family: food, en: Potato starch, es: Almidón de papa}
+  wheat-starch: {family: food, en: Wheat starch, es: Almidón de trigo}
+  maize-starch: {family: food, en: Maize starch, es: Almidón de maíz}
+  rice-starch: {family: food, en: Rice starch, es: Almidón de arroz}
+  flour: {family: food, en: Flour, es: Harina}
+  spice: {family: food, en: Spice powder, es: Especia en polvo}
+  household-dust: {family: dust, en: Household dust, es: Polvo doméstico}
+  atmospheric-dust: {family: dust, en: Atmospheric dust, es: Polvo atmosférico}
+  microplastic-fragment: {family: dust, en: Microplastic fragment, es: Fragmento de microplástico}
+  microplastic-fibre: {family: dust, en: Microplastic fibre, es: Fibra de microplástico}
+  microplastic-bead: {family: dust, en: Microplastic bead, es: Microesfera de plástico}
+  paper: {family: paper, en: Paper, es: Papel}
+  cardboard: {family: paper, en: Cardboard, es: Cartón}
+  wood-pulp: {family: paper, en: Wood pulp, es: Pulpa de madera}
+  airborne-pollen-sample: {family: pollen-sample, en: Airborne pollen sample, es: Muestra de polen del aire}
+  honey-sample: {family: pollen-sample, en: Honey sample, es: Muestra de miel}
