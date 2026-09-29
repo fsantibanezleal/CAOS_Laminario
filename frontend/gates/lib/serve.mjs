@@ -14,12 +14,13 @@ export const LANGS = ["en", "es"];
 export const API = "http://127.0.0.1:8147";
 
 /**
- * Every place a visitor can open, each gate walks them all (U13 to U15 add theirs). The contribute places need an
- * account; frontend/gates/contribute.mjs walks them signed in, at every width, room and language.
+ * Every place a visitor can open, each gate walks them all (U14 and U15 add theirs). The contribute and moderation
+ * places need an account; frontend/gates/contribute.mjs and identify.mjs walk them signed in, at every width, room
+ * and language.
  */
 export const PLACES = ["/", "/c/insects", "/c/insects/lice", "/c/rocks/igneous", "/search?q=granite",
   "/search?preparation=thin_section&node=earth.rocks", "/map", "/design", "/nowhere", "/signin", "/join",
-  "/forgot-password", "/reset-password"];
+  "/forgot-password", "/reset-password", "/identify", "/identify?badge=any"];
 
 /**
  * Slides the gates look at, found through the API (their ids belong to the collection the API serves): the first

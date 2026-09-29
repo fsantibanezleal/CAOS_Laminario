@@ -17,6 +17,11 @@ function remember(key: string, value: unknown): void {
   if (cache.size > MAX_ENTRIES) cache.delete(cache.keys().next().value as string);
 }
 
+/** Forget what is kept under ``key``, so the next place that asks reads it again (a change the page itself made). */
+export function forget(key: string): void {
+  cache.delete(key);
+}
+
 /** Fetch ``load`` under ``key``; while a new key loads, the previous value stays (so a list does not blank). */
 export function useResource<T>(key: string | null, load: (signal: AbortSignal) => Promise<T>): Resource<T> {
   const [resource, setResource] = useState<Resource<T>>(() =>

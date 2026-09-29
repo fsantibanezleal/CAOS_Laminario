@@ -200,6 +200,11 @@ def check_publication(conn, slide_id: int) -> str | None:
     now = utcnow()
     conn.execute(text("UPDATE slide SET status = 'published', published_at = :t, updated_at = :t WHERE id = :s"),
                  {"t": now, "s": slide_id})
+    # The contributor's anchor is the slide's first identification (R-1309); then its community and badge.
+    from app.community import store
+
+    store.first_identification(conn, slide_id)
+    store.refresh(conn, slide_id)
     return "published"
 
 

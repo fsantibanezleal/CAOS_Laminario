@@ -85,6 +85,13 @@ class Slide(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow, onupdate=utcnow)
     published_at: Mapped[datetime | None] = mapped_column(DateTime)
+    # The community (U13): the node the identifications agree on, its rank when it is a taxon, and the badge the
+    # slide checks and the community give (verified, needs_id, reference); kept so the Identify queue can filter.
+    community_node: Mapped[str | None] = mapped_column(String(200))
+    community_rank: Mapped[str | None] = mapped_column(String(32))
+    badge: Mapped[str | None] = mapped_column(String(12))
+    # The status a hidden slide returns to when a curator restores it.
+    hidden_from: Mapped[str | None] = mapped_column(String(16))
 
     assets: Mapped[list[Asset]] = relationship(
         back_populates="slide", cascade="all, delete-orphan", order_by="Asset.sort_order"
@@ -94,6 +101,7 @@ class Slide(Base):
         Index(None, "status"),
         Index(None, "placement_node"),
         Index(None, "anchor_kind", "anchor_ref"),
+        Index(None, "badge"),
     )
 
 
@@ -307,5 +315,94 @@ class Annotation(Base):
     selector_json: Mapped[str] = mapped_column(Text, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+    #: Hidden by a curator (U13): not served, kept with the moderation action that says why.
+    hidden: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     __table_args__ = (Index(None, "asset_id"),)
+
+
+class Identification(Base):
+    """What an account (or, for a base slide, the source) says a slide shows (U13, dossier 15).
+
+    The anchor is stored as given and resolved, with its lineage as it was when the identification was made, so the
+    agreement rule never needs the network. An account has one current identification per slide.
+    """
+
+    __tablename__ = "identification"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    public_id: Mapped[str] = mapped_column(String(24), unique=True, nullable=False)
+    slide_id: Mapped[int] = mapped_column(ForeignKey("slide.id", ondelete="CASCADE"), nullable=False)
+    #: The account, or None for the source's determination of a base slide.
+    user_id: Mapped[object | None] = mapped_column(GUID, ForeignKey("user.id", ondelete="CASCADE"))
+    anchor_kind: Mapped[str] = mapped_column(String(12), nullable=False)
+    anchor_ref: Mapped[str] = mapped_column(String(200), nullable=False)
+    anchor_name: Mapped[str] = mapped_column(String(200), nullable=False)
+    anchor_rank: Mapped[str | None] = mapped_column(String(32))
+    anchor_classification: Mapped[str | None] = mapped_column(String(16))
+    lineage_json: Mapped[str] = mapped_column(Text, nullable=False)
+    #: The slide's anchor, as a lineage, when the identification was made (what an explicit disagreement is with).
+    previous_lineage_json: Mapped[str | None] = mapped_column(Text)
+    #: For an identification of an ancestor of the slide's anchor: whether it disagrees with the finer anchor.
+    disagreement: Mapped[bool | None] = mapped_column(Boolean)
+    body: Mapped[str | None] = mapped_column(String(1000))
+    current: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    hidden: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+
+    __table_args__ = (Index(None, "slide_id"), Index(None, "user_id"))
+
+
+class SlideVote(Base):
+    """An identifier's answer to "can the community anchor still be improved?" (U13): one per account and slide,
+    cleared when the community anchor changes."""
+
+    __tablename__ = "slide_vote"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    slide_id: Mapped[int] = mapped_column(ForeignKey("slide.id", ondelete="CASCADE"), nullable=False)
+    user_id: Mapped[object] = mapped_column(GUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    #: True: as good as it can be; False: it still needs identification.
+    as_good_as_it_can_be: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+
+    __table_args__ = (UniqueConstraint("slide_id", "user_id"),)
+
+
+class Flag(Base):
+    """A signed-in account's report of a slide, an identification or an annotation for the curators (U13)."""
+
+    __tablename__ = "flag"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    public_id: Mapped[str] = mapped_column(String(24), unique=True, nullable=False)
+    target_kind: Mapped[str] = mapped_column(String(16), nullable=False)
+    target_id: Mapped[str] = mapped_column(String(32), nullable=False)
+    slide_id: Mapped[int] = mapped_column(ForeignKey("slide.id", ondelete="CASCADE"), nullable=False)
+    user_id: Mapped[object] = mapped_column(GUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    category: Mapped[str] = mapped_column(String(16), nullable=False)
+    comment: Mapped[str | None] = mapped_column(String(1000))
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+    resolved_by_id: Mapped[object | None] = mapped_column(GUID, ForeignKey("user.id", ondelete="SET NULL"))
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime)
+    resolution: Mapped[str | None] = mapped_column(String(1000))
+
+    __table_args__ = (Index(None, "slide_id"), Index(None, "resolved_at"))
+
+
+class ModerationAction(Base):
+    """A curator's hiding or restoring of a slide, an identification or an annotation, with the reason (U13)."""
+
+    __tablename__ = "moderation_action"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    actor_id: Mapped[object | None] = mapped_column(GUID, ForeignKey("user.id", ondelete="SET NULL"))
+    action: Mapped[str] = mapped_column(String(8), nullable=False)
+    target_kind: Mapped[str] = mapped_column(String(16), nullable=False)
+    target_id: Mapped[str] = mapped_column(String(32), nullable=False)
+    slide_id: Mapped[int] = mapped_column(ForeignKey("slide.id", ondelete="CASCADE"), nullable=False)
+    reason: Mapped[str] = mapped_column(String(2000), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+
+    __table_args__ = (Index(None, "target_kind", "target_id"),)

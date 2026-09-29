@@ -22,6 +22,9 @@ export interface LaminarioCatalog {
   annotation?: AnnotationRecord;
   case?: CaseRecord;
   caseSummary?: CaseSummary;
+  identifications?: IdentificationList;
+  flag?: FlagRecord;
+  moderationAction?: ModerationActionRecord;
 }
 export interface SlideRecord {
   id: string;
@@ -108,6 +111,8 @@ export interface PlacementRecord {
 export interface QualityRecord {
   badge: "verified" | "needs_id" | "reference";
   checks: QualityCheckRecord[];
+  community_node?: string | null;
+  community_rank?: string | null;
 }
 export interface QualityCheckRecord {
   code: "licence_and_provenance" | "scale" | "modality" | "macro_and_micro";
@@ -502,4 +507,78 @@ export interface CaseSummary {
   placement: string;
   updated_at: string;
   images?: CaseImageRecord[];
+}
+export interface IdentificationList {
+  community: CommunityRecord;
+  identifications: IdentificationRecord[];
+}
+/**
+ * How the identifications agree (R-088): the node, its anchor when Laminario can name it, and every score.
+ */
+export interface CommunityRecord {
+  node?: string | null;
+  anchor?: AnchorRecord | null;
+  identifications: number;
+  score?: number | null;
+  cutoff: number;
+  scores?: NodeScoreRecord[];
+  as_good_as_it_can_be?: number;
+  needs_more?: number;
+  my_vote?: boolean | null;
+  badge: "verified" | "needs_id" | "reference";
+}
+export interface NodeScoreRecord {
+  node: string;
+  depth: number;
+  cumulative: number;
+  disagreements: number;
+  ancestor_disagreements: number;
+  score: number;
+}
+/**
+ * An identification on a slide, as a viewer may see it (``GET /api/slides/{id}/identifications``).
+ */
+export interface IdentificationRecord {
+  id: string;
+  anchor: AnchorRecord;
+  node: string;
+  by?: string | null;
+  source?: boolean;
+  mine?: boolean;
+  body?: string | null;
+  disagreement?: boolean | null;
+  current: boolean;
+  hidden?: boolean;
+  category?: ("leading" | "improving" | "supporting" | "maverick") | null;
+  created_at: string;
+}
+/**
+ * A flag as the curators see it (``GET /api/flags``).
+ */
+export interface FlagRecord {
+  id: string;
+  target_kind: "slide" | "identification" | "annotation";
+  target_id: string;
+  slide_id: string;
+  slide_name: string;
+  category: "spam" | "inappropriate" | "copyright" | "wrong" | "other";
+  comment?: string | null;
+  by?: string | null;
+  created_at: string;
+  resolved_by?: string | null;
+  resolved_at?: string | null;
+  resolution?: string | null;
+  hidden?: boolean;
+}
+/**
+ * A curator's hiding or restoring, with the reason.
+ */
+export interface ModerationActionRecord {
+  action: "hide" | "unhide";
+  target_kind: "slide" | "identification" | "annotation";
+  target_id: string;
+  slide_id: string;
+  reason: string;
+  by?: string | null;
+  created_at: string;
 }

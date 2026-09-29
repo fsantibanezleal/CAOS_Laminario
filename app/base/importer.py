@@ -15,8 +15,9 @@ import json
 import shutil
 from pathlib import Path
 
-from sqlalchemy import delete, insert, select, update
+from sqlalchemy import delete, insert, select, text, update
 
+from app.community import store as community_store
 from app.config import Settings
 from app.db.engine import make_sync_engine
 from app.db.migrate import upgrade_to_head
@@ -55,6 +56,9 @@ def verify(bake_root: Path, manifest: dict) -> list[str]:
     return problems
 
 
+#: Slide columns the import never takes from a bake: the community's (U13) and the curators'.
+TARGET_ONLY = ("community_node", "community_rank", "badge", "hidden_from")
+
 def _row(values: dict, columns: set[str]) -> dict:
     from datetime import date, datetime
 
@@ -78,6 +82,8 @@ def _refresh(conn, slide_id: int, slide: dict, assets: list[dict], slide_cols: s
     """Bring a base slide already in the target to the bake's rows; whether anything changed."""
     values = _row(slide, slide_cols)
     current = conn.execute(select(Slide).where(Slide.id == slide_id)).first()
+    if current.status == "hidden":
+        values.pop("status", None)  # a curator's hiding stays until a curator restores the slide
     wanted = [_row(a, asset_cols) for a in assets]
     have = conn.execute(select(Asset).where(Asset.slide_id == slide_id).order_by(Asset.sort_order, Asset.id)).all()
     record_same = _same(current, values)
@@ -101,7 +107,8 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
     database = settings.data_root / "laminario.sqlite3"
     upgrade_to_head(database)
     engine = make_sync_engine(database)
-    slide_cols = {c.name for c in Slide.__table__.columns} - {"id"}
+    # The community's and the curators' columns belong to the target, not to the bake (U13).
+    slide_cols = {c.name for c in Slide.__table__.columns} - {"id", *TARGET_ONLY}
     asset_cols = {c.name for c in Asset.__table__.columns} - {"id", "slide_id"}
     copied = imported = updated = skipped = 0
     loaded: list[str] = []
@@ -144,6 +151,14 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
                 loaded.append(slide["short_id"])
             # The search text is composed here, with the target's tree, not taken from the bake.
             search.reindex(conn, loaded)
+            # The source's determination is the slide's first identification, and a changed one is recorded as
+            # the source's new identification; the community and the badge follow (U13, R-1309).
+            for sid in loaded:
+                row = conn.execute(text("SELECT id, anchor_kind, anchor_ref, anchor_name, anchor_rank, "
+                                        "anchor_classification FROM slide WHERE short_id = :s"), {"s": sid}).one()
+                if not community_store.first_identification(conn, row.id):
+                    community_store.source_determination(conn, row.id, row)
+                community_store.refresh(conn, row.id)
     finally:
         engine.dispose()
     return {"imported": imported, "updated": updated, "skipped": skipped, "files_copied": copied}

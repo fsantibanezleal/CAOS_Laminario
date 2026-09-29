@@ -62,6 +62,10 @@ async def listing(db: AsyncSession, slide: Slide, asset: Asset, settings: Settin
     rows = (await db.execute(select(Annotation, User).join(User, User.id == Annotation.author_id)
                              .where(Annotation.asset_id == asset.id).order_by(Annotation.id))).all()
     source = target_source(asset, settings) or ""
+    # A hidden annotation (U13) is not served, but to its author and the curators.
+    curator = reader is not None and roles.allowed(reader.role, "moderate")
+    rows = [(row, author) for row, author in rows
+            if not row.hidden or curator or (reader is not None and row.author_id == reader.id)]
     return [record(row, author, source, settings, reader) for row, author in rows]
 
 
