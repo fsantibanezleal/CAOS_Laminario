@@ -69,7 +69,7 @@ order), and an end marker. libvips decodes the bands and joins them in place. A 
 coefficients when the chroma is at full resolution (4:4:4, as in these files), so the result is the whole JPEG's:
 the plane at depth 0 equals OpenSlide's level 0, which is the scanner's default plane, to the last value, across
 the bands' seams (tested on that slide, and on a synthetic JPEG cut into tiles of every shape). Each plane opens in
-3 to 9 s and holds only its compressed bands, about 700 MB for that file's.
+3 to 9 s and holds only its compressed bands: 493 to 583 MB for that file's planes.
 
 Any stored image is also read back once, on the pyramid's smallest level or on a photograph's thumbnail: one colour
 in every band means its decoder failed without an error, or the file holds no image. The file is removed and the job
