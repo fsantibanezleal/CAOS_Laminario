@@ -3,6 +3,41 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.11.000] - 2026-09-29
+
+### Added
+
+- The slide place: the slide as an object drawn by the server from one layout in millimetres (the frosted label end,
+  the coverslip, the data label, the mount window), inlined in the room's colours; its labels printed on an A4 sheet at
+  1:1 with Courier Prime embedded, the outline measuring the format; the QR (version 3, alphanumeric, error
+  correction M) of the permalink in upper case; reading the label beside the scanner's photograph of the real one;
+  the photographs; the record; where every image came from, with the original's SHA-256.
+- Plain images (`/media/<key>`) for published slides, checked as the tiles are.
+- The stage: OpenSeadragon over each image's IIIF info.json, objectives from the pixel size with digital zoom said
+  as such, the scale bar of the 1-2-5 series, focal planes named by depth with the all-in-focus composites and the
+  height map, a polarised pair faded one over the other and turned in quarter turns.
+- Annotations as W3C Web Annotations on one image (migration 0009): Annotorious draws rectangles and polygons, the
+  server keeps text bodies and plain shapes and sets the id, target, creator and dates.
+- `GET /api/session`, a 200 for visitors too.
+- The QR, scale-bar and stage gates; wiki page 13 with its diagram; the U11 design and requirements.
+
+## [0.10.000] - 2026-09-29
+
+### Added
+
+- The places a visitor walks: the realms with their collections as cabinets, a cabinet's drawers, a drawer's tray
+  (slides at their format's proportion, one scale per tray, label end first), filters with faceted counts kept in
+  the address, search, the map; wouter routing with the focus on each place's heading and the scroll restored on
+  back.
+- A slide's country, stated by its source or implied by its coordinates against Natural Earth 1:50m shapes, named
+  in English and Spanish from Unicode CLDR 48.2.2; the base slides placed in the countries their sources state.
+- FTS5 search over a text composed from the anchor, the tree's names in both languages, the locality, the catalogue
+  number and the short id, kept in step by triggers (migration 0008); disjunctive facet counts; the map's countries
+  and points after geoprivacy; the country shapes.
+- The map over a pinned, verified Protomaps extract served with byte ranges, in the rooms' colours, labelled in
+  Laminario Sans, with the country list as its keyboard equivalent and a fallback without the basemap.
+- The walk gate; wiki page 12 with its diagram; the U10 design and requirements.
+
 ## [0.09.000] - 2026-09-29
 
 ### Added
