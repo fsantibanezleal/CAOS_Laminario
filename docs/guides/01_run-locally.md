@@ -105,6 +105,18 @@ Processing runs in its own process, next to the API:
 
 A job's progress is also at `http://127.0.0.1:8147/api/jobs/<id>/events`, as the browser receives it.
 
+## 7. Accounts
+
+There is no open sign-up. Create the first admin from the command line, then invite everyone else from the app:
+
+```powershell
+.\.venv\Scripts\python.exe -m app.accounts invite --role admin   # prints a one-time link, valid 7 days
+```
+
+Open the link in the web app (or `POST /api/auth/register` with its token) to create the account. Without a mail
+sender in `.env`, invitation links appear once to the person who issues them. Password-reset links are signed with
+`LAMINARIO_SECRET_KEY`; leave it unset locally (a random key per run) and set it in production.
+
 ## Tests and guards
 
 The full test suite runs locally; continuous integration runs only the lint and the guards.
