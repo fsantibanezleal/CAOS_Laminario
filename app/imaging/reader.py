@@ -222,6 +222,31 @@ def _flatten(image):
     return image
 
 
+def _ndpi_stream(path: str, page: int):
+    """A Hamamatsu plane decoded from its own JPEG stream, for a page libtiff cannot reach.
+
+    NDPI files past 4 GB keep the high bits of their offsets in a private tag, so libtiff reads a wrapped offset and
+    stops at the first directory beyond 4 GB ("might cause an IFD loop"). tifffile corrects the offsets and gives the
+    plane as its restart-interval chunks; the plane's own JPEG header (full size, restart interval) sits in the file
+    just before the first chunk, so the stream from that header to the end of the last chunk is the plane, which
+    libvips decodes. For the first planes, which libtiff also reads, both routes give identical pixels.
+    """
+    import tifffile
+
+    with tifffile.TiffFile(path) as tif:
+        tiff_page = tif.pages[page]
+        first = tiff_page.dataoffsets[0]
+        end = tiff_page.dataoffsets[-1] + tiff_page.databytecounts[-1]
+        look = min(first, 65536)
+        tif.filehandle.seek(first - look)
+        soi = tif.filehandle.read(look).rfind(b"\xff\xd8\xff")
+        if soi < 0:
+            raise ValueError(f"page {page} of {Path(path).name} has no JPEG header before its data")
+        tif.filehandle.seek(first - look + soi)
+        stream = tif.filehandle.read(end - (first - look + soi))
+    return vips().Image.jpegload_buffer(stream)
+
+
 def open_plane(info: SlideInfo, plane: int = 0, level: int = 0):
     """A lazy libvips image of one focal plane at one level, alpha flattened onto white."""
     module = vips()
@@ -229,7 +254,14 @@ def open_plane(info: SlideInfo, plane: int = 0, level: int = 0):
     if focal.page is not None:
         if level:
             raise ValueError("stack planes are read at level 0; levels come from the written pyramid")
-        image = module.Image.tiffload(info.path, page=focal.page)
+        # A scanner writes a plane as one very large strip, over libtiff's 50 MB allocation guard: the sources here
+        # were verified before processing, and the job runs in a killable process with a time limit.
+        try:
+            image = module.Image.tiffload(info.path, page=focal.page, unlimited=True)
+        except module.Error:
+            if info.vendor != "hamamatsu":
+                raise
+            image = _ndpi_stream(info.path, focal.page)
     elif info.loader == "openslide":
         image = module.Image.openslideload(info.path, level=level)
     else:

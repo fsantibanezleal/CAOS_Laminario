@@ -12,6 +12,7 @@ The lock is committed and self-contained: acquisition, validation and the bake r
 from __future__ import annotations
 
 import json
+import re
 from datetime import date
 from pathlib import Path
 
@@ -19,7 +20,7 @@ import yaml
 
 from app.base import names as base_names
 from app.base.http import Polite
-from app.base.sources import nhm
+from app.base.sources import commons, nhm
 from app.collections import places, vocab
 from app.collections.placement import place
 from app.collections.rules import Facts
@@ -92,7 +93,10 @@ def _media_asset(media: dict, family: str, role: str, record: dict, **extra) -> 
         raise LockError("the source's record id is longer than the contract's 200 characters")
     return {"family": family, "role": role, "url": media["url"], "record_id": str(record["record_id"]),
             "record_url": record["record_url"], "licence": media["licence"],
-            "rights_holder": media.get("rights_holder"), "creator": media.get("creator"),
+            "rights_holder": media.get("rights_holder"),
+            # Candidates harvested before the credit was cleaned carry the file page's furniture: clean it here too.
+            "creator": (commons.credit(media.get("creator")) if record.get("source") == "commons"
+                        else media.get("creator")),
             "width": media.get("width"), "height": media.get("height"), **{k: v for k, v in extra.items() if v}}
 
 
@@ -153,6 +157,16 @@ def _assets(pick: dict, record: dict | None, cands: dict) -> list[dict]:
     raise LockError(f"{record['source']}: not an image source")
 
 
+def openslide_credit(entry: dict) -> str:
+    """Whom an OpenSlide sample credits: the index's credit (the scan's author, with the DOI of its first home when
+    the index gives one), else the corpus's host, Carnegie Mellon University."""
+    credit = re.sub(r"\s+", " ", entry.get("credit") or "").strip()
+    if not credit:
+        return "Carnegie Mellon University (OpenSlide test data)"
+    who, _, doi = credit.partition(", DOI: ")
+    return f"{who.strip()} (doi:{doi.strip()})" if doi else who.strip()
+
+
 def _wsi(pick: dict, http: Polite) -> tuple[dict, list[dict]]:
     """A whole-slide image from Zenodo or the OpenSlide corpus: its record and its one asset."""
     if "zenodo" in pick:
@@ -172,7 +186,7 @@ def _wsi(pick: dict, http: Polite) -> tuple[dict, list[dict]]:
         licence = "https://creativecommons.org/publicdomain/zero/1.0/" if entry["license"] == "CC0-1.0" else None
         record = {"source": "openslide", "record_id": f"openslide:{path}", "record_url": OPENSLIDE + path}
         media = {"url": OPENSLIDE + path, "licence": licence, "rights_holder": None,
-                 "creator": "OpenSlide test data (Carnegie Mellon University)", "sha256": entry.get("sha256"),
+                 "creator": openslide_credit(entry), "sha256": entry.get("sha256"),
                  "bytes": entry.get("size")}
     if not media["licence"]:
         raise LockError(f"{record['record_id']}: no licence of the base policy")
