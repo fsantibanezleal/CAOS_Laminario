@@ -5,6 +5,8 @@ export interface LaminarioCatalog {
   slidePage?: SlidePage;
   slideSummary?: SlideSummary;
   validation?: ValidationResult;
+  job?: JobRecord;
+  jobEvent?: JobEventRecord;
 }
 export interface SlideRecord {
   id: string;
@@ -172,4 +174,32 @@ export interface ValidationError {
   field: string;
   message: string;
   expected: string;
+}
+/**
+ * A processing job as ``GET /api/jobs/{id}`` returns it.
+ */
+export interface JobRecord {
+  id: string;
+  kind: string;
+  status: "queued" | "running" | "succeeded" | "failed" | "cancelled";
+  attempts: number;
+  error?: string | null;
+  result?: {
+    [k: string]: unknown;
+  } | null;
+  created_at: string;
+  started_at?: string | null;
+  finished_at?: string | null;
+  events_url: string;
+}
+/**
+ * One Server-Sent Event of a job's stream: its ``id`` field is ``seq``, its ``event`` field ``event``.
+ */
+export interface JobEventRecord {
+  seq: number;
+  event: "queued" | "started" | "progress" | "log" | "requeued" | "succeeded" | "failed" | "cancelled";
+  data: {
+    [k: string]: unknown;
+  };
+  at: string;
 }

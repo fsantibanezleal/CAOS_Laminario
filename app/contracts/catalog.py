@@ -206,3 +206,28 @@ class ValidationResult(_Record):
     valid: bool
     flags: list[ValidationFlag] = []
     errors: list[ValidationError] = []
+
+
+class JobRecord(_Record):
+    """A processing job as ``GET /api/jobs/{id}`` returns it."""
+
+    id: str
+    kind: str
+    status: Literal["queued", "running", "succeeded", "failed", "cancelled"]
+    attempts: int
+    error: str | None = None
+    result: dict | None = None
+    created_at: datetime
+    started_at: datetime | None = None
+    finished_at: datetime | None = None
+    #: The event stream of this job (Server-Sent Events, replayable with ``Last-Event-ID``).
+    events_url: str
+
+
+class JobEventRecord(_Record):
+    """One Server-Sent Event of a job's stream: its ``id`` field is ``seq``, its ``event`` field ``event``."""
+
+    seq: int
+    event: Literal["queued", "started", "progress", "log", "requeued", "succeeded", "failed", "cancelled"]
+    data: dict
+    at: datetime
