@@ -34,18 +34,20 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.07.000`: the repository base (U0), the data model with both contracts (U1), the imaging engine (U2),
-IIIF delivery (U3), the processing worker (U4), resumable uploads (U5), accounts (U6) and the collection tree (U7). The engine reads scanner,
-TIFF and photo formats, writes one measured pyramid per plane and fuses focal stacks exactly as the EPFL
-extended-depth-of-field plugin does ([`04_imaging.md`](docs/architecture/04_imaging.md)); iipsrv serves the
-pyramids over the IIIF Image API behind a cached, access-checked nginx site, and every slide is a IIIF
-Presentation 3 manifest ([`05_delivery.md`](docs/architecture/05_delivery.md)); a separate worker runs processing
-jobs from a durable queue ([`06_worker.md`](docs/architecture/06_worker.md)); invited contributors have accounts
-with roles ([`07_accounts.md`](docs/architecture/07_accounts.md)) and upload files of any size through tus, verified
-before they are processed ([`08_uploads.md`](docs/architecture/08_uploads.md)); every slide is anchored to a real
-classification and placed in a tree of 3 realms, 18 collections and 130 sub-collections and groups, each with its
-own hand-drawn icon ([`09_collections.md`](docs/architecture/09_collections.md)). The units that follow are listed
-in the design document.
+Version `0.09.000`. Released, each with its wiki page:
+
+- U0, the repository base: versioning, guards, the design document with a gate per requirement.
+- U1, the data model and both contracts (ingestion and catalog), exported as JSON Schema and TypeScript ([`02_data-contracts.md`](docs/architecture/02_data-contracts.md)).
+- U2, the imaging engine: scanner, TIFF and photo formats, one measured pyramid per plane, focal stacks fused as the EPFL plugin does ([`04_imaging.md`](docs/architecture/04_imaging.md)).
+- U3, IIIF delivery: iipsrv behind a cached, access-checked nginx site, a IIIF Presentation 3 manifest per slide ([`05_delivery.md`](docs/architecture/05_delivery.md)).
+- U4, the processing worker over a durable queue, with its journal and live events ([`06_worker.md`](docs/architecture/06_worker.md)).
+- U5, resumable uploads of any size through tus, verified before they are processed ([`08_uploads.md`](docs/architecture/08_uploads.md)).
+- U6, invitation-only accounts with roles ([`07_accounts.md`](docs/architecture/07_accounts.md)).
+- U7, the collection tree: 3 realms, 18 collections, 130 sub-collections and groups, anchors and placement, 186 icons ([`09_collections.md`](docs/architecture/09_collections.md)).
+- U8, the base collection: 505 slides from open sources, each image with its licence and provenance ([`10_base-collection.md`](docs/architecture/10_base-collection.md)).
+- U9, the interface's own design system: two rooms, three faces, 18 collection hues checked for contrast ([`11_interface.md`](docs/architecture/11_interface.md)).
+
+The units that follow are listed in the design document.
 
 ## Architecture at a glance
 
