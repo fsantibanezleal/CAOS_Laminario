@@ -21,6 +21,14 @@ const failures = [];
 const passed = [];
 const check = (ok, what) => (ok ? passed : failures).push(what);
 const get = (path, init = {}) => fetch(`${ORIGIN}${path}`, { redirect: "manual", ...init });
+// An API answer as JSON, or null with a failure naming the requirement, so one missing service fails its own checks
+// and the gate still reports every other requirement.
+const api = async (path, requirement) => {
+  const r = await get(path);
+  if (r.ok && (r.headers.get("content-type") ?? "").includes("json")) return r.json();
+  check(false, `${requirement}: ${path} answers ${r.status} ${r.headers.get("content-type") ?? ""}`);
+  return null;
+};
 
 // R-1601
 {
@@ -61,25 +69,28 @@ const get = (path, init = {}) => fetch(`${ORIGIN}${path}`, { redirect: "manual",
 {
   const lock = readFileSync(join(FRONTEND, "..", "data", "base", "lock.yaml"), "utf8");
   const lockSlides = (lock.match(/^- id: /gm) ?? []).length;
-  const about = await (await get("/api/about")).json();
-  check(about.numbers.by_origin.base === lockSlides,
-    `R-1603: the ${lockSlides} slides of the lock are published (${about.numbers.by_origin.base} base slides served)`);
-  const ids = about.sources.map((s) => s.id).sort().join(",");
-  check(ids.split(",").every((id) => id !== "other") && about.sources.length >= 5,
-    `R-1603: every image comes from a known source (${ids})`);
-  check(about.numbers.wsi >= 14, `R-1603: ${about.numbers.wsi} whole-slide scans`);
-  check(about.numbers.countries > 0, `R-1603: ${about.numbers.countries} countries stated by the sources`);
+  const about = await api("/api/about", "R-1603");
+  if (about) {
+    check(about.numbers.by_origin.base === lockSlides,
+      `R-1603: the ${lockSlides} slides of the lock are published (${about.numbers.by_origin.base} base slides served)`);
+    const ids = about.sources.map((s) => s.id).sort().join(",");
+    check(ids.split(",").every((id) => id !== "other") && about.sources.length >= 5,
+      `R-1603: every image comes from a known source (${ids})`);
+    check(about.numbers.wsi >= 14, `R-1603: ${about.numbers.wsi} whole-slide scans`);
+    check(about.numbers.countries > 0, `R-1603: ${about.numbers.countries} countries stated by the sources`);
+  }
 }
 
 // R-1604
 {
-  const page = await (await get("/api/slides?wsi=true&limit=5")).json();
+  const page = await api("/api/slides?wsi=true&limit=5", "R-1604");
   let tile = null;
-  for (const summary of page.items) {
-    const record = await (await get(`/api/slides/${summary.id}`)).json();
-    const asset = record.assets.find((a) => a.family === "micro" && a.status === "ready" && a.iiif_info_url);
+  for (const summary of page?.items ?? []) {
+    const record = await api(`/api/slides/${summary.id}`, "R-1604");
+    const asset = record?.assets.find((a) => a.family === "micro" && a.status === "ready" && a.iiif_info_url);
     if (!asset) continue;
-    const info = await (await get(new URL(asset.iiif_info_url).pathname)).json();
+    const info = await api(new URL(asset.iiif_info_url).pathname, "R-1604");
+    if (!info) continue;
     tile = `${new URL(info.id).pathname}/0,0,512,512/512,/0/default.jpg`;
     break;
   }
@@ -119,9 +130,11 @@ const get = (path, init = {}) => fetch(`${ORIGIN}${path}`, { redirect: "manual",
 // R-1606
 {
   const expected = readFileSync(join(FRONTEND, "..", "VERSION"), "utf8").trim();
-  const health = await (await get("/api/health")).json();
-  check(health.product === "laminario" && health.version === expected,
-    `R-1606: the site serves ${health.version}, the repository's ${expected}`);
+  const health = await api("/api/health", "R-1606");
+  if (health) {
+    check(health.product === "laminario" && health.version === expected,
+      `R-1606: the site serves ${health.version}, the repository's ${expected}`);
+  }
 }
 
 for (const p of passed) console.log(`ok    ${p}`);
