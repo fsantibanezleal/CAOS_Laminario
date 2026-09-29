@@ -1,0 +1,86 @@
+/* The slide drawn by the server (app/labels/svg.py): its parts carry lam-* classes, coloured here from the tokens. The
+   labels are paper in both rooms (daylight paper, or paper under the lamp), so the QR stays dark on light. */
+.frame {
+  perspective: 1200px;
+  padding: var(--s-5) 0 var(--s-6);
+}
+
+.object {
+  transform-style: preserve-3d;
+  transition: transform var(--t-move) var(--ease-out);
+  will-change: transform;
+}
+
+.object svg,
+.reading svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.object svg {
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.14)) drop-shadow(0 10px 24px rgb(0 0 0 / 0.16));
+}
+
+:global(:root[data-theme="lamplit"]) .object svg {
+  filter: drop-shadow(0 -1px 0 rgb(235 178 95 / 0.25)) drop-shadow(0 12px 28px rgb(0 0 0 / 0.6));
+}
+
+.object :global(.lam-glass),
+.reading :global(.lam-glass) {
+  fill: color-mix(in oklab, var(--c-sunken) 60%, var(--c-surface));
+  fill-opacity: 0.85;
+}
+
+.object :global(.lam-edge),
+.reading :global(.lam-edge) {
+  fill: none;
+  stroke: var(--c-edge);
+  stroke-width: 0.25;
+}
+
+.object :global(.lam-paper),
+.reading :global(.lam-paper) {
+  fill: var(--c-paper);
+}
+
+.object :global(.lam-band),
+.reading :global(.lam-band) {
+  fill: var(--band);
+}
+
+.object :global(.lam-cover) {
+  fill: var(--c-surface);
+  fill-opacity: 0.18;
+  stroke: var(--c-edge);
+  stroke-width: 0.15;
+  stroke-dasharray: 0.8 0.6;
+}
+
+.object :global(.lam-ink),
+.object :global(.lam-qr),
+.reading :global(.lam-ink),
+.reading :global(.lam-qr) {
+  fill: var(--c-paper-ink);
+}
+
+.object :global(.lam-muted),
+.reading :global(.lam-muted) {
+  fill: var(--c-paper-muted);
+}
+
+.object :global(.lam-type),
+.reading :global(.lam-type) {
+  fill: var(--c-paper-type);
+}
+
+/* The note under the slide is on the page, not on paper. */
+.object :global(.lam-note) {
+  fill: var(--c-ink-muted);
+}
+
+.reading {
+  max-width: 420px;
+  margin: 0 auto;
+}

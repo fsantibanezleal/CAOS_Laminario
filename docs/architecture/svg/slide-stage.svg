@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario slide and stage</title>
+  <desc id="desc">The API computes one layout of the slide in millimetres from its record: the glass at its format, the coverslip, the frosted label with the hue band, the catalogue number, the name and the QR, the data label, the mount photograph. It renders the layout as SVG for the page, which inlines it in the room's colours, and as an A4 PDF at 1:1 with cut marks for print; the QR matrix comes from segno and is the same in both. The stage opens OpenSeadragon over the image's IIIF info.json, with objectives from the pixel size, a scale bar recomputed on every view, planes swapped once drawn, polarisers cross-faded, and Annotorious annotations stored through the API as W3C Web Annotations. Gates decode the QR from a screenshot, measure the printed outline, the scale bar and the stage.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; }
+    }
+    .bg { fill: var(--bg); }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .head { fill: var(--line); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="600"/>
+
+  <rect class="lane" x="16" y="16" width="928" height="176" rx="10"/>
+  <text class="h" x="32" y="38">THE SLIDE AS AN OBJECT (THE API)</text>
+  <rect class="store" x="32" y="52" width="200" height="124" rx="8"/>
+  <text class="t" x="44" y="74">the slide's record</text>
+  <text class="s" x="44" y="94">format, coverslip, label,</text>
+  <text class="s" x="44" y="110">anchor, place, collection,</text>
+  <text class="s" x="44" y="126">the overview photograph</text>
+  <text class="s" x="44" y="142">and the QR payload</text>
+  <rect class="key" x="256" y="52" width="250" height="124" rx="8"/>
+  <text class="m" x="268" y="74">labels/layout.py</text>
+  <text class="s" x="268" y="94">one layout in millimetres: glass,</text>
+  <text class="s" x="268" y="110">coverslip, frosted label (hue band,</text>
+  <text class="s" x="268" y="126">catalogue number, name, QR with its</text>
+  <text class="s" x="268" y="142">quiet zone), data label, mount</text>
+  <text class="s" x="268" y="158">(R-1101, R-1102)</text>
+  <rect class="key" x="530" y="52" width="190" height="56" rx="8"/>
+  <text class="m" x="542" y="74">slide.svg</text>
+  <text class="s" x="542" y="92">inlined, room's colours</text>
+  <rect class="key" x="530" y="120" width="190" height="56" rx="8"/>
+  <text class="m" x="542" y="142">label.pdf</text>
+  <text class="s" x="542" y="160">A4, 1:1, cut marks (R-083)</text>
+  <rect class="box" x="744" y="52" width="184" height="124" rx="8"/>
+  <text class="t" x="756" y="74">segno</text>
+  <text class="s" x="756" y="94">the permalink in upper case,</text>
+  <text class="s" x="756" y="110">alphanumeric, level M,</text>
+  <text class="s" x="756" y="126">version 3 (29 modules);</text>
+  <text class="s" x="756" y="142">one matrix for both</text>
+  <text class="s" x="756" y="158">renderers (R-1103)</text>
+  <path class="arrow" d="M232 114 L252 114"/>
+  <path class="arrow" d="M506 96 L526 84"/>
+  <path class="arrow" d="M506 132 L526 144"/>
+  <path class="arrow" d="M744 114 L510 114"/>
+
+  <rect class="lane" x="16" y="206" width="928" height="176" rx="10"/>
+  <text class="h" x="32" y="228">THE PLACES (THE BROWSER)</text>
+  <rect class="box" x="32" y="242" width="286" height="124" rx="8"/>
+  <text class="t" x="44" y="264">the slide place, /s/&lt;id&gt;</text>
+  <text class="s" x="44" y="284">the drawing, print, read the label,</text>
+  <text class="s" x="44" y="300">the stage items, photographs, the</text>
+  <text class="s" x="44" y="316">record, provenance per image with</text>
+  <text class="s" x="44" y="332">its SHA-256 (R-1107)</text>
+  <rect class="key" x="342" y="242" width="300" height="124" rx="8"/>
+  <text class="t" x="354" y="264">the stage, OpenSeadragon 6.1.1</text>
+  <text class="s" x="354" y="284">objectives: z = p x M / 10, digital</text>
+  <text class="s" x="354" y="300">zoom labelled (R-1104); the 1-2-5 bar</text>
+  <text class="s" x="354" y="316">on every view (R-086); planes swapped</text>
+  <text class="s" x="354" y="332">once drawn (R-1105); polarisers and</text>
+  <text class="s" x="354" y="348">rotation (R-1106)</text>
+  <rect class="box" x="666" y="242" width="262" height="124" rx="8"/>
+  <text class="t" x="678" y="264">annotations, Annotorious 3.9.3</text>
+  <text class="s" x="678" y="284">W3C Web Annotations; text bodies,</text>
+  <text class="s" x="678" y="300">rectangles and plain polygons; the</text>
+  <text class="s" x="678" y="316">server sets id, source, creator</text>
+  <text class="s" x="678" y="332">and dates; author or curator</text>
+  <text class="s" x="678" y="348">removes (R-1108)</text>
+  <path class="arrow" d="M318 304 L338 304"/>
+  <path class="arrow" d="M642 304 L662 304"/>
+  <path class="arrow" d="M625 176 L175 238"/>
+
+  <rect class="lane" x="16" y="396" width="928" height="88" rx="10"/>
+  <text class="h" x="32" y="418">DELIVERY</text>
+  <rect class="store" x="32" y="428" width="440" height="44" rx="8"/>
+  <text class="s" x="44" y="455">/iiif/&lt;key&gt;: pyramids through iipsrv, info.json from the API</text>
+  <rect class="store" x="488" y="428" width="440" height="44" rx="8"/>
+  <text class="s" x="500" y="455">/media/&lt;key&gt;: plain images of published slides (F-039)</text>
+  <path class="arrow" d="M492 366 L252 424"/>
+  <path class="arrow" d="M175 366 L700 424"/>
+
+  <rect class="lane" x="16" y="498" width="928" height="86" rx="10"/>
+  <text class="h" x="32" y="520">GATES</text>
+  <rect class="box" x="32" y="530" width="440" height="44" rx="8"/>
+  <text class="ok" x="44" y="557">pytest: layout, QR identity, print within 0.1 mm, annotations</text>
+  <rect class="box" x="488" y="530" width="440" height="44" rx="8"/>
+  <text class="ok" x="500" y="557">browser: QR decoded, walk, scale bar, stage</text>
+</svg>

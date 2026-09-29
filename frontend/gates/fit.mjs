@@ -3,9 +3,13 @@
 // saves a full-page screenshot of each case in .gates/fit/ to be read before a unit closes.
 import { join } from "node:path";
 import { chromium } from "playwright";
-import { LANGS, PLACES, ROOMS, WIDTHS, openPlace, outDir, requireApi, serve } from "./lib/serve.mjs";
+import { LANGS, PLACES, ROOMS, WIDTHS, openPlace, outDir, requireApi, serve, exampleSlides } from "./lib/serve.mjs";
 
 await requireApi();
+// The slide and stage places of a slide the API serves (their ids belong to its collection).
+const { label } = await exampleSlides();
+const stageAsset = label.assets.find((a) => a.family === "micro" && a.status === "ready");
+PLACES.push(`/s/${label.id}`, ...(stageAsset ? [`/s/${label.id}/stage/${stageAsset.id}`] : []));
 
 const out = outDir("fit");
 const stop = await serve();

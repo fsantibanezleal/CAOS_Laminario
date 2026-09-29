@@ -165,6 +165,17 @@ async def list_slides(session: AsyncSession, *, node: str | None = None, kind: s
     return list(rows), int(total)
 
 
+async def get_public_image(session: AsyncSession, storage_key: str) -> Asset | None:
+    """The ready plain image (a macro photograph, a height map) stored under a key, when its slide is published."""
+    query = (
+        select(Asset)
+        .join(Slide, Asset.slide_id == Slide.id)
+        .where(Asset.storage_key == storage_key, Asset.media_kind == "image", Asset.status == "ready",
+               Slide.status == "published")
+    )
+    return (await session.execute(query)).scalars().first()
+
+
 async def get_public_pyramid(session: AsyncSession, storage_key: str) -> Asset | None:
     """The ready pyramid asset stored under a key, when its slide is published; otherwise None."""
     query = (

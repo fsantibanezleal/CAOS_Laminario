@@ -13,7 +13,7 @@ from typing import Annotated
 
 import httpx2
 from fastapi import APIRouter, Depends, HTTPException, Request
-from fastapi.responses import JSONResponse, RedirectResponse, Response
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.contracts import licences
@@ -25,6 +25,8 @@ router = APIRouter(tags=["iiif"])
 
 CORS = {"Access-Control-Allow-Origin": "*"}
 PASSED_HEADERS = ("content-type", "last-modified", "etag", "cache-control")
+#: A storage key: the slide's short id, then the content-addressed file name.
+MEDIA_KEY = re.compile(r"[A-Za-z0-9]{8}/[A-Za-z0-9._-]+")
 
 _NUMBER = r"\d+(?:\.\d+)?"
 REGION = re.compile(rf"^(?:full|square|\d+,\d+,\d+,\d+|pct:{_NUMBER},{_NUMBER},{_NUMBER},{_NUMBER})$")
@@ -95,6 +97,21 @@ async def iiif_request(path: str, request: Request, db: Annotated[AsyncSession, 
         raise HTTPException(status_code=502, detail=f"the tile server did not answer: {type(exc).__name__}") from exc
     headers = {k: v for k, v in upstream.headers.items() if k.lower() in PASSED_HEADERS} | CORS
     return Response(content=upstream.content, status_code=upstream.status_code, headers=headers)
+
+
+@router.get("/media/{key:path}")
+async def media(key: str, request: Request, db: Annotated[AsyncSession, Depends(session)]) -> FileResponse:
+    """A plain image of a published slide (a macro photograph, a height map) by its storage key. Keys are content
+    addresses, so the answer never changes: it is cached for a year. nginx passes /media/ here and caches it."""
+    if not MEDIA_KEY.fullmatch(key) or ".." in key:
+        raise HTTPException(status_code=404, detail="not an image of a published slide")
+    asset = await slides.get_public_image(db, key)
+    root = request.app.state.settings.store_root.resolve()
+    path = (root / key).resolve()
+    if asset is None or not path.is_relative_to(root) or not path.is_file():
+        raise HTTPException(status_code=404, detail="not an image of a published slide")
+    return FileResponse(path, media_type="image/jpeg" if path.suffix == ".jpg" else None,
+                        headers={"Cache-Control": "public, max-age=31536000, immutable", **CORS})
 
 
 @router.get("/api/_internal/iiif-access/{key:path}", status_code=204, include_in_schema=False)

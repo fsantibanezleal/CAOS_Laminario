@@ -30,4 +30,4 @@ def test_schema_declares_expected_text_on_constrained_fields():
                                                             "job", "jobEvent", "account", "invitation",
                                                             "createdSlideCase", "upload", "collectionTree",
                                                             "collectionNode", "facet", "anchorSuggestion",
-                                                            "placement", "facetCounts", "map"}
+                                                            "placement", "facetCounts", "map", "annotation"}

@@ -23,3 +23,6 @@ fastapi-users==15.0.5
 fastapi-users-db-sqlalchemy==7.0.0
 # U7: the collection tree and its vocabularies are YAML
 PyYAML==6.0.3
+# U11: the slide's label: the QR's module matrix (segno, BSD-3-Clause) and the print sheet (reportlab, BSD)
+segno==1.6.6
+reportlab==5.0.1

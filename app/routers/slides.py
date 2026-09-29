@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.collections import taxa
@@ -16,6 +16,9 @@ from app.contracts import catalog as c
 from app.contracts.ingest import validate_submission
 from app.db.session import session
 from app.delivery import manifest as iiif_manifest
+from app.labels import layout
+from app.labels import pdf as label_pdf_render
+from app.labels import svg as label_svg
 from app.services import catalog, explore, slides
 from app.services.collections import host_view_slides
 
@@ -57,6 +60,34 @@ async def read_slide(slide_id: str, request: Request,
     if slide is None:
         raise HTTPException(status_code=404, detail="no published slide with this id")
     return catalog.slide_record(slide, request.app.state.settings)
+
+
+async def _published(db: AsyncSession, slide_id: str, request: Request) -> c.SlideRecord:
+    slide = await slides.get_slide(db, slide_id)
+    if slide is None:
+        raise HTTPException(status_code=404, detail="no published slide with this id")
+    return catalog.slide_record(slide, request.app.state.settings)
+
+
+@router.get("/slides/{slide_id}/slide.svg")
+async def slide_svg(slide_id: str, request: Request, db: Annotated[AsyncSession, Depends(session)],
+                    lang: Annotated[str, Query(pattern="^(en|es)$")] = "en", standalone: bool = True) -> Response:
+    """The slide as an object, drawn in millimetres: the glass, the mount, the coverslip, the labels and the QR. The
+    slide place inlines it (standalone=false: colours from the page's tokens); on its own it carries its colours."""
+    record = await _published(db, slide_id, request)
+    body = label_svg.render(layout.slide_layout(record, lang), standalone=standalone)
+    return Response(body, media_type="image/svg+xml", headers={"Cache-Control": "public, max-age=300"})
+
+
+@router.get("/slides/{slide_id}/label.pdf")
+async def label_pdf(slide_id: str, request: Request, db: Annotated[AsyncSession, Depends(session)],
+                    lang: Annotated[str, Query(pattern="^(en|es)$")] = "en") -> Response:
+    """The slide's labels at 1:1 on an A4 sheet, to print on label paper and stick on the physical slide."""
+    record = await _published(db, slide_id, request)
+    body = label_pdf_render.render([(layout.slide_layout(record, lang), record.permalink)],
+                                   title=f"Laminario {record.id}: {record.label.name}")
+    return Response(body, media_type="application/pdf",
+                    headers={"Content-Disposition": f'inline; filename="laminario-{record.id}.pdf"'})
 
 
 def explore_filters(

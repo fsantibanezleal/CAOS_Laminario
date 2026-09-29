@@ -8,6 +8,7 @@ Built per application (``routers``) because the fastapi-users objects depend on 
 | `POST /api/auth/register` | anyone holding a valid invitation link |
 | `POST /api/auth/forgot-password`, `POST /api/auth/reset-password` | anyone; mailed only when mail is configured |
 | `GET/PATCH /api/users/me` | the account itself (never its role) |
+| `GET /api/session` | anyone: the signed-in account, or null |
 | `POST/GET /api/invitations`, `DELETE /api/invitations/{id}` | curators (own, up to identifier), admins (all) |
 | `POST /api/admin/accounts/{id}/reset-link`, `PATCH /api/admin/accounts/{id}/role` | admins |
 | `POST /api/slide-cases` | contributors and above; a placement override needs a curator |
@@ -89,6 +90,12 @@ def routers(accounts: Accounts) -> list[APIRouter]:
     Admin = Annotated[User, Depends(requirement(accounts, "manage_accounts"))]
     Contributor = Annotated[User, Depends(requirement(accounts, "submit"))]
     Manager = Annotated[Any, Depends(get_user_manager)]
+    Reader = Annotated[User | None, Depends(accounts.optional)]
+
+    @api.get("/api/session", response_model=c.AccountRecord | None)
+    async def session_account(reader: Reader) -> c.AccountRecord | None:
+        """The signed-in account, or null for a visitor: a 200 either way, since a visitor is not an error."""
+        return account_record(reader) if reader is not None else None
 
     @auth.post("/register", status_code=201, response_model=c.AccountRecord)
     async def register(payload: Registration, db: Db, manager: Manager) -> c.AccountRecord:

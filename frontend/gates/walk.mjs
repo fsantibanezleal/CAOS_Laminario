@@ -1,6 +1,8 @@
 // The pointer walk through the places built so far, against the real build and the API over the base collection.
 //
-// R-084   from the landing place, every place is reached by clicking (no keyboard, no typed address)
+// R-084   from the landing place, every place is reached by clicking (no keyboard, no typed address): the realms,
+//         a cabinet, a drawer, a slide, its stage, search and the map
+// R-1107  the slide shows every image's source, record, author or rights holder, licence and, for a base slide, SHA-256
 // R-1006  after every navigation the new place's heading has the focus; a place reopened from its address (filters
 //         included) shows the same results as when it was reached by clicking
 // R-1007  every slide in a drawer is drawn at its format's proportion within 1 percent, at one scale for the whole tray,
@@ -10,7 +12,7 @@
 // Screenshots of each step go to .gates/walk/.
 import { join } from "node:path";
 import { chromium } from "playwright";
-import { ORIGIN, openPlace, outDir, requireApi, serve } from "./lib/serve.mjs";
+import { API, ORIGIN, openPlace, outDir, requireApi, serve } from "./lib/serve.mjs";
 
 const api = await requireApi();
 const out = outDir("walk");
@@ -94,6 +96,40 @@ try {
   check(JSON.stringify(again.ids) === JSON.stringify(filtered.ids) && again.count === filtered.count,
     `drawer: reopened from its address it shows ${again.ids.length} slides ("${again.count}"), clicked ${filtered.ids.length} ("${filtered.count}")`);
   await reopened.close();
+
+  // A slide from the tray, then its stage, by pointer (R-084); every image's provenance on the slide (R-1107).
+  const picked = filtered.ids[0];
+  await page.locator(`[data-slide="${picked}"]`).first().click();
+  await arrived(page, `**/s/${picked}`, "slide");
+  const record = await (await fetch(`${API}/api/slides/${picked}`)).json();
+  await page.waitForSelector("[data-testid=slide-object] svg");
+  const rows = await page.evaluate(() => [...document.querySelectorAll("[data-testid=provenance] tbody tr")].map((tr) => ({
+    asset: Number(tr.dataset.asset), cells: [...tr.children].map((c) => c.textContent.trim()),
+    licence: tr.querySelector("a[href*='creativecommons'], a[href*='publicdomain']")?.getAttribute("href") ?? null,
+  })));
+  check(rows.length === record.assets.length, `slide: ${rows.length} provenance rows for ${record.assets.length} images`);
+  for (const asset of record.assets) {
+    const row = rows.find((r) => r.asset === asset.id);
+    check(row && row.licence === asset.licence.uri, `slide: image ${asset.id} shows no licence ${asset.licence.uri}`);
+    check(row && (asset.creator ?? asset.rights_holder ?? "") !== "" && row.cells.includes(asset.creator ?? asset.rights_holder),
+      `slide: image ${asset.id} does not name its author or rights holder`);
+    if (asset.source) {
+      check(row && row.cells.some((c) => c.includes(asset.source.record_id)), `slide: image ${asset.id} shows no record`);
+      if (record.origin === "base") {
+        check(row && row.cells.some((c) => asset.source.sha256.startsWith(c) && c.length >= 12),
+          `slide: image ${asset.id} shows no SHA-256`);
+      }
+    }
+  }
+  const card = page.locator("[data-stage-item]").first();
+  const itemHref = await card.getAttribute("href");
+  await card.click();
+  await arrived(page, `**${itemHref}`, "stage");
+  // The viewer is a separate chunk (OpenSeadragon and Annotorious), loaded when the stage opens.
+  const viewer = await page.waitForSelector("[data-testid=stage-viewer]", { timeout: 20_000 }).catch(() => null);
+  check(viewer !== null, "stage: no viewer");
+  await page.locator(`main a[href="/s/${picked}"]`).first().click();
+  await arrived(page, `**/s/${picked}`, "slide-again");
 
   // The trail back to the cabinet, then the masthead to search.
   await page.locator("nav[aria-label] a[href='/c/rocks']").first().click();
