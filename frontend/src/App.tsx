@@ -1,5 +1,5 @@
 // The app: the room, the language, the session, the tree and the toast region around the place the address names.
-// The about place arrives with U15. The contribute, identify, moderation and people places load as their own chunks.
+// The contribute, identify, moderation, people and about places load as their own chunks.
 import { lazy, Suspense } from "react";
 import { Route, Switch } from "wouter";
 import { SessionProvider } from "./account/session";
@@ -24,6 +24,7 @@ const CaseEditor = lazy(() => import("./places/contribute/CaseEditor").then((m) 
 const IdentifyPlace = lazy(() => import("./places/identify/IdentifyPlace").then((m) => ({ default: m.IdentifyPlace })));
 const ModeratePlace = lazy(() => import("./places/identify/ModeratePlace").then((m) => ({ default: m.ModeratePlace })));
 const PeoplePlace = lazy(() => import("./places/people/PeoplePlace").then((m) => ({ default: m.PeoplePlace })));
+const AboutPlace = lazy(() => import("./places/about/AboutPlace").then((m) => ({ default: m.AboutPlace })));
 const waiting = <Skeleton lines={6} />;
 
 export function App() {
@@ -50,6 +51,7 @@ export function App() {
               <Route path="/identify"><Suspense fallback={waiting}><IdentifyPlace /></Suspense></Route>
               <Route path="/moderate"><Suspense fallback={waiting}><ModeratePlace /></Suspense></Route>
               <Route path="/people/:handle"><Suspense fallback={waiting}><PeoplePlace /></Suspense></Route>
+              <Route path="/about"><Suspense fallback={waiting}><AboutPlace /></Suspense></Route>
               <Route path="/design" component={DesignPlace} />
               <Route component={NotFoundPlace} />
             </Switch>

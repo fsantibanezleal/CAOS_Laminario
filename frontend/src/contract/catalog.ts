@@ -28,6 +28,7 @@ export interface LaminarioCatalog {
   profile?: ProfileRecord;
   personIdentification?: PersonIdentificationRecord;
   stock?: StockRecord;
+  about?: AboutRecord;
 }
 export interface SlideRecord {
   id: string;
@@ -641,4 +642,78 @@ export interface StockRecord {
   per_sheet: number;
   source: string;
   warnings?: string[];
+}
+/**
+ * ``GET /api/about``: the numbers, the sources and licences counted, the policy, and the credits.
+ */
+export interface AboutRecord {
+  read_at: string;
+  numbers: AboutNumbers;
+  sources?: SourceCount[];
+  licences?: LicenceCount[];
+  policy?: {
+    [k: string]: string[];
+  };
+  vocabularies?: CreditRecord[];
+  map?: CreditRecord[];
+  software?: CreditRecord[];
+  fonts?: CreditRecord[];
+}
+/**
+ * The collection counted when the page is read (R-1501).
+ */
+export interface AboutNumbers {
+  slides: number;
+  by_origin?: {
+    [k: string]: number;
+  };
+  realms?: RealmCount[];
+  wsi: number;
+  images: number;
+  countries: number;
+  contributors: number;
+  identifications: number;
+}
+/**
+ * A realm's published slides, and each of its collections' (``life.insects``).
+ */
+export interface RealmCount {
+  id: string;
+  slides: number;
+  collections?: {
+    [k: string]: number;
+  };
+}
+/**
+ * Where images came from, with their count and licences (R-1502): a source of ``credits.json``, the
+ * contributors (``contribution``), or ``other``.
+ */
+export interface SourceCount {
+  id: string;
+  name?: string | null;
+  url?: string | null;
+  terms?: string | null;
+  slides: number;
+  images: number;
+  licences?: {
+    [k: string]: number;
+  };
+}
+export interface LicenceCount {
+  uri: string;
+  short: string;
+  family: string;
+  images: number;
+}
+/**
+ * A vocabulary, a map layer, a piece of software or a font the collection stands on (R-1507).
+ */
+export interface CreditRecord {
+  id: string;
+  name: string;
+  url: string;
+  licence?: string | null;
+  citation?: string | null;
+  doi?: string | null;
+  terms?: string | null;
 }

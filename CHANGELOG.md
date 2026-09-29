@@ -3,6 +3,27 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.15.000] - 2026-09-29
+
+### Added
+
+- About the collection (`/about`): what Laminario is; the collection counted when the page is read; where the images
+  come from and under which licences; how to credit (TASL) and cite; how an image becomes a stage, transcribed from
+  the wiki with six equations typeset by KaTeX and five figures drawn in the room's colours; identification; what is
+  never shown; the names behind the tree; the software, fonts and map data with their licences; references. EN and
+  ES as the same typed blocks, held together by a test.
+- `GET /api/about`: published slides by realm, collection and origin, whole-slide scans, images, countries,
+  contributors, the community's identifications, images by source and by licence, the policy, and the credits of
+  `app/about/credits.json` (sources, vocabularies with citations, map data, software and fonts).
+- Cite this slide on the slide place: the slide's citation and each image's attribution, copied with one button.
+- The footer on every place: About the collection, licences and credits, how to cite.
+- The About gate and the link check (reachable, broken, or not checkable by a machine; a DOI by doi.org's handle
+  API); About in the fit, motion and walk gates; wiki page 17 with its diagram.
+
+### Changed
+
+- The map's credit links OpenStreetMap to its copyright page; Natural Earth and Unicode CLDR are credited.
+
 ## [0.14.000] - 2026-09-29
 
 ### Added

@@ -640,3 +640,81 @@ class StockRecord(_Record):
     per_sheet: int
     source: str
     warnings: list[str] = Field(default_factory=list)
+
+
+# --- About the collection (U15) --------------------------------------------------------------------------------------
+
+class RealmCount(_Record):
+    """A realm's published slides, and each of its collections' (``life.insects``)."""
+
+    id: str
+    slides: int
+    collections: dict[str, int] = Field(default_factory=dict)
+
+
+class AboutNumbers(_Record):
+    """The collection counted when the page is read (R-1501)."""
+
+    slides: int
+    #: ``base`` and ``contribution``.
+    by_origin: dict[str, int] = Field(default_factory=dict)
+    realms: list[RealmCount] = Field(default_factory=list)
+    #: Slides with a whole-slide scan (a pyramid or a focal stack of one).
+    wsi: int
+    #: Source images of published slides: a focal plane counts, a fused composite does not.
+    images: int
+    countries: int
+    #: Accounts with a published slide.
+    contributors: int
+    #: Current visible identifications by accounts of slides they did not contribute.
+    identifications: int
+
+
+class SourceCount(_Record):
+    """Where images came from, with their count and licences (R-1502): a source of ``credits.json``, the
+    contributors (``contribution``), or ``other``."""
+
+    id: str
+    name: str | None = None
+    url: str | None = None
+    terms: str | None = None
+    slides: int
+    images: int
+    #: Canonical licence URI to its count of images.
+    licences: dict[str, int] = Field(default_factory=dict)
+
+
+class LicenceCount(_Record):
+    uri: str
+    short: str
+    #: cc0, pdm, nkc, by, by-sa, by-nc, by-nc-sa.
+    family: str
+    images: int
+
+
+class CreditRecord(_Record):
+    """A vocabulary, a map layer, a piece of software or a font the collection stands on (R-1507)."""
+
+    id: str
+    name: str
+    url: str
+    #: A licence URI or SPDX identifier; None when the source states none (names used as facts).
+    licence: str | None = None
+    citation: str | None = None
+    doi: str | None = None
+    terms: str | None = None
+
+
+class AboutRecord(_Record):
+    """``GET /api/about``: the numbers, the sources and licences counted, the policy, and the credits."""
+
+    read_at: datetime
+    numbers: AboutNumbers
+    sources: list[SourceCount] = Field(default_factory=list)
+    licences: list[LicenceCount] = Field(default_factory=list)
+    #: The licence families the policy accepts, by origin (``base``, ``contribution``).
+    policy: dict[str, list[str]] = Field(default_factory=dict)
+    vocabularies: list[CreditRecord] = Field(default_factory=list)
+    map: list[CreditRecord] = Field(default_factory=list)
+    software: list[CreditRecord] = Field(default_factory=list)
+    fonts: list[CreditRecord] = Field(default_factory=list)
