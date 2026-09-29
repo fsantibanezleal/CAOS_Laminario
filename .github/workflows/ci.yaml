@@ -49,6 +49,12 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - name: Contract types match the committed schemas
         run: node scripts/check-contract-drift.mjs
+      - name: Design tokens match their source; every declared colour pair reaches its contrast (R-081)
+        run: npm run check:tokens && npm run check:contrast
+      - name: Every interface string exists in English and Spanish (R-089)
+        run: npm run check:i18n
+      - name: Web unit tests
+        run: npm test
       - name: Type check and build
         run: npm run build
 

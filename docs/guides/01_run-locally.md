@@ -150,6 +150,34 @@ The mineral and rock vocabularies are rebuilt and checked from their sources in 
 `scripts\check_rock_terms.py --vault $env:LAMINARIO_FIXTURES`; the two vault tests skip without it. The tests never call
 GBIF: a local server replays recorded answers (`tests\gbif_replay.py`).
 
+## 10. The interface
+
+The web app is built from its token source, its font subsets and its catalogues; the generated files are committed.
+After changing one of the sources:
+
+```powershell
+cd frontend
+npm run tokens                      # src/design/tokens.css from src/design/tokens.json
+npm run check:contrast              # every declared colour pair against its WCAG 2.2 minimum
+npm run check:i18n                  # both catalogues complete
+cd ..
+.\.venv\Scripts\python.exe scripts\build_fonts.py   # the three faces from the pinned upstream files (cached in the vault)
+```
+
+The browser gates run against the real build in Playwright's Chromium, with the browser cache outside the repository:
+
+```powershell
+cd frontend
+npm run build
+$env:PLAYWRIGHT_BROWSERS_PATH = "<browser cache folder>"; npx playwright install chromium
+npm run gate:fit                    # no sideways scroll: 4 widths x 2 rooms x 2 languages, with screenshots
+npm run gate:motion                 # nothing moves with reduced motion
+npm run gate:states                 # focus, tooltip, dialog, toast, with screenshots
+```
+
+The screenshots land in `frontend/.gates/` (ignored by git) and are read before a unit closes. The specimen place
+is at `/design` in `npm run dev`.
+
 ## Tests and guards
 
 The full test suite runs locally; continuous integration runs only the lint and the guards.
@@ -167,6 +195,7 @@ cd frontend
 npm run contract:check                                        # committed TypeScript equals the schemas
 npm run typecheck
 npm test
+npm run check:tokens; npm run check:contrast; npm run check:i18n
 ```
 
 After a change to a contract model: `python scripts/export_contracts.py`, then `npm run contract:generate`.

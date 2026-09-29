@@ -11,3 +11,6 @@ jsonschema==4.26.0
 aiosmtpd==1.4.6
 # U7: building the mineral vocabulary from the IMA list, checking rock names against the RCS volumes
 pypdf==6.19.0
+# U9: building the interface fonts (subset, instance, rename) from the pinned upstream files
+fonttools==4.60.1
+brotli==1.2.0
