@@ -1,4 +1,5 @@
-"""A baked slide whose lock entry changed is baked again; one baked before digests were recorded is trusted."""
+"""A baked slide whose lock entry changed (without an images digest to tell what changed) is baked again; one baked
+before digests were recorded is trusted unless named. Record-only changes: tests/base/test_countries.py."""
 
 from __future__ import annotations
 
@@ -12,8 +13,8 @@ def test_changed_entries_are_stale_and_legacy_entries_are_trusted():
              "c": "CCCC0003"}
     moved = {**b, "specimen": {"anchor": {"ref": "3"}}}
     slides = [a, moved, {"id": "c"}]
-    assert _stale(index, slides, set()) == ["b"]
-    assert _stale(index, slides, {"c"}) == ["b", "c"]
+    assert _stale(index, slides, set()) == (["b"], [])
+    assert _stale(index, slides, {"c"}) == (["b", "c"], [])
     assert digest(a) == digest({"specimen": {"anchor": {"ref": "1"}}, "id": "a"})  # key order does not matter
 
 

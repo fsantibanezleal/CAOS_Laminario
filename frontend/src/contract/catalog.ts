@@ -16,6 +16,8 @@ export interface LaminarioCatalog {
   facet?: FacetRecord;
   anchorSuggestion?: AnchorSuggestion;
   placement?: PlacementResult;
+  facetCounts?: FacetCounts;
+  map?: MapRecord;
 }
 export interface SlideRecord {
   id: string;
@@ -83,6 +85,7 @@ export interface PlaceRecord {
   cell?: CellRecord | null;
   uncertainty_m?: number | null;
   locality_text?: string | null;
+  country?: string | null;
 }
 export interface PointRecord {
   lat: number;
@@ -169,6 +172,16 @@ export interface SlideSummary {
   preparation: string;
   thumbnail_url?: string | null;
   origin: "base" | "contribution";
+  label?: SummaryLabel;
+}
+/**
+ * What a drawer shows on a slide's label end (no coordinates, so nothing geoprivacy withholds).
+ */
+export interface SummaryLabel {
+  catalogue_number?: string | null;
+  collected_on?: string | null;
+  locality_text?: string | null;
+  country?: string | null;
 }
 /**
  * The answer of ``POST /api/slide-cases/validate``.
@@ -360,4 +373,54 @@ export interface PlacementResult {
   path?: NodeRef[];
   accepting?: string[];
   errors?: ValidationError[];
+}
+/**
+ * For each facet, its values under the current filters and how many slides each would match (the facet's own
+ * filter left out, so a second value shows what it adds).
+ */
+export interface FacetCounts {
+  collection?: {
+    [k: string]: number;
+  };
+  kind?: {
+    [k: string]: number;
+  };
+  preparation?: {
+    [k: string]: number;
+  };
+  modality?: {
+    [k: string]: number;
+  };
+  preservation?: {
+    [k: string]: number;
+  };
+  country?: {
+    [k: string]: number;
+  };
+  licence?: {
+    [k: string]: number;
+  };
+  wsi?: {
+    [k: string]: number;
+  };
+  origin?: {
+    [k: string]: number;
+  };
+}
+export interface MapRecord {
+  countries: {
+    [k: string]: number;
+  };
+  points: MapPointRecord[];
+  total: number;
+}
+/**
+ * A slide on the map, after geoprivacy: an obscured one at its public point, with its 0.2 degree cell.
+ */
+export interface MapPointRecord {
+  id: string;
+  lat: number;
+  lon: number;
+  obscured?: boolean;
+  cell?: CellRecord | null;
 }

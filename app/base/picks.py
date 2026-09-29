@@ -14,7 +14,8 @@ pair. ``nhm <catalogue number> | ...`` picks an NHM record (anchor from its GBIF
 ``host`` (a name as in ``<anchor>``), ``locality``, ``collected`` (YYYY, YYYY-MM or YYYY-MM-DD), ``collector``,
 ``preparer``, ``name`` (the determination as written), ``type`` (the type status), ``catalogue`` (the holder's
 catalogue number), ``stack`` (``policy``: a focal stack whose planes the ingest policy selects), ``pixel`` (the
-pixel size in micrometres, when the source states it).
+pixel size in micrometres, when the source states it), ``country`` (the ISO 3166-1 code of the country the source's
+locality lies in, when the locality names it or a place inside exactly one country).
 Lines starting with ``#`` are comments; the target collection of each pick is the section header
 ``[collection]``.
 """
@@ -86,7 +87,7 @@ def parse(text: str, vault: Path) -> dict[str, list[dict]]:
                 pick[key] = value
         names = {"host": "host", "locality": "locality_text", "collected": "collected_on", "collector": "collector",
                  "preparer": "preparer", "name": "name", "type": "type_status", "catalogue": "catalogue_number",
-                 "stack": "stack", "pixel": "pixel_size_um"}
+                 "stack": "stack", "pixel": "pixel_size_um", "country": "country"}
         for item in filter(None, (x.strip() for x in extras.split(";"))):
             key, _, value = item.partition("=")
             pick[names[key.strip()]] = value.strip()

@@ -1,11 +1,12 @@
 // R-080: no horizontal page scroll at 360, 768, 1280 and 1920 px, in both rooms and both languages, on every place
-// built so far. Also checks that the page painted in the room and language asked for, and saves a full-page
-// screenshot of each case in .gates/fit/ to be read before a unit closes.
+// built so far (lib/serve.mjs lists them). Also checks that the page painted in the room and language asked for, and
+// saves a full-page screenshot of each case in .gates/fit/ to be read before a unit closes.
 import { join } from "node:path";
 import { chromium } from "playwright";
-import { LANGS, ROOMS, WIDTHS, openPlace, outDir, serve } from "./lib/serve.mjs";
+import { LANGS, PLACES, ROOMS, WIDTHS, openPlace, outDir, requireApi, serve } from "./lib/serve.mjs";
 
-const PLACES = ["/design"];
+await requireApi();
+
 const out = outDir("fit");
 const stop = await serve();
 const browser = await chromium.launch();

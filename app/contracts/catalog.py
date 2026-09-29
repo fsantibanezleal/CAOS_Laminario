@@ -77,6 +77,17 @@ class PlaceRecord(_Record):
     cell: CellRecord | None = None
     uncertainty_m: float | None = None
     locality_text: str | None = None
+    #: ISO 3166-1 alpha-2. Like the locality text it is kept for a private place (only coordinates are withheld).
+    country: str | None = None
+
+
+class SummaryLabel(_Record):
+    """What a drawer shows on a slide's label end (no coordinates, so nothing geoprivacy withholds)."""
+
+    catalogue_number: str | None = None
+    collected_on: str | None = None
+    locality_text: str | None = None
+    country: str | None = None
 
 
 class PlacementRecord(_Record):
@@ -186,6 +197,7 @@ class SlideSummary(_Record):
     preparation: str
     thumbnail_url: str | None = None
     origin: Literal["base", "contribution"]
+    label: SummaryLabel = SummaryLabel()
 
 
 class SlidePage(_Record):
@@ -193,6 +205,37 @@ class SlidePage(_Record):
     total: int
     offset: int
     limit: int
+
+
+class FacetCounts(_Record):
+    """For each facet, its values under the current filters and how many slides each would match (the facet's own
+    filter left out, so a second value shows what it adds)."""
+
+    collection: dict[str, int] = {}
+    kind: dict[str, int] = {}
+    preparation: dict[str, int] = {}
+    modality: dict[str, int] = {}
+    preservation: dict[str, int] = {}
+    country: dict[str, int] = {}
+    licence: dict[str, int] = {}
+    wsi: dict[str, int] = {}
+    origin: dict[str, int] = {}
+
+
+class MapPointRecord(_Record):
+    """A slide on the map, after geoprivacy: an obscured one at its public point, with its 0.2 degree cell."""
+
+    id: str
+    lat: float
+    lon: float
+    obscured: bool = False
+    cell: CellRecord | None = None
+
+
+class MapRecord(_Record):
+    countries: dict[str, int]
+    points: list[MapPointRecord]
+    total: int
 
 
 class ValidationFlag(_Record):

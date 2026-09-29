@@ -2,9 +2,10 @@
 // last up to 150 ms). Measures the computed styles of every element (and its ::before and ::after) of every place,
 // in both rooms, after pressing the controls that start movement (the slide's move, the switches).
 import { chromium } from "playwright";
-import { ROOMS, openPlace, serve } from "./lib/serve.mjs";
+import { PLACES, ROOMS, openPlace, requireApi, serve } from "./lib/serve.mjs";
 
-const PLACES = ["/design"];
+await requireApi();
+
 const stop = await serve();
 const browser = await chromium.launch();
 const failures = [];

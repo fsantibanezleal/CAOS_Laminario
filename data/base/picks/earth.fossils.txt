@@ -12,13 +12,13 @@ earth.fossils 24 | taxon=Cosmochlaina@genus | whole_mount | | brightfield | | | 
 earth.fossils 25 | taxon=Cribrostomoides@genus | whole_mount | | sem_external | | | benthic foraminifer from marine sediment, Hannes Grobe (Alfred Wegener Institute) | name=Cribostomoides sp.
 earth.fossils 28 | taxon=Bacillariophyceae@class | strew | | brightfield | | | diatomaceous earth (kieselguhr)
 earth.fossils 33 | taxon=Gephyrocapsa oceanica@species | strew | | sem_external | | | coccolith from marine sediment, Hannes Grobe (Alfred Wegener Institute)
-earth.fossils 34 | taxon=Glypturus acanthochirus@species | whole_mount | | reflected | | | ghost-shrimp claw fragment under 2 mm, Pinecrest Beds, Hillsborough County | locality=Hillsborough County, Florida
+earth.fossils 34 | taxon=Glypturus acanthochirus@species | whole_mount | | reflected | | | ghost-shrimp claw fragment under 2 mm, Pinecrest Beds, Hillsborough County | locality=Hillsborough County, Florida; country=US
 earth.fossils 35 | taxon=Helicosphaera carteri@species | strew | | sem_external | | | coccolith from marine sediment, Hannes Grobe (Alfred Wegener Institute)
 earth.fossils 38 | taxon=Juxilyocypris@genus | whole_mount | | sem_external | | | female carapace, dorsal view; the backbone lists the genus only | name=Juxilyocypris schwarzbachi
-earth.fossils 41 | taxon=Psaronius@genus@Plantae | thin_section | | brightfield | | | thin section of a Psaronius tree-fern stem, Chemnitz; historical glass plate with its label | locality=Chemnitz, Germany
+earth.fossils 41 | taxon=Psaronius@genus@Plantae | thin_section | | brightfield | | | thin section of a Psaronius tree-fern stem, Chemnitz; historical glass plate with its label | locality=Chemnitz, Germany; country=DE
 earth.fossils 43 | taxon=Tracheophyta@phylum | thin_section | wood | brightfield | | | fossil wood from Miocene beds
 earth.fossils 45 | taxon=Tracheophyta@phylum | polished_section | wood | reflected | | | polished petrified wood showing the cells, locality unknown
-earth.fossils 48 | taxon=Tracheophyta@phylum | polished_section | wood | reflected | | | petrified wood, Ukraine | locality=Ukraine
+earth.fossils 48 | taxon=Tracheophyta@phylum | polished_section | wood | reflected | | | petrified wood, Ukraine | locality=Ukraine; country=UA
 earth.fossils 51 | taxon=Plantae@kingdom | polished_section | spore | fluorescence | | | fossil spores, 50x oil objective, fluorescence
 
 [earth.rocks]

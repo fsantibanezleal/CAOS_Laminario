@@ -239,6 +239,7 @@ slides:
       rank: species
     preservation: fossil
     locality_text: Hillsborough County, Florida
+    country: US
   placement:
     node: earth.fossils
   assets:
@@ -324,6 +325,7 @@ slides:
       rank: genus
     preservation: fossil
     locality_text: Chemnitz, Germany
+    country: DE
   placement:
     node: earth.fossils.fossil-plants
   assets:
@@ -412,6 +414,7 @@ slides:
     part: wood
     preservation: fossil
     locality_text: Ukraine
+    country: UA
   placement:
     node: earth.fossils.fossil-plants
   assets:
@@ -668,6 +671,7 @@ slides:
     preservation: fossil
     collector: Joe Milligan
     locality_text: USA
+    country: US
   placement:
     node: earth.fossils.fossil-plants
   assets:
@@ -701,6 +705,7 @@ slides:
     preservation: fossil
     locality_text: Kansas, USA
     type_status: paratype
+    country: US
   placement:
     node: earth.fossils.fossil-plants
   assets:
@@ -733,6 +738,7 @@ slides:
       rank: class
     preservation: fossil
     locality_text: Texas, USA
+    country: US
   placement:
     node: earth.fossils.ostracods
   assets:
@@ -764,6 +770,7 @@ slides:
       rank: class
     preservation: fossil
     locality_text: Texas, USA
+    country: US
   placement:
     node: earth.fossils.ostracods
   assets:
@@ -897,6 +904,7 @@ slides:
       ref: gabbro
       name: gabbro
     locality_text: Rum Layered Intrusion, Scotland
+    country: GB
   placement:
     node: earth.rocks.igneous.coarse
   assets:
@@ -1363,6 +1371,7 @@ slides:
       ref: eclogite
       name: eclogite
     locality_text: Autengrün, Münchberg massif, Bavaria, Germany
+    country: DE
   placement:
     node: earth.rocks.metamorphic
   assets:
@@ -1476,6 +1485,7 @@ slides:
       ref: anorthosite
       name: anorthosite
     locality_text: Bushveld Complex, South Africa
+    country: ZA
   placement:
     node: earth.rocks.igneous.coarse
   assets:
@@ -1529,6 +1539,7 @@ slides:
       ref: gabbro
       name: gabbro
     locality_text: Bushveld Complex, South Africa
+    country: ZA
   placement:
     node: earth.rocks.igneous.coarse
   assets:
@@ -1556,6 +1567,7 @@ slides:
       ref: komatiite
       name: komatiite
     locality_text: Agnew, Western Australia
+    country: AU
   placement:
     node: earth.rocks.igneous.fine
   assets:
@@ -1635,6 +1647,7 @@ slides:
       ref: andesite
       name: andesite
     locality_text: Andes, Chile
+    country: CL
   placement:
     node: earth.rocks.igneous.fine
   assets:
@@ -1662,6 +1675,7 @@ slides:
       ref: obsidian
       name: obsidian
     locality_text: Ponza, Italy
+    country: IT
   placement:
     node: earth.rocks.igneous.fine
   assets:
@@ -1689,6 +1703,7 @@ slides:
       ref: carbonatite
       name: natrocarbonatite
     locality_text: Ol Doinyo Lengai, Tanzania
+    country: TZ
   placement:
     node: earth.rocks.igneous.exotic
   assets:
@@ -1716,6 +1731,7 @@ slides:
       ref: serpentinite
       name: serpentinite
     locality_text: Erbendorf, Upper Palatinate, Germany
+    country: DE
   placement:
     node: earth.rocks.metamorphic
   assets:
@@ -1769,6 +1785,7 @@ slides:
       ref: schist
       name: blueschist
     locality_text: Ghinivert, Cottian Alps, Italy
+    country: IT
   placement:
     node: earth.rocks.metamorphic.foliated
   assets:
@@ -1796,6 +1813,7 @@ slides:
       ref: marble
       name: marble
     locality_text: Brazil
+    country: BR
   placement:
     node: earth.rocks.metamorphic.non-foliated
   assets:
@@ -1901,6 +1919,7 @@ slides:
       ref: marble
       name: marble
     locality_text: Carrara, Italy
+    country: IT
   placement:
     node: earth.rocks.metamorphic.non-foliated
   assets:
@@ -1928,6 +1947,7 @@ slides:
       ref: marble
       name: marble
     locality_text: Andermatt, Switzerland
+    country: CH
   placement:
     node: earth.rocks.metamorphic.non-foliated
   assets:
@@ -2007,6 +2027,7 @@ slides:
       ref: greisen
       name: greisen
     locality_text: Haupt- and Ottoschacht dump, Přebuz, Czech Republic
+    country: CZ
   placement:
     node: earth.rocks.metamorphic.non-foliated
   assets:
@@ -2060,6 +2081,7 @@ slides:
       ref: lime-sand
       name: lime-sand
     locality_text: Great Barrier Reef, Australia
+    country: AU
   placement:
     node: earth.rocks.soils-sediments
   assets:
@@ -2087,6 +2109,7 @@ slides:
       ref: rudstone
       name: rudstone
     locality_text: Andros, Bahamas
+    country: BS
   placement:
     node: earth.rocks.sedimentary.carbonate
   assets:
@@ -2114,6 +2137,7 @@ slides:
       ref: rudstone
       name: rudstone
     locality_text: Bahamas
+    country: BS
   placement:
     node: earth.rocks.sedimentary.carbonate
   assets:
@@ -2141,6 +2165,7 @@ slides:
       ref: sandstone
       name: sandstone
     locality_text: Bäch, Switzerland
+    country: CH
   placement:
     node: earth.rocks.sedimentary.siliciclastic
   assets:
@@ -2168,6 +2193,7 @@ slides:
       ref: grainstone
       name: grainstone
     locality_text: Pond Key, Lee Stocking Island, Bahamas
+    country: BS
   placement:
     node: earth.rocks.sedimentary.carbonate
   assets:
@@ -2196,6 +2222,7 @@ slides:
       ref: lime-gravel
       name: lime-gravel
     locality_text: Tromsø, Norway
+    country: 'NO'
   placement:
     node: earth.rocks.soils-sediments
   assets:
@@ -2223,6 +2250,7 @@ slides:
       ref: lime-sand
       name: lime-sand
     locality_text: Guadeloupe
+    country: GP
   placement:
     node: earth.rocks.soils-sediments
   assets:
@@ -2250,6 +2278,7 @@ slides:
       ref: lime-sand
       name: lime-sand
     locality_text: Great Barrier Reef, Australia
+    country: AU
   placement:
     node: earth.rocks.soils-sediments
   assets:
@@ -2277,6 +2306,7 @@ slides:
       ref: lime-sand
       name: lime-sand
     locality_text: north of Gothenburg, Sweden
+    country: SE
   placement:
     node: earth.rocks.soils-sediments
   assets:
@@ -2356,6 +2386,7 @@ slides:
       ref: grainstone
       name: grainstone
     locality_text: Baraterre Island, Exumas, Bahamas
+    country: BS
   placement:
     node: earth.rocks.sedimentary.carbonate
   assets:
@@ -2409,6 +2440,7 @@ slides:
       ref: ordinary-chondrite
       name: JaH 026
     locality_text: Jiddat al Harasis, Oman
+    country: OM
   placement:
     node: earth.rocks.meteorites
   assets:
@@ -2488,6 +2520,7 @@ slides:
       ref: vein-ore
       name: vein-ore
     locality_text: Baratta goldfield, South Australia
+    country: AU
   placement:
     node: earth.rocks.ore
   assets:
@@ -2515,6 +2548,7 @@ slides:
       ref: vein-ore
       name: vein-ore
     locality_text: Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
+    country: AU
   placement:
     node: earth.rocks.ore
   assets:
@@ -2542,6 +2576,7 @@ slides:
       ref: vein-ore
       name: vein-ore
     locality_text: Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
+    country: AU
   placement:
     node: earth.rocks.ore
   assets:
@@ -2569,6 +2604,7 @@ slides:
       ref: vein-ore
       name: vein-ore
     locality_text: Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
+    country: AU
   placement:
     node: earth.rocks.ore
   assets:
@@ -2596,6 +2632,7 @@ slides:
       ref: vein-ore
       name: vein-ore
     locality_text: Kitticoola goldmine, Palmer, South Australia
+    country: AU
   placement:
     node: earth.rocks.ore
   assets:
@@ -2623,6 +2660,7 @@ slides:
       ref: banded-ironstone
       name: banded-ironstone
     locality_text: South Australia
+    country: AU
   placement:
     node: earth.rocks.sedimentary.chemical-biogenic
   assets:
@@ -2723,6 +2761,7 @@ slides:
       rank: group
       classification: 9.AC.05
     locality_text: Hitiaa River, Tahiti
+    country: PF
   placement:
     node: earth.minerals.silicates.nesosilicates
   assets:
@@ -2892,6 +2931,7 @@ slides:
       rank: group
       classification: 9.AC.05
     locality_text: Alexo, Ontario, Canada
+    country: CA
   placement:
     node: earth.minerals.silicates.nesosilicates
   assets:
@@ -3117,6 +3157,7 @@ slides:
       rank: species
       classification: 9.GB.05
     locality_text: Vulsini volcano, central Italy
+    country: IT
   placement:
     node: earth.minerals.silicates.tectosilicates
   assets:
@@ -3146,6 +3187,7 @@ slides:
       rank: species
       classification: 9.CJ.10
     locality_text: San Vincenzo, Tuscany, Italy
+    country: IT
   placement:
     node: earth.minerals.silicates.cyclosilicates
   assets:
@@ -3175,6 +3217,7 @@ slides:
       rank: species
       classification: 4.CB.05
     locality_text: Elba, Italy
+    country: IT
   placement:
     node: earth.minerals.oxides
   assets:
@@ -3204,6 +3247,7 @@ slides:
       rank: species
       classification: 9.FB.10
     locality_text: Melfi, Potenza, Italy
+    country: IT
   placement:
     node: earth.minerals.silicates.tectosilicates
   assets:
@@ -7344,6 +7388,7 @@ slides:
       rank: genus
     collected_on: '2015-01-30'
     locality_text: Tanabe, Wakayama, Japan
+    country: JP
   placement:
     node: life.microbes.microalgae
   assets:
@@ -7373,6 +7418,7 @@ slides:
       rank: genus
     collected_on: '2015-01-30'
     locality_text: Tanabe, Wakayama, Japan
+    country: JP
   placement:
     node: life.microbes.microalgae
   assets:
@@ -7401,6 +7447,7 @@ slides:
       name: Synura
       rank: genus
     locality_text: Shishitsuka Pond, Tsuchiura, Ibaraki, Japan
+    country: JP
   placement:
     node: life.microbes.microalgae
   assets:
@@ -8352,6 +8399,7 @@ slides:
       rank: species
     collected_on: '1962-08-31'
     locality_text: Niupani, Rennell Island
+    country: SB
     host:
       kind: taxon
       ref: '2436436'
@@ -8419,6 +8467,7 @@ slides:
       name: Pediculus humanus Linnaeus, 1758
       rank: species
     locality_text: United Kingdom
+    country: GB
     host:
       kind: taxon
       ref: '2436436'
@@ -8465,6 +8514,7 @@ slides:
       rank: species
     collected_on: '1966'
     locality_text: London Zoo (host from South and Central America)
+    country: GB
     host:
       kind: taxon
       ref: '2436640'
@@ -8510,6 +8560,7 @@ slides:
       name: Polyplax borealis Ferris, 1932
       rank: species
     locality_text: United States
+    country: US
   placement:
     node: life.insects.lice
   assets:
@@ -8561,6 +8612,7 @@ slides:
       name: Polyplax paradoxa Johnson, 1960
       rank: species
     locality_text: Kuwait
+    country: KW
   placement:
     node: life.insects.lice
   assets:
@@ -8625,6 +8677,7 @@ slides:
     collected_on: '1966-03-21'
     collector: R. Harmsen
     locality_text: Mt Kenya, East Africa
+    country: KE
     host:
       kind: taxon
       ref: '5706739'
@@ -8671,6 +8724,7 @@ slides:
       rank: species
     collected_on: '1953-10-20'
     locality_text: Louisiana, U.S.A.
+    country: US
     host:
       kind: taxon
       ref: '5229155'
@@ -8716,6 +8770,7 @@ slides:
       name: Ornicholax alienus (Giebel, 1874)
       rank: species
     locality_text: British Guiana
+    country: GY
     host:
       kind: taxon
       ref: '2477507'
@@ -8763,6 +8818,7 @@ slides:
     collected_on: '1961-11-21'
     collector: R. W. Woods
     locality_text: Kidney Island, Falkland Islands
+    country: FK
     host:
       kind: taxon
       ref: '2490775'
@@ -8809,6 +8865,7 @@ slides:
       rank: species
     collected_on: 1934-05
     locality_text: Somerset, England
+    country: GB
     type_status: neotype
     host:
       kind: taxon
@@ -8856,6 +8913,7 @@ slides:
       rank: genus
     collected_on: 1934-01
     locality_text: South Uist
+    country: GB
     type_status: neotype
     host:
       kind: taxon
@@ -8902,6 +8960,7 @@ slides:
       name: Rallicola takahe Holloway, 1955
       rank: species
     locality_text: Takahe Valley, Lake Te Anau, New Zealand
+    country: NZ
     type_status: paratype
     host:
       kind: taxon
@@ -8948,6 +9007,7 @@ slides:
       name: Austrogoniodes keleri Clay, 1967
       rank: species
     locality_text: Kidney Isle
+    country: FK
     type_status: holotype
     host:
       kind: taxon
@@ -8995,6 +9055,7 @@ slides:
       rank: species
     collected_on: '1990-08-10'
     locality_text: Nancledra, Cornwall
+    country: GB
   placement:
     node: life.insects.other-orders
   assets:
@@ -9035,6 +9096,7 @@ slides:
       name: Aeolothrips vittatus Haliday, 1836
       rank: species
     locality_text: United Kingdom
+    country: GB
   placement:
     node: life.insects.other-orders
   assets:
@@ -9292,6 +9354,7 @@ slides:
       rank: species
     locality_text: Trujillo, Venezuela
     type_status: holotype
+    country: VE
   placement:
     node: life.insects.fleas
   assets:
@@ -9324,6 +9387,7 @@ slides:
       rank: species
     locality_text: Trujillo, Venezuela
     type_status: allotype
+    country: VE
   placement:
     node: life.insects.fleas
   assets:
@@ -9355,6 +9419,7 @@ slides:
       rank: genus
     collector: Ian Stocks
     locality_text: California, USA
+    country: US
   placement:
     node: life.insects.hemiptera
   assets:
@@ -9386,6 +9451,7 @@ slides:
       rank: family
     collector: Bruno de Medeiros
     locality_text: Florida, USA
+    country: US
   placement:
     node: life.insects.beetles
   assets:
@@ -9417,6 +9483,7 @@ slides:
       rank: family
     collector: Bruno de Medeiros
     locality_text: Florida, USA
+    country: US
   placement:
     node: life.insects.beetles
   assets:
@@ -12490,6 +12557,7 @@ slides:
     part: wood
     collector: Diana Perez
     locality_text: Colombia
+    country: CO
   placement:
     node: life.plants
   assets:
@@ -13849,6 +13917,7 @@ slides:
       ref: starch
       name: starch
     locality_text: Puerto Rico
+    country: PR
   placement:
     node: matter.materials.food
   assets:

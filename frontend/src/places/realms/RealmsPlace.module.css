@@ -1,0 +1,205 @@
+.lead {
+  display: grid;
+  gap: var(--s-5);
+  max-width: 760px;
+  margin: var(--s-4) 0 var(--s-8);
+}
+
+.intro {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-4);
+  line-height: 1.5;
+}
+
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--s-3);
+}
+
+.search > :first-child {
+  flex: 1 1 280px;
+}
+
+/* The button sits on the input's line, below the label. */
+.search > button {
+  margin-top: calc(var(--fs-2) * 1.5 + var(--s-2));
+}
+
+.totals {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-6);
+  font-size: var(--fs-3);
+}
+
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-weight: 600;
+}
+
+.realm {
+  margin-bottom: var(--s-9);
+  scroll-margin-top: var(--s-5);
+}
+
+.realmHead {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--s-2) var(--s-4);
+  margin-bottom: var(--s-6);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--c-rule);
+}
+
+.realmIcon {
+  color: var(--c-accent);
+}
+
+.realmName {
+  font-size: var(--fs-7);
+}
+
+.realmAbout {
+  max-width: 64ch;
+  margin-top: var(--s-2);
+  color: var(--c-ink-muted);
+}
+
+.realmCount {
+  grid-column: 2;
+  font-family: var(--f-label);
+  font-size: var(--fs-2);
+}
+
+.cabinets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: var(--s-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A cabinet front: oak with the collection's hue on its cornice, the icon, the name, and its drawers suggested. */
+.cabinet {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: var(--s-2);
+  height: 100%;
+  min-height: 200px;
+  padding: var(--s-6) var(--s-5) var(--s-5);
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--c-wood) 70%, var(--c-edge));
+  border-radius: var(--r-panel);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--c-wood) 55%, var(--c-surface)), var(--c-surface) 70%);
+  box-shadow: var(--lift);
+  color: var(--c-ink);
+  text-decoration: none;
+  transition: transform var(--t-quick) var(--ease-out), box-shadow var(--t-quick) var(--ease-out);
+}
+
+.cabinet:hover,
+.cabinet:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--float);
+}
+
+.cornice {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  background: var(--tag-hue);
+}
+
+.cabinetIcon {
+  color: var(--tag-hue);
+}
+
+.cabinetName {
+  font-family: var(--f-display);
+  font-size: var(--fs-6);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.cabinetFacts {
+  display: flex;
+  flex-direction: column;
+  color: var(--c-ink-muted);
+  font-family: var(--f-label);
+  font-size: var(--fs-2);
+}
+
+.drawerLines {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: var(--s-3);
+}
+
+.drawerLines span {
+  position: relative;
+  height: 9px;
+  border: 1px solid color-mix(in oklab, var(--c-wood) 60%, var(--c-edge));
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--c-wood) 40%, transparent);
+}
+
+.drawerLines span::after {
+  position: absolute;
+  top: 2px;
+  left: calc(50% - 8px);
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--c-accent);
+  content: "";
+  opacity: 0.8;
+}
+
+/* On a phone the cabinets stand two across, compact: the icon smaller, no drawer lines. */
+@media (max-width: 599px) {
+  .cabinets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+
+  .cabinet {
+    min-height: 0;
+    padding: var(--s-5) var(--s-3) var(--s-4);
+  }
+
+  .cabinetIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .cabinetName {
+    font-size: var(--fs-4);
+    hyphens: auto;
+  }
+
+  .cabinetFacts {
+    font-size: var(--fs-1);
+  }
+
+  .drawerLines {
+    display: none;
+  }
+
+  .realmHead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .realmCount {
+    grid-column: 1;
+  }
+}

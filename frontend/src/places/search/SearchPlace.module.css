@@ -1,0 +1,6 @@
+.intro {
+  max-width: 64ch;
+  margin-top: var(--s-3);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-4);
+}

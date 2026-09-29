@@ -42,6 +42,7 @@ Schema: [`contracts/ingest.schema.json`](../../contracts/ingest.schema.json) (JS
 | `collector` | string or null | no | at most 120 characters | null |
 | `locality_text` | string or null | no | at most 300 characters | null |
 | `coordinates` | [Coordinates](#coordinates) or null | no |  | null |
+| `country` | string or null | no | an ISO 3166-1 alpha-2 code in capitals, such as CL | null |
 | `geoprivacy` | string (enumerated) | no | one of: open, obscured, private | `"open"` |
 | `host` | [Anchor](#anchor) or null | no | a taxon anchor | null |
 | `part` | string or null | no | a part of the parts vocabulary, such as blood or feather | null |

@@ -61,6 +61,9 @@ class Settings(BaseSettings):
     #: Seconds a focal-stack fusion may run before its process is killed. The base bake, offline on a workstation,
     #: raises it: 71 planes of 53 megapixels fuse in hours.
     fuse_timeout_s: int = 7200
+    #: The world basemap, a Protomaps PMTiles extract to zoom 7 (scripts/fetch_basemap.py writes it). Production
+    #: nginx serves the same file; the API serves it with byte ranges when nginx is not in front (development).
+    basemap: Path | None = None
     #: Windows only: the bin folder of the libvips build that includes OpenSlide. Unset on Linux.
     vips_bin: Path | None = None
     #: The local data vault with the imaging fixtures (tests only).

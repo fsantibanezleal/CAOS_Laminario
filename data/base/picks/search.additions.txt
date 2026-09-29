@@ -9,9 +9,9 @@ search.additions 7 | taxon=Mycobacterium leprae@species | smear | skin | brightf
 search.additions 3 | taxon=Corynebacterium diphtheriae@species | smear | | brightfield | Albert | | metachromatic granules
 search.additions 4 | taxon=Corynebacterium pseudodiphtheriticum@species | smear | | brightfield | | | Josef Reischig archive | name=Corynebacterium pseudodiphteriae
 search.additions 9 | taxon=Nocardia@genus | smear | | brightfield | Gram | | branching filaments from a culture
-search.additions 5 | taxon=Mallomonas@genus | fluid_mount | | brightfield | | | scaled flagellate with bristles | locality=Tanabe, Wakayama, Japan; collected=2015-01-30
-search.additions 6 | taxon=Mallomonas@genus | fluid_mount | | brightfield | | | | locality=Tanabe, Wakayama, Japan; collected=2015-01-30
-search.additions 10 | taxon=Synura@genus | fluid_mount | | dic | | | colonies of Synura spinosa (left) and S. petersenii (right), a Mallomonas below, Leica DMRD | locality=Shishitsuka Pond, Tsuchiura, Ibaraki, Japan
+search.additions 5 | taxon=Mallomonas@genus | fluid_mount | | brightfield | | | scaled flagellate with bristles | locality=Tanabe, Wakayama, Japan; collected=2015-01-30; country=JP
+search.additions 6 | taxon=Mallomonas@genus | fluid_mount | | brightfield | | | | locality=Tanabe, Wakayama, Japan; collected=2015-01-30; country=JP
+search.additions 10 | taxon=Synura@genus | fluid_mount | | dic | | | colonies of Synura spinosa (left) and S. petersenii (right), a Mallomonas below, Leica DMRD | locality=Shishitsuka Pond, Tsuchiura, Ibaraki, Japan; country=JP
 
 [earth.fossils]
 search.additions 2 | taxon=Ammonia tepida@species | whole_mount | | reflected | | | benthic foraminifer from the Pinecrest Beds
