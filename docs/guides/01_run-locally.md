@@ -72,6 +72,27 @@ Every measurement table of the imaging page is reproduced by
 
 which prints each table and writes `bench-imaging.json` (about ten minutes).
 
+## 5. The tile server
+
+Images are served by iipsrv, the IIIF tile server, from the official container image pinned by digest. With a
+container engine running, start it over the local slide store:
+
+```powershell
+$env:LAMINARIO_STORE = "$PWD\.data\store"
+docker compose -f deploy/iipsrv/compose.yaml up -d      # http://127.0.0.1:8149, loopback only
+docker compose -f deploy/iipsrv/compose.yaml down       # when done
+```
+
+The API asks it for each image's `info.json` and, locally, passes tile requests through, so the web app uses the
+same `/iiif/...` addresses as production, where nginx serves tiles directly (`deploy/nginx/laminario.conf`).
+The delivery tests start their own pinned containers and stop them; without a container engine they are skipped.
+
+Remote IIIF images are checked again, without changing anything, with
+
+```powershell
+.\.venv\Scripts\python.exe scripts\check_remote_iiif.py
+```
+
 ## Tests and guards
 
 The full test suite runs locally; continuous integration runs only the lint and the guards.

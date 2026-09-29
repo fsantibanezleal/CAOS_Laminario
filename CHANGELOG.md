@@ -3,6 +3,32 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.03.000] - 2026-09-29
+
+### Added
+
+- IIIF delivery. `info.json` served by the API with this deployment's public `id` and each asset's licence as
+  `rights`; image requests passed to iipsrv; the base URI redirected; identifiers that are storage keys with
+  their slashes encoded, read from the end of the path because web servers decode `%2F`.
+- iipsrv 1.3, the official image pinned by digest, in `deploy/iipsrv/compose.yaml` (loopback, read-only store,
+  read-only root, memory and CPU limits).
+- The production nginx site in `deploy/nginx/laminario.conf`: tiles straight from iipsrv, cached 30 days on the
+  data volume, each checked first with the API (`auth_request`, 60 s) so drafts and withdrawn images are never
+  served; `info.json`, manifests and the API behind it.
+- IIIF Presentation 3 manifests at `/api/slides/{id}/manifest`: a Canvas per ready image with its own `rights` and
+  attribution, image services, `partOf` the collection node, `navPlace` by geoprivacy, `homepage`, `seeAlso`.
+- The remote-asset contract (availability, protocol, rights, CORS, dimensions) and the link check
+  `scripts/check_remote_iiif.py`; the IIIF version of a remote service is recorded (migration 0002).
+- Gates with the pinned containers: tiles equal to the pyramid at every level, nginx cache hits and refusals;
+  manifests validated against the IIIF validator's schema pinned by commit and hash.
+- Wiki page "IIIF delivery" with its diagram; the U3 design, requirements and verdict.
+
+### Changed
+
+- The JPEG ladder of the pyramid writer climbs to Q95 when Q90 still misses 38 dB (a texture close to noise
+  measured 37.5 dB at Q90 and 43.3 dB at Q95).
+- `httpx2` is a runtime dependency; `jsonschema` a test one.
+
 ## [0.02.000] - 2026-09-28
 
 ### Added

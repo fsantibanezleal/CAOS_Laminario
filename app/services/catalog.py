@@ -57,14 +57,16 @@ def iiif_identifier(storage_key: str) -> str:
 
 def media_record(asset: Asset, settings: Settings) -> c.MediaRecord:
     base = settings.public_base_url.rstrip("/")
-    info = image = None
+    info = image = version = None
     if asset.media_kind == "pyramid" and asset.storage_key:
         info = f"{base}/iiif/{iiif_identifier(asset.storage_key)}/info.json"
+        version = 3
     elif asset.media_kind == "image" and asset.storage_key:
         image = f"{base}/media/{asset.storage_key}"
     elif asset.media_kind == "remote_iiif":
         info = asset.remote_info_url
-    return c.MediaRecord(kind=asset.media_kind, iiif_info_url=info, image_url=image,
+        version = asset.remote_iiif_version
+    return c.MediaRecord(kind=asset.media_kind, iiif_info_url=info, image_url=image, iiif_version=version,
                          width_px=asset.width_px, height_px=asset.height_px)
 
 

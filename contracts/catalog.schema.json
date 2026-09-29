@@ -436,6 +436,21 @@
           ],
           "default": null
         },
+        "iiif_version": {
+          "anyOf": [
+            {
+              "enum": [
+                2,
+                3
+              ],
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "width_px": {
           "anyOf": [
             {
