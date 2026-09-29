@@ -67,7 +67,8 @@ def _hash_existing(path: Path) -> tuple[hashlib._Hash, hashlib._Hash, int]:
     return sha, md5, size
 
 
-def download(url: str, folder: Path, attempts: int = 8, pause_s: float = PAUSE_S, max_wait_s: float = 600.0) -> dict:
+def download(url: str, folder: Path, attempts: int = 8, pause_s: float = PAUSE_S, max_wait_s: float = 600.0,
+             extension: str | None = None) -> dict:
     """Stream a URL into ``folder``, returning its SHA-256, MD5, size and the file's name.
 
     A download that stops (a network error, a stopped run) resumes where it stopped with an HTTP Range request when
@@ -108,7 +109,7 @@ def download(url: str, folder: Path, attempts: int = 8, pause_s: float = PAUSE_S
                             md5.update(chunk)
                             size += len(chunk)
             digest = sha.hexdigest()
-            target = folder / f"{digest}.{_extension(url, content_type)}"
+            target = folder / f"{digest}.{extension or _extension(url, content_type)}"
             if target.exists():
                 partial.unlink()
             else:
@@ -120,6 +121,14 @@ def download(url: str, folder: Path, attempts: int = 8, pause_s: float = PAUSE_S
             time.sleep(wait)
             wait = min(wait * 2, max_wait_s)
     raise SourceError(f"{url}: {last_error}")
+
+
+def extension_of(asset: dict) -> str | None:
+    """The file's own extension when the source names the file (a Zenodo download URL ends in ``/content``, and the
+    reader tells formats such as NDPI by their extension)."""
+    name = str(asset.get("record_id", "")).rsplit("/", 1)[-1]
+    suffix = Path(name).suffix.lstrip(".").lower()
+    return suffix if asset.get("wsi") and suffix and len(suffix) <= 5 else None
 
 
 def unpack_dicom(archive: Path) -> str:
@@ -137,6 +146,23 @@ def unpack_dicom(archive: Path) -> str:
     return str(instances[0].relative_to(archive.parent)).replace("\\", "/")
 
 
+def _name_by_extension(lock: dict, acquired: dict[str, dict], folder: Path) -> int:
+    """Files acquired before ``extension_of`` existed, renamed to the extension their source names (same bytes)."""
+    renamed = 0
+    for slide in lock["slides"]:
+        for asset in slide["assets"]:
+            got, ext = acquired.get(asset["url"]), extension_of(asset)
+            if not got or not ext or got["file"].endswith(f".{ext}"):
+                continue
+            old = folder / got["file"]
+            new = folder / f"{got['sha256']}.{ext}"
+            if old.exists() and not new.exists():
+                old.replace(new)
+            got["file"] = new.name
+            renamed += 1
+    return renamed
+
+
 def acquire(vault: Path, only: set[str] | None = None, wsi_parallel: int = WSI_PARALLEL) -> dict[str, dict]:
     """Every asset of the lock not yet in the vault: images one by one (paced), whole-slide sources in parallel."""
     from concurrent.futures import ThreadPoolExecutor
@@ -147,6 +173,10 @@ def acquire(vault: Path, only: set[str] | None = None, wsi_parallel: int = WSI_P
     folder = vault / "sources"
     guard = Lock()
     wanted: list[tuple[dict, dict]] = []
+    renamed = _name_by_extension(lock, acquired, folder)
+    if renamed:
+        save(acquired)
+        print(f"{renamed} acquired files renamed to their own extension", flush=True)
     for slide in lock["slides"]:
         if only and slide["id"] not in only and slide["collection"] not in only:
             continue
@@ -160,7 +190,7 @@ def acquire(vault: Path, only: set[str] | None = None, wsi_parallel: int = WSI_P
         # An image is retried briefly (the NHM image server answers 500 to a first request it has not rendered yet,
         # then 200); a whole-slide file is worth the long back-off.
         got = download(url, folder, pause_s=pause_s, attempts=8 if asset.get("wsi") else 5,
-                       max_wait_s=600.0 if asset.get("wsi") else 60.0)
+                       max_wait_s=600.0 if asset.get("wsi") else 60.0, extension=extension_of(asset))
         if asset.get("md5") and got["md5"] != asset["md5"]:
             raise SourceError(f"{url}: MD5 {got['md5']} differs from the record's {asset['md5']}")
         if asset.get("sha256") and got["sha256"] != asset["sha256"]:
