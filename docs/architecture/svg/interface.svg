@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario interface foundation</title>
+  <desc id="desc">Sources: the token file in OKLCH, the fonts at a pinned upstream commit, the collection tree with its icon drawings, and the two typed language catalogues. Build scripts turn them into the token stylesheet, the font subsets, the icon sprite and the bundle. In the browser, a few lines in index.html paint the stored room and language before the first frame; the room and language providers carry them through the app; the primitives and the places draw only with tokens. Gates check the sources in CI (tokens, contrast, languages, unit tests) and the real build in a browser (fit, reduced motion, states).</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; }
+    }
+    .bg { fill: var(--bg); }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .head { fill: var(--line); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="600"/>
+
+  <rect class="lane" x="16" y="16" width="928" height="176" rx="10"/>
+  <text class="h" x="32" y="38">SOURCES AND BUILDS (COMMITTED)</text>
+  <rect class="store" x="32" y="50" width="206" height="56" rx="8"/>
+  <text class="t" x="44" y="72">tokens.json</text>
+  <text class="s" x="44" y="90">OKLCH per room, 18 hues, pairs</text>
+  <rect class="store" x="258" y="50" width="206" height="56" rx="8"/>
+  <text class="t" x="270" y="72">upstream fonts</text>
+  <text class="s" x="270" y="90">pinned commit, SHA-256</text>
+  <rect class="store" x="484" y="50" width="206" height="56" rx="8"/>
+  <text class="t" x="496" y="72">tree.yaml, icon drawings</text>
+  <text class="s" x="496" y="90">U7</text>
+  <rect class="store" x="710" y="50" width="218" height="56" rx="8"/>
+  <text class="t" x="722" y="72">en.ts, es.ts</text>
+  <text class="s" x="722" y="90">es typed against en's keys</text>
+
+  <rect class="key" x="32" y="124" width="206" height="54" rx="8"/>
+  <text class="m" x="44" y="146">build-tokens.mjs</text>
+  <text class="s" x="44" y="164">tokens.css (sRGB)</text>
+  <rect class="key" x="258" y="124" width="206" height="54" rx="8"/>
+  <text class="m" x="270" y="146">build_fonts.py</text>
+  <text class="s" x="270" y="164">subset, instance, rename</text>
+  <rect class="key" x="484" y="124" width="206" height="54" rx="8"/>
+  <text class="m" x="496" y="146">build_icons.py</text>
+  <text class="s" x="496" y="164">icons.svg (+ glyphs.svg)</text>
+  <rect class="key" x="710" y="124" width="218" height="54" rx="8"/>
+  <text class="m" x="722" y="146">tsc + vite</text>
+  <text class="s" x="722" y="164">the bundle</text>
+  <path class="arrow" d="M135 106 L135 120"/>
+  <path class="arrow" d="M361 106 L361 120"/>
+  <path class="arrow" d="M587 106 L587 120"/>
+  <path class="arrow" d="M819 106 L819 120"/>
+
+  <rect class="lane" x="16" y="208" width="928" height="220" rx="10"/>
+  <text class="h" x="32" y="230">THE BROWSER</text>
+  <rect class="key" x="32" y="244" width="286" height="72" rx="8"/>
+  <text class="t" x="44" y="266">index.html, before the first paint</text>
+  <text class="s" x="44" y="284">stored room and language, else the</text>
+  <text class="s" x="44" y="299">system's preference and the browser's</text>
+  <rect class="box" x="342" y="244" width="286" height="72" rx="8"/>
+  <text class="t" x="354" y="266">providers</text>
+  <text class="s" x="354" y="284">RoomProvider, LanguageProvider (Intl),</text>
+  <text class="s" x="354" y="299">ToastRegion</text>
+  <rect class="box" x="652" y="244" width="276" height="72" rx="8"/>
+  <text class="t" x="664" y="266">primitives and places</text>
+  <text class="s" x="664" y="284">tokens only; platform elements and</text>
+  <text class="s" x="664" y="299">the WAI-ARIA patterns</text>
+  <path class="arrow" d="M318 280 L338 280"/>
+  <path class="arrow" d="M628 280 L648 280"/>
+
+  <rect class="store" x="32" y="334" width="896" height="78" rx="8"/>
+  <text class="t" x="44" y="356">&lt;html data-theme="daylight|lamplit" lang="en|es"&gt;</text>
+  <text class="s" x="44" y="376">the daylight room on :root, the lamp-lit room on [data-theme="lamplit"] and under the system's dark</text>
+  <text class="s" x="44" y="394">preference when nothing is stored; with reduced motion, every duration is 0</text>
+  <path class="arrow" d="M175 316 L175 330"/>
+
+  <rect class="lane" x="16" y="444" width="928" height="140" rx="10"/>
+  <text class="h" x="32" y="466">GATES</text>
+  <rect class="box" x="32" y="480" width="440" height="88" rx="8"/>
+  <text class="t" x="44" y="502">on the sources, in CI</text>
+  <text class="ok" x="44" y="522">tokens are the rebuild · 164 contrast pairs (R-081)</text>
+  <text class="ok" x="44" y="540">both catalogues complete (R-089) · unit tests</text>
+  <text class="ok" x="44" y="558">fonts are the rebuild (locally, with the cache)</text>
+  <rect class="box" x="488" y="480" width="440" height="88" rx="8"/>
+  <text class="t" x="500" y="502">on the real build, in Chromium (Playwright)</text>
+  <text class="ok" x="500" y="522">no sideways scroll, 4 widths x 2 rooms x 2 languages (R-080)</text>
+  <text class="ok" x="500" y="540">nothing moves with reduced motion (R-085)</text>
+  <text class="ok" x="500" y="558">focus, tooltip, dialog, toast (R-904), screenshots</text>
+</svg>
