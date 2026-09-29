@@ -1,0 +1,160 @@
+# Where the base collection's candidates come from, per collection (python -m app.base harvest).
+#
+# commons: a Wikimedia Commons category (depth: subcategory levels, limit: files kept)
+# nhm: a full-text query on the NHM Data Portal's imaged specimens (filters: datastore filters)
+# Candidates and review sheets are written to the data vault (LAMINARIO_FIXTURES/base/candidates). The whole-slide
+# images (Zenodo NMNH, the OpenSlide corpus) are chosen by record in the lock, not harvested.
+
+life.plants:
+  - {commons: "Microscopic images of Spirogyra", limit: 8}
+  - {commons: "Microscopic images of Chlorophyta", limit: 16}
+  - {commons: "Microscopic images of Bryophyta leaves", depth: 1, limit: 10}
+  - {commons: "Microscopic images of Marchantia", limit: 8}
+  - {commons: "Microscopic images of Anthoceros", limit: 6}
+  - {commons: "Microscopic images of Selaginella", limit: 8}
+  - {commons: "Microscopic images of Isoetes", limit: 6}
+  - {commons: "Microscopic images of Equisetum", limit: 10}
+  - {commons: "Microscopic images of Polypodiopsida", depth: 1, limit: 12}
+  - {commons: "Microscopic images of Pinales wood", depth: 1, limit: 10}
+  - {commons: "Microscopic images of Cycas", limit: 6}
+  - {commons: "Microscopic images of Ginkgo", limit: 6}
+  - {commons: "Microscopic images of Poales", depth: 1, limit: 12}
+  - {commons: "Microscopic images of Alismatales", limit: 8}
+  - {commons: "Microscopic images of Lamiales", depth: 1, limit: 10}
+  - {commons: "Microscopic images of Ranunculales", depth: 1, limit: 10}
+  - {commons: "Microscopic images of Fabaceae", depth: 1, limit: 10}
+
+life.fungi:
+  - {commons: "Ascus", limit: 16}
+  - {commons: "Microscopic images of basidie", limit: 14}
+  - {commons: "Microscopic images of mold", depth: 1, limit: 14}
+  - {commons: "Microscopic images of Mucormycota", depth: 1, limit: 10}
+  - {commons: "Microscopic images of Chytridiomycota", depth: 1, limit: 8}
+  - {commons: "Microscopic images of yeast", limit: 8}
+  - {commons: "Cystidium", limit: 10}
+  - {commons: "Hyphae", limit: 10}
+
+life.microbes:
+  - {commons: "Gram stains", limit: 16}
+  - {commons: "Microscopic images of Bacillus", limit: 8}
+  - {commons: "Microscopic images of Streptococcus", limit: 8}
+  - {commons: "Microscopic images of Staphylococcus", depth: 1, limit: 8}
+  - {commons: "Microscopic images of Cyanobacteriota", limit: 14}
+  - {commons: "Microscopic images of diatoms", limit: 16}
+  - {commons: "Blood films of malaria", limit: 12}
+  - {commons: "Paramecium", limit: 10}
+  - {commons: "Vorticella", limit: 6}
+  - {commons: "Stentor", limit: 6}
+  - {commons: "Euglena", limit: 8}
+  - {commons: "Amoeba proteus", limit: 6}
+  - {commons: "Trypanosoma", limit: 8}
+  - {commons: "Giardia lamblia", limit: 6}
+  - {commons: "Ceratium", limit: 6}
+  - {commons: "Radiolaria", limit: 8}
+  - {commons: "Foraminifera", limit: 8}
+
+life.insects:
+  - {nhm: "Pediculus", filters: {preservative: Slide}, limit: 8}
+  - {nhm: "Polyplax", filters: {preservative: Slide}, limit: 8}
+  - {nhm: "Menoponidae", filters: {preservative: Slide}, limit: 8}
+  - {nhm: "Philopteridae", filters: {preservative: Slide}, limit: 8}
+  - {nhm: "Siphonaptera", filters: {preservative: Slide}, limit: 10}
+  - {nhm: "Aphididae", filters: {preservative: Slide}, limit: 8}
+  - {nhm: "Thysanoptera", filters: {preservative: Slide}, limit: 8}
+  - {nhm: "Aleyrodidae", filters: {preservative: Slide}, limit: 8}
+  - {nhm: "Coccoidea", filters: {preservative: Slide}, limit: 8}
+  - {nhm: "Chalcidoidea", filters: {preservative: Slide}, limit: 8}
+  - {nhm: "Culicidae", filters: {preservative: Slide}, limit: 8}
+  - {commons: "Microscopic images of insect wings", limit: 10}
+  - {commons: "Microscopic images of Coleoptera", limit: 8}
+  - {commons: "Microscopic images of Lepidoptera", depth: 1, limit: 10}
+
+life.arthropods:
+  - {nhm: "Acari", filters: {preservative: Slide}, limit: 16}
+  - {nhm: "Collembola", filters: {preservative: Slide}, limit: 10}
+  - {commons: "Microscopic images of mites", depth: 1, limit: 14}
+  - {commons: "Microscopic images of Araneae", limit: 14}
+  - {commons: "Microscopic images of Daphnia", depth: 1, limit: 10}
+  - {commons: "Microscopic images of Calanoida", depth: 1, limit: 8}
+  - {commons: "Microscopic images of Crustacea", limit: 12}
+
+life.molluscs:
+  - {commons: "Microscopic images of Gastropoda", depth: 1, limit: 24}
+  - {commons: "Microscopic images of Bivalvia", depth: 1, limit: 16}
+  - {commons: "Microscopic images of Cephalopoda", depth: 1, limit: 16}
+  - {commons: "Microscopic images of Mollusca", limit: 12}
+
+life.invertebrates:
+  - {commons: "Microscopic images of Annelida", depth: 1, limit: 18}
+  - {commons: "Microscopic images of Cnidaria", depth: 1, limit: 14}
+  - {commons: "Microscopic images of Hydra", limit: 8}
+  - {commons: "Microscopic images of Nematoda", depth: 1, limit: 16}
+  - {commons: "Microscopic images of Nemertea", limit: 6}
+  - {commons: "Sponge spicules", limit: 10}
+  - {commons: "Tardigrada", limit: 10}
+  - {commons: "Rotifera", limit: 10}
+  - {commons: "Dugesia", limit: 6}
+  - {commons: "Echinoderm larvae", limit: 8}
+
+life.fishes:
+  - {commons: "Microscopic images of fish", depth: 1, limit: 30}
+
+life.amphibians:
+  - {commons: "Microscopic images of Amphibia", depth: 1, limit: 30}
+
+life.reptiles:
+  - {commons: "Reptilia histology", limit: 16}
+  - {commons: "Microscopic images of reptiles", depth: 1, limit: 16}
+
+life.birds:
+  - {commons: "Microscopic images of birds", depth: 1, limit: 40}
+
+life.mammals:
+  - {commons: "Microscopic images of mammal hair fibres", depth: 1, limit: 16}
+  - {commons: "Mammal histology", depth: 1, limit: 20}
+  - {commons: "Microscopic images of blood", depth: 1, limit: 12}
+  - {commons: "Histology of human skin", limit: 8}
+  - {commons: "Histology of human spleen", limit: 6}
+  - {commons: "Microscopic images of Mus musculus", depth: 1, limit: 10}
+
+life.pollen:
+  - {commons: "Microscopic images of pollen", depth: 1, limit: 70}
+  - {commons: "Fungal spores", limit: 16}
+  - {commons: "Microscopic images of Pteridophyta spores", limit: 6}
+  - {commons: "Microscopic images of Bryophyta spores", depth: 1, limit: 6}
+
+earth.fossils:
+  - {commons: "Microfossils", depth: 1, limit: 40}
+  - {commons: "Microscopic images of petrified wood", limit: 14}
+  - {commons: "Microscopic images of coal", limit: 10}
+  - {nhm: "copal", limit: 10}
+
+earth.rocks:
+  - {commons: "Igneous rocks in thin section", depth: 1, limit: 60}
+  - {commons: "Metamorphic rocks in thin section", depth: 1, limit: 40}
+  - {commons: "Sedimentary rocks in thin section", depth: 1, limit: 30}
+  - {commons: "Pyroclastic rocks in thin section", limit: 4}
+  - {commons: "Meteorites in thin section", limit: 18}
+  - {commons: "Ore minerals in thin / polished section", limit: 17}
+
+earth.minerals:
+  - {commons: "Microscopic images of olivine", limit: 20}
+  - {commons: "Optical mineralogy", limit: 40}
+  - {commons: "Polarizing microscope images", limit: 40}
+
+matter.crystals:
+  - {commons: "Wilson Bentley Snow Crystals", limit: 40}
+  - {commons: "Microscopic images of ascorbic acid", limit: 6}
+  - {commons: "Microscopic images of citric acid", limit: 6}
+  - {commons: "Microscopic images of sodium chloride crystals", limit: 6}
+  - {commons: "Microscopic images of tartaric acid", limit: 6}
+  - {commons: "Microscopic images of vanillin crystals", limit: 6}
+  - {commons: "Polarizing microscopic images of amino acid crystals", limit: 8}
+  - {commons: "Raphides", limit: 10}
+  - {commons: "Microscopic examination of the urine", depth: 1, limit: 12}
+
+matter.materials:
+  - {commons: "Microscopic images of textile fibres", depth: 1, limit: 30}
+  - {commons: "Microscopic images of starch", depth: 1, limit: 20}
+  - {commons: "Microscopic images of plastics", depth: 1, limit: 20}
+  - {commons: "Microscopic images of paper", limit: 20}

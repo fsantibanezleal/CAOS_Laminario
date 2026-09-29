@@ -1,0 +1,49 @@
+# Microbes, reviewed on the life.microbes harvest sheet (148 candidates) on 2026-09-29. Excluded: diagrams,
+# engravings, SEM, figure plates of papers, glass models, unidentified material. No open candidate was found for
+# Actinomycetota, the chromist microalgae or living foraminifera; those stay open for contribution. The Oamaru
+# diatomite and the Barbados radiolarian earth are fossil (Eocene to Oligocene, stated by the preparers).
+[life.microbes]
+life.microbes 2 | taxon=Staphylococcus xylosus@species | smear | | brightfield | Gram | | 1000x
+life.microbes 14 | taxon=Bacillus subtilis@species | smear | | brightfield | Gram |
+life.microbes 13 | taxon=Bacillus anthracis@species | smear | | brightfield | Gram |
+life.microbes 27 | taxon=Streptococcus pneumoniae@species | smear | | brightfield | Gram |
+life.microbes 9 | taxon=Lactobacillus acidophilus@species | smear | | brightfield | Gram | | with an eyepiece scale
+life.microbes 33 | taxon=Staphylococcus@genus | smear | | brightfield | Gram |
+life.microbes 16 | taxon=Bordetella pertussis@species | smear | | brightfield | Gram |
+life.microbes 12 | taxon=Aeromonas@genus | smear | | brightfield | Gram |
+life.microbes 4 | taxon=Spirochaetota@phylum | smear | | brightfield | Gram | | spirochaetes with an eyepiece scale
+life.microbes 38 | taxon=Chroococcidiopsis thermalis@species | fluid_mount | | brightfield | | | 30 um bar
+life.microbes 39 | taxon=Chroococcus@genus | fluid_mount | | brightfield |
+life.microbes 47 | taxon=Dolichospermum@genus | fluid_mount | | brightfield | | | helical filament, 10 um bar
+life.microbes 50 | taxon=Didymosphenia geminatum@species | fluid_mount | | brightfield | | | didymo
+life.microbes 51 | taxon=Didymosphenia geminatum@species | fluid_mount | | darkfield | | | didymo colony
+life.microbes 56 | taxon=Skeletonema@genus | fluid_mount | | brightfield | | | CSIRO Science Image
+life.microbes 58 | taxon=Cymbella peraspera@species | whole_mount | | brightfield |
+life.microbes 66 | taxon=Plasmodium malariae@species | smear | blood | brightfield | Giemsa | | mature schizont, CDC PHIL 2715
+life.microbes 75 | taxon=Plasmodium@genus@Chromista | smear | blood | brightfield | Giemsa | | determined as Plasmodium ovale by the source (no backbone species record); James dots
+life.microbes 70 | taxon=Plasmodium@genus@Chromista | smear | blood | brightfield | Giemsa | | determined as Plasmodium berghei by the source (no backbone species record)
+life.microbes 113 | taxon=Trypanosoma@genus | smear | | brightfield | Giemsa |
+life.microbes 77 | taxon=Paramecium@genus | fluid_mount | | brightfield | | | focus-stacked
+life.microbes 79 | taxon=Paramecium@genus | fluid_mount | | brightfield | | | cilia
+life.microbes 87 | taxon=Vorticella microstoma@species | fluid_mount | | brightfield | | | colony
+life.microbes 92 | taxon=Vorticella@genus | fluid_mount | | phase_contrast |
+life.microbes 94 | taxon=Stentor@genus@Chromista | fluid_mount | | brightfield | | | dividing
+life.microbes 98 | taxon=Stentor@genus@Chromista | fluid_mount | | brightfield | | | mikro-foto.de
+life.microbes 99 | taxon=Euglena@genus | fluid_mount | | brightfield | | | with an eyepiece scale
+life.microbes 103 | taxon=Euglena@genus | fluid_mount | | brightfield | | | 400x
+life.microbes 106 | taxon=Euglena deses@species | fluid_mount | | brightfield |
+life.microbes 123 | taxon=Giardia@genus@Protozoa | smear | | brightfield | | | trophozoites, 10 um bar
+life.microbes 109 | taxon=Amoeba proteus@species | fluid_mount | | brightfield |
+life.microbes 112 | taxon=Amoeba proteus@species | fluid_mount | | dic | | | many pseudopodia
+life.microbes 127 | taxon=Ceratium@genus@Chromista | fluid_mount | | brightfield |
+life.microbes 131 | taxon=Ceratium@genus@Chromista | fluid_mount | | brightfield |
+
+[earth.fossils]
+life.microbes 52 | taxon=Auliscus oamaruensis@species | strew | | brightfield | | | Oamaru diatomite, 32 to 40 million years, focus-stacked
+life.microbes 63 | taxon=Bacillariophyceae@class | strew | | brightfield | | | Oamaru, Forresters Hill diatomite, prepared by Anne Gleich
+life.microbes 134 | taxon=#3236147 | strew | | brightfield | | | Barbados, late Eocene, prepared by Andreas Drews, shown as a negative
+life.microbes 140 | taxon=Calocyclas@genus@Chromista | strew | | brightfield | | | Barbados, Middle Eocene to Oligocene, prepared by Andreas Drews, shown as a negative
+life.microbes 147 | taxon=Foraminifera@phylum | thin_section | | polarised_ppl | | | foraminiferal grainstone in thin section
+
+[earth.rocks]
+life.microbes 141 | rock=grainstone | thin_section | | polarised_ppl | | | skeletal peloidal grainstone with bryozoans and foraminifera

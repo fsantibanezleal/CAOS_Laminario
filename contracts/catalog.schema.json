@@ -616,6 +616,10 @@
         },
         "height_mm": {
           "type": "number"
+        },
+        "assumed": {
+          "default": false,
+          "type": "boolean"
         }
       },
       "required": [

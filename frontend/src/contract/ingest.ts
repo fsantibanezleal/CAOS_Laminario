@@ -13,6 +13,7 @@ export interface SlideCaseSubmission {
 }
 export interface SlideSpec {
   format: "iso_76x26" | "us_75x25" | "petro_27x46" | "us_2x3in" | "custom";
+  format_assumed?: boolean;
   custom_mm?: SizeMm | null;
   coverslip?: "none" | "18x18" | "22x22" | "22x40" | "22x50" | "24x50" | "24x60" | "custom";
   coverslip_custom_mm?: CoverslipSizeMm | null;

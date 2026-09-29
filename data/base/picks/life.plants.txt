@@ -1,0 +1,42 @@
+# Plants, reviewed on the life.plants harvest sheet (156 candidates) on 2026-09-29. Excluded: drawings and
+# engraved plates (Bonnier, Strasburger, PSM, Dodel-Port), SEM and figure plates, labelled duplicates (the "L"
+# versions: the unlabelled image of the same slide is kept), stereo photographs of whole plants.
+[life.plants]
+life.plants 4 | taxon=Spirogyra@genus | whole_mount | | brightfield | | | filament with helical chloroplasts
+life.plants 18 | taxon=Coelastrum microporum@species | whole_mount | | brightfield | | | colonies, plankton sample
+life.plants 13 | taxon=Botryococcus@genus | whole_mount | | brightfield | | | colonial green alga in oil
+life.plants 21 | taxon=Dunaliella@genus | fluid_mount | | brightfield | | | CSIRO Science Image
+life.plants 34 | taxon=Diphyscium foliosum@species | whole_mount | leaf | brightfield | | | moss leaf, 200 um bar
+life.plants 25 | taxon=Andreaea rupestris@species | whole_mount | leaf | brightfield | | | moss leaf, 200 um bar
+life.plants 41 | taxon=Marchantia@genus | section | | brightfield | safranin and fast green | | antheridial head in section
+life.plants 39 | taxon=Marchantia@genus | section | | brightfield | safranin and fast green | | antheridia in section
+life.plants 52 | taxon=Selaginella@genus | section | stem | brightfield | | | stem in cross section
+life.plants 62 | taxon=Isoetes@genus | section | | brightfield | safranin and fast green | | stem with sporangia
+life.plants 60 | taxon=Isoetes@genus | section | | brightfield | safranin and fast green | | sporangia
+life.plants 67 | taxon=Equisetum telmateia@species | section | stem | brightfield | | | stem in transverse section
+life.plants 71 | taxon=Equisetum@genus | section | meristem | brightfield | | | shoot apex with its apical cell
+life.plants 81 | taxon=Cyrtomium@genus | section | leaf | brightfield | | | sorus in cross section
+life.plants 83 | taxon=Dicksonia@genus@Plantae | section | leaf | brightfield | | | sorus in cross section
+life.plants 95 | taxon=Cycas@genus | section | leaf | brightfield | safranin | | leaflet in cross section
+life.plants 97 | taxon=Cycas revoluta@species | section | leaf | brightfield | | | leaf in cross section
+life.plants 104 | taxon=Ginkgo biloba@species | section | leaf | brightfield | | | bundle sheath cells
+life.plants 87 | taxon=Thuja@genus | section | wood | brightfield | | | secondary xylem, transverse
+life.plants 92 | taxon=Larix gmelinii@species | section | wood | brightfield | | | wood in cross section
+life.plants 89 | taxon=Abies concolor@species | section | wood | brightfield | | | wood, tangential section
+life.plants 111 | taxon=Sparganium emersum@species | section | leaf | brightfield | | | leaf in cross section, 1 mm bar
+life.plants 116 | taxon=Ananas comosus@species | section | leaf | brightfield | | | vascular bundle of the leaf
+life.plants 115 | taxon=Ananas comosus@species | section | leaf | polarised_xpl | | | leaf in cross section between crossed polars
+life.plants 125 | taxon=Lemna minor@species | whole_mount | | brightfield | | | frond cells
+life.plants 147 | taxon=Gleditsia triacanthos@species | section | stem | brightfield | | | stem in transverse section
+life.plants 142 | taxon=Ranunculus@genus | whole_mount | leaf | brightfield | | | aquatic buttercup leaf, 400x
+life.plants 144 | taxon=Ficaria verna@species | whole_mount | leaf | brightfield | | | leaf with veins, 2 mm bar
+
+[life.pollen]
+life.plants 117 | taxon=Carex pilosa@species | whole_mount | pollen | brightfield | | | pollen grains
+life.plants 151 | taxon=Coronilla varia@species | whole_mount | pollen | brightfield | | | pollen grains
+life.plants 153 | taxon=Genista tinctoria@species | whole_mount | pollen | brightfield | | | pollen grains
+life.plants 154 | taxon=Lupinus@genus | whole_mount | pollen | brightfield | | | pollen grains
+life.plants 150 | taxon=Senegalia catechu@species | whole_mount | pollen | brightfield | | | polyads
+
+[matter.crystals]
+life.plants 128 | crystal=biogenic | whole_mount | | brightfield | | | raphides in a leaf of Hypoestes phyllostachya

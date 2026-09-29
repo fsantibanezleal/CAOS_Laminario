@@ -136,7 +136,8 @@ def anchor_record(slide: Slide) -> c.AnchorRecord:
 
 
 def format_record(slide: Slide) -> c.FormatRecord:
-    return c.FormatRecord(code=slide.format_code, width_mm=slide.width_mm, height_mm=slide.height_mm)
+    return c.FormatRecord(code=slide.format_code, width_mm=slide.width_mm, height_mm=slide.height_mm,
+                          assumed=bool(slide.format_assumed))
 
 
 def slide_record(slide: Slide, settings: Settings) -> c.SlideRecord:
