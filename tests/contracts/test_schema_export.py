@@ -31,4 +31,5 @@ def test_schema_declares_expected_text_on_constrained_fields():
                                                             "createdSlideCase", "upload", "collectionTree",
                                                             "collectionNode", "facet", "anchorSuggestion",
                                                             "partRecord", "placement", "facetCounts", "map",
-                                                            "annotation", "case", "caseSummary"}
+                                                            "annotation", "case", "caseSummary", "identifications",
+                                                            "flag", "moderationAction"}

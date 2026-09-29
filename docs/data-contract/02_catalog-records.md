@@ -31,6 +31,9 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `annotation` | [AnnotationRecord](#annotationrecord) | no |  |  |
 | `case` | [CaseRecord](#caserecord) | no |  |  |
 | `caseSummary` | [CaseSummary](#casesummary) | no |  |  |
+| `identifications` | [IdentificationList](#identificationlist) | no |  |  |
+| `flag` | [FlagRecord](#flagrecord) | no |  |  |
+| `moderationAction` | [ModerationActionRecord](#moderationactionrecord) | no |  |  |
 
 ### SlideRecord
 
@@ -307,6 +310,47 @@ A contributor's slide case in their list (``GET /api/slide-cases``).
 | `updated_at` | string (date-time) | yes |  |  |
 | `images` | list of [CaseImageRecord](#caseimagerecord) | no |  | `[]` |
 
+### IdentificationList
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `community` | [CommunityRecord](#communityrecord) | yes |  |  |
+| `identifications` | list of [IdentificationRecord](#identificationrecord) | yes |  |  |
+
+### FlagRecord
+
+A flag as the curators see it (``GET /api/flags``).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `target_kind` | string (enumerated) | yes | one of: `slide`, `identification`, `annotation` |  |
+| `target_id` | string | yes |  |  |
+| `slide_id` | string | yes |  |  |
+| `slide_name` | string | yes |  |  |
+| `category` | string (enumerated) | yes | one of: `spam`, `inappropriate`, `copyright`, `wrong`, `other` |  |
+| `comment` | string or null | no |  | null |
+| `by` | string or null | no |  | null |
+| `created_at` | string (date-time) | yes |  |  |
+| `resolved_by` | string or null | no |  | null |
+| `resolved_at` | string (date-time) or null | no |  | null |
+| `resolution` | string or null | no |  | null |
+| `hidden` | boolean | no |  | `false` |
+
+### ModerationActionRecord
+
+A curator's hiding or restoring, with the reason.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `action` | string (enumerated) | yes | one of: `hide`, `unhide` |  |
+| `target_kind` | string (enumerated) | yes | one of: `slide`, `identification`, `annotation` |  |
+| `target_id` | string | yes |  |  |
+| `slide_id` | string | yes |  |  |
+| `reason` | string | yes |  |  |
+| `by` | string or null | no |  | null |
+| `created_at` | string (date-time) | yes |  |  |
+
 ### FormatRecord
 
 | Field | Type | Required | Accepted | Default |
@@ -379,6 +423,8 @@ Where the specimen was collected, after geoprivacy.
 |---|---|---|---|---|
 | `badge` | string (enumerated) | yes | one of: `verified`, `needs_id`, `reference` |  |
 | `checks` | list of [QualityCheckRecord](#qualitycheckrecord) | yes |  |  |
+| `community_node` | string or null | no |  | null |
+| `community_rank` | string or null | no |  | null |
 
 ### AssetRecord
 
@@ -502,6 +548,42 @@ An image of a contributor's case: its state, and its file's (the last upload).
 | `upload_reason` | string or null | no |  | null |
 | `upload_job` | string or null | no |  | null |
 
+### CommunityRecord
+
+How the identifications agree (R-088): the node, its anchor when Laminario can name it, and every score.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `node` | string or null | no |  | null |
+| `anchor` | [AnchorRecord](#anchorrecord) or null | no |  | null |
+| `identifications` | integer | yes |  |  |
+| `score` | number or null | no |  | null |
+| `cutoff` | number | yes |  |  |
+| `scores` | list of [NodeScoreRecord](#nodescorerecord) | no |  |  |
+| `as_good_as_it_can_be` | integer | no |  | `0` |
+| `needs_more` | integer | no |  | `0` |
+| `my_vote` | boolean or null | no |  | null |
+| `badge` | string (enumerated) | yes | one of: `verified`, `needs_id`, `reference` |  |
+
+### IdentificationRecord
+
+An identification on a slide, as a viewer may see it (``GET /api/slides/{id}/identifications``).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `anchor` | [AnchorRecord](#anchorrecord) | yes |  |  |
+| `node` | string | yes |  |  |
+| `by` | string or null | no |  | null |
+| `source` | boolean | no |  | `false` |
+| `mine` | boolean | no |  | `false` |
+| `body` | string or null | no |  | null |
+| `disagreement` | boolean or null | no |  | null |
+| `current` | boolean | yes |  |  |
+| `hidden` | boolean | no |  | `false` |
+| `category` | string (enumerated) or null | no | one of: `leading`, `improving`, `supporting`, `maverick` | null |
+| `created_at` | string (date-time) | yes |  |  |
+
 ### PointRecord
 
 | Field | Type | Required | Accepted | Default |
@@ -578,3 +660,14 @@ One condition of a node's rule, for people: a taxon with its GBIF page, a rock f
 | `value` | string | yes |  |  |
 | `label` | string | yes |  |  |
 | `url` | string or null | no |  | null |
+
+### NodeScoreRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `node` | string | yes |  |  |
+| `depth` | integer | yes |  |  |
+| `cumulative` | integer | yes |  |  |
+| `disagreements` | integer | yes |  |  |
+| `ancestor_disagreements` | integer | yes |  |  |
+| `score` | number | yes |  |  |
