@@ -84,6 +84,5 @@ def mount_width_px(specimen_width_mm: float, rendered_slide_width_px: float,
 def true_scale_mount(image, specimen_width_mm: float, rendered_slide_width_px: float,
                      slide_width_mm: float = STANDARD_SLIDE_MM[0]):
     """The specimen image resized to its true-scale width on a slide drawn ``rendered_slide_width_px`` wide."""
-    target = mount_width_px(specimen_width_mm, rendered_slide_width_px, slide_width_mm)
-    scale = target / image.width
-    return image.resize(scale, kernel="lanczos3")
+    target = max(1, round(mount_width_px(specimen_width_mm, rendered_slide_width_px, slide_width_mm)))
+    return image.resize(target / image.width, kernel="lanczos3")
