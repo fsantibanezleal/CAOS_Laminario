@@ -102,7 +102,8 @@ async def suggest_placement(query: PlacementQuery, request: Request, db: Db) -> 
     problem = vocab.check_part(query.part)
     if problem:
         return c.PlacementResult(errors=[c.ValidationError(field=problem.field, message=problem.message,
-                                                           expected=problem.expected)])
+                                                           expected=problem.expected, code=problem.code,
+                                                           params=problem.params)])
     try:
         resolved = await resolve_anchor(db, request.app.state.gbif_client, query.anchor, part=query.part,
                                         preservation=query.preservation, at="anchor")
