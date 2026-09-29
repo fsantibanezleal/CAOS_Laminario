@@ -86,6 +86,8 @@ export function StageViewer({ slideId, item, signedIn }: StageViewerProps) {
       animationTime: reducedMotion() ? 0 : 0.6, springStiffness: 8,
     });
     viewerRef.current = viewer;
+    // The browser gates measure the view from the viewer itself (frontend/gates/scalebar.mjs, stage.mjs).
+    (host.current as HTMLDivElement & { osd?: OpenSeadragon.Viewer }).osd = viewer;
     const sources = item.kind === "pair" ? [item.ppl!, item.xpl!] : [item.kind === "stack" ? item.planes[0] : item.first];
     viewer.open(sources.map((a, i) => ({ tileSource: tileSource(a), opacity: i === 0 ? 1 : 0 })) as never);
     viewer.addHandler("open", () => { setStatus("ready"); measure(); });

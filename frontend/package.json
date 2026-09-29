@@ -22,7 +22,9 @@
     "gate:motion": "node gates/motion.mjs",
     "gate:states": "node gates/states.mjs",
     "gate:walk": "node gates/walk.mjs",
-    "gate:qr": "node gates/qr.mjs"
+    "gate:qr": "node gates/qr.mjs",
+    "gate:scalebar": "node gates/scalebar.mjs",
+    "gate:stage": "node gates/stage.mjs"
   },
   "dependencies": {
     "@annotorious/openseadragon": "3.9.3",
