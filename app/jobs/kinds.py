@@ -139,8 +139,29 @@ def process_asset(ctx: Context, payload: dict) -> dict:
                      {"key": key, "w": image.width, "h": image.height, "bytes": size, "sha": sha, "psnr": psnr,
                       "codec": f"{codec}-q{quality}", "mpp": mpp, "id": asset.id})
     ctx.progress(step="stored", key=key, bytes=size, psnr_db=psnr)
+    if asset.role == "z_plane" and asset.stack:
+        fusion = queue_fusion_when_complete(ctx.engine, asset.slide_id, asset.stack)
+        if fusion:
+            ctx.progress(step="fusion queued", job=fusion)
     return {"asset_id": asset.id, "storage_key": key, "width": image.width, "height": image.height, "bytes": size,
             "sha256": sha, "psnr_db": psnr, "codec": codec, "quality": quality}
+
+
+def queue_fusion_when_complete(engine: Engine, slide_id: int, stack: str) -> str | None:
+    """Queue the stack's fusion once its last plane is ready; returns the new job's public id, if one was queued."""
+    from app.jobs import queue
+
+    where = {"s": slide_id, "st": stack}
+    with engine.connect() as conn:
+        pending = conn.execute(text("SELECT COUNT(*) FROM asset WHERE slide_id = :s AND stack = :st "
+                                    "AND role = 'z_plane' AND status != 'ready'"), where).scalar()
+        waiting = conn.execute(text("SELECT COUNT(*) FROM job WHERE kind = 'fuse_stack' AND slide_id = :s "
+                                    "AND status IN ('queued', 'running') "
+                                    "AND json_extract(payload_json, '$.stack') = :st"), where).scalar()
+    if pending or waiting:
+        return None
+    _, public_id = queue.enqueue(engine, "fuse_stack", {"slide_id": slide_id, "stack": stack}, slide_id=slide_id)
+    return public_id
 
 
 def _derived_asset(conn, slide_id: int, template, role: str, media_kind: str, order: int) -> int:

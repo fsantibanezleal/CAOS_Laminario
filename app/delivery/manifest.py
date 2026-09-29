@@ -25,6 +25,8 @@ PRESENTATION_CONTEXT = "http://iiif.io/api/presentation/3/context.json"
 NAVPLACE_CONTEXT = "http://iiif.io/api/extension/navplace/context.json"
 MANIFEST_MEDIA_TYPE = f'application/ld+json;profile="{PRESENTATION_CONTEXT}"'
 PRODUCT_NAME = "Laminario"
+#: Assets that are data for the interface, not images to look at (the height map feeds the depth readout).
+NOT_PAINTED = ("height_map",)
 
 IMAGE_FORMATS = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png", "webp": "image/webp",
                  "tif": "image/tiff", "tiff": "image/tiff"}
@@ -153,7 +155,8 @@ def manifest(slide: c.SlideRecord, public_base_url: str) -> dict:
     """The IIIF Presentation 3 Manifest of a slide."""
     base = public_base_url.rstrip("/")
     manifest_id = slide.manifest_url
-    ready = [a for a in slide.assets if a.status == "ready" and a.media.width_px and a.media.height_px]
+    ready = [a for a in slide.assets if a.status == "ready" and a.media.width_px and a.media.height_px
+             and a.role not in NOT_PAINTED]
     ordered = sorted(ready, key=lambda a: (0 if a.family == "micro" else 1, a.sort_order, a.id))
     label = slide.label
     anchor = slide.anchor

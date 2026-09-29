@@ -114,7 +114,7 @@ def test_worker_processes_a_case_end_to_end(tmp_path, monkeypatch, vips):
     assert record["quality"]["checks"][0]["passed"]
 
 
-# R-403
+# R-403, R-404
 def test_fuse_stack_stores_composites(tmp_path, monkeypatch, vips):
     settings, engine = sandbox(tmp_path, monkeypatch)
     stack, _, truth = focal_stack(300, 420, 10, 3)
@@ -128,6 +128,9 @@ def test_fuse_stack_stores_composites(tmp_path, monkeypatch, vips):
         run(engine, "process_asset", {"asset_id": asset_id, "plane": k})
     with engine.connect() as conn:
         slide_id = conn.execute(text("SELECT id FROM slide WHERE short_id = :s"), {"s": short}).scalar_one()
+        queued = conn.execute(text("SELECT payload_json FROM job "
+                                   "WHERE kind = 'fuse_stack' AND status = 'queued'")).all()
+    assert len(queued) == 1 and '"stack": "z1"' in queued[0].payload_json, "the last plane queued the fusion, once"
     result = run(engine, "fuse_stack", {"slide_id": slide_id, "stack": "z1"})
     assert set(result["assets"]) == {"edf_wavelet", "edf_variance", "height_map"}
     derived = {role: asset_row(engine, aid) for role, aid in result["assets"].items()}
@@ -146,3 +149,9 @@ def test_fuse_stack_stores_composites(tmp_path, monkeypatch, vips):
 
     again = run(engine, "fuse_stack", {"slide_id": slide_id, "stack": "z1"})
     assert again["keys"] == result["keys"] and again["assets"] == result["assets"], "fusion is idempotent"
+
+    with TestClient(create_app(settings)) as client:
+        manifest = client.get(f"/api/slides/{short}/manifest").json()
+    labels = [canvas["label"]["en"][0] for canvas in manifest["items"]]
+    assert len(labels) == 12, "ten planes and two composites; the height map is not painted"
+    assert any(label.startswith("extended depth of field, complex wavelets") for label in labels)
