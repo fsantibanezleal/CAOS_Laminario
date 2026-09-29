@@ -4,12 +4,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from alembic.script import ScriptDirectory
 from sqlalchemy import inspect, text
 
 from app.db import models  # noqa: F401
 from app.db.base import Base
 from app.db.engine import make_sync_engine
-from app.db.migrate import upgrade_to_head
+from app.db.migrate import alembic_config, upgrade_to_head
 
 
 def test_head_matches_models(tmp_path: Path):
@@ -35,9 +36,11 @@ def test_upgrade_is_idempotent(tmp_path: Path):
     upgrade_to_head(database)
     upgrade_to_head(database)
     engine = make_sync_engine(database)
+    head = ScriptDirectory.from_config(alembic_config(database)).get_current_head()
     with engine.connect() as conn:
-        assert conn.execute(text("select version_num from alembic_version")).scalar_one() == "0001"
+        assert conn.execute(text("select version_num from alembic_version")).scalar_one() == head
     engine.dispose()
+    assert head is not None and int(head) >= 2  # 0002 records remote IIIF versions (U3)
 
 
 def test_sqlite_pragmas_on_every_connection(tmp_path: Path):

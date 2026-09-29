@@ -14,3 +14,5 @@ numpy==2.5.3
 scipy==1.18.1
 pyvips==3.2.0
 tifffile==2026.9.20
+# U3: delivery. The API asks iipsrv for info.json and checks remote IIIF services.
+httpx2==2.13.1

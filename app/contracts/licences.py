@@ -87,3 +87,13 @@ def expectation(origin: Origin) -> str:
     if origin == "contribution":
         return base + ", CC BY-NC 4.0 or CC BY-NC-SA 4.0"
     return base
+
+
+def iiif_rights(uri: str) -> str | None:
+    """The licence as IIIF ``rights`` wants it: the canonical URI with ``http://``.
+
+    The IIIF Presentation and Image 3.0 specifications take Creative Commons and RightsStatements.org URIs in
+    their ``http`` form, and the IIIF validator's schema rejects ``https``.
+    """
+    canon = canonical(uri)
+    return None if canon is None else "http://" + canon.removeprefix("https://")

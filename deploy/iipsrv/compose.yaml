@@ -1,0 +1,40 @@
+# iipsrv, the IIIF tile server, on the production host.
+#
+# IIPImage server 1.3 (GPL-3.0, run unmodified as a separate process), the official image pinned by digest.
+# It reads the pyramid files of the slide store, read-only, and answers IIIF Image API 3 requests at level 2
+# on loopback only; nginx sits in front (deploy/nginx/laminario.conf) and the API serves info.json.
+#
+#   docker compose -f deploy/iipsrv/compose.yaml up -d
+#
+# LAMINARIO_STORE names the slide store; unset it is the production path. Locally: <repository>/.data/store.
+# LAMINARIO_IIPSRV_PORT is the loopback port, 8149 unless set (the tests use a free one).
+name: laminario-iipsrv
+services:
+  iipsrv:
+    image: iipsrv/iipsrv@sha256:a1ce6fe828afc91893a03b41b360a50d84f905a96b410391ce4f8be636577353  # 1.3
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${LAMINARIO_IIPSRV_PORT:-8149}:80"
+    volumes:
+      - ${LAMINARIO_STORE:-/srv/laminario/store}:/images:ro
+    environment:
+      FILESYSTEM_PREFIX: /images/
+      URI_MAP: "iiif=>IIIF"
+      VERBOSITY: "1"
+      # Decoded images held in memory, in MB; iipsrv's own tile cache in front of nginx's.
+      MAX_IMAGE_CACHE_SIZE: "256"
+      # Largest full-size render served, in pixels per side (IIIF maxWidth / maxHeight).
+      MAX_CVT: "5000"
+      JPEG_QUALITY: "85"
+    read_only: true
+    tmpfs:
+      - /run
+      # lighttpd (uid 102, gid 103 in the image) opens its log after dropping root; a root-owned tmpfs
+      # stops it with "Permission denied" (measured 2026-09-29).
+      - /var/log/lighttpd:uid=102,gid=103,mode=0750
+      # lighttpd buffers FastCGI answers over 64 KB in /var/tmp; read-only, it cut every larger tile at 64 KB
+      # ("opening temp-file failed: /var/tmp/lighttpd-upload-XXXXXX: Read-only file system", 2026-09-29).
+      - /var/tmp:mode=1777,size=256m
+      - /tmp:mode=1777,size=64m
+    mem_limit: 768m
+    cpus: 2.0

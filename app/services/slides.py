@@ -140,3 +140,14 @@ async def list_slides(session: AsyncSession, *, node: str | None = None, kind: s
         .offset(offset).limit(limit)
     )).scalars().all()
     return list(rows), int(total)
+
+
+async def get_public_pyramid(session: AsyncSession, storage_key: str) -> Asset | None:
+    """The ready pyramid asset stored under a key, when its slide is published; otherwise None."""
+    query = (
+        select(Asset)
+        .join(Slide, Asset.slide_id == Slide.id)
+        .where(Asset.storage_key == storage_key, Asset.media_kind == "pyramid", Asset.status == "ready",
+               Slide.status == "published")
+    )
+    return (await session.execute(query)).scalars().first()

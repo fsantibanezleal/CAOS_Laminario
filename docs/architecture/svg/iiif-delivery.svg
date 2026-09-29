@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" width="960" height="580" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario IIIF delivery</title>
+  <desc id="desc">The browser asks nginx for tiles, info.json and manifests. Tiles go to iipsrv through a cache, after an access check the API answers and nginx caches for a minute. info.json and manifests come from the API, which reads the database and asks iipsrv for the image description. Remote IIIF services are read by the browser directly and checked by the API at import and by the link check.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --stop: #b23a3a; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; --stop: #e07a7a; }
+    }
+    .bg { fill: var(--bg); }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; stroke-dasharray: 4 4; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .no { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--stop); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .dash { stroke: var(--line); stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; marker-end: url(#head); }
+    .head { fill: var(--line); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="580"/>
+
+  <rect class="box" x="24" y="40" width="170" height="120" rx="8"/>
+  <text class="t" x="40" y="66">Browser</text>
+  <text class="s" x="40" y="88">OpenSeadragon,</text>
+  <text class="s" x="40" y="106">any IIIF viewer</text>
+  <text class="m" x="40" y="132">tiles, info.json,</text>
+  <text class="m" x="40" y="148">manifests</text>
+
+  <rect class="lane" x="232" y="20" width="704" height="340" rx="10"/>
+  <text class="h" x="248" y="42">PRODUCTION HOST (LOOPBACK BEHIND NGINX)</text>
+
+  <rect class="key" x="248" y="56" width="236" height="150" rx="8"/>
+  <text class="t" x="264" y="82">nginx</text>
+  <text class="m" x="264" y="104">/iiif/{key}/{region}/{size}/</text>
+  <text class="m" x="264" y="120">  {rotation}/{quality}.{fmt}</text>
+  <text class="s" x="264" y="142">1. auth_request (cached 60 s)</text>
+  <text class="s" x="264" y="160">2. tile cache, 30 days, 10 GB</text>
+  <text class="s" x="264" y="178">3. iipsrv on a miss</text>
+  <text class="m" x="264" y="198">everything else -&gt; API</text>
+
+  <rect class="box" x="530" y="56" width="190" height="150" rx="8"/>
+  <text class="t" x="546" y="82">API :8147</text>
+  <text class="m" x="546" y="104">info.json: id + rights</text>
+  <text class="m" x="546" y="122">manifests (Pres. 3)</text>
+  <text class="m" x="546" y="140">access check</text>
+  <text class="ok" x="546" y="166">204 published</text>
+  <text class="no" x="546" y="184">403 draft, withdrawn,</text>
+  <text class="no" x="546" y="200">unknown key</text>
+
+  <rect class="box" x="760" y="56" width="160" height="150" rx="8"/>
+  <text class="t" x="776" y="82">iipsrv :8149</text>
+  <text class="s" x="776" y="104">1.3, pinned digest</text>
+  <text class="s" x="776" y="122">IIIF Image API 3</text>
+  <text class="s" x="776" y="140">level 2</text>
+  <text class="m" x="776" y="164">read-only root,</text>
+  <text class="m" x="776" y="182">read-only store</text>
+
+  <rect class="store" x="248" y="240" width="236" height="100" rx="8"/>
+  <text class="t" x="264" y="266">/srv/laminario/cache</text>
+  <text class="m" x="264" y="290">tiles/   access/</text>
+  <text class="s" x="264" y="316">keys never reused, so a</text>
+  <text class="s" x="264" y="332">cached tile never goes stale</text>
+
+  <rect class="store" x="530" y="240" width="190" height="100" rx="8"/>
+  <text class="t" x="546" y="266">laminario.sqlite3</text>
+  <text class="s" x="546" y="290">asset: key, status,</text>
+  <text class="s" x="546" y="308">licence, dimensions,</text>
+  <text class="s" x="546" y="326">remote IIIF version</text>
+
+  <rect class="store" x="760" y="240" width="160" height="100" rx="8"/>
+  <text class="t" x="776" y="266">/srv/laminario</text>
+  <text class="t" x="776" y="284">/store</text>
+  <text class="s" x="776" y="308">one BigTIFF per</text>
+  <text class="s" x="776" y="326">plane (U2)</text>
+
+  <path class="arrow" d="M194 100 H246"/>
+  <path class="arrow" d="M484 110 H528"/>
+  <path class="dash" d="M484 150 H528"/>
+  <path class="arrow" d="M720 100 H758"/>
+  <path class="arrow" d="M366 206 V238"/>
+  <path class="arrow" d="M625 206 V238"/>
+  <path class="arrow" d="M840 206 V238"/>
+  <path class="arrow" d="M484 90 C 620 30, 700 30, 758 70"/>
+
+  <text class="h" x="24" y="400">REMOTE IIIF (REFERENCED, NOT MIRRORED)</text>
+  <rect class="box" x="24" y="412" width="300" height="148" rx="8"/>
+  <text class="t" x="40" y="438">Institution's image service</text>
+  <text class="s" x="40" y="460">read by the browser directly (CORS)</text>
+  <text class="m" x="40" y="484">ImageService2 or ImageService3,</text>
+  <text class="m" x="40" y="502">version recorded at import</text>
+  <text class="s" x="40" y="524">e.g. the NHM's IIIF level 2 service</text>
+
+  <rect class="key" x="360" y="412" width="576" height="148" rx="8"/>
+  <text class="t" x="376" y="438">Remote-asset contract (import, and scripts/check_remote_iiif.py)</text>
+  <text class="m" x="376" y="464">availability</text><text class="s" x="486" y="464">info.json answers 200 with JSON</text>
+  <text class="m" x="376" y="484">protocol</text><text class="s" x="486" y="484">IIIF Image API 2 or 3 context</text>
+  <text class="m" x="376" y="504">rights</text><text class="s" x="486" y="504">a licence the policy accepts for the origin</text>
+  <text class="m" x="376" y="524">cors</text><text class="s" x="486" y="524">Access-Control-Allow-Origin: * or this origin</text>
+  <text class="m" x="376" y="544">dimensions</text><text class="s" x="486" y="544">width and height as recorded</text>
+  <path class="dash" d="M324 474 H358"/>
+  <path class="dash" d="M110 412 V162"/>
+</svg>

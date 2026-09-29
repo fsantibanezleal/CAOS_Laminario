@@ -113,6 +113,8 @@ class Asset(Base):
     bytes: Mapped[int | None] = mapped_column(Integer)
     sha256: Mapped[str | None] = mapped_column(String(64))
     remote_info_url: Mapped[str | None] = mapped_column(String(500))
+    #: IIIF Image API version of a remote service (2 or 3), recorded when the remote-asset contract is checked.
+    remote_iiif_version: Mapped[int | None] = mapped_column(Integer)
 
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
 

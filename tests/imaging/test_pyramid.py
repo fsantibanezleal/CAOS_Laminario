@@ -88,3 +88,13 @@ def test_webp_kept_only_when_smaller(vips, samples, tmp_path, name):
     else:
         assert chosen.codec == "jpeg" and chosen.bytes == jpeg.bytes
     assert not list(tmp_path.glob("*webp-candidate*"))
+
+
+# R-012 (the ladder's last step, added in U3)
+def test_quality_ladder_reaches_the_floor_on_noise(vips, tmp_path):
+    noise = vips.Image.gaussnoise(3000, 1700, sigma=40, mean=128)
+    zone = vips.Image.zone(3000, 1700) * 60 + 128
+    image = noise.bandjoin([zone, (noise + zone) / 2]).cast("uchar")
+    out = pyramid.write_pyramid(image, tmp_path / "noise.tif", 0.5)
+    assert out.quality == pyramid.JPEG_LAST_QUALITY  # measured: Q90 gave 37.5 dB on this image
+    assert out.psnr_db >= pyramid.MIN_PSNR_DB
