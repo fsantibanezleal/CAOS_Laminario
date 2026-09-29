@@ -23,10 +23,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.contracts import catalog as c
 from app.contracts import licences
 from app.db.models import Asset, Identification, Slide
+from app.services.catalog import DERIVED_ROLES
 from app.services.explore import WHOLE_SLIDE_ROLES
 
 CREDITS = Path(__file__).resolve().parents[1] / "about" / "credits.json"
-DERIVED_ROLES = ("edf_wavelet", "edf_variance", "height_map")
 CONTRIBUTION = "contribution"
 OTHER = "other"
 #: The licence families the policy accepts, by origin (``app/contracts/licences.py``).
