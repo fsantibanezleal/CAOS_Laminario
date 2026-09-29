@@ -11271,7 +11271,7 @@ slides:
     record_url: https://openslide.cs.cmu.edu/download/openslide-testdata/Philips-TIFF/Philips-2.tiff
     licence: https://creativecommons.org/publicdomain/zero/1.0/
     rights_holder: null
-    creator: OpenSlide test data (Carnegie Mellon University)
+    creator: Computational Pathology Group, Radboud University Medical Center
     modality: brightfield
     wsi: true
     sha256: 773eecd27eec7c27f820fa52abc5fca90047b0a8b6aa7a4dc056b95ae849cb09
@@ -11301,7 +11301,7 @@ slides:
     record_url: https://openslide.cs.cmu.edu/download/openslide-testdata/Philips-TIFF/Philips-1.tiff
     licence: https://creativecommons.org/publicdomain/zero/1.0/
     rights_holder: null
-    creator: OpenSlide test data (Carnegie Mellon University)
+    creator: Computational Pathology Group, Radboud University Medical Center
     modality: brightfield
     wsi: true
     sha256: f606e8ef726a42840a2e0d33d3ffcd1afe9ea52ff98ef0880502958c2a07fe3c
@@ -11331,7 +11331,7 @@ slides:
     record_url: https://openslide.cs.cmu.edu/download/openslide-testdata/Philips-TIFF/Philips-3.tiff
     licence: https://creativecommons.org/publicdomain/zero/1.0/
     rights_holder: null
-    creator: OpenSlide test data (Carnegie Mellon University)
+    creator: Computational Pathology Group, Radboud University Medical Center
     modality: brightfield
     wsi: true
     sha256: 01b1513bfb09718d270ec02b75985b0ee32091ba2cb50d286e760bab9534ddf1
@@ -11360,7 +11360,7 @@ slides:
     record_url: https://openslide.cs.cmu.edu/download/openslide-testdata/Hamamatsu/Hamamatsu-1.ndpi
     licence: https://creativecommons.org/publicdomain/zero/1.0/
     rights_holder: null
-    creator: OpenSlide test data (Carnegie Mellon University)
+    creator: Maki Sakuma, National Center For Global Health and Medicine (doi:10.5061/dryad.6m905qfzx)
     modality: brightfield
     wsi: true
     sha256: 6a2afb9332fbf88415a24e9dd898150acfedf87ca0991920183e6cbc8f19b2fa

@@ -92,3 +92,14 @@ def test_a_commons_credit_keeps_the_people_and_drops_the_page():
     }
     for raw, expected in cases.items():
         assert credit(raw) == expected, raw
+
+
+def test_an_openslide_sample_credits_its_author():
+    from app.base.lock import openslide_credit
+
+    assert openslide_credit({"credit": "Computational Pathology Group, Radboud University Medical Center"}) == \
+        "Computational Pathology Group, Radboud University Medical Center"
+    assert openslide_credit({"credit": "Maki Sakuma, National Center For Global Health and Medicine, DOI: "
+                                       "10.5061/dryad.6m905qfzx"}) == \
+        "Maki Sakuma, National Center For Global Health and Medicine (doi:10.5061/dryad.6m905qfzx)"
+    assert openslide_credit({"credit": None}) == "Carnegie Mellon University (OpenSlide test data)"
