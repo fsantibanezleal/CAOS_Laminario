@@ -47,7 +47,9 @@ SOURCES = {
     "courierprime/OFL.txt": "9a755af092b494944c99f471be6fddd19b006a448fefdc4717e4ee0aa09a97b0",
 }
 
-#: Basic Latin, Latin-1 (Spanish), and the typographic and scientific symbols the interface and the labels write.
+#: Basic Latin, Latin-1 (Spanish), and the typographic and scientific symbols the interface and the labels write. The
+#: em-dash is written as its escape: the content guard bans the character in the sources, but a source text a slide
+#: quotes may hold one, and the face must draw it.
 EXTRA = "–—‘’“”…′″♀♂≈≤≥‰•·→№"
 TEXT = "".join(chr(c) for c in range(0x20, 0x7F)) + "".join(chr(c) for c in range(0xA0, 0x100)) + EXTRA
 
