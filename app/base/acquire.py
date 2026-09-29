@@ -67,7 +67,7 @@ def _hash_existing(path: Path) -> tuple[hashlib._Hash, hashlib._Hash, int]:
     return sha, md5, size
 
 
-def download(url: str, folder: Path, attempts: int = 8, pause_s: float = PAUSE_S) -> dict:
+def download(url: str, folder: Path, attempts: int = 8, pause_s: float = PAUSE_S, max_wait_s: float = 600.0) -> dict:
     """Stream a URL into ``folder``, returning its SHA-256, MD5, size and the file's name.
 
     A download that stops (a network error, a stopped run) resumes where it stopped with an HTTP Range request when
@@ -118,7 +118,7 @@ def download(url: str, folder: Path, attempts: int = 8, pause_s: float = PAUSE_S
         except (httpx2.HTTPError, SourceError) as exc:
             last_error = exc
             time.sleep(wait)
-            wait = min(wait * 2, 600.0)
+            wait = min(wait * 2, max_wait_s)
     raise SourceError(f"{url}: {last_error}")
 
 
@@ -157,7 +157,10 @@ def acquire(vault: Path, only: set[str] | None = None, wsi_parallel: int = WSI_P
 
     def one(slide: dict, asset: dict, pause_s: float) -> None:
         url = asset["url"]
-        got = download(url, folder, pause_s=pause_s)
+        # An image is retried briefly (the NHM image server answers 500 to a first request it has not rendered yet,
+        # then 200); a whole-slide file is worth the long back-off.
+        got = download(url, folder, pause_s=pause_s, attempts=8 if asset.get("wsi") else 5,
+                       max_wait_s=600.0 if asset.get("wsi") else 60.0)
         if asset.get("md5") and got["md5"] != asset["md5"]:
             raise SourceError(f"{url}: MD5 {got['md5']} differs from the record's {asset['md5']}")
         if asset.get("sha256") and got["sha256"] != asset["sha256"]:
