@@ -3,6 +3,19 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.09.000] - 2026-09-29
+
+### Added
+
+- The visual system (`docs/design/visual-system.md`): tokens in OKLCH for the daylight and lamp-lit rooms with 18
+  collection hues, generated as sRGB and checked for contrast (164 pairs).
+- Three faces built from pinned upstream files: Laminario Sans (a renamed Latin subset of Source Sans 3), Fraunces
+  and Courier Prime, each with its OFL licence text.
+- The room and the language painted from the first frame; typed EN and ES catalogues over Intl, with calendar dates
+  in UTC.
+- Interface glyphs, the primitives with their states, the specimen place (`/design`).
+- The fit, motion and states gates; wiki page 11 with its diagram; the U9 design and requirements.
+
 ## [0.08.000] - 2026-09-29
 
 ### Added
