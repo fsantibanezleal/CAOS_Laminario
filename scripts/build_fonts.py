@@ -137,9 +137,7 @@ def build() -> dict[str, bytes]:
         files[f"courier-prime-{style.lower()}.woff2"] = woff2(font)
     # The licence texts are stored with LF line endings, as git keeps text in this repository (upstream has CRLF).
     for name, src in (("laminario-sans", "sourcesans3"), ("fraunces", "fraunces"), ("courier-prime", "courierprime")):
-        files[f"{name}-OFL.txt"] = upstream(f"{src}/OFL.txt").replace(b"
-", b"
-")
+        files[f"{name}-OFL.txt"] = upstream(f"{src}/OFL.txt").replace(b"\r\n", b"\n")
     return files
 
 
