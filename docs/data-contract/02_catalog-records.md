@@ -24,10 +24,13 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `collectionNode` | [CollectionNodeDetail](#collectionnodedetail) | no |  |  |
 | `facet` | [FacetRecord](#facetrecord) | no |  |  |
 | `anchorSuggestion` | [AnchorSuggestion](#anchorsuggestion) | no |  |  |
+| `partRecord` | [PartRecord](#partrecord) | no |  |  |
 | `placement` | [PlacementResult](#placementresult) | no |  |  |
 | `facetCounts` | [FacetCounts](#facetcounts) | no |  |  |
 | `map` | [MapRecord](#maprecord) | no |  |  |
 | `annotation` | [AnnotationRecord](#annotationrecord) | no |  |  |
+| `case` | [CaseRecord](#caserecord) | no |  |  |
+| `caseSummary` | [CaseSummary](#casesummary) | no |  |  |
 
 ### SlideRecord
 
@@ -217,6 +220,16 @@ A name the anchor field can offer (``GET /api/anchors/search``).
 | `classification` | string or null | no |  | null |
 | `context` | string or null | no |  | null |
 
+### PartRecord
+
+A part of an organism the part field offers (``GET /api/vocab/parts``), with its organ system.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `group` | string | yes |  |  |
+| `name` | [LocalisedText](#localisedtext) | yes |  |  |
+
 ### PlacementResult
 
 Where a slide belongs (``POST /api/placement``): the suggestion, and every node that accepts it.
@@ -264,6 +277,35 @@ An annotation as the stage reads it: the W3C Web Annotation, who wrote it, and w
 | `author` | string | yes |  |  |
 | `removable` | boolean | no |  | `false` |
 | `annotation` | object | yes |  |  |
+
+### CaseRecord
+
+A contributor's case to reopen (``GET /api/slide-cases/{id}``): its summary and the case as last sent.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `status` | string (enumerated) | yes | one of: `draft`, `processing`, `published`, `hidden` |  |
+| `status_reason` | string or null | no |  | null |
+| `name` | string | yes |  |  |
+| `placement` | string | yes |  |  |
+| `updated_at` | string (date-time) | yes |  |  |
+| `images` | list of [CaseImageRecord](#caseimagerecord) | no |  | `[]` |
+| `submission` | object | no |  | `{}` |
+
+### CaseSummary
+
+A contributor's slide case in their list (``GET /api/slide-cases``).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `status` | string (enumerated) | yes | one of: `draft`, `processing`, `published`, `hidden` |  |
+| `status_reason` | string or null | no |  | null |
+| `name` | string | yes |  |  |
+| `placement` | string | yes |  |  |
+| `updated_at` | string (date-time) | yes |  |  |
+| `images` | list of [CaseImageRecord](#caseimagerecord) | no |  | `[]` |
 
 ### FormatRecord
 
@@ -357,6 +399,7 @@ Where the specimen was collected, after geoprivacy.
 | `rights_holder` | string or null | no |  | null |
 | `creator` | string or null | no |  | null |
 | `source` | [SourceRecord](#sourcerecord) or null | no |  | null |
+| `original_sha256` | string or null | no |  | null |
 
 ### SummaryLabel
 
@@ -376,14 +419,19 @@ What a drawer shows on a slide's label end (no coordinates, so nothing geoprivac
 | `code` | string | yes |  |  |
 | `field` | string | yes |  |  |
 | `message` | string | yes |  |  |
+| `params` | map of string | no |  | `{}` |
 
 ### ValidationError
+
+A reason a slide case is refused: the field, the API's message and what would be accepted, and a stable code with the values the message names, so an interface can say it in its own words (R-1202).
 
 | Field | Type | Required | Accepted | Default |
 |---|---|---|---|---|
 | `field` | string | yes |  |  |
 | `message` | string | yes |  |  |
 | `expected` | string | yes |  |  |
+| `code` | string or null | no |  | null |
+| `params` | map of string | no |  | `{}` |
 
 ### CollectionNodeRecord
 
@@ -436,6 +484,23 @@ A slide on the map, after geoprivacy: an obscured one at its public point, with 
 | `lon` | number | yes |  |  |
 | `obscured` | boolean | no |  | `false` |
 | `cell` | [CellRecord](#cellrecord) or null | no |  | null |
+
+### CaseImageRecord
+
+An image of a contributor's case: its state, and its file's (the last upload).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `asset_id` | integer | yes |  |  |
+| `token` | string or null | no |  | null |
+| `family` | string (enumerated) | yes | one of: `macro`, `micro` |  |
+| `role` | string | yes |  |  |
+| `status` | string (enumerated) | yes | one of: `pending`, `ready`, `failed` |  |
+| `failure` | string or null | no |  | null |
+| `has_file` | boolean | no |  | `false` |
+| `upload_status` | string or null | no |  | null |
+| `upload_reason` | string or null | no |  | null |
+| `upload_job` | string or null | no |  | null |
 
 ### PointRecord
 

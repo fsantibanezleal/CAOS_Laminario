@@ -69,7 +69,7 @@ async def pre_create(event: dict, user: User | None, db: AsyncSession, request: 
     asset = await db.get(Asset, asset_id)
     if asset is None or asset.slide_id != slide.id or asset.media_kind == "remote_iiif":
         return refuse(policy.Refusal(404, "no such image in this slide case"))
-    if asset.status != "pending":
+    if asset.status not in ("pending", "failed"):  # a failed image takes a new file
         return refuse(policy.Refusal(409, "this image already has its file"))
     busy = (await db.execute(select(func.count()).select_from(Upload)
                              .where(Upload.asset_id == asset.id, Upload.status.in_(("uploading", "received"))))

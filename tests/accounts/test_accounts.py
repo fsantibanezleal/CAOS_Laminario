@@ -55,9 +55,11 @@ def test_registration_requires_invitation(tmp_path):
         # bound to an address: another address is refused and the link stays usable for the right one
         created = client.post("/api/invitations", json={"role": "identifier", "email": "f@example.org"},
                               headers=admin).json()
-        assert register(client, token_of(created["link"]), "g@example.org").status_code == 400
+        other = register(client, token_of(created["link"]), "g@example.org")
+        assert other.status_code == 400 and other.json()["detail"]["code"] == "REGISTER_INVITATION_OTHER_EMAIL"
         weak = register(client, token_of(created["link"]), "f@example.org", password="short")
-        assert weak.status_code == 400 and "12 characters" in weak.json()["detail"]
+        assert weak.status_code == 400 and weak.json()["detail"]["code"] == "REGISTER_INVALID_PASSWORD"
+        assert "12 characters" in weak.json()["detail"]["reason"]
         made = register(client, token_of(created["link"]), "F@Example.org")
         assert made.status_code == 201 and made.json()["role"] == "identifier"
 

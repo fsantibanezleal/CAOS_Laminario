@@ -82,6 +82,9 @@ def slide_from_submission(sub: SlideCaseSubmission, *, new_id: str, contributor_
         short_id=new_id, anchor_name=slide.anchor_name, host_name=slide.host_name,
         catalogue_number=slide.catalogue_number, locality_text=slide.locality_text, country=slide.country,
         placement_node=slide.placement_node, preparation=slide.preparation, stain=slide.stain)
+    if sub.origin == "contribution":
+        # The case as sent, to reopen the contribute form; a base slide's case is its lock entry.
+        slide.submission_json = sub.model_dump_json(exclude_none=True)
     for order, a in enumerate(sub.assets):
         slide.assets.append(Asset(
             family=a.family,
@@ -105,6 +108,7 @@ def slide_from_submission(sub: SlideCaseSubmission, *, new_id: str, contributor_
             source_retrieved_on=a.source.retrieved_on if a.source else None,
             source_sha256=a.source.sha256 if a.source else None,
             remote_info_url=str(a.remote_iiif) if a.remote_iiif else None,
+            client_token=a.upload_id or (str(a.remote_iiif) if a.remote_iiif else None),
         ))
     return slide
 

@@ -13,7 +13,8 @@ At the top the slide as an object, drawn from its record; under it what can be d
 download the drawing, open the IIIF manifest. Then the stage items (section 5), the photographs, the record (name
 with its rank in the reader's language, host, type status, preparation, where and when it was collected and
 prepared, catalogue number, format, coverslip, drawer, the quality checks) and where every image came from: source
-and record, author or rights holder, licence, retrieval date, and for a base slide the file's SHA-256 (R-1107). On a
+and record, author or rights holder, licence, retrieval date, and the SHA-256 of the file each image was made from
+(the source's for the base collection, the verified upload's for a contribution: R-1107, R-1208). On a
 phone the provenance table becomes one block per image, each field with its name.
 
 ## 2. One layout for the screen and for print

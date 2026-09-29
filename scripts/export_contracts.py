@@ -42,10 +42,13 @@ CATALOG_ROOTS = {
     "collectionNode": c.CollectionNodeDetail,
     "facet": c.FacetRecord,
     "anchorSuggestion": c.AnchorSuggestion,
+    "partRecord": c.PartRecord,
     "placement": c.PlacementResult,
     "facetCounts": c.FacetCounts,
     "map": c.MapRecord,
     "annotation": c.AnnotationRecord,
+    "case": c.CaseRecord,
+    "caseSummary": c.CaseSummary,
 }
 
 

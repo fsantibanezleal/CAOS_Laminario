@@ -77,9 +77,11 @@ export function SearchField({ label, hint, error, optional, value, defaultValue,
 
 export type SelectProps = FieldFrame & Omit<SelectHTMLAttributes<HTMLSelectElement>, "id"> & {
   options: { value: string; label: string }[];
+  /** Options in named groups, after ``options`` (a vocabulary by its families). */
+  groups?: { label: string; options: { value: string; label: string }[] }[];
 };
 
-export function Select({ label, hint, error, optional, options, className, ...select }: SelectProps) {
+export function Select({ label, hint, error, optional, options, groups, className, ...select }: SelectProps) {
   const id = useId();
   return (
     <Frame id={id} label={label} hint={hint} error={error} optional={optional}>
@@ -87,6 +89,11 @@ export function Select({ label, hint, error, optional, options, className, ...se
         <select id={id} className={[styles.input, styles.select, className].filter(Boolean).join(" ")}
           aria-invalid={error ? true : undefined} aria-describedby={describedBy(id, hint, error)} {...select}>
           {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+          {groups?.map((g) => (
+            <optgroup key={g.label} label={g.label}>
+              {g.options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </optgroup>
+          ))}
         </select>
         <Glyph name="chevron-down" size={20} className={styles.chevron} />
       </div>

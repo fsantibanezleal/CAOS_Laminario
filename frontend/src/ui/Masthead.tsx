@@ -1,9 +1,11 @@
 // The masthead every place shares: the wordmark (home), the ways into the collection (the cabinets, search, the
-// map), the room and the language, and the trail of places below. The current way in is marked for assistive
-// technology (aria-current) and drawn in brass.
+// map, and Contribute for those who may), the account, the room and the language, and the trail of places below. The
+// current way in is marked for assistive technology (aria-current) and drawn in brass.
 import type { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
+import { useSession } from "../account/session";
 import { useI18n } from "../i18n";
+import { AccountMenu } from "./AccountMenu";
 import { Glyph } from "./Icon";
 import styles from "./Masthead.module.css";
 import { LanguageSwitch, RoomSwitch } from "./Switches";
@@ -13,10 +15,14 @@ const WAYS = [
   { href: "/search", glyph: "search", key: "nav.search", matches: (p: string) => p.startsWith("/search") },
   { href: "/map", glyph: "map", key: "nav.map", matches: (p: string) => p.startsWith("/map") },
 ] as const;
+const CONTRIBUTE = { href: "/contribute", glyph: "upload", key: "nav.contribute",
+  matches: (p: string) => p.startsWith("/contribute") } as const;
 
 export function Masthead({ trail }: { trail?: ReactNode }) {
   const { t } = useI18n();
   const [location] = useLocation();
+  const session = useSession();
+  const ways = session.can("submit") ? [...WAYS, CONTRIBUTE] : WAYS;
   return (
     <header className={styles.masthead}>
       <a className="skip-link" href="#content">{t("app.skip")}</a>
@@ -27,7 +33,7 @@ export function Masthead({ trail }: { trail?: ReactNode }) {
           <span className={styles.tagline}>{t("app.tagline")}</span>
         </Link>
         <nav aria-label={t("nav.label")} className={styles.ways}>
-          {WAYS.map((way) => {
+          {ways.map((way) => {
             const current = way.matches(location);
             return (
               <Link key={way.href} href={way.href} className={styles.way} aria-current={current ? "page" : undefined}>
@@ -38,6 +44,7 @@ export function Masthead({ trail }: { trail?: ReactNode }) {
           })}
         </nav>
         <div className={styles.switches}>
+          <AccountMenu />
           <RoomSwitch />
           <LanguageSwitch />
         </div>

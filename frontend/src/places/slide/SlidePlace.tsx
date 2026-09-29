@@ -21,6 +21,9 @@ import { Dialog } from "../../ui/Overlay";
 import { NotFoundPlace } from "../NotFoundPlace";
 import styles from "./SlidePlace.module.css";
 
+/** The SHA-256 of the file an image was made from: its source's (the base collection) or its upload's. */
+const originalSha = (a: SlideRecord["assets"][number]) => a.original_sha256 ?? a.source?.sha256 ?? null;
+
 export function SlidePlace() {
   const { id } = useParams<{ id: string }>();
   const { t } = useI18n();
@@ -241,7 +244,7 @@ function Provenance({ record }: { record: SlideRecord }) {
               <th scope="col">{t("slide.prov.author")}</th>
               <th scope="col">{t("slide.prov.licence")}</th>
               <th scope="col">{t("slide.prov.retrieved")}</th>
-              {record.origin === "base" ? <th scope="col">SHA-256</th> : null}
+              {record.assets.some(originalSha) ? <th scope="col">SHA-256</th> : null}
             </tr>
           </thead>
           <tbody>
@@ -257,8 +260,9 @@ function Provenance({ record }: { record: SlideRecord }) {
                 <td data-label={t("slide.prov.retrieved")}>
                   {a.source ? date(a.source.retrieved_on, { year: "numeric", month: "short", day: "numeric" }) : ""}
                 </td>
-                {record.origin === "base" ? (
-                  <td data-label="SHA-256" className={styles.mono} title={a.source?.sha256}>{a.source?.sha256.slice(0, 12)}</td>
+                {record.assets.some(originalSha) ? (
+                  <td data-label="SHA-256" className={styles.mono} title={originalSha(a) ?? undefined}
+                    data-sha256={originalSha(a) ?? undefined}>{originalSha(a)?.slice(0, 12)}</td>
                 ) : null}
               </tr>
             ))}

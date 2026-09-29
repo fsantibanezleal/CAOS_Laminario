@@ -18,6 +18,7 @@ from __future__ import annotations
 import re
 from collections import Counter
 from dataclasses import dataclass, field
+from dataclasses import field as dataclass_field
 from datetime import date, datetime, timezone
 from typing import Annotated, Any, Literal, get_args
 
@@ -258,9 +259,13 @@ class Issue:
     field: str
     message: str
     expected: str
+    #: A stable name for the rule, and the values its message names, so an interface can write it in its own words.
+    code: str = ""
+    params: dict[str, str] = dataclass_field(default_factory=dict)
 
-    def as_dict(self) -> dict[str, str]:
-        return {"field": self.field, "message": self.message, "expected": self.expected}
+    def as_dict(self) -> dict:
+        return {"field": self.field, "message": self.message, "expected": self.expected, "code": self.code,
+                "params": self.params}
 
 
 @dataclass
@@ -268,9 +273,10 @@ class Flag:
     code: str
     field: str
     message: str
+    params: dict[str, str] = dataclass_field(default_factory=dict)
 
-    def as_dict(self) -> dict[str, str]:
-        return {"code": self.code, "field": self.field, "message": self.message}
+    def as_dict(self) -> dict:
+        return {"code": self.code, "field": self.field, "message": self.message, "params": self.params}
 
 
 def slide_size_mm(slide: SlideSpec) -> tuple[float, float] | None:
@@ -301,93 +307,103 @@ def rule_errors(sub: SlideCaseSubmission) -> list[Issue]:
     s = sub.slide
 
     if s.format == "custom" and s.custom_mm is None:
-        issues.append(Issue("slide.custom_mm", "a custom format needs its size", "a width and height, 20 to 100 mm"))
+        issues.append(Issue("slide.custom_mm", "a custom format needs its size", "a width and height, 20 to 100 mm",
+                            code="custom_size_missing"))
     if s.format != "custom" and s.custom_mm is not None:
         issues.append(Issue("slide.custom_mm", "a size is given for a standard format",
-                            "no size unless the format is custom"))
+                            "no size unless the format is custom", code="custom_size_unexpected"))
     if s.coverslip == "custom" and s.coverslip_custom_mm is None:
         issues.append(Issue("slide.coverslip_custom_mm", "a custom coverslip needs its size",
-                            "a width and height in mm"))
+                            "a width and height in mm", code="coverslip_size_missing"))
     if s.coverslip != "custom" and s.coverslip_custom_mm is not None:
         issues.append(Issue("slide.coverslip_custom_mm", "a size is given for a standard coverslip",
-                            "no size unless the coverslip is custom"))
+                            "no size unless the coverslip is custom", code="coverslip_size_unexpected"))
     slide_mm, cover_mm = slide_size_mm(s), coverslip_size_mm(s)
     if slide_mm and cover_mm and (cover_mm[0] > slide_mm[0] or cover_mm[1] > slide_mm[1]):
         field_name = "slide.coverslip_custom_mm" if s.coverslip == "custom" else "slide.coverslip"
         issues.append(Issue(field_name, "the coverslip does not fit on the slide",
-                            f"a coverslip within {slide_mm[0]:g} x {slide_mm[1]:g} mm"))
+                            f"a coverslip within {slide_mm[0]:g} x {slide_mm[1]:g} mm",
+                            code="coverslip_too_large",
+                            params={"width": f"{slide_mm[0]:g}", "height": f"{slide_mm[1]:g}"}))
 
     anchor = sub.specimen.anchor
     if anchor.kind == "taxon" and not anchor.ref.isdigit():
         issues.append(Issue("specimen.anchor.ref", "a taxon is referenced by its GBIF usage key",
-                            "the GBIF usage key, digits only"))
+                            "the GBIF usage key, digits only", code="taxon_key_expected"))
     if anchor.classification and anchor.kind not in ("mineral", "crystal"):
         issues.append(Issue("specimen.anchor.classification", f"a {anchor.kind} takes no classification",
-                            "no classification"))
+                            "no classification", code="classification_unexpected", params={"kind": anchor.kind}))
     if sub.specimen.part and anchor.kind != "taxon":
-        issues.append(Issue("specimen.part", "only an organism has parts", "no part"))
+        issues.append(Issue("specimen.part", "only an organism has parts", "no part", code="part_unexpected"))
     if sub.specimen.preservation != "recent" and anchor.kind != "taxon":
-        issues.append(Issue("specimen.preservation", "only an organism is fossil or in amber", "recent"))
+        issues.append(Issue("specimen.preservation", "only an organism is fossil or in amber", "recent",
+                            code="preservation_unexpected"))
     host = sub.specimen.host
     if host is not None:
         if host.kind != "taxon":
-            issues.append(Issue("specimen.host.kind", "a host is an organism", "taxon"))
+            issues.append(Issue("specimen.host.kind", "a host is an organism", "taxon", code="host_not_organism"))
         elif not host.ref.isdigit():
             issues.append(Issue("specimen.host.ref", "a taxon is referenced by its GBIF usage key",
-                                "the GBIF usage key, digits only"))
+                                "the GBIF usage key, digits only", code="taxon_key_expected"))
 
     stacks: Counter[str] = Counter()
     for i, a in enumerate(sub.assets):
         at = f"assets.{i}"
         if a.role not in ROLES_BY_FAMILY[a.family]:
             issues.append(Issue(f"{at}.role", f"{a.role} is not a {a.family} role",
-                                "one of: " + ", ".join(ROLES_BY_FAMILY[a.family])))
+                                "one of: " + ", ".join(ROLES_BY_FAMILY[a.family]),
+                                code="role_mismatch", params={"role": a.role, "family": a.family}))
         contents = [name for name, value in (("upload_id", a.upload_id), ("remote_iiif", a.remote_iiif),
                                               ("source", a.source)) if value is not None]
         if sub.origin == "base" and a.source is None:
             issues.append(Issue(f"{at}.source", "a base-collection asset needs its source",
-                                "url, record_id, retrieved_on and sha256"))
+                                "url, record_id, retrieved_on and sha256", code="source_missing"))
         elif sub.origin == "contribution" and a.source is not None:
             issues.append(Issue(f"{at}.source", "a contribution carries an upload or a remote service, not a source",
-                                "upload_id or remote_iiif"))
+                                "upload_id or remote_iiif", code="source_unexpected"))
         elif sub.origin == "contribution" and len(contents) != 1:
             issues.append(Issue(f"{at}.upload_id", "an asset needs exactly one content",
-                                "exactly one of upload_id or remote_iiif"))
+                                "exactly one of upload_id or remote_iiif", code="content_count"))
         if a.source is not None and a.source.retrieved_on > _today():
             issues.append(Issue(f"{at}.source.retrieved_on", "the retrieval date is in the future",
-                                "a date YYYY-MM-DD, not in the future"))
+                                "a date YYYY-MM-DD, not in the future", code="retrieved_in_future"))
         if not licences.allowed(a.licence, sub.origin):
             issues.append(Issue(f"{at}.licence", f"{a.licence} is not accepted for a {sub.origin} asset",
-                                licences.expectation(sub.origin)))
+                                licences.expectation(sub.origin),
+                                code="licence_refused", params={"licence": a.licence, "origin": sub.origin}))
         if not (a.rights_holder or a.creator):
             issues.append(Issue(f"{at}.rights_holder", "an asset needs a rights holder or a creator",
-                                "a rights holder or a creator"))
+                                "a rights holder or a creator", code="attribution_missing"))
         if a.family == "micro" and a.modality is None:
-            issues.append(Issue(f"{at}.modality", "a micro asset needs its imaging modality", _one_of(Modality)))
+            issues.append(Issue(f"{at}.modality", "a micro asset needs its imaging modality", _one_of(Modality),
+                                code="modality_missing"))
         if a.role == "z_plane":
             if a.plane is None:
                 issues.append(Issue(f"{at}.plane", "a focal plane needs its index, depth and stack",
-                                    "index, depth_um and stack"))
+                                    "index, depth_um and stack", code="plane_missing"))
             else:
                 stacks[a.plane.stack] += 1
         elif a.plane is not None:
-            issues.append(Issue(f"{at}.plane", "only a z_plane asset carries a plane", "no plane"))
+            issues.append(Issue(f"{at}.plane", "only a z_plane asset carries a plane", "no plane",
+                                code="plane_unexpected"))
         if a.role == "polarised":
             if a.polarisation is None:
                 issues.append(Issue(f"{at}.polarisation", "a polarised asset needs its state and angle",
-                                    "state ppl or xpl, angle 0 to 360 degrees"))
+                                    "state ppl or xpl, angle 0 to 360 degrees", code="polarisation_missing"))
             else:
                 wanted = "polarised_ppl" if a.polarisation.state == "ppl" else "polarised_xpl"
                 if a.modality != wanted:
                     issues.append(Issue(f"{at}.modality", "the modality does not match the polarisation state",
-                                        wanted))
+                                        wanted, code="modality_polarisation_mismatch", params={"modality": wanted}))
         elif a.polarisation is not None:
             issues.append(Issue(f"{at}.polarisation", "only a polarised asset carries a polarisation",
-                                "no polarisation"))
+                                "no polarisation", code="polarisation_unexpected"))
     for stack, count in stacks.items():
         if count > MAX_PLANES_PER_STACK:
             issues.append(Issue("assets", f"stack {stack} has {count} planes",
-                                f"at most {MAX_PLANES_PER_STACK} planes per stack"))
+                                f"at most {MAX_PLANES_PER_STACK} planes per stack",
+                                code="stack_too_many_planes",
+                                params={"stack": stack, "count": str(count), "max": str(MAX_PLANES_PER_STACK)}))
     return issues
 
 
@@ -408,7 +424,8 @@ def submission_flags(sub: SlideCaseSubmission) -> list[Flag]:
             shot = a.exif.datetime_original
             if collected_day and shot and abs((shot.date() - collected_day).days) > 1:
                 flags.append(Flag("exif_date_mismatch", f"{at}.exif.datetime_original",
-                                  f"the photo was taken on {shot.date()}, the specimen collected on {collected_day}"))
+                                  f"the photo was taken on {shot.date()}, the specimen collected on {collected_day}",
+                                  {"shot": str(shot.date()), "collected": str(collected_day)}))
     return flags
 
 

@@ -55,6 +55,11 @@ def test_the_tree_the_nodes_and_the_facets(tmp_path):
         assert facets["modality"]["values"][5] == {"id": "polarised_xpl", "icon": "facet.modality.polarised_xpl",
                                                    "name": {"en": "Crossed polars", "es": "Nícoles cruzados"}}
 
+        parts = client.get("/api/vocab/parts").json()
+        assert len(parts) == 53 and len({p["id"] for p in parts}) == 53
+        assert parts[0] == {"id": "skin", "group": "integument", "name": {"en": "Skin", "es": "Piel"}}
+        assert {"id": "blood", "group": "blood-immune", "name": {"en": "Blood", "es": "Sangre"}} in parts
+
 
 def test_anchor_search_and_placement(tmp_path):
     settings = settings_for(tmp_path)
