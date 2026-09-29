@@ -3,6 +3,28 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.12.000] - 2026-09-29
+
+### Added
+
+- The account places: sign in, join from an invitation link, ask for and complete a password reset; the masthead
+  names the account and offers Contribute to those who may.
+- The contribute places: a contributor's cases, and the case editor in six sections with the slide drawn to scale;
+  the anchor combobox, the parts vocabulary (`GET /api/vocab/parts`), the point map, geoprivacy, the drawer the
+  tree suggests, the calibration of a pixel size on a stage micrometer.
+- A code and parameters on every validation error and flag, worded in EN and ES by the interface.
+- The case lifecycle: draft, processing, published, back to draft with the reason; a contributor's drafts
+  listed, reopened, changed and deleted (migration 0010).
+- A photograph's position read and shown before upload, removed with its XMP in the browser for a private case
+  (JPEG, PNG, WebP, TIFF), and refused by the server if it stays.
+- Uploads with Uppy over tus; verification and processing followed by their events; each image keeps its
+  original's SHA-256, shown on its slide.
+- `frontend/gates/contribute.mjs`, end to end on CMU-1 and a real photograph with GPS; wiki page 14.
+
+### Fixed
+
+- The `/files` proxy keeps the page's host, so tusd's upload addresses are the page's own (F-044).
+
 ## [0.11.000] - 2026-09-29
 
 ### Added
