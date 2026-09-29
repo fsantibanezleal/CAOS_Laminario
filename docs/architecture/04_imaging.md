@@ -227,7 +227,11 @@ hands its stack to a pool process (spawn context: the images it reads from stay 
 returned height map and the composite it selects in the window's core. At most two windows per worker are in flight,
 so memory stays bounded whatever the stack's size: a window of eleven colour planes, with its margins, is 54 MB of
 pixels and about half a gigabyte while its wavelet transform runs. The arrays equal those of the one-window-at-a-time
-loop exactly, grey and colour, for both methods and in the order of the progress it reports (tested).
+loop exactly, grey and colour, for both methods and in the order of the progress it reports (tested). On the host
+(4 vCPU), 16 windows of a three-plane colour stack take 72.8 s one at a time and 40.1 s in two processes, with
+identical arrays; in the base bake, twelve processes on a workstation fused the 6,720 wavelet windows of a
+three-plane NMNH stack at about 90 windows a minute. The worker's own path was run on the host: its job process,
+spawned by pebble, fuses in a pool spawned from it.
 
 If no window finishes within 20 minutes, the fusion stops its pool's processes and fails with that reason, instead of
 waiting for the job's timeout of hours: in a benchmark on Windows one pool process hung at start-up and the fusion
