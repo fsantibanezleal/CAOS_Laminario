@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass
+from dataclasses import field as dataclass_field
 from functools import lru_cache
 from pathlib import Path
 
@@ -65,6 +66,8 @@ class Problem:
     field: str
     message: str
     expected: str
+    code: str = ""
+    params: dict[str, str] = dataclass_field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -149,9 +152,11 @@ def resolve_term(kind: str, ref: str, classification: str | None = None,
         key = v.rock_synonyms.get(key, key)
         if key not in v.rocks:
             return Problem(f"{field}.ref", f"{ref} is not a rock name of the vocabulary",
-                           "a name of the BGS Rock Classification Scheme, a meteorite class or a Laminario rock term")
+                           "a name of the BGS Rock Classification Scheme, a meteorite class or a Laminario rock term",
+                           code="rock_unknown", params={"ref": ref})
         if classification:
-            return Problem(f"{field}.classification", "a rock takes no classification", "no classification")
+            return Problem(f"{field}.classification", "a rock takes no classification", "no classification",
+                           code="classification_unexpected", params={"kind": "rock"})
         return Term(key, None, v.rocks[key]["family"])
     if kind == "mineral":
         name = ref.strip().lower()
@@ -159,7 +164,7 @@ def resolve_term(kind: str, ref: str, classification: str | None = None,
         declared = strunz_path(classification) if classification else None
         if classification and declared is None:
             return Problem(f"{field}.classification", f"{classification} is not a Nickel-Strunz code",
-                           MINERAL_CLASS_EXPECTED)
+                           MINERAL_CLASS_EXPECTED, code="strunz_invalid", params={"code": classification})
         if name in v.minerals:
             row = v.minerals[name]
             known = strunz_path(row[2]) if row[2] else None
@@ -167,33 +172,39 @@ def resolve_term(kind: str, ref: str, classification: str | None = None,
                 if not (prefix_of(declared, known) or prefix_of(known, declared)):
                     return Problem(f"{field}.classification",
                                    f"{row[0]} is {row[2]} in Nickel-Strunz, not {classification}",
-                                   f"{row[2]}, or no classification")
+                                   f"{row[2]}, or no classification",
+                                   code="strunz_mismatch",
+                                   params={"mineral": row[0], "known": row[2], "given": classification})
                 known = max(known, declared, key=len)
             path = known or declared
             if path is None:
                 return Problem(f"{field}.classification", f"no Nickel-Strunz class is recorded for {row[0]}",
-                               MINERAL_CLASS_EXPECTED)
+                               MINERAL_CLASS_EXPECTED, code="strunz_missing", params={"mineral": row[0]})
             return Term(row[0], "species", path, row[2] or classification)
         if name in v.mineral_groups:
             row = v.mineral_groups[name]
             return Term(row[0], "group", strunz_path(row[1]), row[1])
         return Problem(f"{field}.ref", f"{ref} is not on the IMA list of minerals",
-                       "an IMA mineral species or a common group name such as olivine or plagioclase")
+                       "an IMA mineral species or a common group name such as olivine or plagioclase",
+                       code="mineral_unknown", params={"ref": ref})
     if kind == "crystal":
         origin, _, system = kebab(ref).partition("/")
         if origin not in v.crystal_origins:
             return Problem(f"{field}.ref", f"{ref} does not start with a crystal origin",
-                           "an origin (" + ", ".join(v.crystal_origins) + "), optionally /system")
+                           "an origin (" + ", ".join(v.crystal_origins) + "), optionally /system",
+                           code="crystal_origin_unknown", params={"ref": ref})
         if system and system not in v.crystal_systems:
-            return Problem(f"{field}.ref", f"{system} is not a crystal system", ", ".join(v.crystal_systems))
+            return Problem(f"{field}.ref", f"{system} is not a crystal system", ", ".join(v.crystal_systems),
+                           code="crystal_system_unknown", params={"system": system})
         path = origin
         if classification:
             if origin != "ice":
                 return Problem(f"{field}.classification", "only ice and snow crystals take a category",
-                               "no classification")
+                               "no classification", code="crystal_category_unexpected")
             if classification.upper() not in v.kikuchi:
                 return Problem(f"{field}.classification", f"{classification} is not a general category",
-                               "one of: " + ", ".join(v.kikuchi))
+                               "one of: " + ", ".join(v.kikuchi),
+                               code="crystal_category_unknown", params={"category": classification})
             classification = classification.upper()
             path = f"ice.{classification}"
         return Term(origin + (f"/{system}" if system else ""), None, path, classification)
@@ -201,17 +212,20 @@ def resolve_term(kind: str, ref: str, classification: str | None = None,
         key = kebab(ref)
         if key not in v.materials:
             return Problem(f"{field}.ref", f"{ref} is not a material of the vocabulary",
-                           "a material term such as cotton, potato-starch or microplastic-fibre")
+                           "a material term such as cotton, potato-starch or microplastic-fibre",
+                           code="material_unknown", params={"ref": ref})
         if classification:
-            return Problem(f"{field}.classification", "a material takes no classification", "no classification")
+            return Problem(f"{field}.classification", "a material takes no classification", "no classification",
+                           code="classification_unexpected", params={"kind": "material"})
         return Term(key, None, v.materials[key]["family"])
-    return Problem(f"{field}.kind", f"{kind} is not resolved by a vocabulary", "rock, mineral, crystal or material")
+    return Problem(f"{field}.kind", f"{kind} is not resolved by a vocabulary", "rock, mineral, crystal or material",
+                   code="kind_unresolved", params={"kind": kind})
 
 
 def check_part(part: str | None) -> Problem | None:
     if part is not None and part not in load().parts:
         return Problem("specimen.part", f"{part} is not a part of the vocabulary",
-                       "a part such as blood, feather, leaf or pollen")
+                       "a part such as blood, feather, leaf or pollen", code="part_unknown", params={"part": part})
     return None
 
 

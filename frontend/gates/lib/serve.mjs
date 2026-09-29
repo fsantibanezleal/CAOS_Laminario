@@ -13,9 +13,13 @@ export const ROOMS = ["daylight", "lamplit"];
 export const LANGS = ["en", "es"];
 export const API = "http://127.0.0.1:8147";
 
-/** Every place built so far, each gate walks them all (U11 to U15 add theirs). */
+/**
+ * Every place a visitor can open, each gate walks them all (U13 to U15 add theirs). The contribute places need an
+ * account; frontend/gates/contribute.mjs walks them signed in, at every width, room and language.
+ */
 export const PLACES = ["/", "/c/insects", "/c/insects/lice", "/c/rocks/igneous", "/search?q=granite",
-  "/search?preparation=thin_section&node=earth.rocks", "/map", "/design", "/nowhere"];
+  "/search?preparation=thin_section&node=earth.rocks", "/map", "/design", "/nowhere", "/signin", "/join",
+  "/forgot-password", "/reset-password"];
 
 /**
  * Slides the gates look at, found through the API (their ids belong to the collection the API serves): the first

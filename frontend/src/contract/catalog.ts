@@ -15,10 +15,13 @@ export interface LaminarioCatalog {
   collectionNode?: CollectionNodeDetail;
   facet?: FacetRecord;
   anchorSuggestion?: AnchorSuggestion;
+  partRecord?: PartRecord;
   placement?: PlacementResult;
   facetCounts?: FacetCounts;
   map?: MapRecord;
   annotation?: AnnotationRecord;
+  case?: CaseRecord;
+  caseSummary?: CaseSummary;
 }
 export interface SlideRecord {
   id: string;
@@ -127,6 +130,7 @@ export interface AssetRecord {
   rights_holder?: string | null;
   creator?: string | null;
   source?: SourceRecord | null;
+  original_sha256?: string | null;
 }
 export interface MediaRecord {
   kind: "pyramid" | "image" | "remote_iiif";
@@ -196,11 +200,22 @@ export interface ValidationFlag {
   code: string;
   field: string;
   message: string;
+  params?: {
+    [k: string]: string;
+  };
 }
+/**
+ * A reason a slide case is refused: the field, the API's message and what would be accepted, and a stable code
+ * with the values the message names, so an interface can say it in its own words (R-1202).
+ */
 export interface ValidationError {
   field: string;
   message: string;
   expected: string;
+  code?: string | null;
+  params?: {
+    [k: string]: string;
+  };
 }
 /**
  * A processing job as ``GET /api/jobs/{id}`` returns it.
@@ -366,6 +381,14 @@ export interface AnchorSuggestion {
   context?: string | null;
 }
 /**
+ * A part of an organism the part field offers (``GET /api/vocab/parts``), with its organ system.
+ */
+export interface PartRecord {
+  id: string;
+  group: string;
+  name: LocalisedText;
+}
+/**
  * Where a slide belongs (``POST /api/placement``): the suggestion, and every node that accepts it.
  */
 export interface PlacementResult {
@@ -437,4 +460,46 @@ export interface AnnotationRecord {
   annotation: {
     [k: string]: unknown;
   };
+}
+/**
+ * A contributor's case to reopen (``GET /api/slide-cases/{id}``): its summary and the case as last sent.
+ */
+export interface CaseRecord {
+  id: string;
+  status: "draft" | "processing" | "published" | "hidden";
+  status_reason?: string | null;
+  name: string;
+  placement: string;
+  updated_at: string;
+  images?: CaseImageRecord[];
+  submission?: {
+    [k: string]: unknown;
+  };
+}
+/**
+ * An image of a contributor's case: its state, and its file's (the last upload).
+ */
+export interface CaseImageRecord {
+  asset_id: number;
+  token?: string | null;
+  family: "macro" | "micro";
+  role: string;
+  status: "pending" | "ready" | "failed";
+  failure?: string | null;
+  has_file?: boolean;
+  upload_status?: string | null;
+  upload_reason?: string | null;
+  upload_job?: string | null;
+}
+/**
+ * A contributor's slide case in their list (``GET /api/slide-cases``).
+ */
+export interface CaseSummary {
+  id: string;
+  status: "draft" | "processing" | "published" | "hidden";
+  status_reason?: string | null;
+  name: string;
+  placement: string;
+  updated_at: string;
+  images?: CaseImageRecord[];
 }

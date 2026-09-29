@@ -55,6 +55,11 @@ class RoleChange(BaseModel):
     role: roles.Role
 
 
+def _refused(code: str, reason: str) -> HTTPException:
+    """A refused registration, shaped as fastapi-users shapes its own (a code the interface words, and the reason)."""
+    return HTTPException(status_code=400, detail={"code": code, "reason": reason})
+
+
 def account_record(user: User) -> c.AccountRecord:
     return c.AccountRecord(id=str(user.id), email=user.email, display_name=user.display_name, role=user.role,
                            is_active=user.is_active, is_verified=user.is_verified)
@@ -102,11 +107,11 @@ def routers(accounts: Accounts) -> list[APIRouter]:
         """Create an account with an invitation link: valid, unexpired, unused, and for this email if it names one."""
         claimed = await invitations.claim(db, payload.token)
         if claimed is None:
-            raise HTTPException(status_code=400,
-                                detail="this invitation is not valid: unknown, used, revoked or expired")
+            raise _refused("REGISTER_INVITATION_INVALID",
+                           "this invitation is not valid: unknown, used, revoked or expired")
         if claimed.email and claimed.email != payload.email.lower():
             await invitations.release(db, claimed.id)
-            raise HTTPException(status_code=400, detail="this invitation is for another email address")
+            raise _refused("REGISTER_INVITATION_OTHER_EMAIL", "this invitation is for another email address")
         try:
             user = await manager.create(UserCreate(email=payload.email, password=payload.password,
                                                    display_name=payload.display_name, role=claimed.role,
@@ -114,10 +119,10 @@ def routers(accounts: Accounts) -> list[APIRouter]:
                                         safe=False)
         except fu_exceptions.UserAlreadyExists as exc:
             await invitations.release(db, claimed.id)
-            raise HTTPException(status_code=400, detail="an account with this email already exists") from exc
+            raise _refused("REGISTER_USER_ALREADY_EXISTS", "an account with this email already exists") from exc
         except fu_exceptions.InvalidPasswordException as exc:
             await invitations.release(db, claimed.id)
-            raise HTTPException(status_code=400, detail=exc.reason) from exc
+            raise _refused("REGISTER_INVALID_PASSWORD", str(exc.reason)) from exc
         await invitations.mark_used_by(db, claimed.id, user.id)
         return account_record(user)
 

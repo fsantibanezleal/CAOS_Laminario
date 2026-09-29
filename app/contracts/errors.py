@@ -89,9 +89,9 @@ def _describe(err: dict[str, Any]) -> str:
     return _TYPE_EXPECTATIONS.get(kind, "a valid value")
 
 
-def contract_errors(exc: ValidationError, model: type[BaseModel] | None = None) -> list[dict[str, str]]:
+def contract_errors(exc: ValidationError, model: type[BaseModel] | None = None) -> list[dict]:
     """The contract's error list for a validation error of ``model``."""
-    out: list[dict[str, str]] = []
+    out: list[dict] = []
     for err in exc.errors(include_url=False):
         loc = tuple(err.get("loc", ()))
         # FastAPI prefixes body errors with "body"; the contract's fields start after it.
@@ -100,5 +100,12 @@ def contract_errors(exc: ValidationError, model: type[BaseModel] | None = None) 
         field = ".".join(str(p) for p in loc) or "(submission)"
         ctx = err.get("ctx") or {}
         expected = ctx.get("expected") or _field_expectation(model, loc) or _describe(err)
-        out.append({"field": field, "message": err.get("msg", "invalid"), "expected": str(expected)})
+        # The error's type is its code; the bounds it names are its parameters.
+        params = {k: str(v) for k, v in ctx.items() if k in PARAMS}
+        out.append({"field": field, "message": err.get("msg", "invalid"), "expected": str(expected),
+                    "code": f"type.{err.get('type', 'invalid')}", "params": params})
     return out
+
+
+#: The context values of Pydantic's errors an interface may name in its own message.
+PARAMS = ("ge", "gt", "le", "lt", "min_length", "max_length", "pattern")

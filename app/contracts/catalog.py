@@ -158,6 +158,9 @@ class AssetRecord(_Record):
     rights_holder: str | None = None
     creator: str | None = None
     source: SourceRecord | None = None
+    #: The SHA-256 of the file the image was made from: the source's for the base collection, the verified
+    #: upload's for a contribution, so anyone holding the file can check it is the one shown.
+    original_sha256: str | None = None
 
 
 class SlideRecord(_Record):
@@ -207,6 +210,39 @@ class SlidePage(_Record):
     limit: int
 
 
+class CaseImageRecord(_Record):
+    """An image of a contributor's case: its state, and its file's (the last upload)."""
+
+    asset_id: int
+    token: str | None = None
+    family: Literal["macro", "micro"]
+    role: str
+    status: Literal["pending", "ready", "failed"]
+    failure: str | None = None
+    has_file: bool = False
+    upload_status: str | None = None
+    upload_reason: str | None = None
+    upload_job: str | None = None
+
+
+class CaseSummary(_Record):
+    """A contributor's slide case in their list (``GET /api/slide-cases``)."""
+
+    id: str
+    status: Literal["draft", "processing", "published", "hidden"]
+    status_reason: str | None = None
+    name: str
+    placement: str
+    updated_at: datetime
+    images: list[CaseImageRecord] = []
+
+
+class CaseRecord(CaseSummary):
+    """A contributor's case to reopen (``GET /api/slide-cases/{id}``): its summary and the case as last sent."""
+
+    submission: dict[str, Any] = {}
+
+
 class AnnotationRecord(_Record):
     """An annotation as the stage reads it: the W3C Web Annotation, who wrote it, and whether the reader may remove
     it (its author, or a curator)."""
@@ -253,12 +289,18 @@ class ValidationFlag(_Record):
     code: str
     field: str
     message: str
+    params: dict[str, str] = {}
 
 
 class ValidationError(_Record):
+    """A reason a slide case is refused: the field, the API's message and what would be accepted, and a stable code
+    with the values the message names, so an interface can say it in its own words (R-1202)."""
+
     field: str
     message: str
     expected: str
+    code: str | None = None
+    params: dict[str, str] = {}
 
 
 class ValidationResult(_Record):
@@ -428,6 +470,14 @@ class AnchorSuggestion(_Record):
     classification: str | None = None
     #: For a taxon, its higher classification (kingdom to family).
     context: str | None = None
+
+
+class PartRecord(_Record):
+    """A part of an organism the part field offers (``GET /api/vocab/parts``), with its organ system."""
+
+    id: str
+    group: str
+    name: LocalisedText
 
 
 class PlacementResult(_Record):

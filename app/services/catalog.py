@@ -97,6 +97,7 @@ def asset_record(asset: Asset, settings: Settings) -> c.AssetRecord:
         plane=plane, polarisation=polarisation, caption=asset.caption,
         licence=c.LicenceRecord(uri=canon, short_name=licences.short_name(canon)),
         rights_holder=asset.rights_holder, creator=asset.creator, source=source,
+        original_sha256=asset.source_sha256,
     )
 
 

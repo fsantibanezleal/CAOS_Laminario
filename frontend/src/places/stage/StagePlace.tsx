@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import { Link, useParams } from "wouter";
 import { api } from "../../api/client";
 import { useResource } from "../../api/useResource";
+import { useSession } from "../../account/session";
 import { useI18n } from "../../i18n";
 import { Place } from "../../router/Place";
 import { itemFor, stageItems, thumbnail } from "../../slide/assets";
@@ -20,7 +21,7 @@ export function StagePlace() {
   const { t, lang, plural } = useI18n();
   const tree = useTree();
   const slide = useResource(`slide:${id.toUpperCase()}`, (signal) => api.slide(id, signal));
-  const me = useResource("me", (signal) => api.me(signal));
+  const session = useSession();
   if (slide.state === "error") return <NotFoundPlace />;
   if (!slide.value || tree.state !== "ready") return <Place title={t("state.loading")} ready={false}><Skeleton lines={6} /></Place>;
   const record = slide.value;
@@ -38,7 +39,7 @@ export function StagePlace() {
       heading={<span><SlideName record={record} /> <span className={styles.what}>· {what}</span></span>}>
       <div className={styles.body}>
         <Suspense fallback={<div className={styles.loading}><Skeleton lines={3} /></div>}>
-          <StageViewer key={item.key} slideId={record.id} item={item} signedIn={Boolean(me.value)} />
+          <StageViewer key={item.key} slideId={record.id} item={item} signedIn={session.can("annotate")} />
         </Suspense>
         {items.length > 1 ? (
           <nav aria-label={t("stage.others")} className={styles.others}>

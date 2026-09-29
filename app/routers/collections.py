@@ -8,6 +8,7 @@
 | `GET /api/facets` | preparation, modality, plant organ and crystal system, with their icons |
 | `GET /api/anchors/search?kind=&q=` | names for the anchor field: GBIF backbone taxa or a vocabulary |
 | `POST /api/placement` | the suggested node for an anchor, and every node that accepts it |
+| `GET /api/vocab/parts` | the parts of an organism a slide can show, by organ system |
 """
 
 from __future__ import annotations
@@ -72,6 +73,13 @@ async def read_iiif_collection(node_id: str, request: Request, db: Db) -> JSONRe
     return JSONResponse(document, media_type=MANIFEST_MEDIA_TYPE, headers={"Access-Control-Allow-Origin": "*"})
 
 
+@router.get("/vocab/parts", response_model=list[c.PartRecord])
+def read_parts() -> list[c.PartRecord]:
+    """The parts vocabulary in its file's order (grouped by organ system), each name in English and Spanish."""
+    return [c.PartRecord(id=key, group=term["group"], name=c.LocalisedText(en=term["en"], es=term["es"]))
+            for key, term in vocab.load().parts.items()]
+
+
 @router.get("/facets", response_model=list[c.FacetRecord])
 def read_facets() -> list[c.FacetRecord]:
     """The properties that cut across the tree, each value with its icon."""
@@ -102,7 +110,8 @@ async def suggest_placement(query: PlacementQuery, request: Request, db: Db) -> 
     problem = vocab.check_part(query.part)
     if problem:
         return c.PlacementResult(errors=[c.ValidationError(field=problem.field, message=problem.message,
-                                                           expected=problem.expected)])
+                                                           expected=problem.expected, code=problem.code,
+                                                           params=problem.params)])
     try:
         resolved = await resolve_anchor(db, request.app.state.gbif_client, query.anchor, part=query.part,
                                         preservation=query.preservation, at="anchor")

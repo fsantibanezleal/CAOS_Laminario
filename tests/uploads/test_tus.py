@@ -63,8 +63,10 @@ def test_resume_after_interruption(tmp_path, monkeypatch):
     assert upload.sniffed == "tiff"
     with open(upload.source_path, "rb") as source:
         assert hashlib.sha256(source.read()).hexdigest() == original
-    asset = rows(settings, "SELECT status, width_px, height_px FROM asset WHERE id = :id", id=assets[1])[0]
+    asset = rows(settings, "SELECT status, width_px, height_px, source_sha256 FROM asset WHERE id = :id",
+                 id=assets[1])[0]
     assert (asset.status, asset.width_px, asset.height_px) == ("ready", 1600, 1100)
+    assert asset.source_sha256 == original, "the image keeps the SHA-256 of the file it was made from (R-1208)"
     assert not list(settings.quarantine_root.iterdir()), "the quarantine is empty once the file is accepted"
 
 

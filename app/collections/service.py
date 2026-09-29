@@ -44,8 +44,8 @@ class Checked:
     placement: Placement | None = None
 
 
-def _error(field_name: str, message: str, expected: str) -> dict[str, str]:
-    return {"field": field_name, "message": message, "expected": expected}
+def _error(field_name: str, message: str, expected: str, code: str = "", params: dict | None = None) -> dict:
+    return {"field": field_name, "message": message, "expected": expected, "code": code, "params": params or {}}
 
 
 async def resolve_anchor(db: AsyncSession, client: httpx2.AsyncClient, anchor: Anchor, *, part: str | None,
@@ -53,15 +53,16 @@ async def resolve_anchor(db: AsyncSession, client: httpx2.AsyncClient, anchor: A
     """The anchor's canonical form and placement facts, or the error that says why it does not resolve."""
     if anchor.kind == "taxon":
         if not anchor.ref.isdigit():
-            return _error(f"{at}.ref", "a taxon is referenced by its GBIF usage key", "the GBIF usage key, digits only")
+            return _error(f"{at}.ref", "a taxon is referenced by its GBIF usage key", "the GBIF usage key, digits only",
+                          code="taxon_key_expected")
         found = await taxa.lineage(db, client, int(anchor.ref))
         if found is None:
             return _error(f"{at}.ref", f"{anchor.ref} is not a taxon of the GBIF backbone",
-                          "the usage key of a GBIF backbone taxon")
+                          "the usage key of a GBIF backbone taxon", code="taxon_unknown", params={"ref": anchor.ref})
         return ResolvedAnchor(anchor.ref, anchor.rank or found.rank, None, found.facts(part, preservation))
     term = vocab.resolve_term(anchor.kind, anchor.ref, anchor.classification, field=at)
     if isinstance(term, vocab.Problem):
-        return _error(term.field, term.message, term.expected)
+        return _error(term.field, term.message, term.expected, term.code, term.params)
     facts = Facts(kind=anchor.kind, path=term.path, part=part, preservation=preservation)
     return ResolvedAnchor(term.ref, term.rank or anchor.rank, term.classification, facts)
 
@@ -78,7 +79,7 @@ async def check_submission(db: AsyncSession, client: httpx2.AsyncClient, sub: Sl
     sp = sub.specimen
     problem = vocab.check_part(sp.part)
     if problem:
-        out.errors.append(_error(problem.field, problem.message, problem.expected))
+        out.errors.append(_error(problem.field, problem.message, problem.expected, problem.code, problem.params))
     resolved = await resolve_anchor(db, client, sp.anchor, part=sp.part, preservation=sp.preservation)
     if isinstance(resolved, dict):
         out.errors.append(resolved)
@@ -87,23 +88,27 @@ async def check_submission(db: AsyncSession, client: httpx2.AsyncClient, sub: Sl
     if sp.host is not None and sp.host.kind == "taxon" and sp.host.ref.isdigit():
         if await taxa.lineage(db, client, int(sp.host.ref)) is None:
             out.errors.append(_error("specimen.host.ref", f"{sp.host.ref} is not a taxon of the GBIF backbone",
-                                     "the usage key of a GBIF backbone taxon"))
+                                     "the usage key of a GBIF backbone taxon",
+                                     code="taxon_unknown", params={"ref": sp.host.ref}))
     if sp.country is not None and not places.known(sp.country):
         out.errors.append(_error("specimen.country", f"{sp.country} is not an ISO 3166-1 country code",
-                                 "a two-letter country code such as CL, ES or GB"))
+                                 "a two-letter country code such as CL, ES or GB",
+                                 code="country_unknown", params={"country": sp.country}))
     elif sp.country and sp.coordinates and not places.agrees(sp.country, sp.coordinates.lat, sp.coordinates.lon):
         found = places.locate(sp.coordinates.lat, sp.coordinates.lon)
         out.errors.append(_error("specimen.country",
                                  f"the coordinates lie outside {places.name(sp.country)}"
                                  + (f", in {places.name(found)}" if found else ""),
-                                 "the country the coordinates lie in, or coordinates inside the stated country"))
+                                 "the country the coordinates lie in, or coordinates inside the stated country",
+                                 code="country_mismatch", params={"country": sp.country, "found": found or ""}))
     node = tree.get(sub.placement.node)
     if node is None:
         out.errors.append(_error("placement.node", f"{sub.placement.node} is not a node of the collection tree",
-                                 "a node id such as life.birds.feathers"))
+                                 "a node id such as life.birds.feathers",
+                                 code="node_unknown", params={"node": sub.placement.node}))
     elif node.is_view:
         out.errors.append(_error("placement.node", f"{node.id} is a view of slides placed elsewhere",
-                                 "a collection node that holds slides"))
+                                 "a collection node that holds slides", code="node_is_view", params={"node": node.id}))
     if out.anchor is not None:
         out.placement = place(out.anchor.facts, tree)
         if node is not None and not node.is_view and node.id not in out.placement.accepting \
@@ -111,5 +116,8 @@ async def check_submission(db: AsyncSession, client: httpx2.AsyncClient, sub: Sl
             accepting = out.placement.accepting
             expected = (f"{out.placement.suggestion} (suggested), or one of: {node_list(accepting)}"
                         if accepting else "no node takes this anchor; a curator can place it with a reason")
-            out.errors.append(_error("placement.node", f"{node.id} does not take this {sp.anchor.kind}", expected))
+            out.errors.append(_error("placement.node", f"{node.id} does not take this {sp.anchor.kind}", expected,
+                                     code="node_refuses",
+                                     params={"node": node.id, "kind": sp.anchor.kind,
+                                             "suggestion": out.placement.suggestion or ""}))
     return out
