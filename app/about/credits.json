@@ -5,35 +5,47 @@
       "id": "commons",
       "name": "Wikimedia Commons",
       "url": "https://commons.wikimedia.org/",
-      "hosts": ["upload.wikimedia.org", "commons.wikimedia.org"],
+      "hosts": [
+        "upload.wikimedia.org",
+        "commons.wikimedia.org"
+      ],
       "terms": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia"
     },
     {
       "id": "nhm",
       "name": "Natural History Museum, London (Data Portal)",
       "url": "https://data.nhm.ac.uk/",
-      "hosts": ["data.nhm.ac.uk"],
+      "hosts": [
+        "data.nhm.ac.uk"
+      ],
       "terms": "https://data.nhm.ac.uk/about/citation"
     },
     {
       "id": "smithsonian",
       "name": "Smithsonian Institution (Open Access)",
       "url": "https://www.si.edu/openaccess",
-      "hosts": ["ids.si.edu", "collections.si.edu"],
+      "hosts": [
+        "ids.si.edu",
+        "collections.si.edu"
+      ],
       "terms": "https://www.si.edu/openaccess"
     },
     {
       "id": "zenodo",
       "name": "Zenodo (Smithsonian NMNH focal stacks)",
       "url": "https://zenodo.org/",
-      "hosts": ["zenodo.org"],
+      "hosts": [
+        "zenodo.org"
+      ],
       "terms": "https://about.zenodo.org/terms/"
     },
     {
       "id": "openslide",
       "name": "OpenSlide test data",
       "url": "https://openslide.cs.cmu.edu/download/openslide-testdata/",
-      "hosts": ["openslide.cs.cmu.edu"],
+      "hosts": [
+        "openslide.cs.cmu.edu"
+      ],
       "terms": "https://openslide.cs.cmu.edu/download/openslide-testdata/"
     }
   ],
@@ -88,29 +100,136 @@
       "name": "Protomaps (basemap tiles and style)",
       "url": "https://protomaps.com/",
       "licence": "BSD-3-Clause"
+    },
+    {
+      "id": "natural-earth",
+      "name": "Natural Earth (1:50m admin-0 map units)",
+      "url": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "licence": "Public domain"
+    },
+    {
+      "id": "cldr",
+      "name": "Unicode CLDR 48.2.2 (country names in English and Spanish)",
+      "url": "https://cldr.unicode.org/",
+      "licence": "Unicode-3.0"
     }
   ],
   "software": [
-    {"id": "libvips", "name": "libvips", "url": "https://github.com/libvips/libvips", "licence": "LGPL-2.1"},
-    {"id": "openslide", "name": "OpenSlide", "url": "https://openslide.org/", "licence": "LGPL-2.1"},
-    {"id": "iipsrv", "name": "IIPImage server (iipsrv)", "url": "https://github.com/ruven/iipsrv", "licence": "GPL-3.0"},
-    {"id": "tusd", "name": "tusd", "url": "https://github.com/tus/tusd", "licence": "MIT"},
-    {"id": "fastapi", "name": "FastAPI, Pydantic, Uvicorn", "url": "https://github.com/fastapi/fastapi", "licence": "MIT (Uvicorn: BSD-3-Clause)"},
-    {"id": "sqlalchemy", "name": "SQLAlchemy, Alembic, aiosqlite", "url": "https://www.sqlalchemy.org/", "licence": "MIT"},
-    {"id": "fastapi-users", "name": "fastapi-users", "url": "https://github.com/fastapi-users/fastapi-users", "licence": "MIT"},
-    {"id": "numpy", "name": "NumPy, SciPy", "url": "https://numpy.org/", "licence": "BSD-3-Clause"},
-    {"id": "tifffile", "name": "pyvips, tifffile", "url": "https://github.com/libvips/pyvips", "licence": "MIT (tifffile: BSD-3-Clause)"},
-    {"id": "pebble", "name": "Pebble", "url": "https://github.com/noxdafox/pebble", "licence": "LGPL-3.0"},
-    {"id": "segno", "name": "segno, ReportLab", "url": "https://github.com/heuer/segno", "licence": "BSD"},
-    {"id": "openseadragon", "name": "OpenSeadragon, Annotorious", "url": "https://openseadragon.github.io/", "licence": "BSD-3-Clause"},
-    {"id": "maplibre", "name": "MapLibre GL JS, PMTiles", "url": "https://maplibre.org/", "licence": "BSD-3-Clause"},
-    {"id": "react", "name": "React, wouter", "url": "https://react.dev/", "licence": "MIT (wouter: Unlicense)"},
-    {"id": "uppy", "name": "Uppy, exifr", "url": "https://uppy.io/", "licence": "MIT"},
-    {"id": "katex", "name": "KaTeX", "url": "https://katex.org/", "licence": "MIT"}
+    {
+      "id": "libvips",
+      "name": "libvips",
+      "url": "https://github.com/libvips/libvips",
+      "licence": "LGPL-2.1"
+    },
+    {
+      "id": "openslide",
+      "name": "OpenSlide",
+      "url": "https://openslide.org/",
+      "licence": "LGPL-2.1"
+    },
+    {
+      "id": "iipsrv",
+      "name": "IIPImage server (iipsrv)",
+      "url": "https://github.com/ruven/iipsrv",
+      "licence": "GPL-3.0"
+    },
+    {
+      "id": "tusd",
+      "name": "tusd",
+      "url": "https://github.com/tus/tusd",
+      "licence": "MIT"
+    },
+    {
+      "id": "fastapi",
+      "name": "FastAPI, Pydantic, Uvicorn",
+      "url": "https://github.com/fastapi/fastapi",
+      "licence": "MIT (Uvicorn: BSD-3-Clause)"
+    },
+    {
+      "id": "sqlalchemy",
+      "name": "SQLAlchemy, Alembic, aiosqlite",
+      "url": "https://www.sqlalchemy.org/",
+      "licence": "MIT"
+    },
+    {
+      "id": "fastapi-users",
+      "name": "fastapi-users",
+      "url": "https://github.com/fastapi-users/fastapi-users",
+      "licence": "MIT"
+    },
+    {
+      "id": "numpy",
+      "name": "NumPy, SciPy",
+      "url": "https://numpy.org/",
+      "licence": "BSD-3-Clause"
+    },
+    {
+      "id": "tifffile",
+      "name": "pyvips, tifffile",
+      "url": "https://github.com/libvips/pyvips",
+      "licence": "MIT (tifffile: BSD-3-Clause)"
+    },
+    {
+      "id": "pebble",
+      "name": "Pebble",
+      "url": "https://github.com/noxdafox/pebble",
+      "licence": "LGPL-3.0"
+    },
+    {
+      "id": "segno",
+      "name": "segno, ReportLab",
+      "url": "https://github.com/heuer/segno",
+      "licence": "BSD"
+    },
+    {
+      "id": "openseadragon",
+      "name": "OpenSeadragon, Annotorious",
+      "url": "https://openseadragon.github.io/",
+      "licence": "BSD-3-Clause"
+    },
+    {
+      "id": "maplibre",
+      "name": "MapLibre GL JS, PMTiles",
+      "url": "https://maplibre.org/",
+      "licence": "BSD-3-Clause"
+    },
+    {
+      "id": "react",
+      "name": "React, wouter",
+      "url": "https://react.dev/",
+      "licence": "MIT (wouter: Unlicense)"
+    },
+    {
+      "id": "uppy",
+      "name": "Uppy, exifr",
+      "url": "https://uppy.io/",
+      "licence": "MIT"
+    },
+    {
+      "id": "katex",
+      "name": "KaTeX",
+      "url": "https://katex.org/",
+      "licence": "MIT"
+    }
   ],
   "fonts": [
-    {"id": "laminario-sans", "name": "Laminario Sans (a subset of Source Sans 3, Paul D. Hunt, Adobe)", "url": "https://github.com/adobe-fonts/source-sans", "licence": "OFL-1.1"},
-    {"id": "fraunces", "name": "Fraunces (Undercase Type)", "url": "https://github.com/undercasetype/Fraunces", "licence": "OFL-1.1"},
-    {"id": "courier-prime", "name": "Courier Prime (Alan Dague-Greene)", "url": "https://quoteunquoteapps.com/courierprime/", "licence": "OFL-1.1"}
+    {
+      "id": "laminario-sans",
+      "name": "Laminario Sans (a subset of Source Sans 3, Paul D. Hunt, Adobe)",
+      "url": "https://github.com/adobe-fonts/source-sans",
+      "licence": "OFL-1.1"
+    },
+    {
+      "id": "fraunces",
+      "name": "Fraunces (Undercase Type)",
+      "url": "https://github.com/undercasetype/Fraunces",
+      "licence": "OFL-1.1"
+    },
+    {
+      "id": "courier-prime",
+      "name": "Courier Prime (Alan Dague-Greene)",
+      "url": "https://quoteunquoteapps.com/courierprime/",
+      "licence": "OFL-1.1"
+    }
   ]
 }

@@ -3,6 +3,7 @@
 // under the microscope, the photographs, the record, and where every image came from (R-1107).
 import { lazy, Suspense, useState } from "react";
 import { Link, useParams } from "wouter";
+import { CiteSlide } from "../../about/CiteSlide";
 import { api, labelPdf, slideDrawing } from "../../api/client";
 import { forget, useResource } from "../../api/useResource";
 import type { AssetRecord, SlideRecord } from "../../contract/catalog";
@@ -137,6 +138,7 @@ function SlideView({ record, tree, onChanged }: { record: SlideRecord; tree: Tre
           ) : null}
 
           <Provenance record={record} />
+          <CiteSlide record={record} tree={tree} />
         </div>
         <Record record={record} tree={tree} />
       </div>

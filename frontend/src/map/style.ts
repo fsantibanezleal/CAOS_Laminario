@@ -50,7 +50,8 @@ export function buildStyle(c: MapColours, basemapUrl: string | null, origin: str
       ...(basemapUrl ? {
         protomaps: {
           type: "vector", url: `pmtiles://${basemapUrl}`, maxzoom: 7,
-          attribution: "© OpenStreetMap contributors (ODbL), Protomaps",
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (ODbL), '
+            + '<a href="https://protomaps.com/">Protomaps</a>',
         },
       } : {}),
       countries: { type: "geojson", data: { type: "FeatureCollection", features: [] }, promoteId: "code" },

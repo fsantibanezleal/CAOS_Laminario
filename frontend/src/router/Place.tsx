@@ -5,6 +5,7 @@
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 import { useLocation } from "wouter";
 import { useI18n } from "../i18n";
+import { Footer } from "../ui/Footer";
 import { Masthead } from "../ui/Masthead";
 import { PlaceTrail, type Place as TrailPlace } from "../ui/PlaceTrail";
 import { navigationKind, savedScroll } from "./navigation";
@@ -53,6 +54,7 @@ export function Place({ title, heading, trail, ready = true, wide = false, child
         <h1 ref={headingRef} tabIndex={-1} className={styles.heading}>{heading ?? title}</h1>
         {children}
       </main>
+      <Footer />
     </>
   );
 }
