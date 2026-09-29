@@ -18,6 +18,24 @@ export const PLACES = ["/", "/c/insects", "/c/insects/lice", "/c/rocks/igneous",
   "/search?preparation=thin_section&node=earth.rocks", "/map", "/design", "/nowhere"];
 
 /**
+ * Slides the gates look at, found through the API (their ids belong to the collection the API serves): the first
+ * slide of a drawer with a type label, one with a focal stack, one with a polarised pair, one with a single field.
+ */
+export async function exampleSlides() {
+  const page = async (query) => (await (await fetch(`${API}/api/slides?${query}&limit=200`)).json()).items;
+  const records = async (ids) => Promise.all(ids.map(async (id) => (await fetch(`${API}/api/slides/${id}`)).json()));
+  const lice = await page("node=life.insects.lice");
+  const rocks = await page("node=earth.rocks");
+  const wsi = await page("wsi=true");
+  const all = await records([...new Set([...lice.slice(0, 3), ...rocks.slice(0, 40), ...wsi].map((s) => s.id))]);
+  const micro = (r) => r.assets.filter((a) => a.family === "micro" && a.status === "ready");
+  const stack = all.find((r) => micro(r).some((a) => a.role === "z_plane"));
+  const pair = all.find((r) => micro(r).some((a) => a.role === "polarised"));
+  const single = all.find((r) => micro(r).some((a) => a.role === "single"));
+  return { label: all[0], stack, pair, single, all };
+}
+
+/**
  * The places read the API through the preview's proxy. Refuse to run unless the API on 8147 is Laminario's and its
  * collection has slides: a gate against another product on the port, or an empty collection, would pass vacuously.
  * Start it with scripts/local/03_dev over a data root that holds the base collection.

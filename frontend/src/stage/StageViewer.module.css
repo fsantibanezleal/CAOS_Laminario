@@ -202,6 +202,11 @@
   cursor: pointer;
 }
 
+/* OpenSeadragon's own messages are English and technical; the stage says what failed in the page's language. */
+.viewer :global(.openseadragon-message) {
+  display: none;
+}
+
 /* OpenSeadragon's navigator (the little map of the whole image) in the room's colours. */
 .viewer :global(.navigator) {
   border: 1px solid var(--c-edge) !important;

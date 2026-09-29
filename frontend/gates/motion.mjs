@@ -2,9 +2,13 @@
 // last up to 150 ms). Measures the computed styles of every element (and its ::before and ::after) of every place,
 // in both rooms, after pressing the controls that start movement (the slide's move, the switches).
 import { chromium } from "playwright";
-import { PLACES, ROOMS, openPlace, requireApi, serve } from "./lib/serve.mjs";
+import { PLACES, ROOMS, openPlace, requireApi, serve, exampleSlides } from "./lib/serve.mjs";
 
 await requireApi();
+// The slide and stage places of a slide the API serves (their ids belong to its collection).
+const { label } = await exampleSlides();
+const stageAsset = label.assets.find((a) => a.family === "micro" && a.status === "ready");
+PLACES.push(`/s/${label.id}`, ...(stageAsset ? [`/s/${label.id}/stage/${stageAsset.id}`] : []));
 
 const stop = await serve();
 const browser = await chromium.launch();

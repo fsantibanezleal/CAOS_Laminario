@@ -21,7 +21,8 @@
     "gate:fit": "node gates/fit.mjs",
     "gate:motion": "node gates/motion.mjs",
     "gate:states": "node gates/states.mjs",
-    "gate:walk": "node gates/walk.mjs"
+    "gate:walk": "node gates/walk.mjs",
+    "gate:qr": "node gates/qr.mjs"
   },
   "dependencies": {
     "@annotorious/openseadragon": "3.9.3",

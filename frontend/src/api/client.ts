@@ -72,12 +72,7 @@ export const api = {
     send<AnnotationRecord>("POST", `${slidePath(slide)}/assets/${asset}/annotations`, annotation),
   removeAnnotation: (id: string) => send<null>("DELETE", `/api/annotations/${encodeURIComponent(id)}`),
   /** The signed-in account, or null for a visitor. */
-  me: async (signal?: AbortSignal): Promise<AccountRecord | null> => {
-    const response = await fetch("/api/users/me", { signal, headers: { Accept: "application/json" } });
-    if (response.status === 401) return null;
-    if (!response.ok) throw new ApiError(response.status, "/api/users/me");
-    return (await response.json()) as AccountRecord;
-  },
+  me: (signal?: AbortSignal) => getJson<AccountRecord | null>("/api/session", signal),
 };
 
 export const labelPdf = (id: string, lang: string) => `${slidePath(id)}/label.pdf?lang=${lang}`;
