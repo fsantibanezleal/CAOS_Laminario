@@ -55,6 +55,7 @@ CATALOG_ROOTS = {
     "profile": c.ProfileRecord,
     "personIdentification": c.PersonIdentificationRecord,
     "stock": c.StockRecord,
+    "about": c.AboutRecord,
 }
 
 

@@ -83,10 +83,123 @@
     },
     "stock": {
       "$ref": "#/$defs/StockRecord"
+    },
+    "about": {
+      "$ref": "#/$defs/AboutRecord"
     }
   },
   "additionalProperties": false,
   "$defs": {
+    "AboutNumbers": {
+      "additionalProperties": false,
+      "description": "The collection counted when the page is read (R-1501).",
+      "properties": {
+        "slides": {
+          "type": "integer"
+        },
+        "by_origin": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "realms": {
+          "items": {
+            "$ref": "#/$defs/RealmCount"
+          },
+          "type": "array"
+        },
+        "wsi": {
+          "type": "integer"
+        },
+        "images": {
+          "type": "integer"
+        },
+        "countries": {
+          "type": "integer"
+        },
+        "contributors": {
+          "type": "integer"
+        },
+        "identifications": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "slides",
+        "wsi",
+        "images",
+        "countries",
+        "contributors",
+        "identifications"
+      ],
+      "title": "AboutNumbers",
+      "type": "object"
+    },
+    "AboutRecord": {
+      "additionalProperties": false,
+      "description": "``GET /api/about``: the numbers, the sources and licences counted, the policy, and the credits.",
+      "properties": {
+        "read_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "numbers": {
+          "$ref": "#/$defs/AboutNumbers"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceCount"
+          },
+          "type": "array"
+        },
+        "licences": {
+          "items": {
+            "$ref": "#/$defs/LicenceCount"
+          },
+          "type": "array"
+        },
+        "policy": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "vocabularies": {
+          "items": {
+            "$ref": "#/$defs/CreditRecord"
+          },
+          "type": "array"
+        },
+        "map": {
+          "items": {
+            "$ref": "#/$defs/CreditRecord"
+          },
+          "type": "array"
+        },
+        "software": {
+          "items": {
+            "$ref": "#/$defs/CreditRecord"
+          },
+          "type": "array"
+        },
+        "fonts": {
+          "items": {
+            "$ref": "#/$defs/CreditRecord"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "read_at",
+        "numbers"
+      ],
+      "title": "AboutRecord",
+      "type": "object"
+    },
     "AccountRecord": {
       "additionalProperties": false,
       "description": "An account as ``GET /api/users/me`` returns it.",
@@ -891,6 +1004,72 @@
       "title": "CreatedSlideCase",
       "type": "object"
     },
+    "CreditRecord": {
+      "additionalProperties": false,
+      "description": "A vocabulary, a map layer, a piece of software or a font the collection stands on (R-1507).",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "licence": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "citation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "doi": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "terms": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "url"
+      ],
+      "title": "CreditRecord",
+      "type": "object"
+    },
     "DefinitionRecord": {
       "additionalProperties": false,
       "description": "One condition of a node's rule, for people: a taxon with its GBIF page, a rock family, a part.",
@@ -1655,6 +1834,31 @@
       "title": "LabelRecord",
       "type": "object"
     },
+    "LicenceCount": {
+      "additionalProperties": false,
+      "properties": {
+        "uri": {
+          "type": "string"
+        },
+        "short": {
+          "type": "string"
+        },
+        "family": {
+          "type": "string"
+        },
+        "images": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "uri",
+        "short",
+        "family",
+        "images"
+      ],
+      "title": "LicenceCount",
+      "type": "object"
+    },
     "LicenceRecord": {
       "additionalProperties": false,
       "properties": {
@@ -2375,6 +2579,30 @@
       "title": "QualityRecord",
       "type": "object"
     },
+    "RealmCount": {
+      "additionalProperties": false,
+      "description": "A realm's published slides, and each of its collections' (``life.insects``).",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slides": {
+          "type": "integer"
+        },
+        "collections": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "slides"
+      ],
+      "title": "RealmCount",
+      "type": "object"
+    },
     "SlidePage": {
       "additionalProperties": false,
       "properties": {
@@ -2612,6 +2840,67 @@
         "origin"
       ],
       "title": "SlideSummary",
+      "type": "object"
+    },
+    "SourceCount": {
+      "additionalProperties": false,
+      "description": "Where images came from, with their count and licences (R-1502): a source of ``credits.json``, the\ncontributors (``contribution``), or ``other``.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "terms": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "slides": {
+          "type": "integer"
+        },
+        "images": {
+          "type": "integer"
+        },
+        "licences": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "slides",
+        "images"
+      ],
+      "title": "SourceCount",
       "type": "object"
     },
     "SourceRecord": {
