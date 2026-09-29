@@ -36,6 +36,13 @@ def upgrade() -> None:
         batch.add_column(sa.Column("country", sa.String(length=2), nullable=True))
         batch.add_column(sa.Column("search_text", sa.Text(), nullable=True))
         batch.create_index("ix_slide_country", ["country"])
+    # The slides that existed before this revision: their text composed now (and their country from coordinates),
+    # with the composer of the application that runs the migration. This runs before the index and its triggers
+    # exist: the update trigger deletes the old text from the index, and deleting a row an external-content index
+    # never held corrupts it ("database disk image is malformed"). The rebuild then indexes every row once.
+    from app.services.search import reindex
+
+    reindex(op.get_bind())
     op.execute("CREATE VIRTUAL TABLE slide_search USING fts5(search_text, content='slide', content_rowid='id', "
                "tokenize='unicode61 remove_diacritics 2')")
     for trigger in TRIGGERS:

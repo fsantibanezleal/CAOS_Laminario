@@ -47,6 +47,12 @@
     },
     "placement": {
       "$ref": "#/$defs/PlacementResult"
+    },
+    "facetCounts": {
+      "$ref": "#/$defs/FacetCounts"
+    },
+    "map": {
+      "$ref": "#/$defs/MapRecord"
     }
   },
   "additionalProperties": false,
@@ -553,6 +559,70 @@
       "title": "DefinitionRecord",
       "type": "object"
     },
+    "FacetCounts": {
+      "additionalProperties": false,
+      "description": "For each facet, its values under the current filters and how many slides each would match (the facet's own\nfilter left out, so a second value shows what it adds).",
+      "properties": {
+        "kind": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {},
+          "type": "object"
+        },
+        "preparation": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {},
+          "type": "object"
+        },
+        "modality": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {},
+          "type": "object"
+        },
+        "preservation": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {},
+          "type": "object"
+        },
+        "country": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {},
+          "type": "object"
+        },
+        "licence": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {},
+          "type": "object"
+        },
+        "wsi": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {},
+          "type": "object"
+        },
+        "origin": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {},
+          "type": "object"
+        }
+      },
+      "title": "FacetCounts",
+      "type": "object"
+    },
     "FacetRecord": {
       "additionalProperties": false,
       "description": "A property that cuts across the tree, with the icon of each value.",
@@ -998,6 +1068,70 @@
         "es"
       ],
       "title": "LocalisedText",
+      "type": "object"
+    },
+    "MapPointRecord": {
+      "additionalProperties": false,
+      "description": "A slide on the map, after geoprivacy: an obscured one at its public point, with its 0.2 degree cell.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        },
+        "obscured": {
+          "default": false,
+          "type": "boolean"
+        },
+        "cell": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CellRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "lat",
+        "lon"
+      ],
+      "title": "MapPointRecord",
+      "type": "object"
+    },
+    "MapRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "countries": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "points": {
+          "items": {
+            "$ref": "#/$defs/MapPointRecord"
+          },
+          "type": "array"
+        },
+        "total": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "countries",
+        "points",
+        "total"
+      ],
+      "title": "MapRecord",
       "type": "object"
     },
     "MediaRecord": {

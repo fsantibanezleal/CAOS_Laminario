@@ -46,6 +46,7 @@ describe("catalog contract", () => {
     expect(Object.keys(schema.properties)).toEqual([
       "slide", "slidePage", "slideSummary", "validation", "job", "jobEvent", "account", "invitation",
       "createdSlideCase", "upload", "collectionTree", "collectionNode", "facet", "anchorSuggestion", "placement",
+      "facetCounts", "map",
     ]);
   });
 

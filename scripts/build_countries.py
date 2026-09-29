@@ -14,6 +14,8 @@
   dropped. A few codes have no shape at this scale (Gibraltar, Bouvet Island, the US Minor Outlying Islands and the
   codes CLDR carries for Ascension, Clipperton, Diego Garcia, Ceuta and Melilla, the Canary Islands, Sark and Tristan
   da Cunha); they are valid codes, listed but not shaded.
+  Each feature keeps Natural Earth's hand-placed label point (``LABEL_X``, ``LABEL_Y``) and the zoom from which it is
+  labelled (``MIN_LABEL``); for merged units, the point of the largest unit and the smallest zoom of them all.
 
 The sources are read from ``<LAMINARIO_FIXTURES>/vocab`` and must match their recorded SHA-256. ``--check`` rebuilds
 in memory and fails when a committed file differs.
@@ -95,18 +97,33 @@ def _polygons(geometry: dict) -> list:
     return out
 
 
+def _area(polys: list) -> float:
+    """The planar area of the outer rings, in square degrees: enough to tell the largest unit of a code."""
+    return sum(abs(sum(x1 * y2 - x2 * y1 for (x1, y1), (x2, y2) in zip(ring, ring[1:], strict=False))) / 2
+               for ring in (poly[0] for poly in polys))
+
+
 def shapes(valid: set[str]) -> dict:
     features = json.loads(source("natural-earth/ne_50m_admin_0_map_units.geojson"))["features"]
     merged: dict[str, list] = {}
+    labels: dict[str, tuple[float, list[float], float]] = {}
     for f in features:
-        code = f["properties"].get("ISO_A2_EH")
+        props = f["properties"]
+        code = props.get("ISO_A2_EH")
         if code in valid:
-            merged.setdefault(code, []).extend(_polygons(f["geometry"]))
+            polys = _polygons(f["geometry"])
+            merged.setdefault(code, []).extend(polys)
+            area = _area(polys)
+            point = [round(props["LABEL_X"], 2), round(props["LABEL_Y"], 2)]
+            best = labels.get(code)
+            zoom = min(props["MIN_LABEL"], best[2]) if best else props["MIN_LABEL"]
+            labels[code] = (area, point, zoom) if not best or area > best[0] else (best[0], best[1], zoom)
     return {
         "type": "FeatureCollection",
         "about": "Country shapes from Natural Earth 1:50m admin-0 map units (public domain), one feature per ISO "
                  "3166-1 code, rounded to 0.01 degree. Built by scripts/build_countries.py; do not edit by hand.",
-        "features": [{"type": "Feature", "id": code, "properties": {"code": code},
+        "features": [{"type": "Feature", "id": code,
+                      "properties": {"code": code, "label": labels[code][1], "label_zoom": labels[code][2]},
                       "geometry": {"type": "MultiPolygon", "coordinates": polys}}
                      for code, polys in sorted(merged.items())],
     }

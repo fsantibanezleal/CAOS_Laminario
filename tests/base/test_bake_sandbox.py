@@ -70,6 +70,25 @@ def test_tests_never_write_canonical_outputs(fixtures: Path, vips, tmp_path: Pat
     again = import_bake(out, target)
     assert first["imported"] == 2 and again["imported"] == 0 and again["skipped"] == 2
 
+    # The imported slides are found by search: their text is composed at import, with the target's tree.
+    from sqlalchemy import text
+
+    from app.db.engine import make_sync_engine
+
+    engine = make_sync_engine(target.data_root / "laminario.sqlite3")
+    try:
+        with engine.connect() as conn:
+            rows = conn.execute(text("SELECT short_id, anchor_name, search_text FROM slide")).all()
+            assert len(rows) == 2 and all(r.search_text for r in rows)
+            for short_id, anchor_name, _ in rows:
+                for term in (short_id, anchor_name.split()[0]):
+                    hits = conn.execute(text("SELECT s.short_id FROM slide_search JOIN slide s "
+                                             "ON s.id = slide_search.rowid WHERE slide_search MATCH :q"),
+                                        {"q": f'"{term}"'}).scalars().all()
+                    assert short_id in hits, (short_id, term)
+    finally:
+        engine.dispose()
+
     assert _digest(CANONICAL) == before
     written = [p for p in Path(LOCK).parent.rglob("*") if p.is_file() and p.stat().st_mtime > out.stat().st_ctime]
     assert not written, f"the bake wrote into the repository: {written}"

@@ -131,6 +131,17 @@ async def country_shapes() -> FileResponse:
                         headers={"Cache-Control": "public, max-age=86400"})
 
 
+@router.get("/explore/basemap.pmtiles")
+async def basemap(request: Request) -> FileResponse:
+    """The world basemap (Protomaps, OpenStreetMap data, ODbL), read by the map with byte ranges. Absent when the
+    extract is not installed: the map then draws the countries on their own."""
+    path = request.app.state.settings.basemap
+    if path is None or not path.is_file():
+        raise HTTPException(status_code=404, detail="the basemap is not installed")
+    return FileResponse(path, media_type="application/octet-stream",
+                        headers={"Cache-Control": "public, max-age=604800"})
+
+
 @router.get("/slides/{slide_id}/manifest")
 async def read_manifest(slide_id: str, request: Request,
                         db: Annotated[AsyncSession, Depends(session)]) -> JSONResponse:

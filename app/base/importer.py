@@ -20,6 +20,7 @@ from app.config import Settings
 from app.db.engine import make_sync_engine
 from app.db.migrate import upgrade_to_head
 from app.db.models import Asset, Slide, Taxon
+from app.services import search
 
 MANIFEST = "manifest.json"
 
@@ -81,6 +82,7 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
     slide_cols = {c.name for c in Slide.__table__.columns} - {"id"}
     asset_cols = {c.name for c in Asset.__table__.columns} - {"id", "slide_id"}
     copied = imported = skipped = 0
+    loaded: list[str] = []
     try:
         with engine.begin() as conn:
             known_taxa = set(conn.execute(select(Taxon.key)).scalars())
@@ -112,6 +114,9 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
                 for asset in entry["assets"]:
                     conn.execute(insert(Asset).values(slide_id=slide_id, **_row(asset, asset_cols)))
                 imported += 1
+                loaded.append(slide["short_id"])
+            # The search text is composed here, with the target's tree, not taken from the bake.
+            search.reindex(conn, loaded)
     finally:
         engine.dispose()
     return {"imported": imported, "skipped": skipped, "files_copied": copied}

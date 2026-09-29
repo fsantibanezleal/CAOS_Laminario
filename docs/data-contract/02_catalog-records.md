@@ -25,6 +25,8 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `facet` | [FacetRecord](#facetrecord) | no |  |  |
 | `anchorSuggestion` | [AnchorSuggestion](#anchorsuggestion) | no |  |  |
 | `placement` | [PlacementResult](#placementresult) | no |  |  |
+| `facetCounts` | [FacetCounts](#facetcounts) | no |  |  |
+| `map` | [MapRecord](#maprecord) | no |  |  |
 
 ### SlideRecord
 
@@ -226,6 +228,29 @@ Where a slide belongs (``POST /api/placement``): the suggestion, and every node 
 | `accepting` | list of string | no |  | `[]` |
 | `errors` | list of [ValidationError](#validationerror) | no |  | `[]` |
 
+### FacetCounts
+
+For each facet, its values under the current filters and how many slides each would match (the facet's own filter left out, so a second value shows what it adds).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `kind` | map of integer | no |  | `{}` |
+| `preparation` | map of integer | no |  | `{}` |
+| `modality` | map of integer | no |  | `{}` |
+| `preservation` | map of integer | no |  | `{}` |
+| `country` | map of integer | no |  | `{}` |
+| `licence` | map of integer | no |  | `{}` |
+| `wsi` | map of integer | no |  | `{}` |
+| `origin` | map of integer | no |  | `{}` |
+
+### MapRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `countries` | map of integer | yes |  |  |
+| `points` | list of [MapPointRecord](#mappointrecord) | yes |  |  |
+| `total` | integer | yes |  |  |
+
 ### FormatRecord
 
 | Field | Type | Required | Accepted | Default |
@@ -385,6 +410,18 @@ A node of the collection tree (``GET /api/collections``), with its published sli
 | `id` | string | yes |  |  |
 | `name` | [LocalisedText](#localisedtext) | yes |  |  |
 | `icon` | string | yes |  |  |
+
+### MapPointRecord
+
+A slide on the map, after geoprivacy: an obscured one at its public point, with its 0.2 degree cell.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `lat` | number | yes |  |  |
+| `lon` | number | yes |  |  |
+| `obscured` | boolean | no |  | `false` |
+| `cell` | [CellRecord](#cellrecord) or null | no |  | null |
 
 ### PointRecord
 

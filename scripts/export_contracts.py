@@ -43,6 +43,8 @@ CATALOG_ROOTS = {
     "facet": c.FacetRecord,
     "anchorSuggestion": c.AnchorSuggestion,
     "placement": c.PlacementResult,
+    "facetCounts": c.FacetCounts,
+    "map": c.MapRecord,
 }
 
 

@@ -45,6 +45,31 @@ def test_upgrade_is_idempotent(tmp_path: Path):
     assert head is not None and int(head) >= 2  # 0002 records remote IIIF versions (U3)
 
 
+def test_slides_older_than_the_search_index_are_indexed(tmp_path: Path):
+    """Migration 0008 composes the search text and the country of the slides that existed before it."""
+    from alembic import command
+
+    from tests import payloads
+    from tests.explore.test_explore import seed
+    from tests.accounts.support import settings_for
+
+    settings = settings_for(tmp_path)
+    database = settings.data_root / "laminario.sqlite3"
+    seed(settings, [{"preparation": "smear"}])
+    command.downgrade(alembic_config(database), "0007")
+    upgrade_to_head(database)
+    engine = make_sync_engine(database)
+    try:
+        with engine.connect() as conn:
+            country, composed = conn.execute(text("SELECT country, search_text FROM slide")).one()
+            hits = conn.execute(text("SELECT count(*) FROM slide_search WHERE slide_search MATCH :q"),
+                                {"q": '"piojos"*'}).scalar_one()
+    finally:
+        engine.dispose()
+    assert country == "CL"  # from the contribution's coordinates in Santiago
+    assert payloads.contribution()["specimen"]["anchor"]["name"] in composed and hits == 1
+
+
 def test_sqlite_pragmas_on_every_connection(tmp_path: Path):
     engine = make_sync_engine(tmp_path / "pragmas.sqlite3")
     for _ in range(2):
