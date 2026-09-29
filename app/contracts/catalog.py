@@ -110,6 +110,8 @@ class MediaRecord(_Record):
     iiif_info_url: str | None = None
     #: A plain image file (macro photos that are not pyramids).
     image_url: str | None = None
+    #: IIIF Image API version of the service at ``iiif_info_url`` (3 for this deployment's own pyramids).
+    iiif_version: Literal[2, 3] | None = None
     width_px: int | None = None
     height_px: int | None = None
 

@@ -8,8 +8,10 @@ Quality is measured, not assumed. Tiles are JPEG at quality 85; the mean peak si
 chroma (4:2:0), which is transparent for most specimens but not for colour-dense textures such as a thin
 section under crossed polars, whose interference colours are the diagnostic content (the Commons thin
 section: 32.1 dB). When quality 85 falls short, the plane is written again at quality 90, where libvips keeps
-full chroma (49.9 dB on the same image, 2.9 times the bytes). WebP at quality 80 is tried when asked and kept
-only when its file is smaller than the JPEG file and it also reaches the floor.
+full chroma (49.9 dB on the same image, 2.9 times the bytes), and if that still falls short, at quality 95
+(content close to pure noise); the last file is kept with its measured PSNR, which the worker records on the
+asset. WebP at quality 80 is tried when asked and kept only when its file is smaller than the JPEG file and it
+also reaches the floor.
 
 When the pixel size is known it goes into the TIFF resolution tags (pixels per centimetre, unit
 centimetre), so any TIFF viewer shows the right scale; when it is not known the resolution unit is set to
@@ -33,6 +35,9 @@ from app.imaging.reader import window
 TILE = 512
 JPEG_QUALITY = 85
 JPEG_FULL_CHROMA_QUALITY = 90
+JPEG_LAST_QUALITY = 95
+#: Qualities tried in order until level 0 reaches the floor; the last one is kept, with its PSNR, if none does.
+JPEG_LADDER = (JPEG_QUALITY, JPEG_FULL_CHROMA_QUALITY, JPEG_LAST_QUALITY)
 WEBP_QUALITY = 80
 MIN_PSNR_DB = 38.0
 FIDELITY_REGIONS = 32
@@ -138,9 +143,10 @@ def write_pyramid(image, path: str | Path, mpp_um: float | None = None, codec: s
         return _write_measured(image, path, "webp", WEBP_QUALITY, mpp_um, tile)
     if codec not in ("jpeg", "auto"):
         raise ValueError(f"unknown codec {codec!r}")
-    result = _write_measured(image, path, "jpeg", JPEG_QUALITY, mpp_um, tile)
-    if result.psnr_db < min_psnr_db:
-        result = _write_measured(image, path, "jpeg", JPEG_FULL_CHROMA_QUALITY, mpp_um, tile)
+    for quality in JPEG_LADDER:
+        result = _write_measured(image, path, "jpeg", quality, mpp_um, tile)
+        if result.psnr_db >= min_psnr_db:
+            break
     if codec == "jpeg":
         return result
     candidate = path.with_name(path.stem + ".webp-candidate" + path.suffix)

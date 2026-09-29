@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.contracts import catalog as c
 from app.contracts.ingest import validate_submission
 from app.db.session import session
+from app.delivery import manifest as iiif_manifest
 from app.services import catalog, slides
 
 router = APIRouter(prefix="/api", tags=["slides"])
@@ -56,3 +57,16 @@ async def list_slides(
     settings = request.app.state.settings
     return c.SlidePage(items=[catalog.slide_summary(s, settings) for s in rows],
                        total=total, offset=offset, limit=limit)
+
+
+@router.get("/slides/{slide_id}/manifest")
+async def read_manifest(slide_id: str, request: Request,
+                        db: Annotated[AsyncSession, Depends(session)]) -> JSONResponse:
+    """The slide as a IIIF Presentation 3 Manifest, for any IIIF viewer."""
+    slide = await slides.get_slide(db, slide_id)
+    if slide is None:
+        raise HTTPException(status_code=404, detail="no published slide with this id")
+    settings = request.app.state.settings
+    document = iiif_manifest.manifest(catalog.slide_record(slide, settings), settings.public_base_url)
+    return JSONResponse(document, media_type=iiif_manifest.MANIFEST_MEDIA_TYPE,
+                        headers={"Access-Control-Allow-Origin": "*"})

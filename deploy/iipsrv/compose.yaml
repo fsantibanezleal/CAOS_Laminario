@@ -1,0 +1,32 @@
+# iipsrv, the IIIF tile server, on the production host.
+#
+# IIPImage server 1.3 (GPL-3.0, run unmodified as a separate process), the official image pinned by digest.
+# It reads the pyramid files of the slide store, read-only, and answers IIIF Image API 3 requests at level 2
+# on loopback only; nginx sits in front (deploy/nginx/laminario.conf) and the API serves info.json.
+#
+#   docker compose -f deploy/iipsrv/compose.yaml up -d
+name: laminario-iipsrv
+services:
+  iipsrv:
+    image: iipsrv/iipsrv@sha256:a1ce6fe828afc91893a03b41b360a50d84f905a96b410391ce4f8be636577353  # 1.3
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8149:80"
+    volumes:
+      - /srv/laminario/store:/images:ro
+    environment:
+      FILESYSTEM_PREFIX: /images/
+      URI_MAP: "iiif=>IIIF"
+      VERBOSITY: "1"
+      # Decoded images held in memory, in MB; iipsrv's own tile cache in front of nginx's.
+      MAX_IMAGE_CACHE_SIZE: "256"
+      # Largest full-size render served, in pixels per side (IIIF maxWidth / maxHeight).
+      MAX_CVT: "5000"
+      JPEG_QUALITY: "85"
+    read_only: true
+    tmpfs:
+      - /run
+      - /var/log/lighttpd
+      - /var/lib/lighttpd
+    mem_limit: 768m
+    cpus: 2.0

@@ -113,6 +113,7 @@ export interface MediaRecord {
   kind: "pyramid" | "image" | "remote_iiif";
   iiif_info_url?: string | null;
   image_url?: string | null;
+  iiif_version?: (2 | 3) | null;
   width_px?: number | null;
   height_px?: number | null;
 }
