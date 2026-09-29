@@ -143,6 +143,12 @@ earth.fossils:
   part: pollen
   modality: brightfield
   note: Osculapollis sp. F, middle Late Cretaceous (Coniacian), Magothy Formation
+- commons: File:Ammonia tepida Pinecrest.jpg
+  taxon: Ammonia tepida@species
+  preservation: fossil
+  prep: whole_mount
+  modality: reflected
+  note: benthic foraminifer from the Pinecrest Beds
 - zenodo:
     record: '18397703'
     file: 5_Cuticle_2023-12-13 13.27.36.ndpi
@@ -969,6 +975,97 @@ matter.crystals:
   modality: brightfield
   note: needle crystals in an idioblast sac, 600x
   name: calcium oxalate raphides
+- smithsonian: siris_arc_308077
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: 'Bentley No. 349, tabular: plates radiating from a centre'
+  name: snow crystal
+- smithsonian: siris_arc_308063
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 1205, stellar
+  name: snow crystal
+- smithsonian: siris_arc_308076
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 990, stellar dendrite
+  name: snow crystal
+- smithsonian: siris_arc_308066
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 234, lamellar hexagonal plate
+  name: snow crystal
+- smithsonian: siris_arc_308067
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 951, lamellar plate
+  name: snow crystal
+- smithsonian: siris_arc_308078
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 920, fernlike stellar
+  name: snow crystal
+- smithsonian: siris_arc_308070
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 482, tabular
+  name: snow crystal
+- smithsonian: siris_arc_403542
+  crystal: ice/hexagonal
+  classification: R
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 807, granular
+  name: snow crystal
+- smithsonian: siris_arc_403527
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 181, lamellar triangular plate
+  name: snow crystal
+- smithsonian: siris_arc_403550
+  crystal: ice/hexagonal
+  classification: R
+  prep: whole_mount
+  modality: brightfield
+  note: 'Bentley No. 1232, granular: graupel pellets'
+  name: snow crystal
+- smithsonian: siris_arc_403532
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 350, lamellar
+  name: snow crystal
+- smithsonian: siris_arc_403515
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: Bentley No. 591, dendrite star
+  name: snow crystal
+- smithsonian: siris_arc_403540
+  crystal: ice/hexagonal
+  classification: C
+  prep: whole_mount
+  modality: brightfield
+  note: 'Bentley No. 777, lamellar/columnar: two columns beside hexagonal plates'
+  name: snow crystal
 life.amphibians:
 - commons: File:Chromatin fibers (261 19) Mitosis; Xenopus egg.jpg
   taxon: Xenopus@genus
@@ -1424,6 +1521,62 @@ life.microbes:
   taxon: Ceratium@genus@Chromista
   prep: fluid_mount
   modality: brightfield
+- commons: File:Acid fast bacilli of Mycobacterium tuberculosis.jpg
+  taxon: Mycobacterium tuberculosis@species
+  prep: smear
+  modality: brightfield
+  stain: Ziehl-Neelsen
+  note: acid-fast bacilli in bronchoalveolar lavage fluid
+- commons: File:Mycobacterium tuberculosis Ziehl-Neelsen stain 02.jpg
+  taxon: Mycobacterium tuberculosis@species
+  prep: smear
+  modality: brightfield
+  stain: Ziehl-Neelsen
+  note: 1000x, CDC PHIL (Dr. George P. Kubica)
+- commons: File:Mycobacterium leprae in Magnification of 1000X.jpg
+  taxon: Mycobacterium leprae@species
+  prep: smear
+  part: skin
+  modality: brightfield
+  stain: Ziehl-Neelsen
+  note: heavy load (6+) in a slit-skin smear, 1000x
+- commons: File:Corynebacterium diphtheriae albert stain.jpg
+  taxon: Corynebacterium diphtheriae@species
+  prep: smear
+  modality: brightfield
+  stain: Albert
+  note: metachromatic granules
+- commons: File:Corynebacterium pseudodiphteriae (257 29).jpg
+  taxon: Corynebacterium pseudodiphtheriticum@species
+  prep: smear
+  modality: brightfield
+  note: Josef Reischig archive
+  name: Corynebacterium pseudodiphteriae
+- commons: File:Nocardia in Gram staining of culture.jpg
+  taxon: Nocardia@genus
+  prep: smear
+  modality: brightfield
+  stain: Gram
+  note: branching filaments from a culture
+- commons: File:Mallomonas sp Minohigemusi1a.JPG
+  taxon: Mallomonas@genus
+  prep: fluid_mount
+  modality: brightfield
+  note: scaled flagellate with bristles
+  locality_text: Tanabe, Wakayama, Japan
+  collected_on: '2015-01-30'
+- commons: File:Mallomonas sp Minohigemusi3a.JPG
+  taxon: Mallomonas@genus
+  prep: fluid_mount
+  modality: brightfield
+  locality_text: Tanabe, Wakayama, Japan
+  collected_on: '2015-01-30'
+- commons: File:Synura spp.jpg
+  taxon: Synura@genus
+  prep: fluid_mount
+  modality: dic
+  note: colonies of Synura spinosa (left) and S. petersenii (right), a Mallomonas below, Leica DMRD
+  locality_text: Shishitsuka Pond, Tsuchiura, Ibaraki, Japan
 life.fishes:
 - commons: File:Fin Of Common Carp Under Microscope (148598011).jpeg
   taxon: Cyprinus carpio@species

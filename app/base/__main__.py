@@ -20,7 +20,7 @@ import yaml
 
 from app.base import review
 from app.base.http import Polite
-from app.base.sources import commons, nhm
+from app.base.sources import commons, nhm, smithsonian
 from app.config import get_settings
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -46,6 +46,9 @@ def harvest(collections: list[str]) -> None:
                 if "commons" in item:
                     got, counts = commons.harvest(http, item["commons"], depth=item.get("depth", 1),
                                                   min_side=item.get("min_side", 1000), limit=item.get("limit", 120))
+                elif "smithsonian" in item:
+                    got, counts = smithsonian.harvest(http, item["smithsonian"], limit=item.get("limit", 100),
+                                                      title_contains=item.get("title_contains"))
                 elif "commons_files" in item:
                     pages = commons.named(http, item["commons_files"])
                     got = [c for c in (commons.candidate(pg, "named", item.get("min_side", 1000)) for pg in pages) if c]
@@ -66,6 +69,8 @@ def harvest(collections: list[str]) -> None:
 
 
 def main() -> int:
+    # Record titles and names are printed as they are (Cyrillic, accents); a Windows console would refuse them.
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     parser = argparse.ArgumentParser(prog="python -m app.base")
     sub = parser.add_subparsers(dest="step", required=True)
     sub.add_parser("harvest").add_argument("collections", nargs="*")

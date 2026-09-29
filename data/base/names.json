@@ -137,6 +137,12 @@
   "rank": "species",
   "status": "accepted"
  },
+ "Ammonia tepida@species": {
+  "key": 7757981,
+  "name": "Ammonia tepida",
+  "rank": "species",
+  "status": "accepted"
+ },
  "Amoeba proteus@species": {
   "key": 5425264,
   "name": "Amoeba proteus",
@@ -488,6 +494,18 @@
  "Corvus corax@species": {
   "key": 2482492,
   "name": "Corvus corax",
+  "rank": "species",
+  "status": "accepted"
+ },
+ "Corynebacterium diphtheriae@species": {
+  "key": 3225001,
+  "name": "Corynebacterium diphtheriae",
+  "rank": "species",
+  "status": "accepted"
+ },
+ "Corynebacterium pseudodiphtheriticum@species": {
+  "key": 3224968,
+  "name": "Corynebacterium pseudodiphtheriticum",
   "rank": "species",
   "status": "accepted"
  },
@@ -911,6 +929,12 @@
   "rank": "genus",
   "status": "accepted"
  },
+ "Mallomonas@genus": {
+  "key": 3195066,
+  "name": "Mallomonas",
+  "rank": "genus",
+  "status": "accepted"
+ },
  "Marchantia@genus": {
   "key": 2688569,
   "name": "Marchantia",
@@ -953,6 +977,18 @@
   "rank": "species",
   "status": "accepted"
  },
+ "Mycobacterium leprae@species": {
+  "key": 3225137,
+  "name": "Mycobacterium leprae",
+  "rank": "species",
+  "status": "accepted"
+ },
+ "Mycobacterium tuberculosis@species": {
+  "key": 3225140,
+  "name": "Mycobacterium tuberculosis",
+  "rank": "species",
+  "status": "accepted"
+ },
  "Nematoda@phylum": {
   "key": 5967481,
   "name": "Nematoda",
@@ -969,6 +1005,12 @@
   "key": 10954098,
   "name": "Nemertopsis gracilis",
   "rank": "species",
+  "status": "accepted"
+ },
+ "Nocardia@genus": {
+  "key": 9582951,
+  "name": "Nocardia",
+  "rank": "genus",
   "status": "accepted"
  },
  "Notoedres cati@species": {
@@ -1257,6 +1299,12 @@
   "key": 7705930,
   "name": "Sus scrofa",
   "rank": "species",
+  "status": "accepted"
+ },
+ "Synura@genus": {
+  "key": 9732937,
+  "name": "Synura",
+  "rank": "genus",
   "status": "accepted"
  },
  "Tardigrada@phylum": {

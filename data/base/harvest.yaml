@@ -169,3 +169,24 @@ matter.materials:
   - {commons: "Microscopic images of starch", depth: 1, limit: 20}
   - {commons: "Microscopic images of plastics", depth: 1, limit: 20}
   - {commons: "Microscopic images of paper", limit: 20}
+
+# Supplementary sheets, harvested on 2026-09-29 after the coverage matrix showed open nodes. Files found by full-text
+# search on Commons (the CDC PHIL items among them are its public-domain mirror: the PHIL pages themselves serve
+# only a small image and load their descriptions dynamically).
+search.additions:
+  - commons_files: ["File:Mycobacterium tuberculosis Ziehl-Neelsen stain 02.jpg",
+                    "File:Acid fast bacilli of Mycobacterium tuberculosis.jpg",
+                    "File:Mycobacterium leprae in Magnification of 1000X.jpg",
+                    "File:Nocardia in Gram staining of culture.jpg",
+                    "File:Corynebacterium diphtheriae albert stain.jpg",
+                    "File:Corynebacterium pseudodiphteriae (257 29).jpg",
+                    "File:Актиномицеты.jpg",
+                    "File:Synura spp.jpg",
+                    "File:Mallomonas sp Minohigemusi1a.JPG",
+                    "File:Mallomonas sp Minohigemusi3a.JPG",
+                    "File:Ammonia tepida Pinecrest.jpg"]
+
+# Wilson A. Bentley's snow-crystal photomicrographs in the Smithsonian Institution Archives, CC0, through the
+# Smithsonian Open Access API; the titles carry Bentley's type of each crystal.
+smithsonian.bentley:
+  - {smithsonian: "Bentley snow crystal photomicrograph", title_contains: "Photomicrograph", limit: 80}

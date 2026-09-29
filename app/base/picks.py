@@ -26,9 +26,10 @@ from pathlib import Path
 import yaml
 
 
-def _index(vault: Path, sheet: str) -> dict[int, str]:
+def _index(vault: Path, sheet: str) -> dict[int, tuple[str, str]]:
+    """Sheet number to (source, record id), from the sheet's ``.tsv``."""
     rows = (vault / "candidates" / f"{sheet}.tsv").read_text(encoding="utf-8").splitlines()[1:]
-    return {int(r.split("\t")[0]): r.split("\t")[2] for r in rows if r.strip()}
+    return {int(r.split("\t")[0]): (r.split("\t")[1], r.split("\t")[2]) for r in rows if r.strip()}
 
 
 def _anchor(text: str) -> dict:
@@ -64,7 +65,7 @@ def parse(text: str, vault: Path) -> dict[str, list[dict]]:
         if words[0] == "pair":
             sheet = words[1]
             idx = indexes.setdefault(sheet, _index(vault, sheet))
-            pick["pair"] = {"ppl": idx[int(words[2])], "xpl": idx[int(words[3])]}
+            pick["pair"] = {"ppl": idx[int(words[2])][1], "xpl": idx[int(words[3])][1]}
         elif words[0] == "nhm":
             pick["nhm"] = words[1]
         elif words[0] == "zenodo":
@@ -74,7 +75,8 @@ def parse(text: str, vault: Path) -> dict[str, list[dict]]:
         else:
             sheet, n = words[0], int(words[1])
             idx = indexes.setdefault(sheet, _index(vault, sheet))
-            pick["commons"] = idx[n]
+            source, record = idx[n]
+            pick[source] = record
         pick.update(_anchor(anchor))
         if section == "earth.fossils" and "preservation" not in pick:
             pick["preservation"] = "fossil"

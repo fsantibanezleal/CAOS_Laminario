@@ -625,6 +625,34 @@ slides:
     height: 3684
     modality: brightfield
   note: Osculapollis sp. F, middle Late Cretaceous (Coniacian), Magothy Formation
+- id: fossils-ammonia-tepida-pinecrest-jpg-b7aea4
+  collection: earth.fossils
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '7757981'
+      name: Ammonia tepida
+      rank: species
+    preservation: fossil
+  placement:
+    node: earth.fossils.foraminifera
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/8/82/Ammonia_tepida_Pinecrest.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Ammonia tepida Pinecrest.jpg
+    record_url: https://commons.wikimedia.org/wiki/File:Ammonia_tepida_Pinecrest.jpg
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: null
+    creator: RealGatba
+    width: 1119
+    height: 1053
+    modality: reflected
+  note: benthic foraminifer from the Pinecrest Beds
 - id: fossils-zenodo-18397703-5-cuticle-2023-12-13-13-4086e5
   collection: earth.fossils
   slide:
@@ -4481,6 +4509,357 @@ slides:
     height: 632
     modality: brightfield
   note: needle crystals in an idioblast sac, 600x
+- id: crystals-siris-arc-308077-e60171
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09129
+    record_id: siris_arc_308077
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_308077
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: 'Bentley No. 349, tabular: plates radiating from a centre'
+- id: crystals-siris-arc-308063-a0c282
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09168
+    record_id: siris_arc_308063
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_308063
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 1205, stellar
+- id: crystals-siris-arc-308076-82c7b5
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09130
+    record_id: siris_arc_308076
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_308076
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 990, stellar dendrite
+- id: crystals-siris-arc-308066-fb07d2
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09134
+    record_id: siris_arc_308066
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_308066
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 234, lamellar hexagonal plate
+- id: crystals-siris-arc-308067-7c5975
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09126
+    record_id: siris_arc_308067
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_308067
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 951, lamellar plate
+- id: crystals-siris-arc-308078-116ed1
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09128
+    record_id: siris_arc_308078
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_308078
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 920, fernlike stellar
+- id: crystals-siris-arc-308070-aa0ad1
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09127
+    record_id: siris_arc_308070
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_308070
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 482, tabular
+- id: crystals-siris-arc-403542-47dbb6
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: R
+  placement:
+    node: matter.crystals.ice.rimed
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09153
+    record_id: siris_arc_403542
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_403542
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 807, granular
+- id: crystals-siris-arc-403527-9663c1
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09162
+    record_id: siris_arc_403527
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_403527
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 181, lamellar triangular plate
+- id: crystals-siris-arc-403550-da6e79
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: R
+  placement:
+    node: matter.crystals.ice.rimed
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09123
+    record_id: siris_arc_403550
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_403550
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: 'Bentley No. 1232, granular: graupel pellets'
+- id: crystals-siris-arc-403532-36659b
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09156
+    record_id: siris_arc_403532
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_403532
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 350, lamellar
+- id: crystals-siris-arc-403515-230ce5
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: P
+  placement:
+    node: matter.crystals.ice.plane
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2008-1395
+    record_id: siris_arc_403515
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_403515
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: Bentley No. 591, dendrite star
+- id: crystals-siris-arc-403540-290391
+  collection: matter.crystals
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: whole_mount
+  specimen:
+    anchor:
+      kind: crystal
+      ref: ice/hexagonal
+      name: snow crystal
+      classification: C
+  placement:
+    node: matter.crystals.ice.column
+  assets:
+  - family: micro
+    role: single
+    url: https://ids.si.edu/ids/deliveryService?id=SIA-SIA2013-09159
+    record_id: siris_arc_403540
+    record_url: https://collections.si.edu/search/detail/edanmdm:siris_arc_403540
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: Smithsonian Institution Archives
+    creator: Bentley, W. A (Wilson Alwyn) 1865-1931
+    width: null
+    height: null
+    modality: brightfield
+  note: 'Bentley No. 777, lamellar/columnar: two columns beside hexagonal plates'
 - id: amphibians-chromatin-fibers-261-19-mitosis-xenopus-99b478
   collection: life.amphibians
   slide:
@@ -6782,6 +7161,260 @@ slides:
     height: 768
     modality: brightfield
   note: ''
+- id: microbes-acid-fast-bacilli-of-mycobacterium-tuber-1c96ad
+  collection: life.microbes
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: smear
+    stain: Ziehl-Neelsen
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '3225140'
+      name: Mycobacterium tuberculosis
+      rank: species
+  placement:
+    node: life.microbes.bacteria.actinomycetota
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/7/71/Acid_fast_bacilli_of_Mycobacterium_tuberculosis.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Acid fast bacilli of Mycobacterium tuberculosis.jpg
+    record_url: https://commons.wikimedia.org/wiki/File:Acid_fast_bacilli_of_Mycobacterium_tuberculosis.jpg
+    licence: https://creativecommons.org/publicdomain/zero/1.0/
+    rights_holder: null
+    creator: Ajay Kumar Chaurasiya
+    width: 4000
+    height: 3000
+    modality: brightfield
+  note: acid-fast bacilli in bronchoalveolar lavage fluid
+- id: microbes-mycobacterium-tuberculosis-ziehl-neelsen-10a563
+  collection: life.microbes
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: smear
+    stain: Ziehl-Neelsen
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '3225140'
+      name: Mycobacterium tuberculosis
+      rank: species
+  placement:
+    node: life.microbes.bacteria.actinomycetota
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/7/71/Mycobacterium_tuberculosis_Ziehl-Neelsen_stain_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Mycobacterium tuberculosis Ziehl-Neelsen stain 02.jpg
+    record_url: https://commons.wikimedia.org/wiki/File:Mycobacterium_tuberculosis_Ziehl-Neelsen_stain_02.jpg
+    licence: https://creativecommons.org/publicdomain/mark/1.0/
+    rights_holder: null
+    creator: CDC/Dr. George P. Kubica
+    width: 2073
+    height: 1336
+    modality: brightfield
+  note: 1000x, CDC PHIL (Dr. George P. Kubica)
+- id: microbes-mycobacterium-leprae-in-magnification-of-b0f106
+  collection: life.microbes
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: smear
+    stain: Ziehl-Neelsen
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '3225137'
+      name: Mycobacterium leprae
+      rank: species
+    part: skin
+  placement:
+    node: life.microbes.bacteria.actinomycetota
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/0/04/Mycobacterium_leprae_in_Magnification_of_1000X.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Mycobacterium leprae in Magnification of 1000X.jpg
+    record_url: https://commons.wikimedia.org/wiki/File:Mycobacterium_leprae_in_Magnification_of_1000X.jpg
+    licence: https://creativecommons.org/licenses/by-sa/3.0/
+    rights_holder: null
+    creator: Ajay Kumar Chaurasiya
+    width: 4000
+    height: 3000
+    modality: brightfield
+  note: heavy load (6+) in a slit-skin smear, 1000x
+- id: microbes-corynebacterium-diphtheriae-albert-stain-a0be80
+  collection: life.microbes
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: smear
+    stain: Albert
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '3225001'
+      name: Corynebacterium diphtheriae
+      rank: species
+  placement:
+    node: life.microbes.bacteria.actinomycetota
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/f/f5/Corynebacterium_diphtheriae_albert_stain.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Corynebacterium diphtheriae albert stain.jpg
+    record_url: https://commons.wikimedia.org/wiki/File:Corynebacterium_diphtheriae_albert_stain.jpg
+    licence: https://creativecommons.org/licenses/by-sa/4.0/
+    rights_holder: null
+    creator: Microrao
+    width: 2592
+    height: 1456
+    modality: brightfield
+  note: metachromatic granules
+- id: microbes-corynebacterium-pseudodiphteriae-257-29-538852
+  collection: life.microbes
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: smear
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '3224968'
+      name: Corynebacterium pseudodiphteriae
+      rank: species
+  placement:
+    node: life.microbes.bacteria.actinomycetota
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/8/86/Corynebacterium_pseudodiphteriae_%28257_29%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Corynebacterium pseudodiphteriae (257 29).jpg
+    record_url: https://commons.wikimedia.org/wiki/File:Corynebacterium_pseudodiphteriae_(257_29).jpg
+    licence: https://creativecommons.org/licenses/by-sa/3.0/
+    rights_holder: null
+    creator: Doc. RNDr. Josef Reischig, CSc.
+    width: 3751
+    height: 2401
+    modality: brightfield
+  note: Josef Reischig archive
+- id: microbes-nocardia-in-gram-staining-of-culture-jpg-e4a56e
+  collection: life.microbes
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: smear
+    stain: Gram
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '9582951'
+      name: Nocardia
+      rank: genus
+  placement:
+    node: life.microbes.bacteria.actinomycetota
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/a/a2/Nocardia_in_Gram_staining_of_culture.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Nocardia in Gram staining of culture.jpg
+    record_url: https://commons.wikimedia.org/wiki/File:Nocardia_in_Gram_staining_of_culture.jpg
+    licence: https://creativecommons.org/licenses/by/4.0/
+    rights_holder: null
+    creator: Ajay Kumar Chaurasiya
+    width: 4000
+    height: 2250
+    modality: brightfield
+  note: branching filaments from a culture
+- id: microbes-mallomonas-sp-minohigemusi1a-jpg-eccbd7
+  collection: life.microbes
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: fluid_mount
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '3195066'
+      name: Mallomonas
+      rank: genus
+    collected_on: '2015-01-30'
+    locality_text: Tanabe, Wakayama, Japan
+  placement:
+    node: life.microbes.microalgae
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/1/18/Mallomonas_sp_Minohigemusi1a.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Mallomonas sp Minohigemusi1a.JPG
+    record_url: https://commons.wikimedia.org/wiki/File:Mallomonas_sp_Minohigemusi1a.JPG
+    licence: https://creativecommons.org/licenses/by-sa/4.0/
+    rights_holder: null
+    creator: Keisotyo
+    width: 2535
+    height: 1915
+    modality: brightfield
+  note: scaled flagellate with bristles
+- id: microbes-mallomonas-sp-minohigemusi3a-jpg-d50d10
+  collection: life.microbes
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: fluid_mount
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '3195066'
+      name: Mallomonas
+      rank: genus
+    collected_on: '2015-01-30'
+    locality_text: Tanabe, Wakayama, Japan
+  placement:
+    node: life.microbes.microalgae
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/b/b6/Mallomonas_sp_Minohigemusi3a.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Mallomonas sp Minohigemusi3a.JPG
+    record_url: https://commons.wikimedia.org/wiki/File:Mallomonas_sp_Minohigemusi3a.JPG
+    licence: https://creativecommons.org/licenses/by-sa/4.0/
+    rights_holder: null
+    creator: Keisotyo
+    width: 2029
+    height: 1602
+    modality: brightfield
+  note: ''
+- id: microbes-synura-spp-jpg-62f06c
+  collection: life.microbes
+  slide:
+    format: iso_76x26
+    format_assumed: true
+    preparation: fluid_mount
+  specimen:
+    anchor:
+      kind: taxon
+      ref: '9732937'
+      name: Synura
+      rank: genus
+    locality_text: Shishitsuka Pond, Tsuchiura, Ibaraki, Japan
+  placement:
+    node: life.microbes.microalgae
+  assets:
+  - family: micro
+    role: single
+    url: https://upload.wikimedia.org/wikipedia/commons/2/21/Synura_spp.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original
+    record_id: File:Synura spp.jpg
+    record_url: https://commons.wikimedia.org/wiki/File:Synura_spp.jpg
+    licence: https://creativecommons.org/licenses/by-sa/3.0/
+    rights_holder: null
+    creator: ja:User:NEON / User:NEON_ja
+    width: 1200
+    height: 960
+    modality: dic
+  note: colonies of Synura spinosa (left) and S. petersenii (right), a Mallomonas below, Leica DMRD
 - id: fishes-fin-of-common-carp-under-microscope-1485-c0d155
   collection: life.fishes
   slide:

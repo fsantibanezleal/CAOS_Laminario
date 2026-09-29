@@ -34,6 +34,8 @@ GBIF = "https://api.gbif.org/v1"
 ZENODO = "https://zenodo.org/api/records/"
 OPENSLIDE = "https://openslide.cs.cmu.edu/download/openslide-testdata/"
 
+#: Sources whose candidates a pick names by record (a sheet number resolves to one of these).
+SHEET_SOURCES = ("commons", "nhm", "smithsonian")
 DEFAULT_PREPARATION = {"rock": "thin_section", "mineral": "thin_section", "crystal": "whole_mount",
                        "material": "whole_mount", "taxon": "whole_mount"}
 
@@ -133,7 +135,7 @@ def _assets(pick: dict, record: dict | None, cands: dict) -> list[dict]:
         return out
     if record is None:
         raise LockError(f"{pick}: no record")
-    if record["source"] == "commons":
+    if record["source"] in ("commons", "smithsonian"):
         return [_media_asset(record["media"][0], "micro", "single", record, modality=modality,
                              pixel_size_um=pick.get("pixel_size_um"), caption=pick.get("caption"))]
     if record["source"] == "nhm":
@@ -200,7 +202,7 @@ def build(vault: Path) -> dict:
                 try:
                     slides.append(_one(http, collection, pick, cands, names, taxa, tree, seen))
                 except (LockError, base_names.NameError_, KeyError, StopIteration) as exc:
-                    label = pick.get("commons") or pick.get("nhm") or pick.get("pair") or pick
+                    label = next((pick[s] for s in (*SHEET_SOURCES, "pair", "zenodo", "openslide") if s in pick), pick)
                     failures.append(f"{collection}: {label}: {exc}")
     base_names.save(names)
     TAXA.write_text(json.dumps(dict(sorted(taxa.items(), key=lambda kv: int(kv[0]))), indent=1,
@@ -221,8 +223,7 @@ def _one(http: Polite, collection: str, pick: dict, cands: dict, names: dict, ta
     if "zenodo" in pick or "openslide" in pick:
         record, assets = _wsi(pick, http)
     else:
-        ref = ("commons", pick["commons"]) if "commons" in pick else \
-            ("nhm", str(pick["nhm"])) if "nhm" in pick else None
+        ref = next(((s, str(pick[s])) for s in SHEET_SOURCES if s in pick), None)
         if ref is not None:
             record = cands.get(ref)
             if record is None:
