@@ -260,6 +260,8 @@ Moved to [`features/u04-worker/requirements.md`](features/u04-worker/requirement
 
 #### U5 uploads
 
+Moved to [`features/u05-uploads/requirements.md`](features/u05-uploads/requirements.md) on 2026-09-29, verbatim.
+
     R-040  WHEN an upload is interrupted and resumed, THE upload SHALL complete with the original SHA-256.
            Gate: tests/uploads/test_tus.py::test_resume_after_interruption
 

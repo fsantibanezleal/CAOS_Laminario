@@ -1,0 +1,38 @@
+# tusd, the resumable-upload server, on the production host.
+#
+# tusd v2.10.1 (MIT), the official image pinned by digest. It receives tus uploads from nginx (/files/) on loopback,
+# writes them to the quarantine on the data volume, and calls the API's hook endpoint with the client's Cookie
+# forwarded, so the uploader is authenticated by its session. Host networking: tusd reaches the API on 127.0.0.1
+# and reports file paths that are the same on the host as in the container.
+#
+#   docker compose -f deploy/tusd/compose.yaml up -d
+#
+# LAMINARIO_QUARANTINE (default /srv/laminario/quarantine), LAMINARIO_TUSD_PORT (8148), LAMINARIO_API_PORT (8147) and
+# LAMINARIO_UID / LAMINARIO_GID (the account the API and the worker run as) can be set for tests.
+name: laminario-tusd
+services:
+  tusd:
+    image: tusproject/tusd@sha256:7b1c552a8b42f4b36cb01f2a3bd49f82ab078b2eefd191459e716141dd50376c  # v2.10.1
+    restart: unless-stopped
+    network_mode: host
+    user: "${LAMINARIO_UID:-1000}:${LAMINARIO_GID:-1000}"
+    volumes:
+      - ${LAMINARIO_QUARANTINE:-/srv/laminario/quarantine}:${LAMINARIO_QUARANTINE:-/srv/laminario/quarantine}
+    command:
+      - -host=127.0.0.1
+      - -port=${LAMINARIO_TUSD_PORT:-8148}
+      - -base-path=/files/
+      - -upload-dir=${LAMINARIO_QUARANTINE:-/srv/laminario/quarantine}
+      - -hooks-http=http://127.0.0.1:${LAMINARIO_API_PORT:-8147}/api/_internal/tus-hook
+      - -hooks-http-forward-headers=Cookie
+      - -hooks-enabled-events=pre-create,post-finish,post-terminate
+      - -behind-proxy
+      - -disable-download
+      - -disable-cors
+      - -max-size=30000000000
+      - -show-greeting=false
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777,size=64m
+    mem_limit: 256m
+    cpus: 1.0

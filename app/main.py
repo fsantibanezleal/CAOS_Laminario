@@ -11,9 +11,9 @@ from fastapi.responses import JSONResponse
 
 from app.accounts.users import build as build_accounts
 from app.config import Settings, get_settings
-from app.db.engine import async_sessions, database_path, make_async_engine
+from app.db.engine import async_sessions, database_path, make_async_engine, make_sync_engine
 from app.delivery.iiif import InfoCache
-from app.routers import accounts, iiif, jobs, slides
+from app.routers import accounts, iiif, jobs, slides, uploads
 from app.version import VERSION
 
 
@@ -25,12 +25,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         engine = make_async_engine(database_path(settings))
         app.state.engine = engine
         app.state.sessions = async_sessions(engine)
+        app.state.sync_engine = make_sync_engine(database_path(settings))  # the job queue's writes
         app.state.tile_client = httpx2.AsyncClient(base_url=settings.iipsrv_url, timeout=30.0)
         app.state.iiif_info_cache = InfoCache()
         try:
             yield
         finally:
             await app.state.tile_client.aclose()
+            app.state.sync_engine.dispose()
             await engine.dispose()
 
     app = FastAPI(
@@ -63,7 +65,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             return JSONResponse(status_code=403, content={"detail": "cross-site request refused"})
         return await call_next(request)
 
-    for router in accounts.routers(app.state.accounts):
+    for router in [*accounts.routers(app.state.accounts), *uploads.routers(app.state.accounts)]:
         app.include_router(router)
     app.include_router(slides.router)
     app.include_router(iiif.router)
