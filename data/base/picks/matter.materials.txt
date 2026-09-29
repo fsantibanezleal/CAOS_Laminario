@@ -11,7 +11,7 @@ matter.materials 25 | material=polyamide | whole_mount | | polarised_xpl | | | k
 matter.materials 26 | material=polyamide | whole_mount | | polarised_xpl | | | knit of 20 denier nylon stockings, crossed polarisers with retarder
 matter.materials 29 | material=polyamide | whole_mount | | polarised_xpl | | | knit of 40 denier nylon stockings, crossed polarisers with retarder
 matter.materials 52 | material=polyamide | section | | polarised_xpl | | | spherulites in polyamide 6.6, 10 um microtome section, crossed polarisation filters
-matter.materials 31 | material=starch | whole_mount | | brightfield | | | archaeological starch grain of Zamia amblyphyllidia (marunguey) recovered from a stone tool, site Utu-27 | locality=Puerto Rico
+matter.materials 31 | material=starch | whole_mount | | brightfield | | | archaeological starch grain of Zamia amblyphyllidia (marunguey) recovered from a stone tool, site Utu-27 | locality=Puerto Rico; country=PR
 matter.materials 34 | material=starch | whole_mount | | polarised_xpl | | | starch of the bean seed (Phaseolus vulgaris) in polarised transmitted light
 matter.materials 37 | material=maize-starch | whole_mount | | polarised_xpl | | | cornstarch at 800x with a polarising filter, field 200 x 150 um
 matter.materials 39 | material=potato-starch | whole_mount | | brightfield | | | potato starch grains (amyloplasts), 6x

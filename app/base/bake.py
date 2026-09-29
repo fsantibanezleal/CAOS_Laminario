@@ -7,6 +7,10 @@ queue is empty, focal stacks fused on the way. Nothing is written outside ``out`
 
 ``manifest.json`` in ``out`` lists every slide and asset row, the file behind every storage key with its SHA-256 and
 size, and the taxon rows the slides use. The server imports that, and never re-bakes (``importer``).
+
+The bake index records two fingerprints of each baked lock entry: of its assets (what the images are made from) and of
+the whole entry. A slide whose assets changed is baked again; a slide whose record alone changed (a country, a
+locality, a determination) has its rows rewritten in place, so correcting a label never fuses a focal stack again.
 """
 
 from __future__ import annotations
@@ -83,29 +87,89 @@ async def _store(out: Path, slides: list[dict], acquired: dict, vault: Path, ind
                 for asset, origin in zip(row.assets, origins, strict=True):
                     asset.source_path = str(source_path(origin, acquired, vault))
                 await db.commit()
-                index[slide["id"]] = {"short_id": row.short_id, "digest": digest(slide)}
+                index[slide["id"]] = {"short_id": row.short_id, "digest": digest(slide),
+                                      "images": images_digest(slide)}
                 created.append(row.id)
     finally:
         await engine.dispose()
     return created
 
 
-def digest(slide: dict) -> str:
-    """The lock entry's fingerprint: a baked slide whose entry changed since is baked again."""
-    text_form = json.dumps(slide, sort_keys=True, ensure_ascii=False, default=str)
+def _fingerprint(value) -> str:
+    text_form = json.dumps(value, sort_keys=True, ensure_ascii=False, default=str)
     return hashlib.sha256(text_form.encode("utf-8")).hexdigest()
 
 
-def _stale(index: dict, slides: list[dict], refresh: set[str]) -> list[str]:
-    """Baked slides to bake again: named in ``refresh``, or whose lock entry no longer has the recorded digest (an
-    entry baked before digests were recorded is trusted unless named)."""
+def digest(slide: dict) -> str:
+    """The whole lock entry's fingerprint."""
+    return _fingerprint(slide)
+
+
+def images_digest(slide: dict) -> str:
+    """The fingerprint of what a slide's images are made from: its assets (files, roles, planes, policies)."""
+    return _fingerprint(slide.get("assets", []))
+
+
+def _stale(index: dict, slides: list[dict], refresh: set[str]) -> tuple[list[str], list[str]]:
+    """Baked slides to bake again (named in ``refresh``; whose assets changed; or, for an entry without an images
+    digest, whose entry changed at all, since what changed cannot be told) and slides whose record alone changed."""
     by_id = {s["id"]: s for s in slides}
-    stale = []
+    rebake, records = [], []
     for slide_id, entry in index.items():
-        recorded = entry.get("digest") if isinstance(entry, dict) else None
-        if slide_id in refresh or (slide_id in by_id and recorded and recorded != digest(by_id[slide_id])):
-            stale.append(slide_id)
-    return stale
+        if slide_id in refresh:
+            rebake.append(slide_id)
+            continue
+        if slide_id not in by_id or not isinstance(entry, dict) or not entry.get("digest"):
+            continue
+        current = by_id[slide_id]
+        if entry["digest"] == digest(current):
+            continue
+        if entry.get("images") == images_digest(current):
+            records.append(slide_id)
+        else:
+            rebake.append(slide_id)
+    return rebake, records
+
+
+def adopt_digests(index: dict, baked_from: list[dict]) -> int:
+    """Record the images digest of index entries baked before it existed, from the lock they were baked from (an entry
+    whose digest is not that lock entry's is left as it is). Returns how many entries gained one."""
+    by_id = {s["id"]: s for s in baked_from}
+    adopted = 0
+    for slide_id, entry in index.items():
+        old = by_id.get(slide_id)
+        if isinstance(entry, dict) and "images" not in entry and old is not None and entry.get("digest") == digest(old):
+            entry["images"] = images_digest(old)
+            adopted += 1
+    return adopted
+
+
+async def _refresh_records(out: Path, index: dict, slide_ids: list[str], slides: list[dict], acquired: dict,
+                           vault: Path) -> None:
+    """Rewrite the rows of slides whose record changed and whose images did not: every slide column the submission
+    sets (country, locality, determination, placement, search text), none of the assets."""
+    by_id = {s["id"]: s for s in slides}
+    keep = {"id", "short_id", "status", "published_at", "created_at", "contributor_id"}
+    engine = make_async_engine(out / "laminario.sqlite3")
+    try:
+        async with async_sessions(engine)() as db:
+            for slide_id in slide_ids:
+                slide = by_id[slide_id]
+                short_id = index[slide_id]["short_id"]
+                report = validate_submission(submission(slide, acquired, vault))
+                if not report.valid:
+                    raise ValueError(f"{slide_id} does not validate: {report.errors[:2]}")
+                fresh = slide_service.slide_from_submission(report.submission, new_id=short_id,
+                                                            resolved=_resolved(slide))
+                row = (await db.execute(select(Slide).where(Slide.short_id == short_id))).scalar_one()
+                for column in Slide.__table__.columns:
+                    if column.name not in keep:
+                        setattr(row, column.name, getattr(fresh, column.name))
+                row.updated_at = utcnow()
+                index[slide_id] = {**index[slide_id], "digest": digest(slide), "images": images_digest(slide)}
+            await db.commit()
+    finally:
+        await engine.dispose()
 
 
 def _remove(out: Path, index: dict, slide_ids: list[str]) -> None:
@@ -198,19 +262,27 @@ def write_manifest(out: Path) -> dict:
     return manifest
 
 
-def bake(out: Path, vault: Path, only: set[str] | None = None, refresh: set[str] | None = None) -> dict:
+def bake(out: Path, vault: Path, only: set[str] | None = None, refresh: set[str] | None = None,
+         digests_from: Path | None = None) -> dict:
     out.mkdir(parents=True, exist_ok=True)
     upgrade_to_head(out / "laminario.sqlite3")
     lock = yaml.safe_load(LOCK.read_text(encoding="utf-8"))
     chosen = [s for s in lock["slides"] if not only or s["id"] in only or s["collection"] in only]
     index_path = out / INDEX
     index = json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {}
-    stale = _stale(index, lock["slides"], refresh or set())
+    if digests_from is not None:
+        adopted = adopt_digests(index, yaml.safe_load(digests_from.read_text(encoding="utf-8"))["slides"])
+        print(f"{adopted} baked slides gained the images digest of the lock they were baked from", flush=True)
+    acquired = load_acquired()
+    stale, records = _stale(index, lock["slides"], refresh or set())
     if stale:
         _remove(out, index, stale)
         index_path.write_text(json.dumps(index, indent=1) + "\n", encoding="utf-8")
         print(f"{len(stale)} slides changed since they were baked and are baked again: {', '.join(stale)}", flush=True)
-    created = asyncio.run(_store(out, chosen, load_acquired(), vault, index))
+    if records:
+        asyncio.run(_refresh_records(out, index, records, lock["slides"], acquired, vault))
+        print(f"{len(records)} slides had their record rewritten, their images kept", flush=True)
+    created = asyncio.run(_store(out, chosen, acquired, vault, index))
     index_path.write_text(json.dumps(index, indent=1) + "\n", encoding="utf-8")
     _queue_processing(out, created)
     _run_worker(out)

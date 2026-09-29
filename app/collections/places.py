@@ -51,6 +51,16 @@ def name(code: str, lang: str = "en") -> str:
     return countries()[code][lang]
 
 
+@lru_cache(maxsize=1)
+def _by_name() -> dict[str, str]:
+    return {n.casefold(): code for code, names in countries().items() for n in names.values()}
+
+
+def code_of(country_name: str) -> str | None:
+    """The code of a country named exactly as CLDR names it in English or Spanish ("Solomon Islands", "Kenia")."""
+    return _by_name().get(country_name.strip().casefold())
+
+
 def _in_ring(lon: float, lat: float, ring: tuple[tuple[float, float], ...]) -> bool:
     inside = False
     for (x1, y1), (x2, y2) in zip(ring, ring[1:], strict=False):

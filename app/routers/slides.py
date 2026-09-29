@@ -138,7 +138,8 @@ async def country_names() -> FileResponse:
                         headers={"Cache-Control": "public, max-age=86400"})
 
 
-@router.api_route("/explore/basemap.pmtiles", methods=["GET", "HEAD"])
+@router.get("/explore/basemap.pmtiles")
+@router.head("/explore/basemap.pmtiles", include_in_schema=False)
 async def basemap(request: Request) -> FileResponse:
     """The world basemap (Protomaps, OpenStreetMap data, ODbL), read by the map with byte ranges. Absent when the
     extract is not installed: the map then draws the countries on their own."""

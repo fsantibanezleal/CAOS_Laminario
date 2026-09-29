@@ -57,6 +57,7 @@ earth.fossils:
   modality: reflected
   note: ghost-shrimp claw fragment under 2 mm, Pinecrest Beds, Hillsborough County
   locality_text: Hillsborough County, Florida
+  country: US
 - commons: File:Helicosphaera-carteri hg.jpg
   taxon: Helicosphaera carteri@species
   preservation: fossil
@@ -77,6 +78,7 @@ earth.fossils:
   modality: brightfield
   note: thin section of a Psaronius tree-fern stem, Chemnitz; historical glass plate with its label
   locality_text: Chemnitz, Germany
+  country: DE
 - commons: File:Miocene wood.jpg
   taxon: Tracheophyta@phylum
   preservation: fossil
@@ -99,6 +101,7 @@ earth.fossils:
   modality: reflected
   note: petrified wood, Ukraine
   locality_text: Ukraine
+  country: UA
 - commons: File:Fossil spores.jpg
   taxon: Plantae@kingdom
   preservation: fossil
@@ -160,6 +163,7 @@ earth.fossils:
   locality_text: USA
   collector: Joe Milligan
   stack: policy
+  country: US
 - zenodo:
     record: '18397703'
     file: 6_40935_Bowmanites_moorei.ndpi
@@ -174,6 +178,7 @@ earth.fossils:
   catalogue_number: USNM P 40935
   name: Bowmanites moorei
   stack: policy
+  country: US
 - zenodo:
     record: '18397703'
     file: 8_Slide_ostracod_A_specimen_fossil_NMNH.ndpi
@@ -184,6 +189,7 @@ earth.fossils:
   note: ostracod A, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt
   locality_text: Texas, USA
   stack: policy
+  country: US
 - zenodo:
     record: '18397703'
     file: 9_Slide_ostracod_B_specimen_fossil_NMNH.ndpi
@@ -194,6 +200,7 @@ earth.fossils:
   note: ostracod B, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt
   locality_text: Texas, USA
   stack: policy
+  country: US
 earth.rocks:
 - commons: File:Duren spore (sporinite) - petrographic component of coal.jpg
   rock: coal
@@ -221,6 +228,7 @@ earth.rocks:
   modality: polarised_xpl
   note: clinopyroxene in a foliated groundmass of plagioclase and olivine, 30 um thick section
   locality_text: Rum Layered Intrusion, Scotland
+  country: GB
 - commons: File:Serpentinized peridotite.JPG
   rock: peridotite
   prep: thin_section
@@ -294,6 +302,7 @@ earth.rocks:
   prep: thin_section
   note: overview
   locality_text: Autengrün, Münchberg massif, Bavaria, Germany
+  country: DE
 - pair:
     ppl: File:Fleckengneis lpl.jpg
     xpl: File:Fleckengneis xpl.jpg
@@ -312,6 +321,7 @@ earth.rocks:
   modality: polarised_xpl
   note: skeletal magnetite
   locality_text: Bushveld Complex, South Africa
+  country: ZA
 - commons: File:Bronzitite.jpg
   rock: orthopyroxenite
   prep: thin_section
@@ -323,12 +333,14 @@ earth.rocks:
   prep: thin_section
   modality: polarised_xpl
   locality_text: Bushveld Complex, South Africa
+  country: ZA
 - commons: File:CSIRO ScienceImage 1483 Olivine Adcumulate.jpg
   rock: komatiite
   prep: thin_section
   modality: polarised_xpl
   note: olivine adcumulate, Archaean, field of view 20 mm
   locality_text: Agnew, Western Australia
+  country: AU
 - commons: File:CSIRO ScienceImage 1484 Komatiite Pyroxene Needles.jpg
   rock: komatiite
   prep: thin_section
@@ -345,12 +357,14 @@ earth.rocks:
   modality: polarised_xpl
   note: Chilean andesite, autochrome plate by Leo Wehrli
   locality_text: Andes, Chile
+  country: CL
 - commons: File:Flow in Obsidian.JPG
   rock: obsidian
   prep: thin_section
   modality: polarised_ppl
   note: magmatic flow in volcanic glass, field of view 2 mm
   locality_text: Ponza, Italy
+  country: IT
 - commons: File:Gregorite.JPG
   rock: carbonatite
   prep: thin_section
@@ -358,12 +372,14 @@ earth.rocks:
   note: rounded gregoryite crystals in natrocarbonatite, field of view 2 mm
   locality_text: Ol Doinyo Lengai, Tanzania
   name: natrocarbonatite
+  country: TZ
 - commons: File:Antigorit XPL.jpg
   rock: serpentinite
   prep: thin_section
   modality: polarised_xpl
   note: bladed antigorite
   locality_text: Erbendorf, Upper Palatinate, Germany
+  country: DE
 - commons: File:Blue Glaucophane.JPG
   rock: schist
   prep: thin_section
@@ -377,12 +393,14 @@ earth.rocks:
   note: glaucophane, field of view 2 mm
   locality_text: Ghinivert, Cottian Alps, Italy
   name: blueschist
+  country: IT
 - commons: File:Calc-silicate marble.JPG
   rock: marble
   prep: thin_section
   modality: polarised_xpl
   note: pyroxene and olivine in a calc-silicate marble, field of view 7 mm
   locality_text: Brazil
+  country: BR
 - commons: File:Ductile Deformation.JPG
   rock: mylonite
   prep: thin_section
@@ -404,12 +422,14 @@ earth.rocks:
   modality: polarised_xpl
   note: Carrara marble, autochrome plate by Leo Wehrli
   locality_text: Carrara, Italy
+  country: IT
 - commons: File:ETH-BIB-Marmor, Andermatt-Dia 247-M-00016.tif
   rock: marble
   prep: thin_section
   modality: polarised_xpl
   note: autochrome plate by Leo Wehrli
   locality_text: Andermatt, Switzerland
+  country: CH
 - commons: File:Garnet-mica-shist-ll-nicols 1.jpg
   rock: schist
   prep: thin_section
@@ -428,6 +448,7 @@ earth.rocks:
   modality: polarised_xpl
   note: zoned cassiterite in quartz-topaz greisen, image width 3.3 mm
   locality_text: Haupt- and Ottoschacht dump, Přebuz, Czech Republic
+  country: CZ
 - commons: File:1706141 xpl 20x.tif
   rock: clay
   prep: thin_section
@@ -439,54 +460,63 @@ earth.rocks:
   modality: polarised_ppl
   note: seagrass facies of a back-reef, many benthic foraminifera
   locality_text: Great Barrier Reef, Australia
+  country: AU
 - commons: File:Beach rudstone from a hypersaline lagoon, Bahamas.jpg
   rock: rudstone
   prep: thin_section
   modality: brightfield
   note: gastropods and sea-urchin spines, beach of a hypersaline lagoon, scan of the thin section, sample AM 316
   locality_text: Andros, Bahamas
+  country: BS
 - commons: File:Beach rudstone with foraminifers, Bahamas.jpg
   rock: rudstone
   prep: thin_section
   modality: brightfield
   note: foraminifera, green and red algae and coral, scan of the thin section, sample AM 258
   locality_text: Bahamas
+  country: BS
 - commons: File:ETH-BIB-Molasse-Sandstein Bäch-Dia 247-M-00011.tif
   rock: sandstone
   prep: thin_section
   modality: polarised_xpl
   note: Molasse sandstone, autochrome plate by Leo Wehrli
   locality_text: Bäch, Switzerland
+  country: CH
 - commons: File:Grainstone from an ooid shoal in the Bahamas, collected at Pond Key, near Lee Stocking Island, behind Norman.jpg
   rock: grainstone
   prep: thin_section
   modality: brightfield
   note: ooid shoal, scan of the thin section
   locality_text: Pond Key, Lee Stocking Island, Bahamas
+  country: BS
 - commons: File:Maerl - Sediment from Tromsø, Norway - thin section.jpg
   rock: lime-gravel
   prep: thin_section
   modality: polarised_ppl
   note: 'maerl: red calcareous algae with barnacles, serpulids and molluscs'
   locality_text: Tromsø, Norway
+  country: 'NO'
 - commons: File:Marine sediment in Guadeloupe (Atlantic side).jpg
   rock: lime-sand
   prep: thin_section
   modality: polarised_ppl
   note: bivalves, gastropods, Halimeda and coralline algae
   locality_text: Guadeloupe
+  country: GP
 - commons: File:Modern sediment composed of the green alga Halimeda - thin section.jpg
   rock: lime-sand
   prep: thin_section
   modality: polarised_ppl
   note: Halimeda sediment
   locality_text: Great Barrier Reef, Australia
+  country: AU
 - commons: File:Modern sediment from north of Gothenburg - thin section.jpg
   rock: lime-sand
   prep: thin_section
   modality: polarised_ppl
   note: beach sediment of bivalves, barnacles, echinoids, coralline algae, serpulids and brachiopods
   locality_text: north of Gothenburg, Sweden
+  country: SE
 - commons: File:Ooidal grainstone with foraminifera, Bahamas.jpg
   rock: grainstone
   prep: thin_section
@@ -503,6 +533,7 @@ earth.rocks:
   modality: brightfield
   note: peloidal grainstone of a stabilised sand flat, scan of the thin section, GeoZentrum Nordbayern
   locality_text: Baraterre Island, Exumas, Bahamas
+  country: BS
 - commons: File:Pyramids of anhydrite.jpg
   rock: siltstone
   prep: thin_section
@@ -515,6 +546,7 @@ earth.rocks:
   note: type L3.1
   locality_text: Jiddat al Harasis, Oman
   name: JaH 026
+  country: OM
 - commons: File:Northwest Africa (NWA) 2224 Meteorite Thin Section.jpg
   rock: carbonaceous-chondrite
   prep: thin_section
@@ -533,36 +565,42 @@ earth.rocks:
   modality: reflected
   note: goethite replacing pyrite in quartz
   locality_text: Baratta goldfield, South Australia
+  country: AU
 - commons: File:Bird in Hand-Gold-1.TIF
   rock: vein-ore
   prep: polished_section
   modality: reflected
   note: native gold on and between pyrite crystals, quartz dark grey, 0.5 mm bar
   locality_text: Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
+  country: AU
 - commons: File:Bird in Hand-Gold-2.jpg
   rock: vein-ore
   prep: polished_section
   modality: reflected
   note: native gold with pyrite in quartz
   locality_text: Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
+  country: AU
 - commons: File:Bird in Hand-Gold-sulphides.jpg
   rock: vein-ore
   prep: polished_section
   modality: reflected
   note: pyrite replaced by chalcopyrite, covellite and galena
   locality_text: Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
+  country: AU
 - commons: File:Kitticoola py-hem.tif
   rock: vein-ore
   prep: polished_section
   modality: reflected
   note: hematite overgrowing pyrite in quartz
   locality_text: Kitticoola goldmine, Palmer, South Australia
+  country: AU
 - commons: File:Rapitan BIF south australia.jpg
   rock: banded-ironstone
   prep: polished_section
   modality: reflected
   note: 'Rapitan-type bedded iron ore: magnetite and minor hematite in sericite and quartz, Neoproterozoic'
   locality_text: South Australia
+  country: AU
 - commons: File:051002-7 PPL GRNST skeletal pel 20x.jpg
   rock: grainstone
   prep: thin_section
@@ -581,6 +619,7 @@ earth.minerals:
   modality: reflected
   note: olivine crystals separated from river sand, field width 5.5 mm
   locality_text: Hitiaa River, Tahiti
+  country: PF
 - commons: File:Argo000712 001.jpg
   mineral: olivine
   prep: thin_section
@@ -612,6 +651,7 @@ earth.minerals:
   modality: polarised_ppl
   note: skeletal olivine in komatiite lava
   locality_text: Alexo, Ontario, Canada
+  country: CA
 - commons: File:Amfibol-nokoly2.jpg
   mineral: amphibole
   prep: thin_section
@@ -653,24 +693,28 @@ earth.minerals:
   modality: polarised_ppl
   note: skeletal cartwheel leucite
   locality_text: Vulsini volcano, central Italy
+  country: IT
 - commons: File:Cordierite volcanic.jpg
   mineral: Cordierite
   prep: thin_section
   modality: polarised_xpl
   note: sector-twinned cordierite phenocryst in a rhyolite
   locality_text: San Vincenzo, Tuscany, Italy
+  country: IT
 - commons: File:Elba island.JPG
   mineral: Corundum
   prep: thin_section
   modality: polarised_ppl
   note: corundum with a blue core, biotite and hercynite in a mafic microgranular enclave
   locality_text: Elba, Italy
+  country: IT
 - commons: File:Haüyne crystal.JPG
   mineral: Haüyne
   prep: thin_section
   modality: polarised_ppl
   note: haüyne phenocryst in a haüyne foidite
   locality_text: Melfi, Potenza, Italy
+  country: IT
 - commons: File:Green Actinolite.JPG
   mineral: Actinolite
   prep: thin_section
@@ -1567,18 +1611,21 @@ life.microbes:
   note: scaled flagellate with bristles
   locality_text: Tanabe, Wakayama, Japan
   collected_on: '2015-01-30'
+  country: JP
 - commons: File:Mallomonas sp Minohigemusi3a.JPG
   taxon: Mallomonas@genus
   prep: fluid_mount
   modality: brightfield
   locality_text: Tanabe, Wakayama, Japan
   collected_on: '2015-01-30'
+  country: JP
 - commons: File:Synura spp.jpg
   taxon: Synura@genus
   prep: fluid_mount
   modality: dic
   note: colonies of Synura spinosa (left) and S. petersenii (right), a Mallomonas below, Leica DMRD
   locality_text: Shishitsuka Pond, Tsuchiura, Ibaraki, Japan
+  country: JP
 life.fishes:
 - commons: File:Fin Of Common Carp Under Microscope (148598011).jpeg
   taxon: Cyprinus carpio@species
@@ -1784,6 +1831,7 @@ life.insects:
   host: Homo sapiens@species
   locality_text: Niupani, Rennell Island
   collected_on: '1962-08-31'
+  country: SB
 - nhm: NHMUK010173452
   prep: whole_mount
   modality: brightfield
@@ -1796,6 +1844,7 @@ life.insects:
   host: Ateles@genus@Animalia
   locality_text: London Zoo (host from South and Central America)
   collected_on: '1966'
+  country: GB
 - nhm: NHMUK010155449
   prep: whole_mount
   modality: brightfield
@@ -1811,6 +1860,7 @@ life.insects:
   locality_text: Mt Kenya, East Africa
   collected_on: '1966-03-21'
   collector: R. Harmsen
+  country: KE
 - nhm: NHMUK010684185
   prep: whole_mount
   modality: brightfield
@@ -1818,12 +1868,14 @@ life.insects:
   host: Pelecanus erythrorhynchos@species
   locality_text: Louisiana, U.S.A.
   collected_on: '1953-10-20'
+  country: US
 - nhm: NHMUK010679495
   prep: whole_mount
   modality: brightfield
   note: Meinertzhagen collection
   host: Crypturellus soui@species
   locality_text: British Guiana
+  country: GY
 - nhm: NHMUK010672808
   prep: whole_mount
   modality: brightfield
@@ -1831,6 +1883,7 @@ life.insects:
   locality_text: Kidney Island, Falkland Islands
   collected_on: '1961-11-21'
   collector: R. W. Woods
+  country: FK
 - nhm: NHMUK010671467
   prep: whole_mount
   modality: brightfield
@@ -1838,6 +1891,7 @@ life.insects:
   host: Columba palumbus@species
   locality_text: Somerset, England
   collected_on: 1934-05
+  country: GB
 - nhm: NHMUK010679559
   prep: whole_mount
   modality: brightfield
@@ -1845,24 +1899,28 @@ life.insects:
   host: Cygnus cygnus@species
   locality_text: South Uist
   collected_on: 1934-01
+  country: GB
 - nhm: NHMUK010690240
   prep: whole_mount
   modality: brightfield
   note: paratype; the label names the host Notornis mantelli, the takahe
   host: Porphyrio hochstetteri@species
   locality_text: Takahe Valley, Lake Te Anau, New Zealand
+  country: NZ
 - nhm: NHMUK010668672
   prep: whole_mount
   modality: brightfield
   note: holotype
   host: Eudyptes@genus@Animalia
   locality_text: Kidney Isle
+  country: FK
 - nhm: NHMUK010155747
   prep: whole_mount
   modality: brightfield
   note: from Vicia cracca flowers
   locality_text: Nancledra, Cornwall
   collected_on: '1990-08-10'
+  country: GB
 - nhm: NHMUK010154064
   prep: whole_mount
   modality: brightfield
@@ -1917,6 +1975,7 @@ life.insects:
   type_status: holotype
   catalogue_number: USNMENT01866405
   stack: policy
+  country: VE
 - zenodo:
     record: '18397703'
     file: 11_Ctenidiosomus_perpexsus_Allotype_2025_09_08_12_43_17.ndpi
@@ -1928,6 +1987,7 @@ life.insects:
   type_status: allotype
   catalogue_number: USNMENT01866406
   stack: policy
+  country: VE
 - zenodo:
     record: '18461326'
     file: 12_Tetraleurodes_85_10304_2024-01-04 11.10.43.ndpi
@@ -1938,6 +1998,7 @@ life.insects:
   locality_text: California, USA
   collector: Ian Stocks
   stack: policy
+  country: US
 - zenodo:
     record: '18461326'
     file: 13_Ptiliidae_FM_46745_2025_09_08_12_49_22.ndpi
@@ -1948,6 +2009,7 @@ life.insects:
   locality_text: Florida, USA
   collector: Bruno de Medeiros
   stack: policy
+  country: US
 - zenodo:
     record: '18461326'
     file: 14_Ptiliidae_FM_66-245_2025_09_08_12_38_40.ndpi
@@ -1958,6 +2020,7 @@ life.insects:
   locality_text: Florida, USA
   collector: Bruno de Medeiros
   stack: policy
+  country: US
 life.invertebrates:
 - commons: File:Adelodrilus anisosetosus (YPM IZ 072283) 002.jpeg
   taxon: Adelodrilus anisosetosus@species
@@ -2589,6 +2652,7 @@ life.plants:
   locality_text: Colombia
   collector: Diana Perez
   stack: policy
+  country: CO
 life.pollen:
 - commons: File:Carex pilosa pollen.jpg
   taxon: Carex pilosa@species
@@ -2883,6 +2947,7 @@ matter.materials:
   modality: brightfield
   note: archaeological starch grain of Zamia amblyphyllidia (marunguey) recovered from a stone tool, site Utu-27
   locality_text: Puerto Rico
+  country: PR
 - commons: File:Gartenbohne (Phaseolus vulgaris) Stärke.jpg
   material: starch
   prep: whole_mount

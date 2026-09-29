@@ -20,7 +20,7 @@ import yaml
 from app.base import names as base_names
 from app.base.http import Polite
 from app.base.sources import nhm
-from app.collections import vocab
+from app.collections import places, vocab
 from app.collections.placement import place
 from app.collections.rules import Facts
 from app.collections.tree import load_tree
@@ -233,15 +233,26 @@ def _one(http: Polite, collection: str, pick: dict, cands: dict, names: dict, ta
         record = cands[("commons", pick["pair"]["xpl"])]
     anchor = _anchor(http, pick, record, names, taxa)
     specimen = {"anchor": anchor}
-    for field in ("part", "preservation", "collected_on", "collector", "locality_text", "type_status"):
+    for field in ("part", "preservation", "collected_on", "collector", "locality_text", "type_status", "country"):
         if pick.get(field):
             specimen[field] = pick[field]
     if record and record["source"] == "nhm":
         hints = record["hints"]
         if hints.get("country") and "locality_text" not in specimen:
             specimen["locality_text"] = hints["country"]
+        if hints.get("country"):
+            # The occurrence names the country; it must be a CLDR name, or the pick states the code, and a code the
+            # pick states must agree with it.
+            code = places.code_of(str(hints["country"]))
+            if code is None and "country" not in specimen:
+                raise LockError(f"the record's country {hints['country']!r} is not a CLDR name: "
+                                "add country= to the pick")
+            if code and specimen.setdefault("country", code) != code:
+                raise LockError(f"the pick's country {specimen['country']} is not the record's {hints['country']}")
         if hints.get("typeStatus") and "type_status" not in specimen:
             specimen["type_status"] = str(hints["typeStatus"]).split()[0].lower()
+    if specimen.get("country") and not places.known(specimen["country"]):
+        raise LockError(f"country {specimen['country']!r} is not an ISO 3166-1 code of the vocabulary")
     if pick.get("host"):
         resolved = base_names.resolve(http, pick["host"], names)
         lineage(http, resolved["key"], taxa)

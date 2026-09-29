@@ -16,50 +16,50 @@ pair earth.rocks 114 115 | rock=sandstone | thin_section | | | | | glauconite pe
 pair earth.rocks 65 66 | rock=amphibolite | thin_section | | | | | Ashe Metamorphic Suite
 pair earth.rocks 67 68 | rock=pelite | thin_section | | | | | Ashe Metamorphic Suite
 pair earth.rocks 78 80 | rock=hornfels | thin_section | | | | | cordierite-magnetite hornfels
-pair earth.rocks 86 87 | rock=eclogite | thin_section | | | | | overview | locality=Autengrün, Münchberg massif, Bavaria, Germany
+pair earth.rocks 86 87 | rock=eclogite | thin_section | | | | | overview | locality=Autengrün, Münchberg massif, Bavaria, Germany; country=DE
 pair earth.rocks 91 92 | rock=gneiss | thin_section | | | | | spotted gneiss with allanite, 20 um bar | name=Fleckengneis
 earth.rocks 1 | rock=granite | thin_section | | polarised_xpl | | | 1 mm bar
-earth.rocks 5 | rock=anorthosite | thin_section | | polarised_xpl | | | skeletal magnetite | locality=Bushveld Complex, South Africa
+earth.rocks 5 | rock=anorthosite | thin_section | | polarised_xpl | | | skeletal magnetite | locality=Bushveld Complex, South Africa; country=ZA
 earth.rocks 10 | rock=orthopyroxenite | thin_section | | polarised_xpl | | | olivine and pyroxene | name=bronzitite
-earth.rocks 13 | rock=gabbro | thin_section | | polarised_xpl | | | | locality=Bushveld Complex, South Africa
-earth.rocks 16 | rock=komatiite | thin_section | | polarised_xpl | | | olivine adcumulate, Archaean, field of view 20 mm | locality=Agnew, Western Australia
+earth.rocks 13 | rock=gabbro | thin_section | | polarised_xpl | | | | locality=Bushveld Complex, South Africa; country=ZA
+earth.rocks 16 | rock=komatiite | thin_section | | polarised_xpl | | | olivine adcumulate, Archaean, field of view 20 mm | locality=Agnew, Western Australia; country=AU
 earth.rocks 17 | rock=komatiite | thin_section | | polarised_ppl | | | spinifex texture of pyroxene needles, Archaean, field of view 15 mm
 earth.rocks 23 | rock=dunite | thin_section | | polarised_xpl | | | olivine, field of view 7 mm
-earth.rocks 31 | rock=andesite | thin_section | | polarised_xpl | | | Chilean andesite, autochrome plate by Leo Wehrli | locality=Andes, Chile
-earth.rocks 43 | rock=obsidian | thin_section | | polarised_ppl | | | magmatic flow in volcanic glass, field of view 2 mm | locality=Ponza, Italy
-earth.rocks 55 | rock=carbonatite | thin_section | | polarised_xpl | | | rounded gregoryite crystals in natrocarbonatite, field of view 2 mm | locality=Ol Doinyo Lengai, Tanzania; name=natrocarbonatite
-earth.rocks 64 | rock=serpentinite | thin_section | | polarised_xpl | | | bladed antigorite | locality=Erbendorf, Upper Palatinate, Germany
+earth.rocks 31 | rock=andesite | thin_section | | polarised_xpl | | | Chilean andesite, autochrome plate by Leo Wehrli | locality=Andes, Chile; country=CL
+earth.rocks 43 | rock=obsidian | thin_section | | polarised_ppl | | | magmatic flow in volcanic glass, field of view 2 mm | locality=Ponza, Italy; country=IT
+earth.rocks 55 | rock=carbonatite | thin_section | | polarised_xpl | | | rounded gregoryite crystals in natrocarbonatite, field of view 2 mm | locality=Ol Doinyo Lengai, Tanzania; name=natrocarbonatite; country=TZ
+earth.rocks 64 | rock=serpentinite | thin_section | | polarised_xpl | | | bladed antigorite | locality=Erbendorf, Upper Palatinate, Germany; country=DE
 earth.rocks 69 | rock=schist | thin_section | | polarised_ppl | | | glaucophane and stilpnomelane, field of view 7 mm | name=blueschist
-earth.rocks 70 | rock=schist | thin_section | | polarised_ppl | | | glaucophane, field of view 2 mm | locality=Ghinivert, Cottian Alps, Italy; name=blueschist
-earth.rocks 75 | rock=marble | thin_section | | polarised_xpl | | | pyroxene and olivine in a calc-silicate marble, field of view 7 mm | locality=Brazil
+earth.rocks 70 | rock=schist | thin_section | | polarised_ppl | | | glaucophane, field of view 2 mm | locality=Ghinivert, Cottian Alps, Italy; name=blueschist; country=IT
+earth.rocks 75 | rock=marble | thin_section | | polarised_xpl | | | pyroxene and olivine in a calc-silicate marble, field of view 7 mm | locality=Brazil; country=BR
 earth.rocks 84 | rock=mylonite | thin_section | | polarised_xpl | | | crossed polars with compensator plate, field of view 7 mm
 earth.rocks 85 | rock=eclogite | thin_section | | polarised_ppl | | | garnet, glaucophane and omphacite, field of view 7 mm
 earth.rocks 88 | rock=eclogite | thin_section | | polarised_xpl | | | symplectite of hornblende and plagioclase in retrogressed eclogite
-earth.rocks 89 | rock=marble | thin_section | | polarised_xpl | | | Carrara marble, autochrome plate by Leo Wehrli | locality=Carrara, Italy
-earth.rocks 90 | rock=marble | thin_section | | polarised_xpl | | | autochrome plate by Leo Wehrli | locality=Andermatt, Switzerland
+earth.rocks 89 | rock=marble | thin_section | | polarised_xpl | | | Carrara marble, autochrome plate by Leo Wehrli | locality=Carrara, Italy; country=IT
+earth.rocks 90 | rock=marble | thin_section | | polarised_xpl | | | autochrome plate by Leo Wehrli | locality=Andermatt, Switzerland; country=CH
 earth.rocks 95 | rock=schist | thin_section | | polarised_ppl | | | garnet, biotite, muscovite and quartz | name=garnet-mica schist
 earth.rocks 97 | rock=granofels | thin_section | | polarised_xpl | | | two nicols | name=granulite
-earth.rocks 148 | rock=greisen | thin_section | | polarised_xpl | | | zoned cassiterite in quartz-topaz greisen, image width 3.3 mm | locality=Haupt- and Ottoschacht dump, Přebuz, Czech Republic
+earth.rocks 148 | rock=greisen | thin_section | | polarised_xpl | | | zoned cassiterite in quartz-topaz greisen, image width 3.3 mm | locality=Haupt- and Ottoschacht dump, Přebuz, Czech Republic; country=CZ
 earth.rocks 101 | rock=clay | thin_section | | polarised_xpl | | | varved clay, 1 mm bar
-earth.rocks 103 | rock=lime-sand | thin_section | | polarised_ppl | | | seagrass facies of a back-reef, many benthic foraminifera | locality=Great Barrier Reef, Australia
-earth.rocks 104 | rock=rudstone | thin_section | | brightfield | | | gastropods and sea-urchin spines, beach of a hypersaline lagoon, scan of the thin section, sample AM 316 | locality=Andros, Bahamas
-earth.rocks 105 | rock=rudstone | thin_section | | brightfield | | | foraminifera, green and red algae and coral, scan of the thin section, sample AM 258 | locality=Bahamas
-earth.rocks 110 | rock=sandstone | thin_section | | polarised_xpl | | | Molasse sandstone, autochrome plate by Leo Wehrli | locality=Bäch, Switzerland
-earth.rocks 116 | rock=grainstone | thin_section | | brightfield | | | ooid shoal, scan of the thin section | locality=Pond Key, Lee Stocking Island, Bahamas
-earth.rocks 117 | rock=lime-gravel | thin_section | | polarised_ppl | | | maerl: red calcareous algae with barnacles, serpulids and molluscs | locality=Tromsø, Norway
-earth.rocks 118 | rock=lime-sand | thin_section | | polarised_ppl | | | bivalves, gastropods, Halimeda and coralline algae | locality=Guadeloupe
-earth.rocks 122 | rock=lime-sand | thin_section | | polarised_ppl | | | Halimeda sediment | locality=Great Barrier Reef, Australia
-earth.rocks 123 | rock=lime-sand | thin_section | | polarised_ppl | | | beach sediment of bivalves, barnacles, echinoids, coralline algae, serpulids and brachiopods | locality=north of Gothenburg, Sweden
+earth.rocks 103 | rock=lime-sand | thin_section | | polarised_ppl | | | seagrass facies of a back-reef, many benthic foraminifera | locality=Great Barrier Reef, Australia; country=AU
+earth.rocks 104 | rock=rudstone | thin_section | | brightfield | | | gastropods and sea-urchin spines, beach of a hypersaline lagoon, scan of the thin section, sample AM 316 | locality=Andros, Bahamas; country=BS
+earth.rocks 105 | rock=rudstone | thin_section | | brightfield | | | foraminifera, green and red algae and coral, scan of the thin section, sample AM 258 | locality=Bahamas; country=BS
+earth.rocks 110 | rock=sandstone | thin_section | | polarised_xpl | | | Molasse sandstone, autochrome plate by Leo Wehrli | locality=Bäch, Switzerland; country=CH
+earth.rocks 116 | rock=grainstone | thin_section | | brightfield | | | ooid shoal, scan of the thin section | locality=Pond Key, Lee Stocking Island, Bahamas; country=BS
+earth.rocks 117 | rock=lime-gravel | thin_section | | polarised_ppl | | | maerl: red calcareous algae with barnacles, serpulids and molluscs | locality=Tromsø, Norway; country=NO
+earth.rocks 118 | rock=lime-sand | thin_section | | polarised_ppl | | | bivalves, gastropods, Halimeda and coralline algae | locality=Guadeloupe; country=GP
+earth.rocks 122 | rock=lime-sand | thin_section | | polarised_ppl | | | Halimeda sediment | locality=Great Barrier Reef, Australia; country=AU
+earth.rocks 123 | rock=lime-sand | thin_section | | polarised_ppl | | | beach sediment of bivalves, barnacles, echinoids, coralline algae, serpulids and brachiopods | locality=north of Gothenburg, Sweden; country=SE
 earth.rocks 125 | rock=grainstone | thin_section | | brightfield | | | ooidal grainstone with foraminifera, red algae and mollusc fragments, scan of the thin section, sample AM 173
 earth.rocks 126 | rock=grainstone | thin_section | | brightfield | | | ooidal grainstone with intraclasts, scan of the thin section, sample AM 257
-earth.rocks 129 | rock=grainstone | thin_section | | brightfield | | | peloidal grainstone of a stabilised sand flat, scan of the thin section, GeoZentrum Nordbayern | locality=Baraterre Island, Exumas, Bahamas
+earth.rocks 129 | rock=grainstone | thin_section | | brightfield | | | peloidal grainstone of a stabilised sand flat, scan of the thin section, GeoZentrum Nordbayern | locality=Baraterre Island, Exumas, Bahamas; country=BS
 earth.rocks 156 | rock=siltstone | thin_section | | polarised_xpl | | | vein of anhydrite with triangular forms cutting siltstone
-earth.rocks 137 | rock=ordinary-chondrite | thin_section | | polarised_xpl | | | type L3.1 | locality=Jiddat al Harasis, Oman; name=JaH 026
+earth.rocks 137 | rock=ordinary-chondrite | thin_section | | polarised_xpl | | | type L3.1 | locality=Jiddat al Harasis, Oman; name=JaH 026; country=OM
 earth.rocks 138 | rock=carbonaceous-chondrite | thin_section | | polarised_xpl | | | CV3, gigapixel mosaic of the whole thin section; the source says a low degree polarized light filter | name=Northwest Africa 2224
 earth.rocks 139 | rock=carbonaceous-chondrite | thin_section | | brightfield | | | chondrule in a CV3 chondrite, focus-stacked mosaic, 10x objective, visible light | name=Northwest Africa 5930
-earth.rocks 144 | rock=vein-ore | polished_section | | reflected | | | goethite replacing pyrite in quartz | locality=Baratta goldfield, South Australia
-earth.rocks 145 | rock=vein-ore | polished_section | | reflected | | | native gold on and between pyrite crystals, quartz dark grey, 0.5 mm bar | locality=Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
-earth.rocks 146 | rock=vein-ore | polished_section | | reflected | | | native gold with pyrite in quartz | locality=Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
-earth.rocks 147 | rock=vein-ore | polished_section | | reflected | | | pyrite replaced by chalcopyrite, covellite and galena | locality=Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
-earth.rocks 150 | rock=vein-ore | polished_section | | reflected | | | hematite overgrowing pyrite in quartz | locality=Kitticoola goldmine, Palmer, South Australia
-earth.rocks 157 | rock=banded-ironstone | polished_section | | reflected | | | Rapitan-type bedded iron ore: magnetite and minor hematite in sericite and quartz, Neoproterozoic | locality=South Australia
+earth.rocks 144 | rock=vein-ore | polished_section | | reflected | | | goethite replacing pyrite in quartz | locality=Baratta goldfield, South Australia; country=AU
+earth.rocks 145 | rock=vein-ore | polished_section | | reflected | | | native gold on and between pyrite crystals, quartz dark grey, 0.5 mm bar | locality=Bird in Hand gold deposit, Mount Lofty Ranges, South Australia; country=AU
+earth.rocks 146 | rock=vein-ore | polished_section | | reflected | | | native gold with pyrite in quartz | locality=Bird in Hand gold deposit, Mount Lofty Ranges, South Australia; country=AU
+earth.rocks 147 | rock=vein-ore | polished_section | | reflected | | | pyrite replaced by chalcopyrite, covellite and galena | locality=Bird in Hand gold deposit, Mount Lofty Ranges, South Australia; country=AU
+earth.rocks 150 | rock=vein-ore | polished_section | | reflected | | | hematite overgrowing pyrite in quartz | locality=Kitticoola goldmine, Palmer, South Australia; country=AU
+earth.rocks 157 | rock=banded-ironstone | polished_section | | reflected | | | Rapitan-type bedded iron ore: magnetite and minor hematite in sericite and quartz, Neoproterozoic | locality=South Australia; country=AU

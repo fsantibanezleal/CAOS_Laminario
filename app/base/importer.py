@@ -3,8 +3,9 @@
 ``import_bake(bake_root, settings)`` reads ``manifest.json``, checks every stored file of the bake against its SHA-256
 and size, copies the files into the target store under the same storage keys (content addresses, so an identical file
 is left in place), inserts the taxon rows the slides use, and inserts every slide and asset row as baked. A slide
-whose short id is already in the target is skipped when it is the same base slide (so an import can be repeated) and
-refused when it is another slide. Nothing is processed: the bake did that.
+whose short id is already in the target is refused when it is another slide; when it is the same base slide, its rows
+are brought to the bake's if its record or its assets changed since (a country corrected, a slide baked again), and it
+is skipped otherwise, so an import can be repeated. Nothing is processed: the bake did that.
 """
 
 from __future__ import annotations
@@ -14,7 +15,7 @@ import json
 import shutil
 from pathlib import Path
 
-from sqlalchemy import insert, select
+from sqlalchemy import delete, insert, select, update
 
 from app.config import Settings
 from app.db.engine import make_sync_engine
@@ -69,6 +70,27 @@ def _row(values: dict, columns: set[str]) -> dict:
     return out
 
 
+def _same(row, values: dict) -> bool:
+    return all(getattr(row, k) == v for k, v in values.items() if k not in ("created_at", "updated_at", "published_at"))
+
+
+def _refresh(conn, slide_id: int, slide: dict, assets: list[dict], slide_cols: set[str], asset_cols: set[str]) -> bool:
+    """Bring a base slide already in the target to the bake's rows; whether anything changed."""
+    values = _row(slide, slide_cols)
+    current = conn.execute(select(Slide).where(Slide.id == slide_id)).first()
+    wanted = [_row(a, asset_cols) for a in assets]
+    have = conn.execute(select(Asset).where(Asset.slide_id == slide_id).order_by(Asset.sort_order, Asset.id)).all()
+    record_same = _same(current, values)
+    assets_same = len(have) == len(wanted) and all(_same(h, w) for h, w in zip(have, wanted, strict=True))
+    if not record_same:
+        conn.execute(update(Slide).where(Slide.id == slide_id).values(**values))
+    if not assets_same:
+        conn.execute(delete(Asset).where(Asset.slide_id == slide_id))
+        for w in wanted:
+            conn.execute(insert(Asset).values(slide_id=slide_id, **w))
+    return not (record_same and assets_same)
+
+
 def import_bake(bake_root: Path, settings: Settings) -> dict:
     manifest = json.loads((bake_root / MANIFEST).read_text(encoding="utf-8"))
     if manifest.get("failed_jobs"):
@@ -81,7 +103,7 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
     engine = make_sync_engine(database)
     slide_cols = {c.name for c in Slide.__table__.columns} - {"id"}
     asset_cols = {c.name for c in Asset.__table__.columns} - {"id", "slide_id"}
-    copied = imported = skipped = 0
+    copied = imported = updated = skipped = 0
     loaded: list[str] = []
     try:
         with engine.begin() as conn:
@@ -96,11 +118,8 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
                 slide = entry["slide"]
                 existing = conn.execute(select(Slide.id, Slide.origin).where(
                     Slide.short_id == slide["short_id"])).first()
-                if existing is not None:
-                    if existing.origin != "base":
-                        raise ImportRefused(f"{slide['short_id']} is already another slide")
-                    skipped += 1
-                    continue
+                if existing is not None and existing.origin != "base":
+                    raise ImportRefused(f"{slide['short_id']} is already another slide")
                 for asset in entry["assets"]:
                     f = asset.get("file")
                     if f:
@@ -110,6 +129,14 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
                             target.parent.mkdir(parents=True, exist_ok=True)
                             shutil.copy2(bake_root / "store" / f["key"], target)
                             copied += 1
+                if existing is not None:
+                    # A base slide is the bake's: a changed record or changed assets are brought over, the rest skipped.
+                    if _refresh(conn, existing.id, slide, entry["assets"], slide_cols, asset_cols):
+                        updated += 1
+                        loaded.append(slide["short_id"])
+                    else:
+                        skipped += 1
+                    continue
                 slide_id = conn.execute(insert(Slide).values(**_row(slide, slide_cols))).inserted_primary_key[0]
                 for asset in entry["assets"]:
                     conn.execute(insert(Asset).values(slide_id=slide_id, **_row(asset, asset_cols)))
@@ -119,4 +146,4 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
             search.reindex(conn, loaded)
     finally:
         engine.dispose()
-    return {"imported": imported, "skipped": skipped, "files_copied": copied}
+    return {"imported": imported, "updated": updated, "skipped": skipped, "files_copied": copied}
