@@ -196,11 +196,22 @@ export interface ValidationFlag {
   code: string;
   field: string;
   message: string;
+  params?: {
+    [k: string]: string;
+  };
 }
+/**
+ * A reason a slide case is refused: the field, the API's message and what would be accepted, and a stable code
+ * with the values the message names, so an interface can say it in its own words (R-1202).
+ */
 export interface ValidationError {
   field: string;
   message: string;
   expected: string;
+  code?: string | null;
+  params?: {
+    [k: string]: string;
+  };
 }
 /**
  * A processing job as ``GET /api/jobs/{id}`` returns it.

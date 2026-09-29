@@ -8,7 +8,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const read = (lang) => {
   const text = readFileSync(join(here, "..", "src", "i18n", `${lang}.ts`), "utf8");
   const entries = new Map();
-  for (const m of text.matchAll(/^\s*"([a-z0-9.\-]+)":\s*"((?:[^"\\]|\\.)*)",?\s*$/gim)) {
+  for (const m of text.matchAll(/^\s*"([a-z0-9._\-]+)":\s*"((?:[^"\\]|\\.)*)",?\s*$/gim)) {
     if (entries.has(m[1])) throw new Error(`${lang}: ${m[1]} appears twice`);
     entries.set(m[1], m[2]);
   }

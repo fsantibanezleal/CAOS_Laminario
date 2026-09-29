@@ -376,14 +376,19 @@ What a drawer shows on a slide's label end (no coordinates, so nothing geoprivac
 | `code` | string | yes |  |  |
 | `field` | string | yes |  |  |
 | `message` | string | yes |  |  |
+| `params` | map of string | no |  | `{}` |
 
 ### ValidationError
+
+A reason a slide case is refused: the field, the API's message and what would be accepted, and a stable code with the values the message names, so an interface can say it in its own words (R-1202).
 
 | Field | Type | Required | Accepted | Default |
 |---|---|---|---|---|
 | `field` | string | yes |  |  |
 | `message` | string | yes |  |  |
 | `expected` | string | yes |  |  |
+| `code` | string or null | no |  | null |
+| `params` | map of string | no |  | `{}` |
 
 ### CollectionNodeRecord
 

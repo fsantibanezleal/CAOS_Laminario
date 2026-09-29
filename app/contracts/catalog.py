@@ -253,12 +253,18 @@ class ValidationFlag(_Record):
     code: str
     field: str
     message: str
+    params: dict[str, str] = {}
 
 
 class ValidationError(_Record):
+    """A reason a slide case is refused: the field, the API's message and what would be accepted, and a stable code
+    with the values the message names, so an interface can say it in its own words (R-1202)."""
+
     field: str
     message: str
     expected: str
+    code: str | None = None
+    params: dict[str, str] = {}
 
 
 class ValidationResult(_Record):
