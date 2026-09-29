@@ -168,7 +168,8 @@ rewritten; otherwise it is baked again. No entry is trusted without a judgement.
 
 The server never bakes. `import --bake ROOT` verifies every stored file against the manifest, refuses a bake with a
 failed job or a changed file, copies the files under their storage keys (content addresses, so an identical file is
-left in place), and inserts the rows as baked. The search text of every slide it writes is composed again with the
+left in place: a file already there is kept only if its SHA-256 and size are the manifest's), and inserts the rows
+as baked. `verify --bake ROOT` checks the served store against the manifest afterwards, file by file. The search text of every slide it writes is composed again with the
 server's tree. An import can be repeated: a base slide already imported is brought to the bake's rows when its record
 or its assets changed since, and skipped otherwise; a short id held by another slide is refused.
 

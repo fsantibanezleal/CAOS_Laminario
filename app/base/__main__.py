@@ -84,6 +84,8 @@ def main() -> int:
     b.add_argument("--refresh", action="append", default=[], help="a slide id to bake again (repeatable)")
     i = sub.add_parser("import")
     i.add_argument("--bake", type=Path, required=True)
+    v = sub.add_parser("verify", help="check the served store against a bake's manifest (after an import)")
+    v.add_argument("--bake", type=Path, required=True)
     args = parser.parse_args()
     if args.step == "harvest":
         harvest(args.collections)
@@ -124,6 +126,17 @@ def main() -> int:
         from app.base import importer
 
         print(importer.import_bake(args.bake, get_settings()))
+    elif args.step == "verify":
+        from app.base import importer
+
+        manifest = json.loads((args.bake / importer.MANIFEST).read_text(encoding="utf-8"))
+        store = get_settings().store_root
+        problems = importer.verify(args.bake, manifest, store)
+        for problem in problems[:30]:
+            print(problem)
+        print(f"{importer.manifest_files(manifest)} files of the manifest checked in {store}: "
+              f"{len(problems)} missing or different")
+        return 1 if problems else 0
     return 0
 
 

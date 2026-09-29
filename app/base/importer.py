@@ -39,9 +39,10 @@ def _sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def verify(bake_root: Path, manifest: dict) -> list[str]:
-    """Every stored file of the bake, checked against the manifest; the problems found."""
-    store = bake_root / "store"
+def verify(bake_root: Path, manifest: dict, store: Path | None = None) -> list[str]:
+    """Every stored file the manifest lists, checked against its SHA-256 and size in the bake's own store, or in
+    ``store`` (the served store after an import); the problems found."""
+    store = store if store is not None else bake_root / "store"
     problems = []
     for entry in manifest["slides"]:
         for asset in entry["assets"]:
@@ -54,6 +55,11 @@ def verify(bake_root: Path, manifest: dict) -> list[str]:
             elif path.stat().st_size != f["bytes"] or _sha256(path) != f["sha256"]:
                 problems.append(f"{f['key']}: differs from the manifest")
     return problems
+
+
+def manifest_files(manifest: dict) -> int:
+    """How many stored files the manifest lists."""
+    return sum(1 for entry in manifest["slides"] for asset in entry["assets"] if asset.get("file"))
 
 
 #: Slide columns the import never takes from a bake: the community's (U13) and the curators'.

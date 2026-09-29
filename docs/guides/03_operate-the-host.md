@@ -49,7 +49,12 @@ deployment itself ([18](../architecture/18_deployment.md)).
    ```
 
    The import verifies every file against the bake's manifest and refuses a bake with a failed job before writing
-   anything; a second import adds nothing.
+   anything; a second import adds nothing. Afterwards, and whenever the store is in doubt, check the served store
+   against the same manifest (it exits with 1 and names each file that is missing or different):
+
+   ```bash
+   runuser -u laminario --preserve-environment -- .venv/bin/python -m app.base verify --bake /srv/laminario/bake/<bake>
+   ```
 6. The first administrator: `python -m app.accounts invite --role admin` (same environment) prints a single-use link.
 
 ## Updating

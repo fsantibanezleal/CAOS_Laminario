@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from app.base.importer import MANIFEST, ImportRefused, import_bake, verify
+from app.base.importer import MANIFEST, ImportRefused, import_bake, manifest_files, verify
 from app.config import Settings
 
 
@@ -46,3 +46,18 @@ def test_import_refuses_a_tampered_or_failed_bake(tmp_path: Path):
     _bake(failed, failed_jobs=2)
     with pytest.raises(ImportRefused, match="2 failed jobs"):
         import_bake(failed, target)
+
+
+def test_the_served_store_is_checked_against_the_manifest_after_an_import(tmp_path: Path):
+    """R-1603: after an import, every file the manifest lists is in the served store with its SHA-256 and size."""
+    import shutil
+
+    bake = tmp_path / "bake"
+    manifest = _bake(bake)
+    target = Settings(data_root=tmp_path / "server")
+    shutil.copytree(bake / "store", target.store_root)  # what the import's copy leaves in the served store
+    assert manifest_files(manifest) == 1 and verify(bake, manifest, target.store_root) == []
+    key = manifest["slides"][0]["assets"][0]["file"]["key"]
+    (target.store_root / key).write_bytes(b"a served file changed")
+    assert verify(bake, manifest, target.store_root) == [f"{key}: differs from the manifest"]
+    assert verify(bake, manifest) == []  # the bake's own store is untouched

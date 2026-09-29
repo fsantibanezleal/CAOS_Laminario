@@ -61,7 +61,8 @@ a complete data root (database, store, manifest). After the lock changes only in
 bake refreshes those records without processing images again (the pixels fingerprint, page 10 section 3.6). The root
 is copied to `/srv/laminario/bake/` and imported by `python -m app.base import --bake`: every stored file is checked
 against the manifest's SHA-256 and size before anything is written, a bake with a failed job is refused, and a second
-import adds nothing.
+import adds nothing. `python -m app.base verify --bake` then checks the served store against the same manifest, which
+is how R-1603's "every stored file equal to its manifest's SHA-256" is measured on the host.
 
 ## 5. The gates against the live site
 
