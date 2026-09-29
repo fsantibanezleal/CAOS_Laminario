@@ -18,6 +18,7 @@ from pathlib import Path
 
 import yaml
 
+from app.base import coverage
 from app.base.acquire import load as load_acquired
 from app.base.lock import LOCK, TAXA
 from app.base.submission import submission
@@ -33,6 +34,12 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 REPORT = ROOT / "docs" / "collections" / "base-report.md"
 FLOORS = {"slides": 300, "per_collection": 12, "wsi": 14}
 ROCK_FAMILIES = ("igneous", "sedimentary", "metamorphic")
+#: Collections whose open supply, after curation, is below the per-collection floor, each with the finding that
+#: records the searches made. A collection below the floor that is not listed here fails validation.
+SHORTFALLS = {
+    "life.reptiles": "F-031: the open, licence-compatible reptile micrographs found on Commons, the Wellcome "
+                     "Collection and GBIF are seven single images; the rest are multi-panel figures or fossils",
+}
 
 
 @dataclass
@@ -60,11 +67,16 @@ async def _seeded_session(folder: Path):
     return engine
 
 
-def check(slides: list[dict], acquired: dict[str, dict], vault: Path | None) -> list[Result]:
+def check(slides: list[dict], acquired: dict[str, dict], vault: Path | None,
+          workdir: Path | None = None) -> list[Result]:
+    """Every slide through the checks; the throw-away database goes in ``workdir`` (default: the vault)."""
     tree = load_tree()
+    base = workdir or (vault / "tmp" if vault else None)
+    if base is not None:
+        base.mkdir(parents=True, exist_ok=True)
 
     async def run() -> list[Result]:
-        with tempfile.TemporaryDirectory(prefix="laminario-validate-") as tmp:
+        with tempfile.TemporaryDirectory(prefix="laminario-validate-", dir=base) as tmp:
             engine = await _seeded_session(Path(tmp))
             offline = taxa_cache.new_client("http://127.0.0.1:9/v1")
             results = []
@@ -109,16 +121,37 @@ async def _one(db, client, slide, acquired, vault, tree) -> Result:
     return result
 
 
+def collections() -> list[str]:
+    return [n.id for n in load_tree().nodes.values() if n.level == "collection"]
+
+
 def floors(results: list[Result]) -> dict[str, object]:
     per = Counter(r.collection for r in results)
     pairs = {f for r in results if r.polarised_pair and r.rock_family for f in [r.rock_family]}
+    below = sorted(c for c in collections() if per.get(c, 0) < FLOORS["per_collection"])
     return {
         "slides": len(results),
-        "per_collection": dict(sorted(per.items())),
-        "collections_below_floor": sorted(c for c, n in per.items() if n < FLOORS["per_collection"]),
+        "per_collection": {c: per.get(c, 0) for c in collections()},
+        "collections_below_floor": below,
+        "undocumented_shortfalls": [c for c in below if c not in SHORTFALLS],
         "wsi": sum(r.wsi for r in results),
         "rock_families_with_pairs": sorted(pairs),
     }
+
+
+def floor_problems(summary: dict) -> list[str]:
+    """The floors of dossier 06 that the collection misses (a recorded shortfall is not a problem)."""
+    problems = []
+    if summary["slides"] < FLOORS["slides"]:
+        problems.append(f"{summary['slides']} slides, fewer than {FLOORS['slides']}")
+    if summary["wsi"] < FLOORS["wsi"]:
+        problems.append(f"{summary['wsi']} whole-slide images, fewer than {FLOORS['wsi']}")
+    problems += [f"{c} holds {summary['per_collection'][c]} slides and no recorded reason"
+                 for c in summary["undocumented_shortfalls"]]
+    missing = [f for f in ROCK_FAMILIES if f not in summary["rock_families_with_pairs"]]
+    if missing:
+        problems.append(f"no polarised pair for {', '.join(missing)}")
+    return problems
 
 
 def validate(vault: Path | None) -> tuple[list[Result], dict]:
@@ -126,6 +159,7 @@ def validate(vault: Path | None) -> tuple[list[Result], dict]:
     results = check(lock["slides"], load_acquired(), vault)
     summary = floors(results)
     write_report(results, summary)
+    coverage.write(lock["slides"])
     return results, summary
 
 
@@ -142,7 +176,10 @@ def write_report(results: list[Result], summary: dict) -> None:
         f"- Rock families with a registered PPL/XPL pair: {', '.join(summary['rock_families_with_pairs']) or 'none'}"
         f" (all of {', '.join(ROCK_FAMILIES)} required)",
         f"- Collections below {FLOORS['per_collection']} slides: "
-        f"{', '.join(summary['collections_below_floor']) or 'none'}",
+        f"{', '.join(summary['collections_below_floor']) or 'none'}"
+        + "".join(f"\n  - `{c}`: {SHORTFALLS[c]}" for c in summary["collections_below_floor"] if c in SHORTFALLS),
+        f"- Collections below the floor with no recorded reason: "
+        f"{', '.join(summary['undocumented_shortfalls']) or 'none'}",
         f"- Slides failing a check: **{len(failed)}**",
         "",
         "| Collection | Slides |",

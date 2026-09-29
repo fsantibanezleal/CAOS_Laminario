@@ -46,6 +46,10 @@ def harvest(collections: list[str]) -> None:
                 if "commons" in item:
                     got, counts = commons.harvest(http, item["commons"], depth=item.get("depth", 1),
                                                   min_side=item.get("min_side", 1000), limit=item.get("limit", 120))
+                elif "commons_files" in item:
+                    pages = commons.named(http, item["commons_files"])
+                    got = [c for c in (commons.candidate(pg, "named", item.get("min_side", 1000)) for pg in pages) if c]
+                    counts = {"files": len(pages), "kept": len(got)}
                 else:
                     got, counts = nhm.harvest(http, item["nhm"], item.get("filters"), limit=item.get("limit", 60),
                                               need_micro=item.get("need_micro", True))
@@ -100,7 +104,10 @@ def main() -> int:
         for r in failed[:30]:
             print(r.slide_id, r.errors[:2])
         print(json.dumps(summary, indent=1))
-        return 1 if failed else 0
+        problems = validate.floor_problems(summary)
+        for problem in problems:
+            print("floor:", problem)
+        return 1 if failed or problems else 0
     elif args.step == "bake":
         from app.base import bake
 

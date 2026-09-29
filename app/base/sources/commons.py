@@ -73,6 +73,22 @@ def files(http: Polite, category: str, thumb_px: int = 320) -> list[dict]:
     return list(pages.values())
 
 
+def named(http: Polite, titles: list[str], thumb_px: int = 320) -> list[dict]:
+    """Files named one by one (a category that holds too few, or a file found by search), as ``files`` returns them."""
+    out = []
+    for start in range(0, len(titles), 40):
+        params = {"action": "query", "titles": "|".join(titles[start:start + 40]), "prop": "imageinfo|categories",
+                  "iiprop": "url|size|sha1|extmetadata|mime", "iiextmetadatafilter": FIELDS,
+                  "iiurlwidth": str(thumb_px), "clshow": "!hidden", "cllimit": "max", "format": "json",
+                  "maxlag": "5"}
+        data = http.json(API, params)
+        for page in data.get("query", {}).get("pages", {}).values():
+            if page.get("imageinfo"):
+                out.append({"title": page["title"], "info": page["imageinfo"][0],
+                            "categories": {c["title"].removeprefix("Category:") for c in page.get("categories", [])}})
+    return out
+
+
 def candidate(page: dict, category: str, min_side: int) -> dict | None:
     info = page.get("info")
     if not info or info.get("mime") not in IMAGE_MIME or max(info["width"], info["height"]) < min_side:

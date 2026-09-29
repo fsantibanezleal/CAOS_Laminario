@@ -9,9 +9,12 @@ One line per slide, written while looking at a harvest sheet (``<collection>.png
 ``material=term``, optionally followed by ``~fossil`` or ``~in_amber`` (picks under ``[earth.fossils]`` are fossil
 unless marked); later fields may be empty. ``pair <sheet> <n_ppl> <n_xpl> | ...`` picks a registered PPL/XPL
 pair. ``nhm <catalogue number> | ...`` picks an NHM record (anchor from its GBIF occurrence unless given).
-``<extras>`` are ``key=value`` pairs separated by ``;`` for facts read on the slide's label: ``host`` (a name as in
-``<anchor>``), ``locality``, ``collected`` (YYYY, YYYY-MM or YYYY-MM-DD), ``collector``, ``preparer``, ``name`` (the
-determination as written).
+``zenodo <record> <file name> | ...`` and ``openslide <path in the index> | ...`` pick a whole-slide image.
+``<extras>`` are ``key=value`` pairs separated by ``;`` for facts read on the slide's label or the source's sheet:
+``host`` (a name as in ``<anchor>``), ``locality``, ``collected`` (YYYY, YYYY-MM or YYYY-MM-DD), ``collector``,
+``preparer``, ``name`` (the determination as written), ``type`` (the type status), ``catalogue`` (the holder's
+catalogue number), ``stack`` (``policy``: a focal stack whose planes the ingest policy selects), ``pixel`` (the
+pixel size in micrometres, when the source states it).
 Lines starting with ``#`` are comments; the target collection of each pick is the section header
 ``[collection]``.
 """
@@ -64,6 +67,10 @@ def parse(text: str, vault: Path) -> dict[str, list[dict]]:
             pick["pair"] = {"ppl": idx[int(words[2])], "xpl": idx[int(words[3])]}
         elif words[0] == "nhm":
             pick["nhm"] = words[1]
+        elif words[0] == "zenodo":
+            pick["zenodo"] = {"record": words[1], "file": " ".join(words[2:])}
+        elif words[0] == "openslide":
+            pick["openslide"] = words[1]
         else:
             sheet, n = words[0], int(words[1])
             idx = indexes.setdefault(sheet, _index(vault, sheet))
@@ -76,10 +83,15 @@ def parse(text: str, vault: Path) -> dict[str, list[dict]]:
             if value:
                 pick[key] = value
         names = {"host": "host", "locality": "locality_text", "collected": "collected_on", "collector": "collector",
-                 "preparer": "preparer", "name": "name"}
+                 "preparer": "preparer", "name": "name", "type": "type_status", "catalogue": "catalogue_number",
+                 "stack": "stack", "pixel": "pixel_size_um"}
         for item in filter(None, (x.strip() for x in extras.split(";"))):
             key, _, value = item.partition("=")
             pick[names[key.strip()]] = value.strip()
+        if "pixel_size_um" in pick:
+            pick["pixel_size_um"] = float(pick["pixel_size_um"])
+        if pick.get("stack") not in (None, "policy"):
+            raise ValueError(f"{line}: stack takes only 'policy'")
         out[section].append(pick)
     return out
 

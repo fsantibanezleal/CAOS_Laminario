@@ -160,9 +160,8 @@ def _wsi(pick: dict, http: Polite) -> tuple[dict, list[dict]]:
             else None
         record = {"source": "zenodo", "record_id": f"zenodo:{pick['zenodo']['record']}/{f['key']}",
                   "record_url": rec["links"]["self_html"] if "self_html" in rec["links"] else rec["doi_url"]}
-        media = {"url": f["links"]["self"], "licence": licence,
-                 "rights_holder": "Smithsonian Institution, National Museum of Natural History",
-                 "creator": "; ".join(c["name"] for c in rec["metadata"].get("creators", [])[:3]),
+        media = {"url": f["links"]["self"], "licence": licence, "rights_holder": None,
+                 "creator": "; ".join(c["name"] for c in rec["metadata"].get("creators", [])),
                  "md5": f["checksum"].removeprefix("md5:"), "bytes": f["size"]}
     else:
         path = pick["openslide"]
@@ -267,6 +266,8 @@ def _one(http: Polite, collection: str, pick: dict, cands: dict, names: dict, ta
             slide[field] = pick[field]
     if record and record["source"] == "nhm":
         slide["catalogue_number"] = str(record["record_id"])
+    if pick.get("catalogue_number"):
+        slide["catalogue_number"] = pick["catalogue_number"]
     return {"id": slide_id, "collection": collection, "slide": slide, "specimen": specimen,
             "placement": {"node": node}, "assets": assets, "note": pick.get("note", "")}
 
