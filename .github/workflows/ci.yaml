@@ -28,6 +28,8 @@ jobs:
         run: pip install ruff==0.16.8 && ruff check app tests scripts
       - name: Contract schemas match the models (stdlib plus pydantic, no server stack)
         run: pip install pydantic==2.13.5 pydantic-settings==2.15.0 && python scripts/export_contracts.py --check
+      - name: Data-contract pages match the schemas (stdlib only)
+        run: python scripts/render_contract_docs.py --check
 
   web:
     runs-on: ubuntu-latest

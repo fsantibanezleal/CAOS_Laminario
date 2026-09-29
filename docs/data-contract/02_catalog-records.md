@@ -1,0 +1,275 @@
+# Catalog records (what the web reads)
+
+<!-- Generated from contracts/catalog.schema.json by scripts/render_contract_docs.py; do not edit by hand. -->
+
+The records the API returns: slides, pages of slides, summaries, validation results and processing jobs. Geoprivacy is already applied to every place.
+
+Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (JSON Schema, `https://laminario.ml.fasl-work.com/contracts/catalog.schema.json`).
+
+### LaminarioCatalog
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `slide` | [SlideRecord](#sliderecord) | no |  |  |
+| `slidePage` | [SlidePage](#slidepage) | no |  |  |
+| `slideSummary` | [SlideSummary](#slidesummary) | no |  |  |
+| `validation` | [ValidationResult](#validationresult) | no |  |  |
+| `job` | [JobRecord](#jobrecord) | no |  |  |
+| `jobEvent` | [JobEventRecord](#jobeventrecord) | no |  |  |
+
+### SlideRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `permalink` | string | yes |  |  |
+| `qr_payload` | string | yes |  |  |
+| `status` | string (enumerated) | yes | one of: `draft`, `processing`, `published`, `hidden` |  |
+| `origin` | string (enumerated) | yes | one of: `base`, `contribution` |  |
+| `format` | [FormatRecord](#formatrecord) | yes |  |  |
+| `coverslip` | [CoverslipRecord](#coversliprecord) or null | no |  | null |
+| `label` | [LabelRecord](#labelrecord) | yes |  |  |
+| `anchor` | [AnchorRecord](#anchorrecord) | yes |  |  |
+| `host` | [AnchorRecord](#anchorrecord) or null | no |  | null |
+| `place` | [PlaceRecord](#placerecord) | yes |  |  |
+| `placement` | [PlacementRecord](#placementrecord) | yes |  |  |
+| `quality` | [QualityRecord](#qualityrecord) | yes |  |  |
+| `assets` | list of [AssetRecord](#assetrecord) | yes |  |  |
+| `manifest_url` | string | yes |  |  |
+| `created_at` | string (date-time) | yes |  |  |
+| `updated_at` | string (date-time) | yes |  |  |
+| `published_at` | string (date-time) or null | no |  | null |
+
+### SlidePage
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `items` | list of [SlideSummary](#slidesummary) | yes |  |  |
+| `total` | integer | yes |  |  |
+| `offset` | integer | yes |  |  |
+| `limit` | integer | yes |  |  |
+
+### SlideSummary
+
+A slide in a list: enough to draw it in a drawer.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `permalink` | string | yes |  |  |
+| `anchor` | [AnchorRecord](#anchorrecord) | yes |  |  |
+| `format` | [FormatRecord](#formatrecord) | yes |  |  |
+| `placement` | [PlacementRecord](#placementrecord) | yes |  |  |
+| `preparation` | string | yes |  |  |
+| `thumbnail_url` | string or null | no |  | null |
+| `origin` | string (enumerated) | yes | one of: `base`, `contribution` |  |
+
+### ValidationResult
+
+The answer of ``POST /api/slide-cases/validate``.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `valid` | boolean | yes |  |  |
+| `flags` | list of [ValidationFlag](#validationflag) | no |  | `[]` |
+| `errors` | list of [ValidationError](#validationerror) | no |  | `[]` |
+
+### JobRecord
+
+A processing job as ``GET /api/jobs/{id}`` returns it.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `kind` | string | yes |  |  |
+| `status` | string (enumerated) | yes | one of: `queued`, `running`, `succeeded`, `failed`, `cancelled` |  |
+| `attempts` | integer | yes |  |  |
+| `error` | string or null | no |  | null |
+| `result` | object or null | no |  | null |
+| `created_at` | string (date-time) | yes |  |  |
+| `started_at` | string (date-time) or null | no |  | null |
+| `finished_at` | string (date-time) or null | no |  | null |
+| `events_url` | string | yes |  |  |
+
+### JobEventRecord
+
+One Server-Sent Event of a job's stream: its ``id`` field is ``seq``, its ``event`` field ``event``.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `seq` | integer | yes |  |  |
+| `event` | string (enumerated) | yes | one of: `queued`, `started`, `progress`, `log`, `requeued`, `succeeded`, `failed`, `cancelled` |  |
+| `data` | object | yes |  |  |
+| `at` | string (date-time) | yes |  |  |
+
+### FormatRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `code` | string | yes |  |  |
+| `width_mm` | number | yes |  |  |
+| `height_mm` | number | yes |  |  |
+
+### CoverslipRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `code` | string | yes |  |  |
+| `long_mm` | number | yes |  |  |
+| `short_mm` | number | yes |  |  |
+
+### LabelRecord
+
+What the printed label shows.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `name` | string | yes |  |  |
+| `catalogue_number` | string or null | no |  | null |
+| `preparation` | string | yes |  |  |
+| `stain` | string or null | no |  | null |
+| `mountant` | string or null | no |  | null |
+| `label_note` | string or null | no |  | null |
+| `prepared_on` | string or null | no |  | null |
+| `preparer` | string or null | no |  | null |
+| `collected_on` | string or null | no |  | null |
+| `collector` | string or null | no |  | null |
+| `locality_text` | string or null | no |  | null |
+| `type_status` | string or null | no |  | null |
+
+### AnchorRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `kind` | string (enumerated) | yes | one of: `taxon`, `rock`, `mineral`, `crystal`, `material` |  |
+| `ref` | string | yes |  |  |
+| `name` | string | yes |  |  |
+| `rank` | string or null | no |  | null |
+
+### PlaceRecord
+
+Where the specimen was collected, after geoprivacy.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `geoprivacy` | string (enumerated) | yes | one of: `open`, `obscured`, `private` |  |
+| `point` | [PointRecord](#pointrecord) or null | no |  | null |
+| `cell` | [CellRecord](#cellrecord) or null | no |  | null |
+| `uncertainty_m` | number or null | no |  | null |
+| `locality_text` | string or null | no |  | null |
+
+### PlacementRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `node` | string | yes |  |  |
+| `overridden` | boolean | no |  | `false` |
+
+### QualityRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `badge` | string (enumerated) | yes | one of: `verified`, `needs_id`, `reference` |  |
+| `checks` | list of [QualityCheckRecord](#qualitycheckrecord) | yes |  |  |
+
+### AssetRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | integer | yes |  |  |
+| `family` | string (enumerated) | yes | one of: `macro`, `micro` |  |
+| `role` | string | yes |  |  |
+| `sort_order` | integer | yes |  |  |
+| `status` | string (enumerated) | yes | one of: `pending`, `ready`, `failed` |  |
+| `media` | [MediaRecord](#mediarecord) | yes |  |  |
+| `pixel_size_um` | number or null | no |  | null |
+| `modality` | string or null | no |  | null |
+| `plane` | [PlaneRecord](#planerecord) or null | no |  | null |
+| `polarisation` | [PolarisationRecord](#polarisationrecord) or null | no |  | null |
+| `caption` | string or null | no |  | null |
+| `licence` | [LicenceRecord](#licencerecord) | yes |  |  |
+| `rights_holder` | string or null | no |  | null |
+| `creator` | string or null | no |  | null |
+| `source` | [SourceRecord](#sourcerecord) or null | no |  | null |
+
+### ValidationFlag
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `code` | string | yes |  |  |
+| `field` | string | yes |  |  |
+| `message` | string | yes |  |  |
+
+### ValidationError
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `field` | string | yes |  |  |
+| `message` | string | yes |  |  |
+| `expected` | string | yes |  |  |
+
+### PointRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `lat` | number | yes |  |  |
+| `lon` | number | yes |  |  |
+
+### CellRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `south` | number | yes |  |  |
+| `west` | number | yes |  |  |
+| `north` | number | yes |  |  |
+| `east` | number | yes |  |  |
+
+### QualityCheckRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `code` | string (enumerated) | yes | one of: `licence_and_provenance`, `scale`, `modality`, `macro_and_micro` |  |
+| `passed` | boolean | yes |  |  |
+| `detail` | string | yes |  |  |
+
+### MediaRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `kind` | string (enumerated) | yes | one of: `pyramid`, `image`, `remote_iiif` |  |
+| `iiif_info_url` | string or null | no |  | null |
+| `image_url` | string or null | no |  | null |
+| `iiif_version` | enumerated or null | no | one of: `2`, `3` | null |
+| `width_px` | integer or null | no |  | null |
+| `height_px` | integer or null | no |  | null |
+
+### PlaneRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `stack` | string | yes |  |  |
+| `index` | integer | yes |  |  |
+| `depth_um` | number | yes |  |  |
+
+### PolarisationRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `state` | string (enumerated) | yes | one of: `ppl`, `xpl` |  |
+| `angle_deg` | number | yes |  |  |
+
+### LicenceRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `uri` | string | yes |  |  |
+| `short_name` | string | yes |  |  |
+
+### SourceRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `url` | string | yes |  |  |
+| `record_id` | string | yes |  |  |
+| `retrieved_on` | string (date) | yes |  |  |
+| `sha256` | string | yes |  |  |

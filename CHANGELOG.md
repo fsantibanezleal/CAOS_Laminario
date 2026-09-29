@@ -3,6 +3,18 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.04.001] - 2026-09-29
+
+### Added
+
+- Framework cards (`docs/frameworks/`) for every library the product uses for its core work: libvips through pyvips,
+  OpenSlide, iipsrv, pebble, tifffile, nginx, and the EPFL Extended Depth of Field plugin as the reference the
+  port is measured against; each with the exact verified version, usage, how Laminario applies it, caveats and
+  licence.
+- The data-contract reference (`docs/data-contract/`): every field of the slide case and of the catalog records,
+  generated from the committed JSON Schemas by `scripts/render_contract_docs.py`, with a `--check` mode in CI and
+  a test; an overview of what is refused, what is flagged, and how missing and doubtful data are handled.
+
 ## [0.04.000] - 2026-09-29
 
 ### Added
