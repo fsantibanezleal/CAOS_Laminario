@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario base-collection lane</title>
+  <desc id="desc">Four open sources (Wikimedia Commons, the NHM Data Portal, the Smithsonian scans on Zenodo, the OpenSlide test data) are harvested into candidates with review sheets in the local data vault. The curator looks at every sheet and writes picks. select expands the picks into the selection; lock resolves every name on the GBIF backbone, records lineages and places each slide with the tree's engine; acquire downloads each image once into the vault by its SHA-256; validate runs every slide through the ingestion contract and the tree offline and writes the report and the coverage matrix. The bake runs the product's own pipeline into a declared output root and writes a manifest; the server imports the bake after verifying every file, and never re-bakes.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --stop: #b23a3a; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; --stop: #e07a7a; }
+    }
+    .bg { fill: var(--bg); }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .human { fill: var(--box); stroke: var(--warm); stroke-width: 1.8; stroke-dasharray: 6 3; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .dash { stroke: var(--line); stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; marker-end: url(#head); }
+    .head { fill: var(--line); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="640"/>
+
+  <!-- lane headings -->
+  <rect class="lane" x="16" y="16" width="928" height="96" rx="10"/>
+  <text class="h" x="32" y="38">OPEN SOURCES</text>
+  <rect class="box" x="32" y="50" width="206" height="48" rx="8"/>
+  <text class="t" x="44" y="70">Wikimedia Commons</text>
+  <text class="s" x="44" y="88">categories and named files</text>
+  <rect class="box" x="258" y="50" width="206" height="48" rx="8"/>
+  <text class="t" x="270" y="70">NHM Data Portal</text>
+  <text class="s" x="270" y="88">slide photo + scan, GBIF record</text>
+  <rect class="box" x="484" y="50" width="206" height="48" rx="8"/>
+  <text class="t" x="496" y="70">Zenodo (NMNH scans)</text>
+  <text class="s" x="496" y="88">NDPI focal stacks, MD5</text>
+  <rect class="box" x="710" y="50" width="218" height="48" rx="8"/>
+  <text class="t" x="722" y="70">OpenSlide test data</text>
+  <text class="s" x="722" y="88">CC0 scans, SHA-256 index</text>
+
+  <!-- curation lane -->
+  <rect class="lane" x="16" y="128" width="928" height="196" rx="10"/>
+  <text class="h" x="928" y="150" text-anchor="end">CURATION (A WORKSTATION)</text>
+
+  <rect class="key" x="32" y="164" width="170" height="64" rx="8"/>
+  <text class="t" x="44" y="186">harvest</text>
+  <text class="s" x="44" y="204">candidates, licence filter,</text>
+  <text class="s" x="44" y="219">numbered review sheets</text>
+
+  <rect class="human" x="226" y="164" width="170" height="64" rx="8"/>
+  <text class="t" x="238" y="186">the curator</text>
+  <text class="s" x="238" y="204">looks at every image,</text>
+  <text class="s" x="238" y="219">writes picks</text>
+
+  <rect class="key" x="420" y="164" width="150" height="64" rx="8"/>
+  <text class="t" x="432" y="186">select, lock</text>
+  <text class="s" x="432" y="204">GBIF names, lineages,</text>
+  <text class="s" x="432" y="219">placement</text>
+
+  <rect class="key" x="594" y="164" width="150" height="64" rx="8"/>
+  <text class="t" x="606" y="186">acquire</text>
+  <text class="s" x="606" y="204">each file once,</text>
+  <text class="s" x="606" y="219">by its SHA-256</text>
+
+  <rect class="key" x="768" y="164" width="160" height="64" rx="8"/>
+  <text class="t" x="780" y="186">validate</text>
+  <text class="s" x="780" y="204">contract + tree, offline;</text>
+  <text class="s" x="780" y="219">report, coverage</text>
+
+  <path class="arrow" d="M202 196 L222 196"/>
+  <path class="arrow" d="M396 196 L416 196"/>
+  <path class="arrow" d="M570 196 L590 196"/>
+  <path class="arrow" d="M744 196 L764 196"/>
+  <path class="dash" d="M135 98 L100 160"/>
+  <path class="dash" d="M361 98 L170 160"/>
+  <path class="dash" d="M587 98 L640 160"/>
+  <path class="dash" d="M800 98 L700 160"/>
+
+  <rect class="store" x="32" y="246" width="364" height="64" rx="8"/>
+  <text class="t" x="44" y="268">data vault (E:, never in git)</text>
+  <text class="m" x="44" y="286">base/candidates/*.jsonl .png .tsv</text>
+  <text class="m" x="44" y="302">base/sources/&lt;sha256&gt;.&lt;ext&gt;</text>
+
+  <rect class="store" x="420" y="246" width="508" height="64" rx="8"/>
+  <text class="t" x="432" y="268">committed with the code</text>
+  <text class="m" x="432" y="286">data/base/picks/*.txt selection.yaml lock.yaml taxa.json</text>
+  <text class="m" x="432" y="302">acquired.json · docs/collections/base-report.md coverage.md</text>
+  <path class="dash" d="M117 228 L117 242"/>
+  <path class="dash" d="M669 228 L669 242"/>
+
+  <!-- bake lane -->
+  <rect class="lane" x="16" y="340" width="928" height="140" rx="10"/>
+  <text class="h" x="928" y="362" text-anchor="end">BAKE (THE PRODUCT'S OWN PIPELINE)</text>
+  <rect class="key" x="32" y="376" width="270" height="88" rx="8"/>
+  <text class="t" x="44" y="398">bake --out ROOT</text>
+  <text class="s" x="44" y="416">create_slide per lock entry (published),</text>
+  <text class="s" x="44" y="431">process_asset jobs, the worker to empty,</text>
+  <text class="s" x="44" y="446">focal stacks by the z-plane policy</text>
+
+  <rect class="store" x="326" y="376" width="290" height="88" rx="8"/>
+  <text class="t" x="338" y="398">ROOT (declared, nothing else written)</text>
+  <text class="m" x="338" y="418">laminario.sqlite3</text>
+  <text class="m" x="338" y="434">store/&lt;content keys&gt;</text>
+  <text class="m" x="338" y="450">manifest.json (rows, SHA-256)</text>
+
+  <rect class="box" x="640" y="376" width="288" height="88" rx="8"/>
+  <text class="t" x="652" y="398">what the bake checks</text>
+  <text class="ok" x="652" y="418">every slide validates again</text>
+  <text class="ok" x="652" y="434">no failed job</text>
+  <text class="ok" x="652" y="450">every stored file hashed</text>
+  <path class="arrow" d="M928 214 L944 214 L944 332 L167 332 L167 372"/>
+  <path class="arrow" d="M302 420 L322 420"/>
+
+  <!-- server lane -->
+  <rect class="lane" x="16" y="496" width="928" height="128" rx="10"/>
+  <text class="h" x="32" y="518">THE SERVER</text>
+  <rect class="key" x="32" y="532" width="330" height="76" rx="8"/>
+  <text class="t" x="44" y="554">import --bake ROOT</text>
+  <text class="s" x="44" y="572">verify every file against the manifest,</text>
+  <text class="s" x="44" y="587">copy by storage key, insert rows as baked;</text>
+  <text class="s" x="44" y="602">repeatable, never re-bakes</text>
+  <rect class="store" x="386" y="532" width="250" height="76" rx="8"/>
+  <text class="t" x="398" y="554">the deployment</text>
+  <text class="m" x="398" y="574">/srv/laminario database</text>
+  <text class="m" x="398" y="590">and slide store</text>
+  <rect class="box" x="660" y="532" width="268" height="76" rx="8"/>
+  <text class="t" x="672" y="554">served like any slide</text>
+  <text class="s" x="672" y="572">IIIF tiles, manifests, the tree,</text>
+  <text class="s" x="672" y="587">provenance on every asset</text>
+  <path class="arrow" d="M471 464 L200 528"/>
+  <path class="arrow" d="M362 570 L382 570"/>
+  <path class="arrow" d="M636 570 L656 570"/>
+</svg>
