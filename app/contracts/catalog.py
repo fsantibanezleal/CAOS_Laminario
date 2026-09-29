@@ -231,3 +231,37 @@ class JobEventRecord(_Record):
     event: Literal["queued", "started", "progress", "log", "requeued", "succeeded", "failed", "cancelled"]
     data: dict
     at: datetime
+
+
+class AccountRecord(_Record):
+    """An account as ``GET /api/users/me`` returns it."""
+
+    id: str
+    email: str
+    display_name: str
+    role: Literal["contributor", "identifier", "curator", "admin"]
+    is_active: bool
+    is_verified: bool
+
+
+class InvitationRecord(_Record):
+    """An invitation as its issuer sees it. ``link`` is present only in the answer that created it, and only
+    when it was not mailed: the token is never stored, so it cannot be shown again."""
+
+    id: int
+    email: str | None = None
+    role: Literal["contributor", "identifier", "curator", "admin"]
+    note: str | None = None
+    status: Literal["pending", "used", "expired", "revoked"]
+    created_at: datetime
+    expires_at: datetime
+    mailed: bool
+    link: str | None = None
+
+
+class CreatedSlideCase(_Record):
+    """The answer of ``POST /api/slide-cases``: the new draft and the flags of its submission."""
+
+    id: str
+    status: str
+    flags: list[ValidationFlag] = []

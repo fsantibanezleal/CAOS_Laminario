@@ -34,6 +34,9 @@ CATALOG_ROOTS = {
     "validation": c.ValidationResult,
     "job": c.JobRecord,
     "jobEvent": c.JobEventRecord,
+    "account": c.AccountRecord,
+    "invitation": c.InvitationRecord,
+    "createdSlideCase": c.CreatedSlideCase,
 }
 
 

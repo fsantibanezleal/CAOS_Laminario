@@ -18,3 +18,6 @@ tifffile==2026.9.20
 httpx2==2.13.1
 # U4: the processing worker's process pool (ADR-0048, ADR-0077)
 pebble==5.2.2
+# U6: accounts (ADR-0044): fastapi-users with sessions in the app's database
+fastapi-users==15.0.5
+fastapi-users-db-sqlalchemy==7.0.0

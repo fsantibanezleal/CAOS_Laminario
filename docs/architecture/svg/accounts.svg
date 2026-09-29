@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario accounts and roles</title>
+  <desc id="desc">The first admin is invited from the server's command line. Curators and admins issue invitations; a link is mailed when a sender is configured, otherwise shown once to its issuer. Registration claims the invitation atomically and creates an account with the invitation's role. Signing in creates a session row and a cookie; every route checks the capability table; visitors read without an account.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --stop: #b23a3a; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; --stop: #e07a7a; }
+    }
+    .bg { fill: var(--bg); }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .no { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--stop); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .head { fill: var(--line); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="560"/>
+
+  <text class="h" x="24" y="34">HOW AN ACCOUNT COMES TO EXIST</text>
+  <rect class="box" x="24" y="46" width="190" height="110" rx="8"/>
+  <text class="t" x="40" y="72">Server shell</text>
+  <text class="m" x="40" y="96">python -m app.accounts</text>
+  <text class="m" x="40" y="114">  invite --role admin</text>
+  <text class="s" x="40" y="140">the trust root: the first admin</text>
+
+  <rect class="box" x="24" y="176" width="190" height="110" rx="8"/>
+  <text class="t" x="40" y="202">Curator or admin</text>
+  <text class="m" x="40" y="226">POST /api/invitations</text>
+  <text class="s" x="40" y="250">curator: up to identifier</text>
+  <text class="s" x="40" y="268">admin: any role</text>
+
+  <rect class="store" x="262" y="46" width="230" height="240" rx="8"/>
+  <text class="t" x="278" y="72">invitation</text>
+  <text class="m" x="278" y="96">token_sha256 (unique)</text>
+  <text class="m" x="278" y="114">role, email?, note</text>
+  <text class="m" x="278" y="132">expires_at (+7 days)</text>
+  <text class="m" x="278" y="150">used_at, used_by, revoked_at</text>
+  <text class="s" x="278" y="180">32 random bytes in the link;</text>
+  <text class="s" x="278" y="198">only the digest is stored</text>
+  <text class="ok" x="278" y="232">mail sender set: mailed</text>
+  <text class="s" x="278" y="252">otherwise: the link in the answer,</text>
+  <text class="s" x="278" y="270">to the issuer, once</text>
+
+  <path class="arrow" d="M214 100 H260"/>
+  <path class="arrow" d="M214 230 H260"/>
+
+  <rect class="key" x="540" y="46" width="396" height="240" rx="8"/>
+  <text class="t" x="556" y="72">POST /api/auth/register</text>
+  <text class="s" x="556" y="96">1. claim: one UPDATE ... WHERE unused, not revoked,</text>
+  <text class="s" x="556" y="114">   not expired (six racing requests: one account)</text>
+  <text class="s" x="556" y="138">2. the address must match, if the invitation names one</text>
+  <text class="s" x="556" y="162">3. create the account with the invitation's role</text>
+  <text class="s" x="556" y="180">   (12+ characters, not the email; Argon2)</text>
+  <text class="no" x="556" y="210">any failure releases the claim</text>
+  <text class="s" x="556" y="240">there is no other registration route</text>
+  <text class="s" x="556" y="262">(fastapi-users' own is not mounted)</text>
+  <path class="arrow" d="M492 166 H538"/>
+
+  <text class="h" x="24" y="330">EVERY REQUEST AFTERWARDS</text>
+  <rect class="box" x="24" y="342" width="280" height="190" rx="8"/>
+  <text class="t" x="40" y="368">Session</text>
+  <text class="m" x="40" y="392">POST /api/auth/login</text>
+  <text class="s" x="40" y="414">an opaque token in a cookie:</text>
+  <text class="s" x="40" y="432">HttpOnly, SameSite=Lax, Secure</text>
+  <text class="s" x="40" y="450">its row in accesstoken, 30 days</text>
+  <text class="s" x="40" y="474">sign-out deletes the row: the</text>
+  <text class="s" x="40" y="492">cookie stops working at once</text>
+  <text class="s" x="40" y="516">foreign Origin on a write: 403</text>
+
+  <rect class="key" x="332" y="342" width="604" height="190" rx="8"/>
+  <text class="t" x="348" y="368">The capability table (each role includes the ones below)</text>
+  <text class="m" x="348" y="396">visitor</text><text class="s" x="458" y="396">read</text>
+  <text class="m" x="348" y="418">contributor</text><text class="s" x="458" y="418">+ submit slide cases</text>
+  <text class="m" x="348" y="440">identifier</text><text class="s" x="458" y="440">+ identify (U13)</text>
+  <text class="m" x="348" y="462">curator</text><text class="s" x="458" y="462">+ moderate, override placement, invite</text>
+  <text class="m" x="348" y="484">admin</text><text class="s" x="458" y="484">+ manage invitations and accounts</text>
+  <text class="s" x="348" y="512">an account cannot raise its own role; the last admin keeps it</text>
+  <path class="arrow" d="M304 436 H330"/>
+</svg>

@@ -3,6 +3,26 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.05.000] - 2026-09-29
+
+### Added
+
+- Accounts (fastapi-users 15.0.5, ADR-0044): accounts and sessions in the app's own database, sessions as opaque
+  tokens in an `HttpOnly`, `SameSite=Lax` cookie that sign-out invalidates at once; password reset with signed
+  one-hour tokens.
+- Invitation-only registration: single-use links valid seven days, stored only as their SHA-256, claimed atomically
+  (one account per link under concurrent use), optionally bound to one address; no open registration route. The
+  first admin is invited from the server's command line (`python -m app.accounts invite --role admin`).
+- Roles contributor, identifier, curator and admin, and one capability table every route checks; curators invite
+  up to identifier, admins manage invitations and accounts; the last admin keeps the role.
+- The optional mail sender (SMTP with STARTTLS, a custom CA bundle for private relays): invitations and reset links
+  are mailed when configured, otherwise shown once to the person who issued them.
+- `POST /api/slide-cases`: contributors store validated cases as their drafts; a placement override needs a curator.
+- State-changing requests from another origin are refused; reads stay open.
+- Account, invitation and created-case records in the catalog contract and its TypeScript types; migration 0004.
+- Wiki page "Accounts and roles" with its diagram, the fastapi-users framework card; the U6 design, requirements and
+  verdict.
+
 ## [0.04.001] - 2026-09-29
 
 ### Added

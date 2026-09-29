@@ -14,6 +14,7 @@ library in.
 | [05 tifffile](frameworks/05_tifffile/tifffile.md) | vendor TIFF tags, ImageJ stacks, in-place tag edits | 2026.9.20 |
 | [06 nginx](frameworks/06_nginx/nginx.md) | tile cache, per-tile access check, TLS | 1.24.0 (host; gate image digest `77e5d4a6...`) |
 | [07 EPFL Extended Depth of Field](frameworks/07_epfl-edf/epfl-edf.md) | the reference implementation the EDF port is measured against (not run by the product) | the plugin's jar, run unmodified |
+| [08 fastapi-users](frameworks/08_fastapi-users/fastapi-users.md) | accounts, database sessions in a cookie, password reset | 15.0.5, with fastapi-users-db-sqlalchemy 7.0.0 |
 
 Libraries that are ordinary application plumbing (FastAPI, Pydantic, SQLAlchemy, Alembic, NumPy, SciPy) are pinned
 in the requirements files and documented where they matter, in the architecture pages.

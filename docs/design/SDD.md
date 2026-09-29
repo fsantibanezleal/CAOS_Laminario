@@ -274,6 +274,9 @@ Moved to [`features/u04-worker/requirements.md`](features/u04-worker/requirement
 
 #### U6 accounts
 
+Moved to [`features/u06-accounts/requirements.md`](features/u06-accounts/requirements.md) on 2026-09-29, verbatim; built
+before U5 (the upload hook authorises by account).
+
     R-050  THE system SHALL create an account only through a valid, unexpired, unused invitation issued by an admin or curator.
            Gate: tests/accounts/test_accounts.py::test_registration_requires_invitation
 

@@ -29,6 +29,23 @@ class Settings(BaseSettings):
     #: The IIIF tile server (iipsrv), reached on loopback. The API asks it for info.json; in production
     #: nginx sends tile requests to it directly, locally the API passes them through.
     iipsrv_url: str = "http://127.0.0.1:8149"
+    #: Signs password-reset links. Required in production (the server's environment file, from the vault);
+    #: locally a missing value is replaced by a random one for the life of the process.
+    secret_key: str | None = None
+    #: How long a signed-in session lasts, and how long an invitation stays valid, in days.
+    session_days: int = 30
+    invitation_days: int = 7
+    #: The optional mail sender. When host and sender are set, invitations and reset links are mailed
+    #: (SMTP with STARTTLS; port 587 is the one the production host can reach); otherwise the link is shown to
+    #: the person who issued it, and to nobody else.
+    smtp_host: str | None = None
+    smtp_port: int = 587
+    smtp_username: str | None = None
+    smtp_password: str | None = None
+    smtp_sender: str | None = None
+    smtp_starttls: bool = True
+    #: A CA bundle to trust for the mail server's certificate (a private relay); unset: the system's roots.
+    smtp_cafile: Path | None = None
     #: Windows only: the bin folder of the libvips build that includes OpenSlide. Unset on Linux.
     vips_bin: Path | None = None
     #: The local data vault with the imaging fixtures (tests only).
@@ -36,6 +53,10 @@ class Settings(BaseSettings):
     #: Where tests write temporary files (tests only); default ``.tmp/pytest`` in the repository.
     test_tmp: Path | None = None
 
+
+    @property
+    def mail_configured(self) -> bool:
+        return bool(self.smtp_host and self.smtp_sender)
 
     @property
     def store_root(self) -> Path:
