@@ -1,8 +1,9 @@
 # Local development and the full test suite (run locally; CI runs only lint and guards).
 -r requirements-api.txt
 pytest==9.1.1
-httpx2==2.13.1
 ruff==0.16.8
 # U2 tests: structural similarity against the EPFL outputs, EXIF inspection of derivatives
 scikit-image==0.26.0
 pillow==12.3.0
+# U3 tests: manifests validated against the pinned IIIF Presentation 3 schema
+jsonschema==4.26.0
