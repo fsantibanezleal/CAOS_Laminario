@@ -133,3 +133,38 @@ def test_archives_are_recognised(tmp_path, kind):
         zipped.writestr("slide/slide.mrxs" if kind == "zip-mrxs" else "notes.txt", b"x")
     found = sniff(archive)
     assert found.kind == kind and found.accepted == (kind == "zip-mrxs")
+
+
+# R-501
+def test_tusd_compose_file_on_loopback(tmp_path):
+    """The production compose file: pinned image, host network on loopback, read-only, hooks reaching the API."""
+    import os
+    import subprocess
+    import sys
+
+    from tests.delivery.support import docker, free_port, wait_for_http
+
+    from .support import TUS_IMAGE, compose_tusd
+
+    exe = docker()
+    if sys.platform != "linux":
+        pytest.skip("the tusd compose file uses host networking, which needs a Linux container engine")
+    settings = settings_for(tmp_path)
+    os.chmod(settings.quarantine_root, 0o777)  # the container's user writes here
+    with upload_stack(settings) as stack:
+        cookie, slide, assets = contributor(stack)
+        api_port = stack["api"].rsplit(":", 1)[1]
+        port = free_port()
+        with compose_tusd(settings.quarantine_root, port, int(api_port), f"laminario-test-{os.getpid()}") as name:
+            wait_for_http(f"http://127.0.0.1:{port}/files/")
+            probe = {"tus": f"http://127.0.0.1:{port}/files/"}
+            created = create(probe, 1000, cookie, slide=slide, asset=str(assets[1]), filename="a.jpg")
+            assert created.status_code == 201, created.text
+            refused = create(probe, 1000, {}, slide=slide, asset=str(assets[0]), filename="b.jpg")
+            assert refused.status_code == 401, "the hook ran and saw no session"
+            fmt = "{{.Config.Image}}|{{.HostConfig.ReadonlyRootfs}}|{{.HostConfig.NetworkMode}}|{{json .Args}}"
+            image, readonly, network, args = subprocess.run(
+                [exe, "inspect", name, "--format", fmt], capture_output=True, text=True, check=True,
+                timeout=60).stdout.strip().split("|")
+            assert image == TUS_IMAGE and readonly == "true" and network == "host"
+            assert "-host=127.0.0.1" in args and "-hooks-http-forward-headers=Cookie" in args

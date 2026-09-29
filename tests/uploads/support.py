@@ -134,3 +134,26 @@ def interrupted_patch(location: str, start: int, data: bytes, headers: dict, sen
         raw.sendall(data[:send])
         time.sleep(0.5)
     time.sleep(1.0)  # tusd notices the closed connection and saves what arrived
+
+
+TUS_IMAGE = "tusproject/tusd@sha256:7b1c552a8b42f4b36cb01f2a3bd49f82ab078b2eefd191459e716141dd50376c"
+COMPOSE_FILE = Path(__file__).resolve().parents[2] / "deploy" / "tusd" / "compose.yaml"
+
+
+@contextlib.contextmanager
+def compose_tusd(quarantine: Path, port: int, api_port: int, project: str):
+    """The production compose file of tusd on a sandbox quarantine and free ports; always taken down."""
+    from tests.delivery.support import docker
+
+    exe = docker()
+    env = os.environ | {"LAMINARIO_QUARANTINE": str(quarantine), "LAMINARIO_TUSD_PORT": str(port),
+                        "LAMINARIO_API_PORT": str(api_port), "LAMINARIO_UID": str(os.getuid()),
+                        "LAMINARIO_GID": str(os.getgid())}
+    base = [exe, "compose", "-f", str(COMPOSE_FILE), "-p", project]
+    up = subprocess.run([*base, "up", "-d"], capture_output=True, text=True, env=env, timeout=300)
+    if up.returncode != 0:
+        raise RuntimeError(f"docker compose up failed: {up.stderr.strip()}")
+    try:
+        yield f"{project}-tusd-1"
+    finally:
+        subprocess.run([*base, "down"], capture_output=True, env=env, timeout=120)
