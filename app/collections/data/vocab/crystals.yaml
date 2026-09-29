@@ -1,0 +1,28 @@
+# Crystal anchors: ref = origin, or origin/system (for example ice/hexagonal). The crystal system is a facet.
+# Ice and snow crystals also take anchor.classification, the general category of the global classification of
+# snow crystals, ice crystals and solid precipitation: Kikuchi K, Kameda T, Higuchi K, Yamashita A (2013)
+# Atmospheric Research 132-133, 460-472, doi:10.1016/j.atmosres.2013.06.006 (121 types grouped into 8 general
+# categories).
+origins:
+  ice: {en: Ice and snow crystals, es: Cristales de hielo y nieve}
+  chemical: {en: Chemical crystals, es: Cristales químicos}
+  biogenic: {en: Biogenic crystals, es: Cristales biogénicos}
+  liquid: {en: Liquid crystals, es: Cristales líquidos}
+  growth: {en: Growth forms, es: Formas de crecimiento}
+systems:
+  triclinic: {en: Triclinic, es: Triclínico}
+  monoclinic: {en: Monoclinic, es: Monoclínico}
+  orthorhombic: {en: Orthorhombic, es: Ortorrómbico}
+  tetragonal: {en: Tetragonal, es: Tetragonal}
+  trigonal: {en: Trigonal, es: Trigonal}
+  hexagonal: {en: Hexagonal, es: Hexagonal}
+  cubic: {en: Cubic, es: Cúbico}
+kikuchi:
+  C: {en: Column crystal, es: Cristal columnar}
+  P: {en: Plane crystal, es: Cristal plano}
+  CP: {en: Combination of column and plane crystals, es: Combinación de cristales columnares y planos}
+  A: {en: Aggregation of snow crystals, es: Agregado de cristales de nieve}
+  R: {en: Rimed snow crystal, es: Cristal de nieve escarchado}
+  I: {en: Irregular snow particle, es: Partícula de nieve irregular}
+  G: {en: Germ of snow crystal, es: Germen de cristal de nieve}
+  H: {en: Other solid precipitation, es: Otra precipitación sólida}

@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import type { SlideRecord, ValidationResult } from "./catalog";
+import type { CollectionTreeRecord, PlacementResult, SlideRecord, ValidationResult } from "./catalog";
 import type { SlideCaseSubmission } from "./ingest";
 
 // The generated types are the only contract the web knows; this test pins the shape a component relies on,
@@ -43,6 +43,27 @@ describe("catalog contract", () => {
 
   it("ships the schemas the types were generated from", () => {
     const schema = JSON.parse(readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), "../../../contracts/catalog.schema.json"), "utf8"));
-    expect(Object.keys(schema.properties)).toEqual(["slide", "slidePage", "slideSummary", "validation"]);
+    expect(Object.keys(schema.properties)).toEqual([
+      "slide", "slidePage", "slideSummary", "validation", "job", "jobEvent", "account", "invitation",
+      "createdSlideCase", "upload", "collectionTree", "collectionNode", "facet", "anchorSuggestion", "placement",
+    ]);
+  });
+
+  it("types the collection tree and a placement answer", () => {
+    const tree: CollectionTreeRecord = {
+      realms: [{
+        id: "life", level: "realm", name: { en: "Life", es: "Vida" }, about: { en: "", es: "" }, icon: "life",
+        children: [{ id: "life.birds", level: "collection", name: { en: "Birds", es: "Aves" },
+                     about: { en: "", es: "" }, icon: "life.birds", slide_count: 3 }],
+      }],
+      counts: { realm: 3, collection: 18, "sub-collection and group": 130 },
+    };
+    const placed: PlacementResult = {
+      suggestion: "life.insects.lice",
+      path: [{ id: "life", name: { en: "Life", es: "Vida" }, icon: "life" }],
+      accepting: ["life", "life.insects", "life.insects.lice"],
+    };
+    expect(tree.realms[0].children?.[0].icon).toBe("life.birds");
+    expect(placed.accepting).toContain(placed.suggestion);
   });
 });

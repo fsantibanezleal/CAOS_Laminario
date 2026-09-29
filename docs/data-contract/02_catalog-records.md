@@ -20,6 +20,11 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `invitation` | [InvitationRecord](#invitationrecord) | no |  |  |
 | `createdSlideCase` | [CreatedSlideCase](#createdslidecase) | no |  |  |
 | `upload` | [UploadRecord](#uploadrecord) | no |  |  |
+| `collectionTree` | [CollectionTreeRecord](#collectiontreerecord) | no |  |  |
+| `collectionNode` | [CollectionNodeDetail](#collectionnodedetail) | no |  |  |
+| `facet` | [FacetRecord](#facetrecord) | no |  |  |
+| `anchorSuggestion` | [AnchorSuggestion](#anchorsuggestion) | no |  |  |
+| `placement` | [PlacementResult](#placementresult) | no |  |  |
 
 ### SlideRecord
 
@@ -35,6 +40,8 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `label` | [LabelRecord](#labelrecord) | yes |  |  |
 | `anchor` | [AnchorRecord](#anchorrecord) | yes |  |  |
 | `host` | [AnchorRecord](#anchorrecord) or null | no |  | null |
+| `part` | string or null | no |  | null |
+| `preservation` | string (enumerated) | no | one of: `recent`, `fossil`, `in_amber` | `"recent"` |
 | `place` | [PlaceRecord](#placerecord) | yes |  |  |
 | `placement` | [PlacementRecord](#placementrecord) | yes |  |  |
 | `quality` | [QualityRecord](#qualityrecord) | yes |  |  |
@@ -165,6 +172,59 @@ An upload as its contributor sees it (``GET /api/uploads``).
 | `created_at` | string (date-time) | yes |  |  |
 | `finished_at` | string (date-time) or null | no |  | null |
 
+### CollectionTreeRecord
+
+The whole tree: the three realms and everything under them.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `realms` | list of [CollectionNodeRecord](#collectionnoderecord) | yes |  |  |
+| `counts` | map of integer | yes |  |  |
+
+### CollectionNodeDetail
+
+One node (``GET /api/collections/{id}``): itself with its children, and the path down to it.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `node` | [CollectionNodeRecord](#collectionnoderecord) | yes |  |  |
+| `path` | list of [NodeRef](#noderef) | yes |  |  |
+| `iiif_collection_url` | string | yes |  |  |
+
+### FacetRecord
+
+A property that cuts across the tree, with the icon of each value.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string (enumerated) | yes | one of: `preparation`, `modality`, `plant-organ`, `crystal-system` |  |
+| `name` | [LocalisedText](#localisedtext) | yes |  |  |
+| `values` | list of [FacetValueRecord](#facetvaluerecord) | yes |  |  |
+
+### AnchorSuggestion
+
+A name the anchor field can offer (``GET /api/anchors/search``).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `ref` | string | yes |  |  |
+| `name` | string | yes |  |  |
+| `rank` | string or null | no |  | null |
+| `classification` | string or null | no |  | null |
+| `context` | string or null | no |  | null |
+
+### PlacementResult
+
+Where a slide belongs (``POST /api/placement``): the suggestion, and every node that accepts it.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `anchor` | [AnchorRecord](#anchorrecord) or null | no |  | null |
+| `suggestion` | string or null | no |  | null |
+| `path` | list of [NodeRef](#noderef) | no |  | `[]` |
+| `accepting` | list of string | no |  | `[]` |
+| `errors` | list of [ValidationError](#validationerror) | no |  | `[]` |
+
 ### FormatRecord
 
 | Field | Type | Required | Accepted | Default |
@@ -208,6 +268,7 @@ What the printed label shows.
 | `ref` | string | yes |  |  |
 | `name` | string | yes |  |  |
 | `rank` | string or null | no |  | null |
+| `classification` | string or null | no |  | null |
 
 ### PlaceRecord
 
@@ -270,6 +331,46 @@ Where the specimen was collected, after geoprivacy.
 | `field` | string | yes |  |  |
 | `message` | string | yes |  |  |
 | `expected` | string | yes |  |  |
+
+### CollectionNodeRecord
+
+A node of the collection tree (``GET /api/collections``), with its published slides counted.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `level` | string (enumerated) | yes | one of: `realm`, `collection`, `sub-collection`, `group` |  |
+| `name` | [LocalisedText](#localisedtext) | yes |  |  |
+| `about` | [LocalisedText](#localisedtext) | yes |  |  |
+| `icon` | string | yes |  |  |
+| `view` | boolean | no |  | `false` |
+| `priority` | integer | no |  | `0` |
+| `defined_by` | list of [DefinitionRecord](#definitionrecord) | no |  | `[]` |
+| `slide_count` | integer | no |  | `0` |
+| `children` | list of [CollectionNodeRecord](#collectionnoderecord) | no |  | `[]` |
+
+### NodeRef
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `name` | [LocalisedText](#localisedtext) | yes |  |  |
+| `icon` | string | yes |  |  |
+
+### LocalisedText
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `en` | string | yes |  |  |
+| `es` | string | yes |  |  |
+
+### FacetValueRecord
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `name` | [LocalisedText](#localisedtext) | yes |  |  |
+| `icon` | string | yes |  |  |
 
 ### PointRecord
 
@@ -336,3 +437,14 @@ Where the specimen was collected, after geoprivacy.
 | `record_id` | string | yes |  |  |
 | `retrieved_on` | string (date) | yes |  |  |
 | `sha256` | string | yes |  |  |
+
+### DefinitionRecord
+
+One condition of a node's rule, for people: a taxon with its GBIF page, a rock family, a part.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `kind` | string (enumerated) | yes | one of: `taxon`, `excluded-taxon`, `kind`, `rock`, `mineral`, `crystal`, `material`, `part`, `preservation`, `relation` |  |
+| `value` | string | yes |  |  |
+| `label` | string | yes |  |  |
+| `url` | string or null | no |  | null |

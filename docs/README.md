@@ -11,7 +11,8 @@ This wiki is written as the product is built, unit by unit. Each section documen
 | [design/](design/SDD.md) | The software design document, written before any code, and one feature design per unit under `design/features/` (requirements with the gate that verifies each, the design, the tasks and the convergence verdict). |
 | [architecture](architecture.md) | How the system is put together: the processes, the lanes, the data locations. |
 | [guides](guides.md) | How to run it, test it and work on it. |
-| [frameworks](frameworks.md) | One card per library Laminario uses for its core work: libvips, OpenSlide, iipsrv, pebble, tifffile, nginx, and the EPFL plugin the EDF port is measured against. |
+| [collections](collections/README.md) | The collection tree as data: every node with its names and rule, the vocabularies and their sources and licences, the icon contact sheet, how to change the tree. |
+| [frameworks](frameworks.md) | One card per library or service Laminario uses for its core work: libvips, OpenSlide, iipsrv, pebble, tifffile, nginx, fastapi-users, tusd, the GBIF species API, and the EPFL plugin the EDF port is measured against. |
 | [data contract](data-contract.md) | Every field a submission must satisfy and every field the API returns, generated from the committed schemas; what is refused, and how missing data is handled. |
 
 ## What Laminario is, and what it is not

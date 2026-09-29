@@ -3,6 +3,33 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.07.000] - 2026-09-29
+
+### Added
+
+- The collection tree: 3 realms, 18 collections, 130 sub-collections and groups (191 nodes, the ten vertebrate organ
+  systems shared by five collections), each with EN and ES names and descriptions, an icon and a rule; the
+  generated reference `docs/collections/tree.md`.
+- Anchor vocabularies: the GBIF backbone (134 tree taxa locked with their lineages), 6,200 IMA mineral species with
+  Nickel-Strunz codes from Wikidata and 27 group names, 365 rock names from the BGS Rock Classification Scheme and
+  meteorite classes, crystal origins with snow-crystal categories, materials, parts; the build and check scripts.
+- Placement: rules over kind, taxa with exclusions, vocabulary paths, part and preservation, with priorities; the
+  suggestion, its path and the accepting nodes; the tree guard (integrity, reachability, sibling overlaps).
+- The GBIF taxon cache (table `taxon`, migration 0006); submissions resolve the anchor and the host and check the
+  placement, with a curator's override and reason; 503 when GBIF does not answer.
+- `GET /api/collections`, `/api/collections/{id}`, `/api/collections/{id}/iiif` (IIIF Presentation 3 Collections,
+  the `partOf` of every manifest), `/api/facets`, `/api/anchors/search`, `POST /api/placement`; host views in
+  `GET /api/slides?node=`.
+- 186 hand-drawn icons in one sprite with EN and ES titles, their build and gate, the contact sheet.
+- Wiki page "The collection tree" with its diagram, the GBIF API card, the collections docs, the U7 design,
+  requirements and verdict.
+
+### Changed
+
+- The ingestion contract gains `specimen.part`, `specimen.preservation` and `anchor.classification`; the catalog
+  record carries them; the stored anchor is its canonical form.
+- The standard test payload's host key is Thomomys (2439381); the earlier key was Spermophilus columbianus.
+
 ## [0.06.000] - 2026-09-29
 
 ### Added

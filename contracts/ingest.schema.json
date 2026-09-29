@@ -39,6 +39,20 @@
           ],
           "default": null,
           "expected": "at most 32 characters"
+        },
+        "classification": {
+          "anyOf": [
+            {
+              "maxLength": 12,
+              "pattern": "^[0-9A-Za-z.]{1,12}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "a Nickel-Strunz code for a mineral (9, 9.A or 9.AF.15) or a snow-crystal category for ice (C, P, CP, A, R, I, G, H)"
         }
       },
       "required": [
@@ -696,6 +710,30 @@
           ],
           "default": null,
           "expected": "a taxon anchor"
+        },
+        "part": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "pattern": "^[a-z]+(?:-[a-z]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "expected": "a part of the parts vocabulary, such as blood or feather"
+        },
+        "preservation": {
+          "default": "recent",
+          "enum": [
+            "recent",
+            "fossil",
+            "in_amber"
+          ],
+          "expected": "one of: recent, fossil, in_amber",
+          "type": "string"
         },
         "type_status": {
           "anyOf": [

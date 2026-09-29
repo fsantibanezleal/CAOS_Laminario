@@ -34,15 +34,17 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.06.000`: the repository base (U0), the data model with both contracts (U1), the imaging engine (U2),
-IIIF delivery (U3), the processing worker (U4), resumable uploads (U5) and accounts (U6). The engine reads scanner,
+Version `0.07.000`: the repository base (U0), the data model with both contracts (U1), the imaging engine (U2),
+IIIF delivery (U3), the processing worker (U4), resumable uploads (U5), accounts (U6) and the collection tree (U7). The engine reads scanner,
 TIFF and photo formats, writes one measured pyramid per plane and fuses focal stacks exactly as the EPFL
 extended-depth-of-field plugin does ([`04_imaging.md`](docs/architecture/04_imaging.md)); iipsrv serves the
 pyramids over the IIIF Image API behind a cached, access-checked nginx site, and every slide is a IIIF
 Presentation 3 manifest ([`05_delivery.md`](docs/architecture/05_delivery.md)); a separate worker runs processing
 jobs from a durable queue ([`06_worker.md`](docs/architecture/06_worker.md)); invited contributors have accounts
 with roles ([`07_accounts.md`](docs/architecture/07_accounts.md)) and upload files of any size through tus, verified
-before they are processed ([`08_uploads.md`](docs/architecture/08_uploads.md)). The units that follow are listed
+before they are processed ([`08_uploads.md`](docs/architecture/08_uploads.md)); every slide is anchored to a real
+classification and placed in a tree of 3 realms, 18 collections and 130 sub-collections and groups, each with its
+own hand-drawn icon ([`09_collections.md`](docs/architecture/09_collections.md)). The units that follow are listed
 in the design document.
 
 ## Architecture at a glance

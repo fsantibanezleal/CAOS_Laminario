@@ -16,6 +16,8 @@ library in.
 | [07 EPFL Extended Depth of Field](frameworks/07_epfl-edf/epfl-edf.md) | the reference implementation the EDF port is measured against (not run by the product) | the plugin's jar, run unmodified |
 | [08 fastapi-users](frameworks/08_fastapi-users/fastapi-users.md) | accounts, database sessions in a cookie, password reset | 15.0.5, with fastapi-users-db-sqlalchemy 7.0.0 |
 | [09 tusd](frameworks/09_tusd/tusd.md) | resumable uploads (tus 1.0) with hooks into the API | 2.10.1, image digest `7b1c552a...` |
+| [10 GBIF species API](frameworks/10_gbif-api/gbif-api.md) | taxon anchors: the backbone's keys, lineages and names | API v1, backbone `d7dddbf4...`, 134 taxa locked |
 
-Libraries that are ordinary application plumbing (FastAPI, Pydantic, SQLAlchemy, Alembic, NumPy, SciPy) are pinned
+Libraries that are ordinary application plumbing (FastAPI, Pydantic, SQLAlchemy, Alembic, NumPy, SciPy, PyYAML for
+the tree, pypdf for building the mineral and rock vocabularies) are pinned
 in the requirements files and documented where they matter, in the architecture pages.
