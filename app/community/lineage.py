@@ -2,13 +2,14 @@
 
 The agreement rule compares identifications of any kind by their lineages, so it needs one hierarchy per kind:
 
-| Kind | Lineage | Example |
-|---|---|---|
-| taxon | the GBIF backbone keys from the kingdom down, then the (accepted) taxon | ``taxon``, ``taxon:1``, ..., ``taxon:1032608`` |
-| mineral | the Nickel-Strunz path, then the species (a group stops at its code) | ``mineral:9``, ``mineral:9.A``, ..., ``mineral:9.A.C.05/forsterite`` |
-| rock | the family path, then the rock | ``rock:igneous``, ``rock:igneous.coarse``, ``rock:igneous.coarse/granite`` |
-| crystal | the origin, then the snow category, then the system | ``crystal:ice``, ``crystal:ice.P``, ``crystal:ice.P/hexagonal`` |
-| material | the family, then the material | ``material:fibre``, ``material:fibre/cotton`` |
+- taxon: the GBIF backbone keys from the kingdom down, then the (accepted) taxon:
+  ``taxon``, ``taxon:1``, ..., ``taxon:1032608``;
+- mineral: the Nickel-Strunz path, then the species (a group stops at its code):
+  ``mineral:9``, ``mineral:9.A``, ..., ``mineral:9.A.C.05/forsterite``;
+- rock: the family path, then the rock: ``rock:igneous``, ``rock:igneous.coarse``, ``rock:igneous.coarse/granite``;
+- crystal: the origin, then the snow category, then the system: ``crystal:ice``, ``crystal:ice.P``,
+  ``crystal:ice.P/hexagonal``;
+- material: the family, then the material: ``material:fibre``, ``material:fibre/cotton``.
 
 Every kind has its own root, so identifications of two kinds share only nothing: a rock against a mineral is a
 disagreement. A lineage is stored with the identification as it was when it was made.

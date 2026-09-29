@@ -2,8 +2,8 @@
 
 iNaturalist's community taxon (dossier 15, section 2; ``Observation#community_taxon_nodes`` and
 ``#get_community_taxon`` at commit 8bdc0a099170), on lineages of node ids so that it applies to every anchor kind.
-Only the current, visible identifications count, one per account. For every node $t$ named by an identification or on
-the lineage of one:
+Only the current, visible identifications count, one per account. For every node $t$ named by an identification or
+on the lineage of one:
 
 - $c(t)$, the cumulative count: identifications of $t$ or of a node below it;
 - $d(t)$, the disagreement count: identifications of a node that is neither $t$'s ancestor nor below $t$;
@@ -11,8 +11,8 @@ the lineage of one:
   slide's anchor $P$ of the time, which disagree with every node from $A$'s child on $P$'s lineage down to $P$
   (counted while some current identification still names $P$ or a node below it);
 
-and $score(t) = c / (c + d + a)$. The community node is the deepest node with $c > 1$ and $score > 2/3$ (strictly), never
-a kind's root; with fewer than two identifications there is none. iNaturalist also counts an older identification
+and $score(t) = c / (c + d + a)$. The community node is the deepest node with $c > 1$ and $score > 2/3$ (strictly),
+never a kind's root; with fewer than two identifications there is none. iNaturalist also counts an older identification
 whose disagreement was never recorded as disagreeing with finer taxa; Laminario always records it, so that case does
 not arise.
 """
