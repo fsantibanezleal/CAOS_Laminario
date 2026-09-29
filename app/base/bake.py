@@ -205,6 +205,11 @@ def bake(out: Path, vault: Path, only: set[str] | None = None, refresh: set[str]
     chosen = [s for s in lock["slides"] if not only or s["id"] in only or s["collection"] in only]
     index_path = out / INDEX
     index = json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {}
+    # The bake root mirrors the lock: a slide the lock no longer holds leaves it with its files.
+    gone = [slide_id for slide_id in index if slide_id not in {s["id"] for s in lock["slides"]}]
+    if gone:
+        _remove(out, index, gone)
+        print(f"{len(gone)} slides are no longer in the lock and leave the bake: {', '.join(gone)}", flush=True)
     stale = _stale(index, lock["slides"], refresh or set())
     if stale:
         _remove(out, index, stale)
