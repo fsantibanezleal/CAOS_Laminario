@@ -3,7 +3,7 @@
 // with their category, the form an identifier adds one with, the vote on whether the name can still be improved,
 // and the flags and the curators' hiding and restoring. Loaded as its own chunk on the slide place.
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useSession } from "../account/session";
 import { ApiError } from "../api/client";
 import type { AnchorRecord, IdentificationList, IdentificationRecord, SlideRecord } from "../contract/catalog";
@@ -182,7 +182,8 @@ export function IdentificationsPanel({ record, onHidden, onChanged }: { record: 
                 {t(`community.category.${i.category}`)}</span> : null}
             </div>
             <p className={styles.meta}>
-              <span>{i.source ? t("community.bySource") : i.by ?? t("community.byUnknown")}</span>
+              <span>{i.source ? t("community.bySource") : i.by_handle && i.by
+                ? <Link href={`/people/${i.by_handle}`}>{i.by}</Link> : i.by ?? t("community.byUnknown")}</span>
               <span>{date(i.created_at, { dateStyle: "medium" })}</span>
               {!i.current ? <span className={styles.muted}>{t("community.withdrawn")}</span> : null}
               {i.hidden ? <span className={styles.warn}>{t("community.hidden")}</span> : null}

@@ -32,4 +32,5 @@ def test_schema_declares_expected_text_on_constrained_fields():
                                                             "collectionNode", "facet", "anchorSuggestion",
                                                             "partRecord", "placement", "facetCounts", "map",
                                                             "annotation", "case", "caseSummary", "identifications",
-                                                            "flag", "moderationAction"}
+                                                            "flag", "moderationAction", "profile",
+                                                            "personIdentification", "stock"}

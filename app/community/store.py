@@ -80,6 +80,12 @@ def first_identification(conn: Connection, slide_id: int) -> bool:
                     s.anchor_kind, s.anchor_ref)
         return False
     user = s.contributor_id if s.origin == "contribution" else None
+    if user is not None:
+        try:
+            uuid.UUID(user)
+        except ValueError:
+            log.warning("slide %s: its contributor id %r is no account's; no first identification", s.short_id, user)
+            return False
     _insert(conn, slide_id, user, s, lineage, s.published_at or s.created_at or utcnow())
     return True
 

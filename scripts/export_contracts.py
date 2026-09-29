@@ -52,6 +52,9 @@ CATALOG_ROOTS = {
     "identifications": c.IdentificationList,
     "flag": c.FlagRecord,
     "moderationAction": c.ModerationActionRecord,
+    "profile": c.ProfileRecord,
+    "personIdentification": c.PersonIdentificationRecord,
+    "stock": c.StockRecord,
 }
 
 

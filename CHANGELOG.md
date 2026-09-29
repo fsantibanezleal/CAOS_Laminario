@@ -3,6 +3,38 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.14.000] - 2026-09-29
+
+### Added
+
+- A public handle for every account, made from its display name (accents removed, lower case, hyphens, a number
+  when taken); migration 0012 gives one to the accounts made before. A profile, a slide's contributor and each
+  identification name an account by handle and display name, never by email.
+- The profile (`GET /api/people/{handle}`): role, when the account joined and was last active, its published and
+  verified slides by collection, its identifications of others' slides by category, its annotations; nothing hidden
+  counts.
+- The cabinet (`/people/<handle>`): a drawer per collection with the account's published slides, and its
+  identifications with the anchor given, the category and whether the community agrees now; "My cabinet" in the
+  account menu, the contributor on the slide place and the identifier on each identification linked to theirs.
+- One's own export (`GET /api/people/me/slides.csv`): every slide of the account, in any status, with the exact place
+  of an obscured or private one; only its owner reads it.
+- Label stocks as data (`app/labels/stocks.yaml`, `GET /api/labels/stocks`): plain paper on A4 (72) and US Letter
+  (77), Diversified Biotech MISL-1000 (96), LabTAG CLA-4WH (78) and the 66-up 25.4 mm A4 layout of HERMA 8831 and
+  10107 and LabTAG A4CL-112, each with its source and warnings, named in EN and ES.
+- Label sheets (`GET /api/labels/sheet.pdf`): up to 500 published slides' labels at 1:1 on a stock, from a chosen
+  start position, moved by a printer offset, the label fitted to each cell with its QR at the foot or on the right
+  (14 mm down to 11 mm, the quiet zone clear of text); the stock's test page to hold against a sheet.
+- The print dialog: the stock with its measurements and warnings, the start position on a map of the sheet, the
+  printer offset in 0.1 mm steps kept on the device per stock, the test page.
+- Print, download and labels glyphs; 64 strings in EN and ES; `frontend/gates/cabinet.mjs`; wiki page 16.
+
+### Fixed
+
+- `GET /api/explore/facets` answered 500 under any modality or licence filter (the assets subquery was correlated to
+  the facet's own join); a drawer reopened from a filtered address lost its counts.
+- A tray slide and the slide record no longer repeat the country when the locality already ends with its name, in
+  either language ("Siilinjärvi apatite mine, Finland", not "..., Finland, Finlandia").
+
 ## [0.13.000] - 2026-09-29
 
 ### Added

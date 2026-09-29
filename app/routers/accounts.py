@@ -27,7 +27,7 @@ from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.accounts import invitations, mail, roles
+from app.accounts import handles, invitations, mail, roles
 from app.accounts.users import Accounts, UserCreate, UserRead, UserUpdate, get_user_manager
 from app.collections import taxa
 from app.collections.service import check_submission
@@ -62,7 +62,7 @@ def _refused(code: str, reason: str) -> HTTPException:
 
 def account_record(user: User) -> c.AccountRecord:
     return c.AccountRecord(id=str(user.id), email=user.email, display_name=user.display_name, role=user.role,
-                           is_active=user.is_active, is_verified=user.is_verified)
+                           is_active=user.is_active, is_verified=user.is_verified, handle=user.handle)
 
 
 def invitation_record(invitation: Invitation, link: str | None = None) -> c.InvitationRecord:
@@ -124,7 +124,11 @@ def routers(accounts: Accounts) -> list[APIRouter]:
             await invitations.release(db, claimed.id)
             raise _refused("REGISTER_INVALID_PASSWORD", str(exc.reason)) from exc
         await invitations.mark_used_by(db, claimed.id, user.id)
-        return account_record(user)
+        # The profile's public address (U14): made from the display name, unique.
+        row = await db.get(User, user.id)
+        row.handle = await handles.free_handle(db, row.display_name)
+        await db.commit()
+        return account_record(row)
 
     @api.post("/api/invitations", status_code=201, response_model=c.InvitationRecord)
     async def create_invitation(payload: InvitationRequest, request: Request, db: Db,

@@ -20,8 +20,12 @@ export function TraySlide({ slide, tree }: { slide: SlideSummary; tree: TreeInde
   const node = tree.byId.get(slide.placement.node);
   const preparation = tree.facets.get("preparation")?.values.find((v) => v.id === slide.preparation);
   const catalogue = slide.label?.catalogue_number || slide.id;
-  const country = slide.label?.country ? tree.countries[slide.label.country]?.[lang] : undefined;
-  const place = [slide.label?.locality_text, country].filter((p, i, all) => p && all.indexOf(p) === i).join(", ");
+  const names = slide.label?.country ? tree.countries[slide.label.country] : undefined;
+  const country = names?.[lang];
+  // The country only when the locality does not already end with it, in either language ("Siilinjärvi, Finland").
+  const locality = slide.label?.locality_text ?? "";
+  const named = names && [names.en, names.es].some((n) => locality.toLowerCase().trimEnd().endsWith(n.toLowerCase()));
+  const place = [locality, named ? "" : country].filter(Boolean).join(", ");
   const collected = slide.label?.collected_on;
   const style = { "--long": long, "--short": short, "--label": label, "--tag-hue": `var(--h-${hueName})` } as
     CSSProperties;
