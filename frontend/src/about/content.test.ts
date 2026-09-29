@@ -64,8 +64,8 @@ describe("the About content", () => {
   it("uses no em dash and no arrow (ADR-0067)", () => {
     for (const [lang, content] of both) {
       const text = JSON.stringify(content);
-      expect(text.includes("—"), lang).toBe(false);
-      expect(text.includes("→"), lang).toBe(false);
+      expect(text.includes(String.fromCharCode(0x2014)), lang).toBe(false);
+      expect(text.includes(String.fromCharCode(0x2192)), lang).toBe(false);
     }
   });
 });
