@@ -40,3 +40,7 @@ the record rail said "needs identification" beside a verified agreement (the rec
 or the anchor moves, and the gate checks it without a reload); the rock vocabulary offered its keys as names
 ("carbonatite"); and the walk gate judged the focus before a lazily loaded place had mounted, because
 `networkidle` is already reached after a navigation inside the page.
+
+## Before the release (after merging 0.08.000 to 0.11.000)
+
+The branch that holds U12 to U15 ran every sandbox gate again on 2026-09-29: contribute 206 of 206, identify 60 of 60, cabinet 83 of 83; fit 304 cases and motion 59,019 computed styles with none moving over every place; the backend suite passes: 387 tests, 11 skipped (the ones that start iipsrv in Docker). CI's checks pass locally on this branch (lint, contracts, tokens, contrast, i18n, web unit tests, build, guards).

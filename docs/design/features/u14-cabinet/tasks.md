@@ -37,3 +37,9 @@ says it in the sheet's language); stock names were English only on the Spanish p
 repeated the country when the locality already named it ("Finland, Finlandia"); and the walk's drawer reopened from
 a filtered address lost its counts because the facets answered 500 under any modality or licence filter, a U10
 defect in the facet query's correlation, fixed here with a test that fails without the fix.
+
+## Before the release (after merging 0.08.000 to 0.11.000)
+
+The branch that holds U12 to U15 ran every sandbox gate again on 2026-09-29: contribute 206 of 206, identify 60 of 60, cabinet 83 of 83; fit 304 cases and motion 59,019 computed styles with none moving over every place; the backend suite passes: 387 tests, 11 skipped (the ones that start iipsrv in Docker). CI's checks pass locally on this branch (lint, contracts, tokens, contrast, i18n, web unit tests, build, guards).
+
+The SDD guard now finds `tests/base/test_base_collection.py`, which arrived with 0.08.000, so the failure noted above is gone.

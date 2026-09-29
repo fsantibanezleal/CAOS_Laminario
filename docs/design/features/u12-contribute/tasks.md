@@ -41,3 +41,7 @@ typecheck, build and 54 unit tests pass.
 Building it found what the design could not: Vite's proxy turned a string target into `changeOrigin: true`, so tusd
 gave the browser upload addresses on its own port (F-044); the editor's side column widened to the rail's width at
 360 px, and example values shown as placeholders read as filled-in values in the lamp-lit room (both fixed and gated).
+
+## Before the release (after merging 0.08.000 to 0.11.000)
+
+The branch that holds U12 to U15 ran every sandbox gate again on 2026-09-29: contribute 206 of 206, identify 60 of 60, cabinet 83 of 83; fit 304 cases and motion 59,019 computed styles with none moving over every place; the backend suite passes: 387 tests, 11 skipped (the ones that start iipsrv in Docker). CI's checks pass locally on this branch (lint, contracts, tokens, contrast, i18n, web unit tests, build, guards).
