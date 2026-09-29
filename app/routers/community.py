@@ -42,13 +42,14 @@ def refused(exc: community.CommunityRefused) -> HTTPException:
 
 
 def identification_record(row: Identification, names: dict[str, str], viewer: User | None,
-                          category: str | None) -> c.IdentificationRecord:
+                          category: str | None, handles: dict[str, str] | None = None) -> c.IdentificationRecord:
     lineage = json.loads(row.lineage_json)
     return c.IdentificationRecord(
         id=row.public_id, node=lineage[-1],
         anchor=c.AnchorRecord(kind=row.anchor_kind, ref=row.anchor_ref, name=row.anchor_name, rank=row.anchor_rank,
                               classification=row.anchor_classification),
-        by=names.get(str(row.user_id)) if row.user_id else None, source=row.user_id is None,
+        by=names.get(str(row.user_id)) if row.user_id else None,
+        by_handle=(handles or {}).get(str(row.user_id)) if row.user_id else None, source=row.user_id is None,
         mine=viewer is not None and row.user_id == viewer.id, body=row.body, disagreement=row.disagreement,
         current=row.current, hidden=row.hidden, category=category if row.current and not row.hidden else None,
         created_at=row.created_at)
@@ -86,7 +87,8 @@ def routers(accounts: Accounts) -> list[APIRouter]:
                                       score=s.score) for s in shown],
             as_good_as_it_can_be=found.votes[0], needs_more=found.votes[1], my_vote=my_vote, badge=quality.badge)
         return c.IdentificationList(community=record, identifications=[
-            identification_record(r, found.names, reader, found.categories.get(r.id)) for r in found.rows])
+            identification_record(r, found.names, reader, found.categories.get(r.id), found.handles)
+            for r in found.rows])
 
     @api.post("/slides/{slide_id}/identifications", status_code=201, response_model=c.IdentificationRecord)
     async def add_identification(slide_id: str, payload: IdentificationIn, request: Request, db: Db,
@@ -96,7 +98,8 @@ def routers(accounts: Accounts) -> list[APIRouter]:
                                            payload.body, payload.disagreement)
         except community.CommunityRefused as exc:
             raise refused(exc) from exc
-        return identification_record(row, {str(user.id): user.display_name}, user, None)
+        return identification_record(row, {str(user.id): user.display_name}, user, None,
+                                     {str(user.id): user.handle} if user.handle else None)
 
     @api.post("/identifications/{public_id}/withdraw", status_code=204)
     async def withdraw_identification(public_id: str, request: Request, db: Db, user: Identifier) -> Response:

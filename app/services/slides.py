@@ -189,3 +189,20 @@ async def get_public_pyramid(session: AsyncSession, storage_key: str) -> Asset |
                Slide.status == "published")
     )
     return (await session.execute(query)).scalars().first()
+
+
+async def contributor_of(session: AsyncSession, slide: Slide):
+    """The contributor as others may see them (handle and name, U14), or None for a base slide."""
+    import uuid
+
+    from app.contracts.catalog import PersonRef
+    from app.db.models import User
+
+    try:
+        key = uuid.UUID(slide.contributor_id or "")
+    except ValueError:
+        return None  # no account's id (a slide made outside the accounts, as some tests do)
+    user = await session.get(User, key)
+    if user is None or not user.handle:
+        return None
+    return PersonRef(handle=user.handle, name=user.display_name)

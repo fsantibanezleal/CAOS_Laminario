@@ -59,7 +59,7 @@ async def read_slide(slide_id: str, request: Request,
     slide = await slides.get_slide(db, slide_id)
     if slide is None:
         raise HTTPException(status_code=404, detail="no published slide with this id")
-    return catalog.slide_record(slide, request.app.state.settings)
+    return catalog.slide_record(slide, request.app.state.settings, await slides.contributor_of(db, slide))
 
 
 async def _published(db: AsyncSession, slide_id: str, request: Request) -> c.SlideRecord:

@@ -216,6 +216,8 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
     role: Mapped[str] = mapped_column(String(12), nullable=False, default="contributor")
     display_name: Mapped[str] = mapped_column(String(80), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+    #: The public address of the account's profile (U14, ``app/accounts/handles.py``); never the email.
+    handle: Mapped[str | None] = mapped_column(String(64), unique=True)
 
 
 class AccessToken(SQLAlchemyBaseAccessTokenTableUUID, Base):

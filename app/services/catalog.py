@@ -155,7 +155,7 @@ def format_record(slide: Slide) -> c.FormatRecord:
                           assumed=bool(slide.format_assumed))
 
 
-def slide_record(slide: Slide, settings: Settings) -> c.SlideRecord:
+def slide_record(slide: Slide, settings: Settings, contributor: c.PersonRef | None = None) -> c.SlideRecord:
     link = permalink(slide, settings)
     coverslip = None
     if slide.coverslip_code != "none" and slide.coverslip_long_mm and slide.coverslip_short_mm:
@@ -188,6 +188,7 @@ def slide_record(slide: Slide, settings: Settings) -> c.SlideRecord:
         quality=quality_record(slide),
         assets=[asset_record(a, settings) for a in slide.assets],
         manifest_url=f"{settings.public_base_url.rstrip('/')}/api/slides/{slide.short_id}/manifest",
+        contributor=contributor,
         created_at=slide.created_at,
         updated_at=slide.updated_at,
         published_at=slide.published_at,

@@ -1,5 +1,5 @@
 // The account in the masthead (R-1201): "Sign in" for a visitor; for someone signed in, their name, which opens a
-// short list: their contributions (for those who may contribute) and sign out. A disclosure (a button and the list it
+// short list: their cabinet (their profile, U14), their contributions (for those who may contribute) and sign out. A disclosure (a button and the list it
 // shows), not an application menu: Tab moves through the links, Escape and a click outside close it.
 import { useEffect, useId, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
@@ -62,6 +62,10 @@ export function AccountMenu() {
           <span className={styles.role}>{t(`account.role.${account.role}`)}</span>
         </p>
         <ul>
+          {account.handle ? (
+            <li><Link href={`/people/${account.handle}`} className={styles.item}><Glyph name="cabinet" size={20} />
+              <span>{t("people.mine")}</span></Link></li>
+          ) : null}
           {session.can("submit") ? (
             <li><Link href="/contribute" className={styles.item}><Glyph name="draft" size={20} />
               <span>{t("contribute.mine")}</span></Link></li>

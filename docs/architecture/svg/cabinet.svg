@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario profile cabinet and label sheets</title>
+  <desc id="desc">An account's handle, made from its display name, addresses its profile, which never carries the email: the role, when it joined and was last active, published and verified slides by collection, identifications of others' slides by category, annotations. Its cabinet lays the published slides in one drawer per collection and lists its identifications with whether the community agrees now. The owner alone exports its slides as CSV with their exact places. Selected slides print on a stock: each stock is a record of page, label size, grid, margins and pitches with its source; the positions start at a chosen label and move by a printer offset kept on the device; each label is U11's label fitted to the cell with the QR at the foot or on the right, 14 mm down to 11 mm, its quiet zone clear of text. The test page draws every label's outline at 100 %.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --bad: #b3261e;
+            --hue: #575aa3; --wood: #e2cdba; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; --bad: #f08a80;
+              --hue: #9ea1ec; --wood: #6b5440; }
+    }
+    .bg { fill: var(--bg); }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .no { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--bad); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .head { fill: var(--line); }
+    .drawer { fill: var(--store); stroke: var(--edge); stroke-width: 1; }
+    .glass { fill: var(--box); stroke: var(--line); stroke-width: 1; }
+    .band { fill: var(--hue); }
+    .cell { fill: var(--box); stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 2; }
+    .used { fill: var(--box); stroke: var(--accent); stroke-width: 1.4; }
+    .quiet { fill: none; stroke: var(--good); stroke-width: 1; stroke-dasharray: 2 2; }
+    .qr { fill: var(--ink); }
+    .page { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .cut { stroke: var(--muted); stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+    <pattern id="modules" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect class="qr" x="0" y="0" width="2" height="2"/><rect class="qr" x="2" y="2" width="2" height="2"/>
+    </pattern>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="600"/>
+
+  <!-- the profile and its cabinet -->
+  <rect class="lane" x="16" y="16" width="440" height="330" rx="10"/>
+  <text class="h" x="32" y="38">THE PROFILE, BY HANDLE (NEVER THE EMAIL)</text>
+  <rect class="key" x="32" y="52" width="408" height="84" rx="8"/>
+  <text class="t" x="48" y="74">/people/ana-perez</text>
+  <text class="s" x="48" y="93">display name "Ana Pérez", accents removed, lower case, hyphens;</text>
+  <text class="s" x="48" y="109">"ana-perez-2" when taken (migration 0012 for older accounts)</text>
+  <text class="m" x="48" y="127">role · joined · active · slides · verified · IDs</text>
+
+  <text class="h" x="32" y="160">THE CABINET: ONE DRAWER PER COLLECTION</text>
+  <rect class="drawer" x="32" y="170" width="200" height="72" rx="6"/>
+  <text class="s" x="42" y="186">life.insects · 3</text>
+  <rect class="glass" x="42" y="194" width="52" height="18" rx="1"/><rect class="band" x="42" y="194" width="14" height="3"/>
+  <rect class="glass" x="100" y="194" width="52" height="18" rx="1"/><rect class="band" x="100" y="194" width="14" height="3"/>
+  <rect class="glass" x="158" y="194" width="52" height="18" rx="1"/><rect class="band" x="158" y="194" width="14" height="3"/>
+  <text class="s" x="42" y="232">each slide at its format's proportion</text>
+  <rect class="drawer" x="240" y="170" width="200" height="72" rx="6"/>
+  <text class="s" x="250" y="186">identifications · 12</text>
+  <text class="m" x="250" y="206">Polyplax borealis</text>
+  <text class="ok" x="250" y="222">supporting · agrees now</text>
+  <text class="s" x="250" y="237">or leading, improving, maverick</text>
+
+  <rect class="store" x="32" y="256" width="408" height="76" rx="8"/>
+  <text class="t" x="48" y="278">GET /api/people/me/slides.csv</text>
+  <text class="s" x="48" y="297">the owner's own slides, any status, with the exact place</text>
+  <text class="s" x="48" y="313">of an obscured or private one; no one else's; nothing cached</text>
+  <text class="no" x="340" y="278">sign-in only</text>
+
+  <!-- the stocks -->
+  <rect class="lane" x="472" y="16" width="472" height="330" rx="10"/>
+  <text class="h" x="488" y="38">A STOCK IS DATA (app/labels/stocks.yaml)</text>
+  <rect class="box" x="488" y="52" width="208" height="150" rx="8"/>
+  <text class="t" x="502" y="74">divbio-misl-1000</text>
+  <text class="m" x="502" y="94">page: Letter</text>
+  <text class="m" x="502" y="110">label: [22.225, 22.225]</text>
+  <text class="m" x="502" y="126">grid: [8, 12]</text>
+  <text class="m" x="502" y="142">margin: [6.35, 7.11]</text>
+  <text class="m" x="502" y="158">pitch: [25.4, 22.35]</text>
+  <text class="m" x="502" y="174">source: datasheet</text>
+  <text class="m" x="502" y="190">warnings: [laser_xylene]</text>
+  <path class="arrow" d="M700 126 L 728 126"/>
+  <!-- a sheet: start at 5, offset -->
+  <rect class="page" x="734" y="52" width="120" height="156" rx="2"/>
+  <g>
+    <rect class="cell" x="742" y="60" width="12" height="12"/><rect class="cell" x="756" y="60" width="12" height="12"/>
+    <rect class="cell" x="770" y="60" width="12" height="12"/><rect class="cell" x="784" y="60" width="12" height="12"/>
+    <rect class="used" x="798" y="60" width="12" height="12"/><rect class="used" x="812" y="60" width="12" height="12"/>
+    <rect class="used" x="826" y="60" width="12" height="12"/><rect class="cell" x="840" y="60" width="12" height="12"/>
+    <rect class="cell" x="742" y="74" width="12" height="12"/><rect class="cell" x="756" y="74" width="12" height="12"/>
+    <rect class="cell" x="770" y="74" width="12" height="12"/><rect class="cell" x="784" y="74" width="12" height="12"/>
+    <rect class="cell" x="798" y="74" width="12" height="12"/><rect class="cell" x="812" y="74" width="12" height="12"/>
+    <rect class="cell" x="826" y="74" width="12" height="12"/><rect class="cell" x="840" y="74" width="12" height="12"/>
+  </g>
+  <text class="s" x="742" y="104">96 positions a page</text>
+  <text class="s" x="742" y="120">start at 5 (a part-</text>
+  <text class="s" x="742" y="134">used sheet), then row</text>
+  <text class="s" x="742" y="148">by row, page by page</text>
+  <text class="s" x="742" y="168">offset dx, dy: 0.1 mm</text>
+  <text class="s" x="742" y="182">steps, kept per stock</text>
+  <text class="s" x="742" y="196">on the device</text>
+  <text class="s" x="866" y="64">plain</text>
+  <text class="s" x="866" y="78">paper:</text>
+  <text class="s" x="866" y="92">dashed cut</text>
+  <text class="s" x="866" y="106">in the</text>
+  <text class="s" x="866" y="120">gutters;</text>
+  <text class="s" x="866" y="134">stock:</text>
+  <text class="s" x="866" y="148">nothing</text>
+  <text class="s" x="866" y="162">outside</text>
+  <text class="s" x="866" y="176">the labels</text>
+
+  <text class="h" x="488" y="230">THE STOCKS SHIPPED (dossier 16)</text>
+  <text class="s" x="488" y="250">stock</text><text class="s" x="632" y="250">page</text>
+  <text class="s" x="690" y="250">label (mm)</text><text class="s" x="790" y="250">grid</text>
+  <text class="s" x="850" y="250">per page</text>
+  <g class="m">
+    <text class="m" x="488" y="268">a4-plain</text><text class="m" x="632" y="268">A4</text>
+    <text class="m" x="690" y="268">20 x 26</text><text class="m" x="790" y="268">8 x 9</text>
+    <text class="m" x="850" y="268">72</text>
+    <text class="m" x="488" y="285">letter-plain</text><text class="m" x="632" y="285">Letter</text>
+    <text class="m" x="690" y="285">26 x 20</text><text class="m" x="790" y="285">7 x 11</text>
+    <text class="m" x="850" y="285">77</text>
+    <text class="m" x="488" y="302">divbio-misl-1000</text><text class="m" x="632" y="302">Letter</text>
+    <text class="m" x="690" y="302">22.2 x 22.2</text><text class="m" x="790" y="302">8 x 12</text>
+    <text class="m" x="850" y="302">96</text>
+    <text class="m" x="488" y="319">labtag-cla-4wh</text><text class="m" x="632" y="319">Letter</text>
+    <text class="m" x="690" y="319">23.9 x 19.6</text><text class="m" x="790" y="319">6 x 13</text>
+    <text class="m" x="850" y="319">78</text>
+    <text class="m" x="488" y="336">a4-25-66</text><text class="m" x="632" y="336">A4</text>
+    <text class="m" x="690" y="336">25.4 x 25.4</text><text class="m" x="790" y="336">6 x 11</text>
+    <text class="m" x="850" y="336">66</text>
+  </g>
+
+  <!-- one label, any cell -->
+  <rect class="lane" x="16" y="362" width="928" height="222" rx="10"/>
+  <text class="h" x="32" y="384">ONE LABEL, ANY CELL (app/labels/cell.py): 0.8 MM INSIDE THE EDGE</text>
+  <!-- foot arrangement -->
+  <rect class="box" x="40" y="398" width="110" height="140" rx="3"/>
+  <rect class="band" x="44" y="402" width="102" height="6"/>
+  <text class="m" x="48" y="424" style="font-weight:700">LAM-0001</text>
+  <text class="m" x="48" y="440" style="font-style:italic">Polyplax</text>
+  <text class="m" x="48" y="454" style="font-style:italic">borealis</text>
+  <rect class="quiet" x="66" y="468" width="58" height="58"/>
+  <rect x="78" y="480" width="34" height="34" fill="url(#modules)"/>
+  <text class="s" x="40" y="554">taller: QR at the foot</text>
+  <!-- right arrangement -->
+  <rect class="box" x="190" y="420" width="210" height="96" rx="3"/>
+  <rect class="band" x="194" y="424" width="202" height="6"/>
+  <text class="m" x="198" y="446" style="font-weight:700">LAM-0001</text>
+  <text class="m" x="198" y="462" style="font-style:italic">Polyplax borealis</text>
+  <text class="m" x="198" y="478">Thomomys</text>
+  <text class="m" x="198" y="494">2019-04-20</text>
+  <rect class="quiet" x="336" y="438" width="58" height="58"/>
+  <rect x="348" y="450" width="34" height="34" fill="url(#modules)"/>
+  <text class="s" x="190" y="554">wider: QR on the right</text>
+
+  <text class="t" x="420" y="416">The order the search keeps</text>
+  <text class="s" x="420" y="436">1. the catalogue number and the name complete</text>
+  <text class="s" x="420" y="454">2. in the fewest lines (a split word is a line more)</text>
+  <text class="s" x="420" y="472">3. the most data lines</text>
+  <text class="s" x="420" y="490">4. the largest QR: 14 mm with its four-module quiet zone,</text>
+  <text class="s" x="436" y="506">down to 11 mm (29 modules of 0.3 mm); no text enters it</text>
+  <rect class="store" x="420" y="518" width="508" height="52" rx="8"/>
+  <text class="t" x="434" y="540">GET /api/labels/sheet.pdf?stock=&amp;slides=&amp;start=&amp;dx=&amp;dy=</text>
+  <text class="s" x="434" y="558">reportlab at 1:1, up to 500 slides; test=true draws every outline to hold against a sheet</text>
+</svg>
