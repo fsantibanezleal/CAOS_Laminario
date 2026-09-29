@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from app.collections import vocab
+from app.config import Settings
 from app.collections.vocab import Problem, Term, resolve_term, strunz_path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -22,7 +23,7 @@ def load_script(name: str):
 
 
 def vault() -> Path:
-    fixtures = os.environ.get("LAMINARIO_FIXTURES")
+    fixtures = os.environ.get("LAMINARIO_FIXTURES") or Settings().fixtures
     if not fixtures or not (Path(fixtures) / "vocab" / "ima-list-2026-01.pdf").exists():
         pytest.skip("the vocabulary sources are in the data vault (LAMINARIO_FIXTURES/vocab)")
     return Path(fixtures)
