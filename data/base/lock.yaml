@@ -6677,12 +6677,12 @@ slides:
   specimen:
     anchor:
       kind: taxon
-      ref: '7655747'
+      ref: '8364053'
       name: Plasmodium malariae
-      rank: species
+      rank: genus
     part: blood
   placement:
-    node: life.invertebrates
+    node: life.microbes.apicomplexans
   assets:
   - family: micro
     role: single
@@ -6695,7 +6695,8 @@ slides:
     width: 2838
     height: 1914
     modality: brightfield
-  note: mature schizont, CDC PHIL 2715
+  note: mature schizont, CDC PHIL 2715; the backbone places the species record directly under Animalia (7655747), so the slide
+    is anchored at the chromist genus
 - id: microbes-plasmodium-ovale-with-characteristics-ja-ea972a
   collection: life.microbes
   slide:

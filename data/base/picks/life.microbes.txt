@@ -19,7 +19,7 @@ life.microbes 50 | taxon=Didymosphenia geminatum@species | fluid_mount | | brigh
 life.microbes 51 | taxon=Didymosphenia geminatum@species | fluid_mount | | darkfield | | | didymo colony
 life.microbes 56 | taxon=Skeletonema@genus | fluid_mount | | brightfield | | | CSIRO Science Image
 life.microbes 58 | taxon=Cymbella peraspera@species | whole_mount | | brightfield |
-life.microbes 66 | taxon=Plasmodium malariae@species | smear | blood | brightfield | Giemsa | | mature schizont, CDC PHIL 2715
+life.microbes 66 | taxon=Plasmodium@genus@Chromista | smear | blood | brightfield | Giemsa | | mature schizont, CDC PHIL 2715; the backbone places the species record directly under Animalia (7655747), so the slide is anchored at the chromist genus | name=Plasmodium malariae
 life.microbes 75 | taxon=Plasmodium@genus@Chromista | smear | blood | brightfield | Giemsa | | determined as Plasmodium ovale by the source (no backbone species record); James dots
 life.microbes 70 | taxon=Plasmodium@genus@Chromista | smear | blood | brightfield | Giemsa | | determined as Plasmodium berghei by the source (no backbone species record)
 life.microbes 113 | taxon=Trypanosoma@genus | smear | | brightfield | Giemsa |

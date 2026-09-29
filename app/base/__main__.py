@@ -81,6 +81,7 @@ def main() -> int:
     b = sub.add_parser("bake")
     b.add_argument("--out", type=Path, required=True)
     b.add_argument("only", nargs="*")
+    b.add_argument("--refresh", action="append", default=[], help="a slide id to bake again (repeatable)")
     i = sub.add_parser("import")
     i.add_argument("--bake", type=Path, required=True)
     args = parser.parse_args()
@@ -116,7 +117,7 @@ def main() -> int:
     elif args.step == "bake":
         from app.base import bake
 
-        manifest = bake.bake(args.out, vault(), set(args.only) or None)
+        manifest = bake.bake(args.out, vault(), set(args.only) or None, set(args.refresh))
         print(f"{len(manifest['slides'])} slides baked, {manifest['failed_jobs']} failed jobs")
         return 1 if manifest["failed_jobs"] else 0
     elif args.step == "import":

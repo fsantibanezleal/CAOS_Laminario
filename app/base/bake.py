@@ -83,11 +83,54 @@ async def _store(out: Path, slides: list[dict], acquired: dict, vault: Path, ind
                 for asset, origin in zip(row.assets, origins, strict=True):
                     asset.source_path = str(source_path(origin, acquired, vault))
                 await db.commit()
-                index[slide["id"]] = row.short_id
+                index[slide["id"]] = {"short_id": row.short_id, "digest": digest(slide)}
                 created.append(row.id)
     finally:
         await engine.dispose()
     return created
+
+
+def digest(slide: dict) -> str:
+    """The lock entry's fingerprint: a baked slide whose entry changed since is baked again."""
+    text_form = json.dumps(slide, sort_keys=True, ensure_ascii=False, default=str)
+    return hashlib.sha256(text_form.encode("utf-8")).hexdigest()
+
+
+def _stale(index: dict, slides: list[dict], refresh: set[str]) -> list[str]:
+    """Baked slides to bake again: named in ``refresh``, or whose lock entry no longer has the recorded digest (an
+    entry baked before digests were recorded is trusted unless named)."""
+    by_id = {s["id"]: s for s in slides}
+    stale = []
+    for slide_id, entry in index.items():
+        recorded = entry.get("digest") if isinstance(entry, dict) else None
+        if slide_id in refresh or (slide_id in by_id and recorded and recorded != digest(by_id[slide_id])):
+            stale.append(slide_id)
+    return stale
+
+
+def _remove(out: Path, index: dict, slide_ids: list[str]) -> None:
+    """Take slides out of the bake root: their rows, jobs, journal and stored files."""
+    settings = bake_settings(out)
+    engine = make_sync_engine(out / "laminario.sqlite3")
+    try:
+        with engine.begin() as conn:
+            for slide_id in slide_ids:
+                entry = index.pop(slide_id)
+                short_id = entry["short_id"] if isinstance(entry, dict) else entry
+                row = conn.execute(text("SELECT id FROM slide WHERE short_id = :s"), {"s": short_id}).scalar()
+                if row is None:
+                    continue
+                keys = conn.execute(text("SELECT storage_key FROM asset WHERE slide_id = :s "
+                                         "AND storage_key IS NOT NULL"), {"s": row}).scalars().all()
+                conn.execute(text("DELETE FROM job_event WHERE job_id IN (SELECT id FROM job WHERE slide_id = :s)"),
+                             {"s": row})
+                conn.execute(text("DELETE FROM job WHERE slide_id = :s"), {"s": row})
+                conn.execute(text("DELETE FROM asset WHERE slide_id = :s"), {"s": row})
+                conn.execute(text("DELETE FROM slide WHERE id = :s"), {"s": row})
+                for key in keys:
+                    (settings.store_root / key).unlink(missing_ok=True)
+    finally:
+        engine.dispose()
 
 
 def _queue_processing(out: Path, slide_ids: list[int]) -> int:
@@ -155,13 +198,18 @@ def write_manifest(out: Path) -> dict:
     return manifest
 
 
-def bake(out: Path, vault: Path, only: set[str] | None = None) -> dict:
+def bake(out: Path, vault: Path, only: set[str] | None = None, refresh: set[str] | None = None) -> dict:
     out.mkdir(parents=True, exist_ok=True)
     upgrade_to_head(out / "laminario.sqlite3")
     lock = yaml.safe_load(LOCK.read_text(encoding="utf-8"))
     chosen = [s for s in lock["slides"] if not only or s["id"] in only or s["collection"] in only]
     index_path = out / INDEX
     index = json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {}
+    stale = _stale(index, lock["slides"], refresh or set())
+    if stale:
+        _remove(out, index, stale)
+        index_path.write_text(json.dumps(index, indent=1) + "\n", encoding="utf-8")
+        print(f"{len(stale)} slides changed since they were baked and are baked again: {', '.join(stale)}", flush=True)
     created = asyncio.run(_store(out, chosen, load_acquired(), vault, index))
     index_path.write_text(json.dumps(index, indent=1) + "\n", encoding="utf-8")
     _queue_processing(out, created)

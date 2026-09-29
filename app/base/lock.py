@@ -252,6 +252,10 @@ def _one(http: Polite, collection: str, pick: dict, cands: dict, names: dict, ta
     node = pick.get("node") or placed.suggestion
     if node is None or node not in placed.accepting:
         raise LockError(f"{node} does not take it; suggested {placed.suggestion}")
+    if not (node == collection or node.startswith(collection + ".")):
+        # The pick was meant for this collection; landing elsewhere means the anchor is not what the curator meant
+        # (the backbone put Plasmodium malariae directly under Animalia, and it landed among the invertebrates).
+        raise LockError(f"placed at {node}, outside {collection}: check the anchor")
     slide_id = pick.get("id") or _slide_id(collection, record, pick)
     if slide_id in seen:
         raise LockError(f"duplicate slide id {slide_id}")

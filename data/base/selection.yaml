@@ -1431,12 +1431,14 @@ life.microbes:
   prep: whole_mount
   modality: brightfield
 - commons: File:Mature Plasmodium malariae schizont PHIL 2715 lores.jpg
-  taxon: Plasmodium malariae@species
+  taxon: Plasmodium@genus@Chromista
   prep: smear
   part: blood
   modality: brightfield
   stain: Giemsa
-  note: mature schizont, CDC PHIL 2715
+  note: mature schizont, CDC PHIL 2715; the backbone places the species record directly under Animalia (7655747), so the slide
+    is anchored at the chromist genus
+  name: Plasmodium malariae
 - commons: File:Plasmodium ovale with characteristics James Dots.jpg
   taxon: Plasmodium@genus@Chromista
   prep: smear
