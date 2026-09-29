@@ -62,7 +62,8 @@ class Worker:
             for job_id in queue.requeue_interrupted(engine):
                 log.info("job %s was interrupted and is queued again", job_id)
             context = multiprocessing.get_context("spawn")
-            with ProcessPool(max_workers=1, max_tasks=MAX_TASKS_PER_PROCESS, context=context) as pool:
+            pool = ProcessPool(max_workers=1, max_tasks=MAX_TASKS_PER_PROCESS, context=context)
+            try:
                 while (not self._stop.is_set() and (max_jobs is None or done < max_jobs)
                        and (deadline is None or time.monotonic() < deadline)):
                     job = queue.claim(engine, self.name)
@@ -71,6 +72,16 @@ class Worker:
                         continue
                     self._run_one(engine, pool, job)
                     done += 1
+                    if not pool.active:
+                        # A job's process left the pool unusable (an answer it could not send back): a new pool
+                        # takes the next job, where the old one refused every job after it and stopped the worker.
+                        log.warning("the process pool failed after job %s; starting a new one", job.id)
+                        pool.stop()
+                        pool.join()
+                        pool = ProcessPool(max_workers=1, max_tasks=MAX_TASKS_PER_PROCESS, context=context)
+            finally:
+                pool.close()
+                pool.join()
         finally:
             engine.dispose()
         return done
@@ -80,8 +91,12 @@ class Worker:
         if job.kind not in kinds.KINDS:
             queue.finish(engine, job.id, "failed", error=f"unknown job kind {job.kind!r}")
             return
-        future = pool.schedule(kinds.execute, args=(job.id, job.public_id, job.kind, job.payload, self.settings),
-                               timeout=job.timeout_s)
+        try:
+            future = pool.schedule(kinds.execute, args=(job.id, job.public_id, job.kind, job.payload, self.settings),
+                                   timeout=job.timeout_s)
+        except RuntimeError as exc:  # the pool had failed: the job waits for the next one
+            queue.put_back(engine, job.id, f"the process pool had failed: {exc}", count_attempt=False)
+            return
         while True:
             finished, _ = concurrent.futures.wait([future], timeout=POLL_SECONDS)
             if finished:

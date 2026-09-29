@@ -22,8 +22,11 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import pickle
 import shutil
+import threading
 import time
+import traceback
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -67,7 +70,21 @@ def content_key(short_id: str, asset_id: int, parts: list[str], extension: str) 
 # --- probe --------------------------------------------------------------------------------------------------
 
 
+class _Unpicklable(Exception):
+    """An error holding a lock, as a native library's error may hold a handle: it cannot be pickled."""
+
+    def __init__(self) -> None:
+        super().__init__("an error that cannot be pickled")
+        self.handle = threading.Lock()
+
+
 def probe(ctx: Context, payload: dict) -> dict:
+    """Sleeps in steps and writes a small file; ``fail`` makes it fail (``error``, or ``unpicklable``: an error the
+    worker could not receive as it is), for the worker's tests."""
+    if payload.get("fail") == "unpicklable":
+        raise _Unpicklable()
+    if payload.get("fail") == "error":
+        raise ValueError("the probe was asked to fail")
     steps = int(payload.get("steps", 3))
     seconds = float(payload.get("seconds", 1.0))
     for step in range(steps):
@@ -416,6 +433,17 @@ def execute(job_id: int, public_id: str, kind: str, payload: dict, settings: Set
     try:
         ctx = Context(job_id=job_id, public_id=public_id, settings=settings, engine=engine)
         ctx.progress("log", pid=os.getpid(), kind=kind)
-        return KINDS[kind](ctx, payload)
+        result = KINDS[kind](ctx, payload)
+        pickle.dumps(result)  # what cannot travel back to the worker fails here, as this job's error
+        return result
+    except Exception as exc:
+        # The worker receives the job's error by pickling. An error that does not pickle (a library's exception
+        # holding a handle) broke the pool and stopped the worker; its text always travels.
+        tail = "".join(traceback.format_exception(type(exc), exc, exc.__traceback__)[-3:]).strip()
+        raise JobError(f"{type(exc).__name__}: {exc}\n{tail}") from None
     finally:
         engine.dispose()
+
+
+class JobError(RuntimeError):
+    """A job's failure as text: always picklable."""
