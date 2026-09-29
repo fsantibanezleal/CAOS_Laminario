@@ -3,3 +3,6 @@
 pytest==9.1.1
 httpx2==2.13.1
 ruff==0.16.8
+# U2 tests: structural similarity against the EPFL outputs, EXIF inspection of derivatives
+scikit-image==0.26.0
+pillow==12.3.0

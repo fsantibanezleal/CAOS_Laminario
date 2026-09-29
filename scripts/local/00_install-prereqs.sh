@@ -27,6 +27,15 @@ else
 fi
 
 if command -v git >/dev/null 2>&1; then echo "  $(git --version)"; else echo "  git not found"; missing=1; fi
+
+# libvips with OpenSlide (the imaging engine, from U2 on). Ubuntu: apt install libvips42t64 libvips-tools.
+# In Git Bash on Windows the PowerShell script is the one that checks the Windows build.
+if command -v vips >/dev/null 2>&1; then
+  if vips -l 2>/dev/null | grep -q openslideload; then echo "  $(vips --version) with OpenSlide"
+  else echo "  $(vips --version) without OpenSlide: install a build with OpenSlide"; missing=1; fi
+else
+  echo "  libvips not found (Ubuntu: sudo apt install libvips42t64 libvips-tools)"; missing=1
+fi
 if command -v docker >/dev/null 2>&1; then echo "  $(docker --version)"; else echo "  Docker not found (needed for the local tile server)"; fi
 
 echo

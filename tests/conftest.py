@@ -18,6 +18,8 @@ if str(ROOT) not in sys.path:
 
 def pytest_configure(config):
     if config.option.basetemp is None:
-        base = Path(os.environ.get("LAMINARIO_TEST_TMP") or ROOT / ".tmp" / "pytest")
+        from app.config import Settings
+
+        base = Path(os.environ.get("LAMINARIO_TEST_TMP") or Settings().test_tmp or ROOT / ".tmp" / "pytest")
         base.parent.mkdir(parents=True, exist_ok=True)
         config.option.basetemp = str(base)

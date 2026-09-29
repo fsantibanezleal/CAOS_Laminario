@@ -8,3 +8,9 @@ pydantic-settings==2.15.0
 sqlalchemy[asyncio]==2.0.54
 alembic==1.20.0
 aiosqlite==0.22.1
+# U2: the imaging engine. pyvips without its binary extra: the library is libvips with OpenSlide,
+# the official Windows build (LAMINARIO_VIPS_BIN) or Ubuntu's libvips42t64.
+numpy==2.5.3
+scipy==1.18.1
+pyvips==3.2.0
+tifffile==2026.9.20

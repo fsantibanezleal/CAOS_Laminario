@@ -192,6 +192,9 @@ R-004  THE repository SHALL NOT carry a GitHub Pages deploy workflow.
 
 #### U2 imaging engine
 
+Moved to [`features/u02-imaging/requirements.md`](features/u02-imaging/requirements.md) on 2026-09-28. R-012, R-013,
+R-016 and R-019 were restated there with the measurements that required it; the text below is the original.
+
     R-010  WHEN a file of any format in the fixture matrix is read, THE reader SHALL return dimensions, level count, pixel size and associated images equal to the vendor metadata.
            Gate: tests/imaging/test_reader.py::test_fixture_matrix_metadata
 
