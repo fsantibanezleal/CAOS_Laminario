@@ -75,7 +75,7 @@ together, with the tests in `tests/base` passing.
 ## 4. Bake
 
 ```powershell
-.\.venv\Scripts\python -m app.base bake --out E:\_Datos\laminario\bake-2026-09-30
+.\.venv\Scripts\python -m app.base bake --out (Join-Path (Split-Path $env:LAMINARIO_FIXTURES) "bake-2026-09-30")
 ```
 
 The bake creates a complete data root in `--out` and processes every slide with the product's pipeline (whole-slide
