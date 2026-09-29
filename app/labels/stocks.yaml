@@ -1,0 +1,68 @@
+# Label stocks a sheet of slide labels is printed on (U14, dossier 16 of the planning record, section 1).
+#
+# Each number is in millimetres from the page's top-left corner, to the first label's edge; "source" says where it
+# was read: a datasheet (the maker printed the number), a template (the geometry of the maker's Word or PDF template)
+# or a die drawing (a dimensioned die-cut drawing). The plain-paper grids are Laminario's own (section 2.2): 20 x 26 mm
+# labels with 2 mm gutters inside 10 mm margins, centred on the page.
+#
+# kind: plain (paper cut by hand: cut marks in the gutters) or stock (die-cut labels: nothing drawn outside them).
+
+a4-plain:
+  name: Plain paper, A4
+  kind: plain
+  page: A4
+  label: [20.0, 26.0]
+  grid: [8, 9]
+  margin: [23.5, 18.0]  # top, left: (297 - 250) / 2 and (210 - 174) / 2
+  pitch: [22.0, 28.0]  # across, down
+  radius: 0
+  source: "Laminario, dossier 16 section 2.2: 8 x 20 + 7 x 2 = 174 mm across, 9 x 26 + 8 x 2 = 250 mm down"
+  warnings: [plain_paper]
+
+letter-plain:
+  name: Plain paper, US Letter
+  kind: plain
+  page: Letter
+  label: [26.0, 20.0]  # on their side
+  grid: [7, 11]
+  margin: [19.7, 10.95]  # (279.4 - 240) / 2 and (215.9 - 194) / 2
+  pitch: [28.0, 22.0]
+  radius: 0
+  source: "Laminario, dossier 16 section 2.2: 7 x 26 + 6 x 2 = 194 mm across, 11 x 20 + 10 x 2 = 240 mm down"
+  warnings: [plain_paper]
+
+divbio-misl-1000:
+  name: Diversified Biotech MISL-1000 (Tough-Tags for microscope slides)
+  kind: stock
+  page: Letter
+  label: [22.225, 22.225]  # 0.875 in
+  grid: [8, 12]
+  margin: [6.35, 7.11]
+  pitch: [25.40, 22.35]
+  radius: 0
+  source: "datasheet: https://www.divbio.com/content/files/laser_instructions/laser_tough-tag_instructions_1.pdf"
+  warnings: [laser_xylene, longer_than_label_end]
+
+labtag-cla-4wh:
+  name: LabTAG CLA-4WH (Cryo-LazrTAG, 0.94 x 0.77 in)
+  kind: stock
+  page: Letter
+  label: [23.9, 19.6]
+  grid: [6, 13]
+  margin: [13.19, 12.96]
+  pitch: [33.20, 19.49]  # the template's rows are 19.49 mm: the label is drawn within that
+  radius: 0
+  source: "template: https://cdn.labtag.com/wp-content/uploads/Letter-4_AP0820.doc"
+  warnings: [laser_xylene]
+
+a4-25-66:
+  name: 25.4 mm squares, 66 per A4 (HERMA 8831, 10107; LabTAG A4CL-112)
+  kind: stock
+  page: A4
+  label: [25.4, 25.4]
+  grid: [6, 11]
+  margin: [8.8, 16.1]
+  pitch: [30.48, 25.40]
+  radius: 0.8
+  source: "die drawing: https://www.herma.com/fileadmin/Buero-Zuhause/downloads/Stanzvorlagen/10107_SV.pdf"
+  warnings: [laser_xylene, wider_than_us_slide, longer_than_label_end]
