@@ -20,10 +20,59 @@
     },
     "jobEvent": {
       "$ref": "#/$defs/JobEventRecord"
+    },
+    "account": {
+      "$ref": "#/$defs/AccountRecord"
+    },
+    "invitation": {
+      "$ref": "#/$defs/InvitationRecord"
+    },
+    "createdSlideCase": {
+      "$ref": "#/$defs/CreatedSlideCase"
     }
   },
   "additionalProperties": false,
   "$defs": {
+    "AccountRecord": {
+      "additionalProperties": false,
+      "description": "An account as ``GET /api/users/me`` returns it.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "contributor",
+            "identifier",
+            "curator",
+            "admin"
+          ],
+          "type": "string"
+        },
+        "is_active": {
+          "type": "boolean"
+        },
+        "is_verified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "display_name",
+        "role",
+        "is_active",
+        "is_verified"
+      ],
+      "title": "AccountRecord",
+      "type": "object"
+    },
     "AnchorRecord": {
       "additionalProperties": false,
       "properties": {
@@ -243,6 +292,31 @@
       "title": "CoverslipRecord",
       "type": "object"
     },
+    "CreatedSlideCase": {
+      "additionalProperties": false,
+      "description": "The answer of ``POST /api/slide-cases``: the new draft and the flags of its submission.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "flags": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ValidationFlag"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ],
+      "title": "CreatedSlideCase",
+      "type": "object"
+    },
     "FormatRecord": {
       "additionalProperties": false,
       "properties": {
@@ -262,6 +336,87 @@
         "height_mm"
       ],
       "title": "FormatRecord",
+      "type": "object"
+    },
+    "InvitationRecord": {
+      "additionalProperties": false,
+      "description": "An invitation as its issuer sees it. ``link`` is present only in the answer that created it, and only\nwhen it was not mailed: the token is never stored, so it cannot be shown again.",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "email": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "enum": [
+            "contributor",
+            "identifier",
+            "curator",
+            "admin"
+          ],
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "used",
+            "expired",
+            "revoked"
+          ],
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "mailed": {
+          "type": "boolean"
+        },
+        "link": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "role",
+        "status",
+        "created_at",
+        "expires_at",
+        "mailed"
+      ],
+      "title": "InvitationRecord",
       "type": "object"
     },
     "JobEventRecord": {

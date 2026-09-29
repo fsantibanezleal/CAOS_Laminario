@@ -7,6 +7,9 @@ export interface LaminarioCatalog {
   validation?: ValidationResult;
   job?: JobRecord;
   jobEvent?: JobEventRecord;
+  account?: AccountRecord;
+  invitation?: InvitationRecord;
+  createdSlideCase?: CreatedSlideCase;
 }
 export interface SlideRecord {
   id: string;
@@ -202,4 +205,38 @@ export interface JobEventRecord {
     [k: string]: unknown;
   };
   at: string;
+}
+/**
+ * An account as ``GET /api/users/me`` returns it.
+ */
+export interface AccountRecord {
+  id: string;
+  email: string;
+  display_name: string;
+  role: "contributor" | "identifier" | "curator" | "admin";
+  is_active: boolean;
+  is_verified: boolean;
+}
+/**
+ * An invitation as its issuer sees it. ``link`` is present only in the answer that created it, and only
+ * when it was not mailed: the token is never stored, so it cannot be shown again.
+ */
+export interface InvitationRecord {
+  id: number;
+  email?: string | null;
+  role: "contributor" | "identifier" | "curator" | "admin";
+  note?: string | null;
+  status: "pending" | "used" | "expired" | "revoked";
+  created_at: string;
+  expires_at: string;
+  mailed: boolean;
+  link?: string | null;
+}
+/**
+ * The answer of ``POST /api/slide-cases``: the new draft and the flags of its submission.
+ */
+export interface CreatedSlideCase {
+  id: string;
+  status: string;
+  flags?: ValidationFlag[];
 }
