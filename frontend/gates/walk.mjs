@@ -1,8 +1,8 @@
 // The pointer walk through the places built so far, against the real build and the API over the base collection.
 //
 // R-084   from the landing place, every place is reached by clicking (no keyboard, no typed address): the realms,
-//         a cabinet, a drawer, a slide, its stage, search, the map, and the way to contribute (sign in, where a
-//         visitor who opens /contribute is also sent)
+//         a cabinet, a drawer, a slide, its stage, search, the map, the Identify place, and the way to contribute
+//         (sign in, where a visitor who opens /contribute is also sent)
 // R-1107  the slide shows every image's source, record, author or rights holder, licence and, for a base slide, SHA-256
 // R-1006  after every navigation the new place's heading has the focus; a place reopened from its address (filters
 //         included) shows the same results as when it was reached by clicking
@@ -164,6 +164,13 @@ try {
   // Back to the collections from the masthead's wordmark.
   await page.locator("header a[href='/']").first().click();
   await arrived(page, (url) => url.pathname === "/", "landing-again");
+
+  // The Identify place from the masthead (U13).
+  await page.locator("header").getByRole("link", { name: "Identify" }).click();
+  await arrived(page, (url) => url.pathname === "/identify", "identify");
+  steps.push("the Identify place from the masthead");
+  await page.locator("header a[href='/']").first().click();
+  await arrived(page, (url) => url.pathname === "/", "landing-after-identify");
 
   // The way to contribute: the masthead's sign-in, whose form leads to the account's places (U12).
   await page.locator("header").getByRole("link", { name: "Sign in" }).click();

@@ -2,7 +2,7 @@
 // counted, the score of the agreed node against the two-thirds it had to exceed), the identifications themselves
 // with their category, the form an identifier adds one with, the vote on whether the name can still be improved,
 // and the flags and the curators' hiding and restoring. Loaded as its own chunk on the slide place.
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { useSession } from "../account/session";
 import { ApiError } from "../api/client";
@@ -51,12 +51,14 @@ function AnchorLine({ anchor }: { anchor: AnchorRecord }) {
   );
 }
 
-export function IdentificationsPanel({ record, onHidden }: { record: SlideRecord; onHidden?: () => void }) {
+export function IdentificationsPanel({ record, onHidden, onChanged }: { record: SlideRecord;
+  onHidden?: () => void; onChanged?: () => void }) {
   const { t, date } = useI18n();
   const session = useSession();
   const toast = useToast();
   const [, navigate] = useLocation();
   const [data, setData] = useState<IdentificationList | null>(null);
+  const shown = useRef<IdentificationList | null>(null);
   const [failed, setFailed] = useState(false);
   const [dialogs, setDialogs] = useState<Dialogs>({ flag: null, reason: null });
   const [kind, setKind] = useState<Anchor["kind"]>(record.anchor.kind);
@@ -71,11 +73,19 @@ export function IdentificationsPanel({ record, onHidden }: { record: SlideRecord
 
   const load = useCallback(async () => {
     try {
-      setData(await communityApi.identifications(record.id));
+      const next = await communityApi.identifications(record.id);
+      const before = shown.current;
+      shown.current = next;
+      setData(next);
       setFailed(false);
+      // The badge or the anchor moved: the slide around this panel is read again.
+      if (before && (before.community.badge !== next.community.badge
+        || before.community.node !== next.community.node)) onChanged?.();
     } catch {
       setFailed(true);
     }
+    // The callback is the slide place's; the slide's id names what is read.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [record.id]);
 
   useEffect(() => {

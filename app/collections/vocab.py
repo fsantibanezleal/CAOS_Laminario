@@ -240,7 +240,10 @@ def search(kind: str, query: str, limit: int = 20) -> list[dict]:
                [(g[0], "group", g[1]) for g in v.mineral_groups.values()]
         items = [{"ref": n, "name": n, "rank": rank, "classification": code} for n, rank, code in rows]
     elif kind == "rock":
-        items = [{"ref": k, "name": k.replace("-", " "), "rank": None, "classification": None} for k in v.rocks]
+        # A rock's name as a name is written: its key with spaces and a capital (``alkali-feldspar-granite`` is
+        # "Alkali feldspar granite").
+        items = [{"ref": k, "name": k.replace("-", " ").capitalize(), "rank": None, "classification": None}
+                 for k in v.rocks]
     elif kind == "material":
         items = [{"ref": k, "name": t["en"], "rank": None, "classification": None} for k, t in v.materials.items()]
     elif kind == "crystal":
