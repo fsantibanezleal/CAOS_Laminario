@@ -74,6 +74,7 @@ A slide in a list: enough to draw it in a drawer.
 | `preparation` | string | yes |  |  |
 | `thumbnail_url` | string or null | no |  | null |
 | `origin` | string (enumerated) | yes | one of: `base`, `contribution` |  |
+| `label` | [SummaryLabel](#summarylabel) | no |  | `{"catalogue_number": null, "collected_on": null, "locality_text": null, "country": null}` |
 
 ### ValidationResult
 
@@ -282,6 +283,7 @@ Where the specimen was collected, after geoprivacy.
 | `cell` | [CellRecord](#cellrecord) or null | no |  | null |
 | `uncertainty_m` | number or null | no |  | null |
 | `locality_text` | string or null | no |  | null |
+| `country` | string or null | no |  | null |
 
 ### PlacementRecord
 
@@ -316,6 +318,17 @@ Where the specimen was collected, after geoprivacy.
 | `rights_holder` | string or null | no |  | null |
 | `creator` | string or null | no |  | null |
 | `source` | [SourceRecord](#sourcerecord) or null | no |  | null |
+
+### SummaryLabel
+
+What a drawer shows on a slide's label end (no coordinates, so nothing geoprivacy withholds).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `catalogue_number` | string or null | no |  | null |
+| `collected_on` | string or null | no |  | null |
+| `locality_text` | string or null | no |  | null |
+| `country` | string or null | no |  | null |
 
 ### ValidationFlag
 

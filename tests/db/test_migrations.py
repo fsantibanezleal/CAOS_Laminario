@@ -11,6 +11,7 @@ from app.db import models  # noqa: F401
 from app.db.base import Base
 from app.db.engine import make_sync_engine
 from app.db.migrate import alembic_config, upgrade_to_head
+from app.services.search import FTS_TABLES
 
 
 def test_head_matches_models(tmp_path: Path):
@@ -18,7 +19,8 @@ def test_head_matches_models(tmp_path: Path):
     upgrade_to_head(database)
     engine = make_sync_engine(database)
     inspector = inspect(engine)
-    live_tables = set(inspector.get_table_names()) - {"alembic_version"}
+    # The FTS5 index (a virtual table and its shadow tables) is created by migration 0008, not by the models.
+    live_tables = set(inspector.get_table_names()) - {"alembic_version"} - set(FTS_TABLES)
     assert live_tables == set(Base.metadata.tables)
     for name, table in Base.metadata.tables.items():
         live_cols = {c["name"]: c for c in inspector.get_columns(name)}

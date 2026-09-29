@@ -41,7 +41,8 @@ def obscure(short_id: str, lat: float, lon: float) -> tuple[c.PointRecord, c.Cel
 
 
 def place_record(slide: Slide) -> c.PlaceRecord:
-    base = {"geoprivacy": slide.geoprivacy, "locality_text": slide.locality_text}
+    # A private place keeps its locality text and country (both coarser than a point); only coordinates are withheld.
+    base = {"geoprivacy": slide.geoprivacy, "locality_text": slide.locality_text, "country": slide.country}
     if slide.lat is None or slide.lon is None or slide.geoprivacy == "private":
         return c.PlaceRecord(**base)
     if slide.geoprivacy == "obscured":
@@ -189,4 +190,10 @@ def slide_summary(slide: Slide, settings: Settings) -> c.SlideSummary:
         preparation=slide.preparation,
         thumbnail_url=thumbnail_url(first_any, settings) if first_any else None,
         origin=slide.origin,
+        label=summary_label(slide),
     )
+
+
+def summary_label(slide: Slide) -> c.SummaryLabel:
+    return c.SummaryLabel(catalogue_number=slide.catalogue_number, collected_on=slide.collected_on,
+                          locality_text=slide.locality_text, country=slide.country)

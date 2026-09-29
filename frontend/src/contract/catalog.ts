@@ -83,6 +83,7 @@ export interface PlaceRecord {
   cell?: CellRecord | null;
   uncertainty_m?: number | null;
   locality_text?: string | null;
+  country?: string | null;
 }
 export interface PointRecord {
   lat: number;
@@ -169,6 +170,16 @@ export interface SlideSummary {
   preparation: string;
   thumbnail_url?: string | null;
   origin: "base" | "contribution";
+  label?: SummaryLabel;
+}
+/**
+ * What a drawer shows on a slide's label end (no coordinates, so nothing geoprivacy withholds).
+ */
+export interface SummaryLabel {
+  catalogue_number?: string | null;
+  collected_on?: string | null;
+  locality_text?: string | null;
+  country?: string | null;
 }
 /**
  * The answer of ``POST /api/slide-cases/validate``.

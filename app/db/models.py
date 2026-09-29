@@ -66,10 +66,14 @@ class Slide(Base):
     locality_text: Mapped[str | None] = mapped_column(String(300))
     lat: Mapped[float | None] = mapped_column(Float)
     lon: Mapped[float | None] = mapped_column(Float)
+    #: ISO 3166-1 alpha-2: stated by a source, or implied by the coordinates (app/collections/places.py).
+    country: Mapped[str | None] = mapped_column(String(2), index=True)
     uncertainty_m: Mapped[float | None] = mapped_column(Float)
     geoprivacy: Mapped[str] = mapped_column(String(10), nullable=False, default="open")
 
     placement_node: Mapped[str] = mapped_column(String(120), nullable=False)
+    #: What search matches (app/services/search.py); the FTS5 table slide_search follows it by triggers.
+    search_text: Mapped[str | None] = mapped_column(Text)
     placement_override_reason: Mapped[str | None] = mapped_column(String(300))
     #: The contributor's user id (a UUID), linked to the user table when accounts arrive.
     contributor_id: Mapped[str | None] = mapped_column(String(36))

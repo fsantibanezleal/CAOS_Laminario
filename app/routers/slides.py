@@ -5,20 +5,22 @@ from __future__ import annotations
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.collections import taxa
 from app.collections.service import check_submission
+from app.collections.places import DATA as PLACES_DATA
 from app.collections.tree import load_tree
 from app.contracts import catalog as c
 from app.contracts.ingest import validate_submission
 from app.db.session import session
 from app.delivery import manifest as iiif_manifest
-from app.services import catalog, slides
+from app.services import catalog, explore, slides
 from app.services.collections import host_view_slides
 
 router = APIRouter(prefix="/api", tags=["slides"])
+COUNTRY_SHAPES = PLACES_DATA / "countries.geojson"
 
 NODE_QUERY = r"^[a-z0-9]+(?:-[a-z0-9]+)*(?:\.[a-z0-9]+(?:-[a-z0-9]+)*)*$"
 
@@ -57,26 +59,76 @@ async def read_slide(slide_id: str, request: Request,
     return catalog.slide_record(slide, request.app.state.settings)
 
 
+def explore_filters(
+    node: Annotated[str | None, Query(max_length=120, pattern=NODE_QUERY)] = None,
+    kind: Annotated[list[str] | None, Query(max_length=8)] = None,
+    preparation: Annotated[list[str] | None, Query(max_length=12)] = None,
+    modality: Annotated[list[str] | None, Query(max_length=12)] = None,
+    preservation: Annotated[list[str] | None, Query(max_length=4)] = None,
+    country: Annotated[list[str] | None, Query(max_length=40)] = None,
+    licence: Annotated[list[str] | None, Query(max_length=8)] = None,
+    wsi: bool | None = None,
+    origin: Annotated[list[str] | None, Query(max_length=2)] = None,
+    q: Annotated[str | None, Query(max_length=200)] = None,
+) -> explore.Filters:
+    """The filters of the Explore places, from the query string (a facet may repeat: ?preparation=smear&preparation=
+    section)."""
+    return explore.Filters(node=node, kind=explore.as_tuple(kind), preparation=explore.as_tuple(preparation),
+                           modality=explore.as_tuple(modality), preservation=explore.as_tuple(preservation),
+                           country=tuple(c.upper() for c in explore.as_tuple(country)),
+                           licence=explore.as_tuple(licence), wsi=wsi, origin=explore.as_tuple(origin),
+                           q=(q or "").strip() or None)
+
+
 @router.get("/slides", response_model=c.SlidePage)
 async def list_slides(
     request: Request,
     db: Annotated[AsyncSession, Depends(session)],
-    node: Annotated[str | None, Query(max_length=120, pattern=NODE_QUERY)] = None,
-    kind: Annotated[str | None, Query(pattern="^(taxon|rock|mineral|crystal|material)$")] = None,
+    filters: Annotated[explore.Filters, Depends(explore_filters)],
+    sort: Annotated[str, Query(pattern="^(newest|name|relevance)$")] = "newest",
     offset: Annotated[int, Query(ge=0)] = 0,
     limit: Annotated[int, Query(ge=1, le=200)] = 48,
 ) -> c.SlidePage:
-    """Published slides, newest first, optionally under a collection node or of one anchor kind. Under a view
-    (Parasites and hosts) they are the slides whose host lies inside the view's collection."""
-    view = load_tree().get(node) if node else None
+    """Published slides, filtered (node, anchor kind, preparation, modality, preservation, country, licence family,
+    whole-slide, origin, text) and sorted (newest, name, or relevance to the text). Under a view (Parasites and
+    hosts) they are the slides whose host lies inside the view's collection; there only the anchor kind filters."""
+    settings = request.app.state.settings
+    view = load_tree().get(filters.node) if filters.node else None
     if view is not None and view.is_view:
-        shown = [s for s in await host_view_slides(db, load_tree(), view) if not kind or s.anchor_kind == kind]
+        shown = [s for s in await host_view_slides(db, load_tree(), view)
+                 if not filters.kind or s.anchor_kind in filters.kind]
         rows, total = shown[offset:offset + limit], len(shown)
     else:
-        rows, total = await slides.list_slides(db, node=node, kind=kind, offset=offset, limit=limit)
-    settings = request.app.state.settings
+        ids, total = await explore.slide_ids(db, filters, sort, offset, limit)
+        rows = await slides.slides_by_ids(db, ids)
     return c.SlidePage(items=[catalog.slide_summary(s, settings) for s in rows],
                        total=total, offset=offset, limit=limit)
+
+
+@router.get("/explore/facets", response_model=c.FacetCounts)
+async def slide_facets(db: Annotated[AsyncSession, Depends(session)],
+                       filters: Annotated[explore.Filters, Depends(explore_filters)]) -> c.FacetCounts:
+    """How many slides each facet value would match under the current filters."""
+    return c.FacetCounts(**await explore.facet_counts(db, filters))
+
+
+@router.get("/explore/map", response_model=c.MapRecord)
+async def map_data(db: Annotated[AsyncSession, Depends(session)],
+                   filters: Annotated[explore.Filters, Depends(explore_filters)]) -> c.MapRecord:
+    """Countries with their slide counts and the points of slides with coordinates, after geoprivacy."""
+    countries, points, total = await explore.map_data(db, filters)
+    return c.MapRecord(countries=countries, total=total, points=[
+        c.MapPointRecord(id=p.id, lat=p.lat, lon=p.lon, obscured=p.obscured,
+                         cell=c.CellRecord(south=p.cell[0], west=p.cell[1], north=p.cell[2], east=p.cell[3])
+                         if p.cell else None) for p in points])
+
+
+@router.get("/explore/countries")
+async def country_shapes() -> FileResponse:
+    """The country shapes (Natural Earth 1:50m map units, public domain), for shading; they change only with a
+    release."""
+    return FileResponse(COUNTRY_SHAPES, media_type="application/geo+json",
+                        headers={"Cache-Control": "public, max-age=86400"})
 
 
 @router.get("/slides/{slide_id}/manifest")

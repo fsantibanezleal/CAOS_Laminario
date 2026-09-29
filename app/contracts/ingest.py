@@ -170,6 +170,9 @@ class SpecimenSpec(_Model):
     collector: str | None = Field(None, max_length=120, json_schema_extra=_expect("at most 120 characters"))
     locality_text: str | None = Field(None, max_length=300, json_schema_extra=_expect("at most 300 characters"))
     coordinates: Coordinates | None = None
+    #: The country, when a source states it (ISO 3166-1 alpha-2); coordinates imply it when it is not given.
+    country: str | None = Field(None, pattern=r"^[A-Z]{2}$",
+                                json_schema_extra=_expect("an ISO 3166-1 alpha-2 code in capitals, such as CL"))
     geoprivacy: Geoprivacy = Field("open", json_schema_extra=_expect(_one_of(Geoprivacy)))
     host: Anchor | None = Field(None, json_schema_extra=_expect("a taxon anchor"))
     part: str | None = Field(None, max_length=40, pattern=r"^[a-z]+(?:-[a-z]+)*$",
