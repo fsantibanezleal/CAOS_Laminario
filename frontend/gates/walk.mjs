@@ -25,6 +25,11 @@ const check = (ok, message) => { if (!ok) failures.push(message); };
 
 async function arrived(page, pattern, name) {
   await page.waitForURL(pattern, { timeout: 15_000 });
+  // After a navigation inside the page, networkidle is already reached (the document loaded long ago), so the wait
+  // returns at once: a place loaded as its own chunk (Identify, Contribute) has not mounted yet. Wait for the place's
+  // heading to take the focus, then judge it.
+  await page.waitForFunction(() => document.activeElement?.tagName === "H1", null, { timeout: 10_000 })
+    .catch(() => undefined);
   await page.waitForLoadState("networkidle");
   const focus = await page.evaluate(() => ({ tag: document.activeElement?.tagName, text: document.activeElement?.textContent }));
   check(focus.tag === "H1", `${name}: the focus is on ${focus.tag} after the navigation, not the place's heading`);
