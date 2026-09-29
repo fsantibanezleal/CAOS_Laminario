@@ -27,6 +27,7 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `placement` | [PlacementResult](#placementresult) | no |  |  |
 | `facetCounts` | [FacetCounts](#facetcounts) | no |  |  |
 | `map` | [MapRecord](#maprecord) | no |  |  |
+| `annotation` | [AnnotationRecord](#annotationrecord) | no |  |  |
 
 ### SlideRecord
 
@@ -251,6 +252,18 @@ For each facet, its values under the current filters and how many slides each wo
 | `countries` | map of integer | yes |  |  |
 | `points` | list of [MapPointRecord](#mappointrecord) | yes |  |  |
 | `total` | integer | yes |  |  |
+
+### AnnotationRecord
+
+An annotation as the stage reads it: the W3C Web Annotation, who wrote it, and whether the reader may remove it (its author, or a curator).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `asset_id` | integer | yes |  |  |
+| `author` | string | yes |  |  |
+| `removable` | boolean | no |  | `false` |
+| `annotation` | object | yes |  |  |
 
 ### FormatRecord
 

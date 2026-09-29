@@ -279,3 +279,25 @@ class Taxon(Base):
     #: The keys of the accepted taxon's ancestors, kingdom first, as a JSON list.
     lineage_json: Mapped[str] = mapped_column(Text, nullable=False)
     fetched_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+
+
+class Annotation(Base):
+    """A W3C Web Annotation on one asset of a slide (U11): a region of the image and what a person wrote about it.
+
+    ``body_json`` and ``selector_json`` hold the parts the author gave, validated (``app/contracts/annotations.py``);
+    the annotation's id, target source, creator and dates are the server's, set when it is read.
+    """
+
+    __tablename__ = "annotation"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    public_id: Mapped[str] = mapped_column(String(24), unique=True, nullable=False)
+    slide_id: Mapped[int] = mapped_column(ForeignKey("slide.id", ondelete="CASCADE"), nullable=False)
+    asset_id: Mapped[int] = mapped_column(ForeignKey("asset.id", ondelete="CASCADE"), nullable=False)
+    author_id: Mapped[object] = mapped_column(GUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    body_json: Mapped[str] = mapped_column(Text, nullable=False)
+    selector_json: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+
+    __table_args__ = (Index(None, "asset_id"),)

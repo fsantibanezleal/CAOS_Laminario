@@ -18,6 +18,7 @@ export interface LaminarioCatalog {
   placement?: PlacementResult;
   facetCounts?: FacetCounts;
   map?: MapRecord;
+  annotation?: AnnotationRecord;
 }
 export interface SlideRecord {
   id: string;
@@ -423,4 +424,17 @@ export interface MapPointRecord {
   lon: number;
   obscured?: boolean;
   cell?: CellRecord | null;
+}
+/**
+ * An annotation as the stage reads it: the W3C Web Annotation, who wrote it, and whether the reader may remove
+ * it (its author, or a curator).
+ */
+export interface AnnotationRecord {
+  id: string;
+  asset_id: number;
+  author: string;
+  removable?: boolean;
+  annotation: {
+    [k: string]: unknown;
+  };
 }

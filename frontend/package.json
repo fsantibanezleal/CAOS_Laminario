@@ -21,11 +21,16 @@
     "gate:fit": "node gates/fit.mjs",
     "gate:motion": "node gates/motion.mjs",
     "gate:states": "node gates/states.mjs",
-    "gate:walk": "node gates/walk.mjs"
+    "gate:walk": "node gates/walk.mjs",
+    "gate:qr": "node gates/qr.mjs",
+    "gate:scalebar": "node gates/scalebar.mjs",
+    "gate:stage": "node gates/stage.mjs"
   },
   "dependencies": {
+    "@annotorious/openseadragon": "3.9.3",
     "@protomaps/basemaps": "5.7.2",
     "maplibre-gl": "6.11.2",
+    "openseadragon": "6.1.1",
     "pmtiles": "4.5.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -37,7 +42,9 @@
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.1",
     "json-schema-to-typescript": "16.0.0",
+    "jsqr": "1.4.0",
     "playwright": "^1.63.0",
+    "pngjs": "7.0.0",
     "typescript": "5.9.3",
     "vite": "8.3.1",
     "vitest": "5.0.2"

@@ -45,6 +45,7 @@ CATALOG_ROOTS = {
     "placement": c.PlacementResult,
     "facetCounts": c.FacetCounts,
     "map": c.MapRecord,
+    "annotation": c.AnnotationRecord,
 }
 
 
