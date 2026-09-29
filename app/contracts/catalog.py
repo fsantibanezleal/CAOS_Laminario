@@ -158,6 +158,9 @@ class AssetRecord(_Record):
     rights_holder: str | None = None
     creator: str | None = None
     source: SourceRecord | None = None
+    #: The SHA-256 of the file the image was made from: the source's for the base collection, the verified
+    #: upload's for a contribution, so anyone holding the file can check it is the one shown.
+    original_sha256: str | None = None
 
 
 class SlideRecord(_Record):

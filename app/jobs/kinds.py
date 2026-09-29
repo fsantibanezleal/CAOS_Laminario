@@ -136,9 +136,10 @@ def process_asset(ctx: Context, payload: dict) -> dict:
     with ctx.engine.begin() as conn:
         conn.execute(text("UPDATE asset SET storage_key = :key, width_px = :w, height_px = :h, bytes = :bytes, "
                           "sha256 = :sha, psnr_db = :psnr, codec = :codec, status = 'ready', "
-                          "pixel_size_um = COALESCE(pixel_size_um, :mpp) WHERE id = :id"),
+                          "pixel_size_um = COALESCE(pixel_size_um, :mpp), "
+                          "source_sha256 = COALESCE(source_sha256, :source_sha) WHERE id = :id"),
                      {"key": key, "w": image.width, "h": image.height, "bytes": size, "sha": sha, "psnr": psnr,
-                      "codec": f"{codec}-q{quality}", "mpp": mpp, "id": asset.id})
+                      "codec": f"{codec}-q{quality}", "mpp": mpp, "source_sha": source_sha, "id": asset.id})
     ctx.progress(step="stored", key=key, bytes=size, psnr_db=psnr)
     if asset.role == "z_plane" and asset.stack:
         fusion = queue_fusion_when_complete(ctx.engine, asset.slide_id, asset.stack, ctx.settings.fuse_timeout_s)

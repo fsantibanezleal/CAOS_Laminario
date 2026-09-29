@@ -399,6 +399,7 @@ Where the specimen was collected, after geoprivacy.
 | `rights_holder` | string or null | no |  | null |
 | `creator` | string or null | no |  | null |
 | `source` | [SourceRecord](#sourcerecord) or null | no |  | null |
+| `original_sha256` | string or null | no |  | null |
 
 ### SummaryLabel
 

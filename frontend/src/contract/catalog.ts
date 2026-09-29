@@ -130,6 +130,7 @@ export interface AssetRecord {
   rights_holder?: string | null;
   creator?: string | null;
   source?: SourceRecord | null;
+  original_sha256?: string | null;
 }
 export interface MediaRecord {
   kind: "pyramid" | "image" | "remote_iiif";

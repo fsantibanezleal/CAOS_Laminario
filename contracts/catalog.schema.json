@@ -361,6 +361,17 @@
             }
           ],
           "default": null
+        },
+        "original_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "required": [
