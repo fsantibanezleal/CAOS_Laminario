@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-labelledby="title desc">
   <title id="title">Laminario deployment</title>
-  <desc id="desc">One Hetzner host, hetzner-ml-fasl-work, serves laminario.ml.fasl-work.com. nginx terminates TLS, serves the web build, caches tiles after an access check and passes uploads and API requests on loopback. The API and the worker run as systemd services of the laminario account; tusd and iipsrv run from their pinned images. The data root is a 100 GB volume at /srv/laminario with the database, the store, the originals, the quarantine, the caches and the basemap. The base collection is baked on a workstation, refreshed for record-only changes, copied to the volume and imported after every file is checked against the manifest. install.sh installs or updates; register-services.sh, a person's step, registers the services. The browser gates and the production gate run against the live site.</desc>
+  <desc id="desc">One Hetzner host, hetzner-ml-fasl-work, serves laminario.ml.fasl-work.com. nginx terminates TLS, serves the web build, caches tiles after an access check and passes uploads and API requests on loopback. The API and the worker run as systemd services of the laminario account; tusd and iipsrv run from their pinned images. The data root is a 100 GB volume at /srv/laminario with the database, the store, the originals, the quarantine, the caches and the basemap. The base collection is baked on a workstation, refreshed for record-only changes, copied to the volume and imported after every file is checked against the manifest. install.sh installs or updates; register-services.sh registers the services, once. The browser gates and the production gate run against the live site.</desc>
   <style>
     :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
             --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --bad: #b3261e; }
@@ -76,10 +76,10 @@
   <text class="s" x="48" y="492">registered services. Idempotent.</text>
   <rect class="box" x="332" y="402" width="288" height="126" rx="8"/>
   <text class="t" x="348" y="424">deploy/register-services.sh</text>
-  <text class="s" x="348" y="444">once, by a person: the two units and</text>
-  <text class="s" x="348" y="460">the two containers registered and</text>
-  <text class="s" x="348" y="476">started. Automated runs never register</text>
-  <text class="s" x="348" y="492">services that outlive a session.</text>
+  <text class="s" x="348" y="444">once: the two units and the two</text>
+  <text class="s" x="348" y="460">containers registered, started and</text>
+  <text class="s" x="348" y="476">checked. Later updates are the install</text>
+  <text class="s" x="348" y="492">alone, which restarts them.</text>
 
   <!-- the workstation and the gates -->
   <rect class="lane" x="652" y="16" width="292" height="300" rx="10"/>

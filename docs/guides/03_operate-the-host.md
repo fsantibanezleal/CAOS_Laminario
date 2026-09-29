@@ -37,8 +37,8 @@ deployment itself ([18](../architecture/18_deployment.md)).
    `laminario` account and the folders, puts the code at the tag with its environment and web build, migrates the
    database, obtains the certificate and installs the nginx site.
 3. As root, once: `bash /opt/fasl-apps/CAOS_Laminario/deploy/register-services.sh`. It registers and starts the API
-   and the worker, and starts tusd and iipsrv. This step is a person's: services that outlive a session are not
-   registered by automated runs.
+   and the worker, and starts tusd and iipsrv (restarted by Docker unless stopped), and checks that each answers.
+   Later updates need only the install, which restarts the registered services.
 4. The basemap: copy the verified extract (`scripts/fetch_basemap.py` makes it) to `/srv/laminario/basemap/`.
 5. The base collection: copy the bake root to `/srv/laminario/bake/` and import it as the service account:
 

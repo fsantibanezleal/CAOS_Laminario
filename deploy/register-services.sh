@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Register and start Laminario's long-running services on the production host (U16). A person's step: the management
-# rules keep the registration of services that outlive a session out of automated runs. Run once, as root, after
+# Register and start Laminario's long-running services on the production host (U16), once: the install runs on every
+# update, the registration only the first time (it was run on 2026-09-29). As root, after
 # deploy/install.sh:
 #
 #   bash /opt/fasl-apps/CAOS_Laminario/deploy/register-services.sh

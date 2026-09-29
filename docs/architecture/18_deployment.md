@@ -50,8 +50,8 @@ set their caching with `expires` rather than their own `add_header`.
 `requirements-api.txt`, the web build, the database migrations run as the service account with the service's
 settings, the certificate (certbot's nginx authenticator, which leaves the site file alone; the package's timer renews
 it), the site, and a restart of the services if they are registered. `deploy/register-services.sh` registers and
-starts the two units and the two containers, once; it is a person's step, since services that outlive a session are
-not registered by automated runs. The settings are `/etc/fasl-laminario.env` (root:laminario, 0640), whose secret key
+starts the two units and the two containers, once (done on 2026-09-29); every later update is the install alone,
+which restarts them on the new code. The settings are `/etc/fasl-laminario.env` (root:laminario, 0640), whose secret key
 is kept in the management repository's vault.
 
 ## 4. The base collection on the host

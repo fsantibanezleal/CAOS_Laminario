@@ -18,10 +18,9 @@ are the guide [Operate the host](../../guides/03_operate-the-host.md).
 - **The host is the ml box** (`hetzner-ml-fasl-work`, 4 vCPU, 8 GB) at `laminario.ml.fasl-work.com`, which the `*.ml`
   wildcard already resolves; the data root is the 100 GB volume at `/srv/laminario`, decided at planning. The ports
   8147 to 8149 were free on the live check of 2026-09-29.
-- **Install and registration are two scripts.** The install is idempotent and can run on every update; it never
-  registers a long-running service. Registering the API, the worker and the two containers is a person's step, once
-  (`deploy/register-services.sh`), because the management rules keep services that outlive a session out of
-  automated runs.
+- **Install and registration are two scripts.** The install is idempotent and runs on every update; it never
+  registers a long-running service. Registering the API, the worker and the two containers happens once
+  (`deploy/register-services.sh`, run on 2026-09-29); after it, the install restarts them on the new code.
 - **One process per role, as in development.** One uvicorn process for the API (the tests run one; SQLite in WAL mode
   serves its readers), the worker at nice 10 so imaging yields to requests, both with `ProtectSystem=strict` and the
   data root as their only writable path.

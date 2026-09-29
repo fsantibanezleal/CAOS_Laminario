@@ -6,7 +6,7 @@
 # Every step is idempotent. It creates the laminario account and the folders of the data root on the volume, puts the
 # code at REF in /opt/fasl-apps/CAOS_Laminario with its virtual environment and web build, migrates the database, and
 # installs the nginx site once the certificate exists. It does not register the long-running services: that is
-# deploy/register-services.sh, a person's step. When the services are registered, it restarts them on the new code.
+# deploy/register-services.sh, run once. When the services are registered, it restarts them on the new code.
 #
 # Needs /etc/fasl-laminario.env (deploy/fasl-laminario.env.example lists its settings; the values are in the vault).
 set -euo pipefail
