@@ -101,12 +101,13 @@ def asset_record(asset: Asset, settings: Settings) -> c.AssetRecord:
     )
 
 
-def quality_record(slide: Slide) -> c.QualityRecord:
-    """Checks computed from what is stored. ``verified`` needs community agreement and is set elsewhere."""
-    assets = list(slide.assets)
+def quality_checks(origin: str, assets) -> list[c.QualityCheckRecord]:
+    """The slide checks (M9), each computed from what is stored: ``assets`` are the slide's asset rows (or anything
+    with their ``family``, ``licence_uri``, ``source_url``, ``pixel_size_um`` and ``modality``)."""
+    assets = list(assets)
     micro = [a for a in assets if a.family == "micro"]
     macro = [a for a in assets if a.family == "macro"]
-    unsourced = [a for a in assets if not a.licence_uri or (slide.origin == "base" and not a.source_url)]
+    unsourced = [a for a in assets if not a.licence_uri or (origin == "base" and not a.source_url)]
     unscaled = [a for a in micro if a.pixel_size_um is None]
     no_modality = [a for a in micro if not a.modality]
     checks = [
@@ -124,8 +125,20 @@ def quality_record(slide: Slide) -> c.QualityRecord:
         c.QualityCheckRecord(code="macro_and_micro", passed=bool(macro) and bool(micro),
                              detail=f"{len(macro)} macro and {len(micro)} micro asset(s)"),
     ]
-    badge = "needs_id" if all(ch.passed for ch in checks) else "reference"
-    return c.QualityRecord(badge=badge, checks=checks)
+    return checks
+
+
+def quality_record(slide: Slide) -> c.QualityRecord:
+    """The checks, and the badge the community keeps on the slide (U13); a slide it has not reached yet is judged by
+    its checks alone."""
+    checks = quality_checks(slide.origin, slide.assets)
+    passed = all(ch.passed for ch in checks)
+    badge = slide.badge if slide.badge in ("verified", "needs_id", "reference") else (
+        "needs_id" if passed else "reference")
+    if not passed:
+        badge = "reference"
+    return c.QualityRecord(badge=badge, checks=checks, community_node=slide.community_node,
+                           community_rank=slide.community_rank)
 
 
 def permalink(slide: Slide, settings: Settings) -> str:
