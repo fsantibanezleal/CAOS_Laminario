@@ -3,6 +3,91 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.14.000] - 2026-09-29
+
+### Added
+
+- A public handle for every account, made from its display name (accents removed, lower case, hyphens, a number
+  when taken); migration 0012 gives one to the accounts made before. A profile, a slide's contributor and each
+  identification name an account by handle and display name, never by email.
+- The profile (`GET /api/people/{handle}`): role, when the account joined and was last active, its published and
+  verified slides by collection, its identifications of others' slides by category, its annotations; nothing hidden
+  counts.
+- The cabinet (`/people/<handle>`): a drawer per collection with the account's published slides, and its
+  identifications with the anchor given, the category and whether the community agrees now; "My cabinet" in the
+  account menu, the contributor on the slide place and the identifier on each identification linked to theirs.
+- One's own export (`GET /api/people/me/slides.csv`): every slide of the account, in any status, with the exact place
+  of an obscured or private one; only its owner reads it.
+- Label stocks as data (`app/labels/stocks.yaml`, `GET /api/labels/stocks`): plain paper on A4 (72) and US Letter
+  (77), Diversified Biotech MISL-1000 (96), LabTAG CLA-4WH (78) and the 66-up 25.4 mm A4 layout of HERMA 8831 and
+  10107 and LabTAG A4CL-112, each with its source and warnings, named in EN and ES.
+- Label sheets (`GET /api/labels/sheet.pdf`): up to 500 published slides' labels at 1:1 on a stock, from a chosen
+  start position, moved by a printer offset, the label fitted to each cell with its QR at the foot or on the right
+  (14 mm down to 11 mm, the quiet zone clear of text); the stock's test page to hold against a sheet.
+- The print dialog: the stock with its measurements and warnings, the start position on a map of the sheet, the
+  printer offset in 0.1 mm steps kept on the device per stock, the test page.
+- Print, download and labels glyphs; 64 strings in EN and ES; `frontend/gates/cabinet.mjs`; wiki page 16.
+
+### Fixed
+
+- `GET /api/explore/facets` answered 500 under any modality or licence filter (the assets subquery was correlated to
+  the facet's own join); a drawer reopened from a filtered address lost its counts.
+- A tray slide and the slide record no longer repeat the country when the locality already ends with its name, in
+  either language ("Siilinjärvi apatite mine, Finland", not "..., Finland, Finlandia").
+
+## [0.13.000] - 2026-09-29
+
+### Added
+
+- Identifications on published slides by identifiers and above: one current identification per account,
+  withdrawn and restored, with a comment; naming an ancestor of the slide's anchor asks whether it disagrees.
+- The agreement rule (M8, R-088): iNaturalist's community taxon, read from its source, on lineages of node ids, so
+  it applies to taxa, minerals, rocks, crystals and materials alike; the categories leading, improving, supporting
+  and maverick.
+- The slide follows the community anchor it can name, and the tree places it again, keeping a drawer that still
+  accepts it and a curator's override; the first identification of every published slide (the contributor's, or
+  the source's for a base slide) and `python -m app.community backfill`.
+- The badge from the slide checks and the community (verified, needs ID, reference), with the vote on whether the
+  name can still be improved, cleared when the community anchor changes.
+- Flags from any signed-in account, the curators' queue and resolution; hiding and restoring slides,
+  identifications and annotations with a reason, restored only by the curator who hid or an admin, every action
+  kept.
+- The Identify place (the queue by collection, kind and badge, oldest first), the identifications on the slide
+  place, the moderation place; the Identify way in the masthead; 124 strings in EN and ES.
+- Migration 0011; the contract's IdentificationList, FlagRecord and ModerationActionRecord.
+- `frontend/gates/identify.mjs` and the shared gate sandbox `frontend/gates/lib/sandbox.mjs`; wiki page 15.
+
+### Changed
+
+- Rock suggestions carry a written name ("Carbonatite", not the key).
+- The base import never takes the community's or the curators' columns from a bake, and keeps a curator's hiding.
+
+### Fixed
+
+- The slide place reads its record again when an identification moves the badge or the anchor.
+
+## [0.12.000] - 2026-09-29
+
+### Added
+
+- The account places: sign in, join from an invitation link, ask for and complete a password reset; the masthead
+  names the account and offers Contribute to those who may.
+- The contribute places: a contributor's cases, and the case editor in six sections with the slide drawn to scale;
+  the anchor combobox, the parts vocabulary (`GET /api/vocab/parts`), the point map, geoprivacy, the drawer the
+  tree suggests, the calibration of a pixel size on a stage micrometer.
+- A code and parameters on every validation error and flag, worded in EN and ES by the interface.
+- The case lifecycle: draft, processing, published, back to draft with the reason; a contributor's drafts
+  listed, reopened, changed and deleted (migration 0010).
+- A photograph's position read and shown before upload, removed with its XMP in the browser for a private case
+  (JPEG, PNG, WebP, TIFF), and refused by the server if it stays.
+- Uploads with Uppy over tus; verification and processing followed by their events; each image keeps its
+  original's SHA-256, shown on its slide.
+- `frontend/gates/contribute.mjs`, end to end on CMU-1 and a real photograph with GPS; wiki page 14.
+
+### Fixed
+
+- The `/files` proxy keeps the page's host, so tusd's upload addresses are the page's own (F-044).
+
 ## [0.11.000] - 2026-09-29
 
 ### Added
