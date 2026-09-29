@@ -68,8 +68,8 @@ def render() -> str:
         "[09 The collection tree](../architecture/09_collections.md).",
         "",
         f"{c['realm']} realms, {c['collection']} collections, {c['sub-collection and group']} sub-collections and "
-        f"groups (the ten vertebrate organ systems counted once), {sum(1 for _ in tree.walk())} nodes in all. Taxa link "
-        "to their GBIF backbone page.",
+        f"groups (the ten vertebrate organ systems counted once), {sum(1 for _ in tree.walk())} nodes in all. "
+        "Taxa link to their GBIF backbone page.",
         "",
     ]
     for realm in tree.roots:
