@@ -1,0 +1,104 @@
+.placeholder {
+  display: inline-block;
+  width: 7rem;
+  height: 40px;
+}
+
+.signIn,
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 40px;
+  padding: 0 var(--s-4);
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-control);
+  background: transparent;
+  color: var(--c-ink);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--t-quick) var(--ease-out);
+}
+
+.signIn:hover,
+.trigger:hover,
+.trigger[aria-expanded="true"] {
+  background: var(--c-sunken);
+}
+
+.name {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account {
+  position: relative;
+}
+
+.panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + var(--s-2));
+  right: 0;
+  min-width: 16rem;
+  padding: var(--s-3);
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+  box-shadow: var(--float);
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.who {
+  display: grid;
+  gap: var(--s-1);
+  margin: 0 0 var(--s-3);
+  padding: 0 var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--c-rule);
+  font-size: var(--fs-2);
+  overflow-wrap: anywhere;
+}
+
+.role {
+  color: var(--c-ink-muted);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  min-height: 40px;
+  padding: 0 var(--s-2);
+  border: 0;
+  border-radius: var(--r-control);
+  background: transparent;
+  color: var(--c-ink);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: var(--c-sunken);
+}
+
+@media (max-width: 480px) {
+  .name {
+    max-width: 8rem;
+  }
+}

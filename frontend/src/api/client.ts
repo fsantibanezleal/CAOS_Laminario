@@ -7,6 +7,7 @@ import type {
   FacetCounts,
   FacetRecord,
   MapRecord,
+  PartRecord,
   SlidePage,
   SlideRecord,
 } from "../contract/catalog";
@@ -107,6 +108,7 @@ export const api = {
   addAnnotation: (slide: string, asset: number, annotation: unknown) =>
     send<AnnotationRecord>("POST", `${slidePath(slide)}/assets/${asset}/annotations`, annotation),
   removeAnnotation: (id: string) => send<null>("DELETE", `/api/annotations/${encodeURIComponent(id)}`),
+  parts: (signal?: AbortSignal) => getJson<PartRecord[]>("/api/vocab/parts", signal),
   /** The signed-in account, or null for a visitor. */
   me: (signal?: AbortSignal) => getJson<AccountRecord | null>("/api/session", signal),
 };

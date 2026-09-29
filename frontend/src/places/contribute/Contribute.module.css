@@ -1,0 +1,1537 @@
+/* The contribute places: the list of a contributor's cases, and the case editor, a bench with the slide drawn at
+   its side and the form on a sheet of paper, section by section. */
+
+/* --- shared ------------------------------------------------------------------------------------------------ */
+
+.lead,
+.stepLead {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--c-ink-muted);
+}
+
+.field {
+  position: relative;
+  display: grid;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.fieldLabel {
+  padding: 0;
+  font-weight: 600;
+  font-size: var(--fs-2);
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--c-ink-muted);
+}
+
+.fieldHint {
+  margin: 0;
+  font-size: var(--fs-2);
+  color: var(--c-ink-muted);
+}
+
+.fieldError {
+  display: flex;
+  gap: var(--s-2);
+  align-items: flex-start;
+  margin: 0;
+  font-size: var(--fs-2);
+  font-weight: 600;
+  color: var(--c-bad);
+}
+
+.fieldError svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.flagText {
+  margin: 0;
+  padding-left: var(--s-3);
+  border-left: 3px solid var(--c-warn);
+  font-size: var(--fs-2);
+  color: var(--c-ink);
+}
+
+.select {
+  width: 100%;
+  min-height: 40px;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+  color: var(--c-ink);
+  font: inherit;
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.select[aria-invalid="true"] {
+  border: 2px solid var(--c-bad);
+}
+
+.grid2,
+.grid3,
+.grid4 {
+  display: grid;
+  gap: var(--s-4) var(--s-5);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 640px) {
+  .grid2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .grid4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 var(--s-3);
+  border: 1px solid var(--c-edge);
+  border-radius: 999px;
+  font-family: var(--f-reading);
+  font-size: var(--fs-1);
+  font-weight: 600;
+  font-style: normal;
+  color: var(--c-ink-muted);
+  white-space: nowrap;
+}
+
+.badge[data-status="draft"] {
+  border-color: var(--c-warn);
+  color: var(--c-ink);
+}
+
+.badge[data-status="processing"] {
+  border-color: var(--c-focus);
+  color: var(--c-ink);
+}
+
+.badge[data-status="published"] {
+  border-color: var(--c-good);
+  color: var(--c-good);
+}
+
+.notice,
+.problem,
+.okLine {
+  display: flex;
+  gap: var(--s-3);
+  align-items: flex-start;
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+  border-left: 3px solid var(--c-focus);
+}
+
+.problem {
+  border-left-color: var(--c-bad);
+}
+
+.okLine {
+  border-left-color: var(--c-good);
+}
+
+.okLine svg {
+  color: var(--c-good);
+}
+
+.notice svg {
+  flex: none;
+  color: var(--c-focus);
+  margin-top: 2px;
+}
+
+.okText {
+  color: var(--c-good);
+  font-weight: 600;
+}
+
+.warnText {
+  color: var(--c-ink);
+  font-weight: 600;
+  text-decoration: underline wavy var(--c-warn);
+  text-underline-offset: 3px;
+}
+
+.linkButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-accent);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.linkButton:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.primaryLink,
+.quietLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 40px;
+  padding: 0 var(--s-5);
+  border-radius: var(--r-control);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.primaryLink {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+.primaryLink:hover {
+  background: color-mix(in oklab, var(--c-accent) 88%, var(--c-ink));
+}
+
+.quietLink {
+  padding: 0 var(--s-3);
+  color: var(--c-ink);
+}
+
+.quietLink:hover {
+  background: var(--c-sunken);
+}
+
+.unstyled {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.checkLine {
+  display: flex;
+  gap: var(--s-3);
+  align-items: center;
+  min-height: 40px;
+  font-weight: 600;
+}
+
+.checkLine input,
+.inlineChoice input,
+.drawerOption input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--c-accent);
+}
+
+/* --- the list of cases ------------------------------------------------------------------------------------- */
+
+.listHead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--s-6);
+}
+
+.cases {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.caseRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-3) var(--s-4);
+  align-items: start;
+  padding: var(--s-4) var(--s-5);
+  border: 1px solid var(--c-rule);
+  border-left: 4px solid var(--c-edge);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+}
+
+.caseRow[data-status="draft"] {
+  border-left-color: var(--c-warn);
+}
+
+.caseRow[data-status="processing"] {
+  border-left-color: var(--c-focus);
+}
+
+.caseRow[data-status="published"] {
+  border-left-color: var(--c-good);
+}
+
+.statusMark {
+  color: var(--c-ink-muted);
+  padding-top: 2px;
+}
+
+.caseText {
+  display: grid;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.caseName {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+  align-items: baseline;
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--fs-4);
+}
+
+.caseName a {
+  color: var(--c-ink);
+}
+
+.caseId {
+  font-family: var(--f-label);
+  font-size: var(--fs-2);
+  color: var(--c-ink-muted);
+}
+
+.caseMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  align-items: center;
+  margin: 0;
+  font-size: var(--fs-2);
+  color: var(--c-ink-muted);
+}
+
+.reason {
+  display: flex;
+  gap: var(--s-2);
+  align-items: flex-start;
+  margin: 0;
+  font-size: var(--fs-2);
+  color: var(--c-bad);
+}
+
+.caseActions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+@media (min-width: 768px) {
+  .caseRow {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .caseActions {
+    grid-column: auto;
+    justify-content: flex-end;
+  }
+}
+
+/* --- dialogs ----------------------------------------------------------------------------------------------- */
+
+.dialog {
+  width: min(32rem, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  box-shadow: var(--float);
+}
+
+.dialog::backdrop {
+  background: color-mix(in oklab, var(--c-ink) 45%, transparent);
+}
+
+.dialogBody {
+  display: grid;
+  gap: var(--s-4);
+  padding: var(--s-6);
+}
+
+.dialogBody h2 {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--fs-5);
+}
+
+.dialogHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.dialogActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--s-3);
+}
+
+/* --- the editor: a bench, the slide at its side, the sheet ------------------------------------------------- */
+
+.editorHeading {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  align-items: center;
+}
+
+.editor {
+  display: grid;
+  gap: var(--s-6);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1024px) {
+  .editor {
+    grid-template-columns: 300px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .side {
+    position: sticky;
+    top: var(--s-5);
+  }
+}
+
+.side {
+  display: grid;
+  gap: var(--s-5);
+  min-width: 0;
+}
+
+.rail ol {
+  display: flex;
+  gap: var(--s-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+@media (min-width: 1024px) {
+  .rail ol {
+    flex-direction: column;
+    overflow: visible;
+  }
+}
+
+.railStep {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--s-3);
+  border: 1px solid transparent;
+  border-radius: var(--r-control);
+  background: transparent;
+  color: var(--c-ink-muted);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.railStep:hover {
+  background: var(--c-sunken);
+  color: var(--c-ink);
+}
+
+.railStep[aria-current="step"] {
+  border-color: var(--c-edge);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  box-shadow: inset 3px 0 0 var(--c-accent);
+}
+
+.railNumber {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: var(--fs-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.railStep[data-state="done"] .railNumber {
+  border-color: var(--c-good);
+  color: var(--c-good);
+}
+
+.railStep[data-state="errors"] .railNumber {
+  border-color: var(--c-bad);
+  color: var(--c-bad);
+}
+
+.railName {
+  flex: 1;
+}
+
+.railCount {
+  font-size: var(--fs-1);
+  color: var(--c-bad);
+}
+
+.railOk {
+  color: var(--c-good);
+}
+
+.sheet {
+  display: grid;
+  gap: var(--s-5);
+  min-width: 0;
+  padding: var(--s-6);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+  box-shadow: var(--lift);
+  scroll-margin-top: var(--s-5);
+}
+
+@media (max-width: 640px) {
+  .sheet {
+    padding: var(--s-5) var(--s-4);
+  }
+}
+
+.stepTitle {
+  display: flex;
+  gap: var(--s-3);
+  align-items: center;
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--fs-6);
+  font-weight: 600;
+}
+
+.stepTitle:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 4px;
+}
+
+.stepNumber {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font-family: var(--f-reading);
+  font-size: var(--fs-3);
+}
+
+.sectionBody {
+  display: grid;
+  gap: var(--s-5);
+  min-width: 0;
+}
+
+.stepNav {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--c-rule);
+}
+
+.back svg {
+  transform: rotate(180deg);
+}
+
+.subTitle {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--fs-5);
+}
+
+/* --- the slide drawn at the side ---------------------------------------------------------------------------- */
+
+.preview {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: var(--s-4);
+  border-radius: var(--r-panel);
+  background: var(--c-wood);
+  box-shadow: var(--lift);
+}
+
+.previewSvg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.25));
+}
+
+.glass {
+  fill: color-mix(in oklab, var(--c-surface) 55%, transparent);
+  stroke: color-mix(in oklab, var(--c-edge) 70%, transparent);
+  stroke-width: 0.25;
+}
+
+.frost {
+  fill: color-mix(in oklab, var(--c-surface) 80%, var(--c-rule));
+}
+
+.labelPaper {
+  fill: var(--c-paper);
+  stroke: var(--c-paper-muted);
+  stroke-width: 0.12;
+}
+
+.labelName {
+  font-family: var(--f-label);
+  font-size: 2.1px;
+  font-weight: 700;
+  fill: var(--c-paper-ink);
+}
+
+.labelLine {
+  font-family: var(--f-label);
+  font-size: 1.8px;
+  fill: var(--c-paper-type);
+}
+
+.qrPlace {
+  fill: none;
+  stroke: var(--c-paper-muted);
+  stroke-width: 0.2;
+  stroke-dasharray: 0.6 0.4;
+}
+
+.coverslip {
+  fill: color-mix(in oklab, var(--c-surface) 25%, transparent);
+  stroke: var(--c-edge);
+  stroke-width: 0.18;
+}
+
+.coverslip[data-fits="no"] {
+  stroke: var(--c-bad);
+  stroke-width: 0.4;
+  stroke-dasharray: 1 0.6;
+}
+
+.specimenMark {
+  fill: color-mix(in oklab, var(--c-accent) 35%, transparent);
+}
+
+.previewCaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-3);
+  font-size: var(--fs-1);
+  color: var(--c-ink);
+}
+
+.previewWarn {
+  font-weight: 600;
+}
+
+/* --- choice cards (kind, format, preparation) ---------------------------------------------------------------- */
+
+.choiceCards {
+  display: grid;
+  gap: var(--s-3);
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.choiceCards > legend {
+  margin-bottom: var(--s-3);
+}
+
+.choiceCards[data-kind="format"] {
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.choiceCard {
+  position: relative;
+  display: grid;
+  gap: var(--s-2);
+  justify-items: center;
+  align-content: start;
+  min-height: 96px;
+  padding: var(--s-4) var(--s-3);
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--t-quick) var(--ease-out), background-color var(--t-quick) var(--ease-out);
+}
+
+.choiceCard input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.choiceCard:hover {
+  background: var(--c-sunken);
+}
+
+.choiceCard[data-checked] {
+  border: 2px solid var(--c-accent);
+  background: color-mix(in oklab, var(--c-accent) 8%, var(--c-surface));
+}
+
+.choiceCard:has(input:focus-visible) {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.choiceCard svg {
+  color: var(--c-accent);
+}
+
+.choiceNote {
+  font-size: var(--fs-1);
+  font-weight: 400;
+  color: var(--c-ink-muted);
+}
+
+.formatDrawing {
+  color: var(--c-ink);
+}
+
+.formatGlass {
+  fill: color-mix(in oklab, var(--c-surface) 60%, var(--c-sunken));
+  stroke: var(--c-edge);
+  stroke-width: 1;
+}
+
+.formatCustom {
+  fill: none;
+  stroke: var(--c-edge);
+  stroke-width: 1;
+  stroke-dasharray: 3 2;
+}
+
+.formatFrost {
+  fill: var(--c-paper);
+  stroke: var(--c-paper-muted);
+  stroke-width: 0.6;
+}
+
+.inlineChoice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.inlineChoice > legend {
+  width: 100%;
+  margin-bottom: var(--s-2);
+}
+
+.inlineChoice label {
+  display: inline-flex;
+  gap: var(--s-2);
+  align-items: center;
+  min-height: 40px;
+}
+
+/* --- the anchor combobox ------------------------------------------------------------------------------------ */
+
+.comboWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.comboGlyph {
+  position: absolute;
+  left: 10px;
+  color: var(--c-ink-muted);
+  pointer-events: none;
+}
+
+.comboInput {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--s-3) var(--s-4) var(--s-3) 40px;
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+  color: var(--c-ink);
+  font: inherit;
+  font-size: var(--fs-4);
+}
+
+.comboInput::placeholder {
+  color: var(--c-ink-muted);
+  font-style: italic;
+  opacity: 1;
+}
+
+.comboInput:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+  background: var(--c-surface);
+}
+
+.field[data-invalid] .comboInput {
+  border: 2px solid var(--c-bad);
+}
+
+.options {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% - var(--s-5));
+  left: 0;
+  right: 0;
+  max-height: 22rem;
+  margin: 0;
+  padding: var(--s-2);
+  overflow-y: auto;
+  list-style: none;
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-panel);
+  background: var(--c-surface);
+  box-shadow: var(--float);
+}
+
+.options[hidden] {
+  display: none;
+}
+
+.option {
+  display: grid;
+  gap: 2px;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-control);
+  cursor: pointer;
+}
+
+.option[aria-selected="true"] {
+  background: var(--c-sunken);
+  box-shadow: inset 3px 0 0 var(--c-accent);
+}
+
+.optionName {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: baseline;
+  font-size: var(--fs-3);
+}
+
+.optionContext {
+  font-size: var(--fs-1);
+  color: var(--c-ink-muted);
+}
+
+.rank {
+  font-size: var(--fs-1);
+  font-style: normal;
+  color: var(--c-ink-muted);
+}
+
+.comboStatus {
+  min-height: 1em;
+  margin: 0;
+  font-size: var(--fs-1);
+  color: var(--c-ink-muted);
+}
+
+.chosen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--c-edge);
+  border-left: 4px solid var(--c-accent);
+  border-radius: var(--r-control);
+  background: var(--c-paper);
+  color: var(--c-paper-ink);
+}
+
+.chosenName {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: baseline;
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--fs-5);
+}
+
+.chosen .rank,
+.chosenRef {
+  color: var(--c-paper-type);
+}
+
+.chosenRef {
+  margin: 0;
+  font-family: var(--f-label);
+  font-size: var(--fs-2);
+}
+
+/* --- images ------------------------------------------------------------------------------------------------ */
+
+.dropZone {
+  display: grid;
+  gap: var(--s-3);
+  justify-items: center;
+  padding: var(--s-6) var(--s-5);
+  border: 2px dashed var(--c-edge);
+  border-radius: var(--r-panel);
+  background: var(--c-sunken);
+  text-align: center;
+  color: var(--c-ink-muted);
+  transition: border-color var(--t-quick) var(--ease-out), background-color var(--t-quick) var(--ease-out);
+}
+
+.dropZone[data-dragging] {
+  border-color: var(--c-accent);
+  background: color-mix(in oklab, var(--c-accent) 10%, var(--c-sunken));
+}
+
+.dropTitle {
+  margin: 0;
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+.addRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s-3);
+}
+
+.countLine {
+  margin: 0;
+  font-weight: 600;
+}
+
+.imageList {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.imageCard {
+  display: grid;
+  gap: var(--s-4);
+  padding: var(--s-5);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-panel);
+  background: var(--c-bg);
+}
+
+.imageCard[data-needs-file] {
+  border-color: var(--c-warn);
+}
+
+.imageHead {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: var(--s-4);
+  align-items: center;
+}
+
+.thumb {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  overflow: hidden;
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+  color: var(--c-ink-muted);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageTitle {
+  display: grid;
+  gap: var(--s-1);
+  min-width: 0;
+}
+
+.imageName {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+  margin: 0;
+  min-width: 0;
+  font-weight: 600;
+}
+
+.familyBadge {
+  flex: none;
+  padding: 0 var(--s-2);
+  border-radius: var(--r-control);
+  background: var(--c-ink);
+  color: var(--c-bg);
+  font-size: var(--fs-1);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.imageCard[data-family="micro"] .familyBadge {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+.fileName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  margin: 0;
+}
+
+.imageMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-3);
+  margin: 0;
+  font-size: var(--fs-2);
+  color: var(--c-ink-muted);
+}
+
+.imageTools {
+  display: flex;
+  gap: var(--s-1);
+}
+
+.up svg {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 560px) {
+  .imageHead {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .thumb {
+    width: 56px;
+    height: 56px;
+  }
+
+  .imageTools {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+}
+
+.fileRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  align-items: center;
+}
+
+.photoFacts {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+  font-size: var(--fs-2);
+}
+
+.photoFacts p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+  align-items: center;
+  margin: 0;
+}
+
+.photoFacts p[data-private] strong {
+  color: var(--c-ink);
+}
+
+.microFields {
+  display: grid;
+  gap: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px dashed var(--c-rule);
+}
+
+.pixelField {
+  display: grid;
+  gap: var(--s-2);
+  justify-items: start;
+}
+
+.pixelField > div {
+  width: 100%;
+}
+
+/* --- calibration --------------------------------------------------------------------------------------------- */
+
+.calibrator {
+  width: min(64rem, calc(100vw - 32px));
+}
+
+.fileButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  justify-self: start;
+  min-height: 40px;
+  padding: 0 var(--s-4);
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-control);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fileButton input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.fileButton:has(input:focus-visible) {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.zoomRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+}
+
+.zoomButton {
+  min-width: 56px;
+  min-height: 36px;
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-control);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.zoomButton[aria-pressed="true"] {
+  border-color: var(--c-accent);
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+.calibrationFrame {
+  max-height: 55vh;
+  overflow: auto;
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-control);
+  background: var(--c-stage);
+}
+
+.calibrationImage {
+  position: relative;
+  cursor: crosshair;
+}
+
+.calibrationImage:focus-visible {
+  outline: 3px solid var(--c-focus);
+  outline-offset: -3px;
+}
+
+.calibrationImage img {
+  display: block;
+  max-width: none;
+  user-select: none;
+}
+
+.calibrationMarks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.calibrationLine {
+  stroke: var(--c-focus);
+}
+
+.mark line,
+.markSelected line {
+  stroke: var(--c-on-stage);
+}
+
+.markSelected line {
+  stroke: var(--c-focus);
+}
+
+.calibrationResult {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  border-radius: var(--r-control);
+  background: var(--c-sunken);
+}
+
+.resultValue {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--fs-6);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- the place ---------------------------------------------------------------------------------------------- */
+
+.pointMap {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.pointMapCanvas {
+  height: 340px;
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-panel);
+  overflow: hidden;
+  background: var(--c-map-water);
+}
+
+@media (max-width: 640px) {
+  .pointMapCanvas {
+    height: 260px;
+  }
+}
+
+.privacyCards {
+  display: grid;
+  gap: var(--s-3);
+  grid-template-columns: 1fr;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.privacyCards > legend {
+  margin-bottom: var(--s-3);
+}
+
+@media (min-width: 720px) {
+  .privacyCards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.privacyCard {
+  position: relative;
+  display: grid;
+  gap: var(--s-2);
+  align-content: start;
+  padding: var(--s-4);
+  border: 1px solid var(--c-edge);
+  border-radius: var(--r-panel);
+  cursor: pointer;
+}
+
+.privacyCard input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.privacyCard[data-checked] {
+  border: 2px solid var(--c-accent);
+  background: color-mix(in oklab, var(--c-accent) 8%, var(--c-surface));
+}
+
+.privacyCard:has(input:focus-visible) {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.privacyCard svg {
+  color: var(--c-accent);
+}
+
+.privacyTitle {
+  font-weight: 700;
+}
+
+/* --- the drawer --------------------------------------------------------------------------------------------- */
+
+.suggestion {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border-radius: var(--r-panel);
+  background: var(--c-sunken);
+}
+
+.path {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.path li {
+  display: inline-flex;
+  gap: var(--s-2);
+  align-items: center;
+  font-weight: 600;
+}
+
+.path li + li::before {
+  content: "/";
+  margin-right: var(--s-1);
+  color: var(--c-ink-muted);
+  font-weight: 400;
+}
+
+.path svg {
+  color: var(--c-accent);
+}
+
+.drawerChoice {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.drawerChoice > legend {
+  margin-bottom: var(--s-2);
+}
+
+.drawerOption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  align-items: center;
+  min-height: 44px;
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-control);
+  cursor: pointer;
+}
+
+.drawerOption svg {
+  color: var(--c-accent);
+}
+
+.override {
+  display: grid;
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+  border-top: 1px dashed var(--c-rule);
+}
+
+/* --- review and send ---------------------------------------------------------------------------------------- */
+
+.review,
+.files {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.messageList {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.messageList li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+  align-items: baseline;
+  padding: var(--s-2) var(--s-3);
+  border-left: 3px solid var(--c-bad);
+  background: var(--c-sunken);
+  border-radius: var(--r-control);
+}
+
+.messageList li svg {
+  flex: none;
+  align-self: center;
+  color: var(--c-bad);
+}
+
+.messageList[data-kind="flags"] li {
+  border-left-color: var(--c-warn);
+}
+
+.messageList[data-kind="flags"] li svg {
+  color: var(--c-ink-muted);
+}
+
+.messageList li span {
+  flex: 1;
+  min-width: 12rem;
+}
+
+.saveRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-4);
+  align-items: center;
+}
+
+.saveRow > p {
+  flex-basis: 100%;
+}
+
+.fileList {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fileRowItem {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-2) var(--s-4);
+  align-items: start;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--c-rule);
+  border-left: 4px solid var(--c-focus);
+  border-radius: var(--r-control);
+  background: var(--c-bg);
+}
+
+.fileRowItem[data-tone="ok"] {
+  border-left-color: var(--c-good);
+}
+
+.fileRowItem[data-tone="warn"] {
+  border-left-color: var(--c-warn);
+}
+
+.fileRowItem[data-tone="bad"] {
+  border-left-color: var(--c-bad);
+}
+
+.fileRowItem > svg {
+  color: var(--c-ink-muted);
+  margin-top: 2px;
+}
+
+.fileText {
+  display: grid;
+  gap: var(--s-1);
+  min-width: 0;
+}
+
+.fileState {
+  margin: 0;
+  font-size: var(--fs-2);
+}
+
+.fileRowItem[data-tone="bad"] .fileState {
+  color: var(--c-bad);
+  font-weight: 600;
+}
+
+.fileActions {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .fileRowItem {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .fileActions {
+    grid-column: auto;
+  }
+}
+
+.published {
+  display: flex;
+  gap: var(--s-4);
+  align-items: flex-start;
+  padding: var(--s-5);
+  border: 2px solid var(--c-good);
+  border-radius: var(--r-panel);
+  background: color-mix(in oklab, var(--c-good) 8%, var(--c-surface));
+}
+
+.published > svg {
+  flex: none;
+  color: var(--c-good);
+}
+
+.published p {
+  margin: 0 0 var(--s-3);
+}
+
+.publishedTitle {
+  font-family: var(--f-display);
+  font-size: var(--fs-6);
+  font-weight: 600;
+}

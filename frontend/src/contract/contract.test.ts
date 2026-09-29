@@ -45,7 +45,7 @@ describe("catalog contract", () => {
     const schema = JSON.parse(readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), "../../../contracts/catalog.schema.json"), "utf8"));
     expect(Object.keys(schema.properties)).toEqual([
       "slide", "slidePage", "slideSummary", "validation", "job", "jobEvent", "account", "invitation",
-      "createdSlideCase", "upload", "collectionTree", "collectionNode", "facet", "anchorSuggestion", "placement",
+      "createdSlideCase", "upload", "collectionTree", "collectionNode", "facet", "anchorSuggestion", "partRecord", "placement",
       "facetCounts", "map", "annotation", "case", "caseSummary",
     ]);
   });

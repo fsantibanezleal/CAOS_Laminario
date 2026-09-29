@@ -99,6 +99,8 @@ export interface CaseDraft {
     preparer: string;
   };
   specimen: {
+    /** The kind chosen before a name is (the name, once chosen, carries its own). */
+    kindChoice: AnchorValue["kind"];
     anchor: AnchorValue | null;
     host: AnchorValue | null;
     part: string;
@@ -128,7 +130,7 @@ export function emptyCase(): CaseDraft {
   return {
     slide: { format: "iso_76x26", customW: "", customH: "", coverslip: "none", coverW: "", coverH: "",
       preparation: "", stain: "", mountant: "", catalogueNumber: "", labelNote: "", preparedOn: "", preparer: "" },
-    specimen: { anchor: null, host: null, part: "", preservation: "recent", typeStatus: "", collectedOn: "",
+    specimen: { kindChoice: "taxon", anchor: null, host: null, part: "", preservation: "recent", typeStatus: "", collectedOn: "",
       collector: "", locality: "", lat: "", lon: "", uncertainty: "", country: "", geoprivacy: "open" },
     placement: { node: "", overrideReason: "" },
     images: [],
@@ -206,7 +208,8 @@ export function toSubmission(draft: CaseDraft): SlideCaseSubmission {
       label_note: text(s.labelNote), prepared_on: text(s.preparedOn), preparer: text(s.preparer),
     },
     specimen: {
-      anchor: p.anchor as AnchorValue,
+      // Left out until chosen, so the server says it is required (a null would read as the wrong type).
+      anchor: (p.anchor ?? undefined) as AnchorValue,
       host: p.anchor?.kind === "taxon" ? p.host : null,
       part: p.anchor?.kind === "taxon" ? text(p.part) : null,
       preservation: p.anchor?.kind === "taxon" ? p.preservation : "recent",
@@ -217,7 +220,8 @@ export function toSubmission(draft: CaseDraft): SlideCaseSubmission {
       country: text(p.country)?.toUpperCase() ?? null,
       geoprivacy: p.geoprivacy,
     },
-    placement: { node: draft.placement.node, override_reason: text(draft.placement.overrideReason) },
+    placement: { node: (draft.placement.node || undefined) as string,
+      override_reason: text(draft.placement.overrideReason) },
     assets: draft.images.map(asset) as SlideCaseSubmission["assets"],
   };
 }
@@ -232,7 +236,7 @@ export function fromSubmission(sub: SlideCaseSubmission): CaseDraft {
       coverslip: s.coverslip ?? "none", coverW: str(s.coverslip_custom_mm?.w_mm), coverH: str(s.coverslip_custom_mm?.h_mm),
       preparation: s.preparation, stain: str(s.stain), mountant: str(s.mountant), catalogueNumber: str(s.catalogue_number),
       labelNote: str(s.label_note), preparedOn: str(s.prepared_on), preparer: str(s.preparer) },
-    specimen: { anchor: p.anchor, host: p.host ?? null, part: str(p.part), preservation: p.preservation ?? "recent",
+    specimen: { kindChoice: p.anchor.kind, anchor: p.anchor, host: p.host ?? null, part: str(p.part), preservation: p.preservation ?? "recent",
       typeStatus: p.type_status ?? "", collectedOn: str(p.collected_on), collector: str(p.collector),
       locality: str(p.locality_text), lat: str(p.coordinates?.lat), lon: str(p.coordinates?.lon),
       uncertainty: str(p.coordinates?.uncertainty_m), country: str(p.country), geoprivacy: p.geoprivacy ?? "open" },

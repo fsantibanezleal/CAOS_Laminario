@@ -36,7 +36,7 @@ describe("reading a photograph", () => {
   });
 
   it("reads from a File, and rewrites it without its position", async () => {
-    const file = new File([jpeg()], "place.jpg", { type: "image/jpeg" });
+    const file = new File([jpeg().slice().buffer as ArrayBuffer], "place.jpg", { type: "image/jpeg" });
     expect((await readPhoto(file)).gps).not.toBeNull();
     const clean = await withoutLocation(file);
     expect([clean.gps, clean.xmp, clean.file.name, clean.file.type]).toEqual([1, 1, "place.jpg", "image/jpeg"]);
