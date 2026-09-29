@@ -7,6 +7,7 @@ verdict records the run on the production host.
 
 from __future__ import annotations
 
+import io
 import math
 import os
 import subprocess
@@ -158,11 +159,12 @@ def test_tile_equals_crop(tmp_path, tile_server, vips_module):
         assert (info["width"], info["height"]) == (3000, 1700)
         factors = info["tiles"][0]["scaleFactors"]
         assert factors == [1, 2, 4, 8]
-        checked = 0
-        for factor, col, row, region, size in tile_requests(3000, 1700, factors):
+        planned = list(tile_requests(3000, 1700, factors))
+        checked, levels = 0, set()
+        for factor, col, row, region, size in planned:
             response = client.get(f"/iiif/{encoded}/{region}/{size}/0/default.png")
             assert response.status_code == 200, (region, size, response.text[:200])
-            served = np.asarray(Image.open(__import__("io").BytesIO(response.content)).convert("RGB"), dtype=int)
+            served = np.asarray(Image.open(io.BytesIO(response.content)).convert("RGB"), dtype=int)
             page = int(math.log2(factor))
             level = vips_module.Image.tiffload(str(tile_server["file"]), page=page)
             th, tw = served.shape[:2]
@@ -172,7 +174,9 @@ def test_tile_equals_crop(tmp_path, tile_server, vips_module):
             difference = np.abs(served - expected).max()
             assert difference <= 2, f"factor {factor} tile {col},{row}: max difference {difference}"
             checked += 1
-        assert checked >= 16
+            levels.add(factor)
+        assert checked == len(planned) == 13  # corners, edges and middles; small levels have fewer distinct tiles
+        assert levels == {1, 2, 4, 8}
 
 
 # R-301
