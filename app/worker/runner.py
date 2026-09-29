@@ -79,7 +79,7 @@ class Worker:
         if job.kind not in kinds.KINDS:
             queue.finish(engine, job.id, "failed", error=f"unknown job kind {job.kind!r}")
             return
-        future = pool.schedule(kinds.execute, args=(job.id, job.public_id, job.kind, job.payload),
+        future = pool.schedule(kinds.execute, args=(job.id, job.public_id, job.kind, job.payload, self.settings),
                                timeout=job.timeout_s)
         while True:
             finished, _ = concurrent.futures.wait([future], timeout=POLL_SECONDS)

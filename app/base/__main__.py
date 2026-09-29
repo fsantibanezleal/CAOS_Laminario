@@ -118,6 +118,7 @@ def main() -> int:
 
         manifest = bake.bake(args.out, vault(), set(args.only) or None)
         print(f"{len(manifest['slides'])} slides baked, {manifest['failed_jobs']} failed jobs")
+        return 1 if manifest["failed_jobs"] else 0
     elif args.step == "import":
         from app.base import importer
 

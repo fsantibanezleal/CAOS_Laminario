@@ -377,10 +377,15 @@ KINDS: dict[str, Callable[[Context, dict], dict]] = {
 }
 
 
-def execute(job_id: int, public_id: str, kind: str, payload: dict) -> dict:
-    """Entry point in the child process: open the database, run the job, return its result."""
+def execute(job_id: int, public_id: str, kind: str, payload: dict, settings: Settings | None = None) -> dict:
+    """Entry point in the child process: open the database, run the job, return its result.
+
+    ``settings`` are the worker's own (pickled to the child). Without them the child would read its settings from the
+    environment, which differs from the worker's whenever the worker was given settings explicitly, as the base bake
+    does: the child then opened another database (finding F-036).
+    """
     os.environ.setdefault("OMP_NUM_THREADS", "1")
-    settings = Settings()
+    settings = settings or Settings()
     engine = make_sync_engine(database_path(settings))
     try:
         ctx = Context(job_id=job_id, public_id=public_id, settings=settings, engine=engine)

@@ -107,6 +107,19 @@ def test_interrupted_too_often_fails(tmp_path):
     assert row.status == "failed" and row.error == "interrupted 2 times; not retried again"
 
 
+def test_the_job_process_uses_the_worker_settings(tmp_path, monkeypatch):
+    # The environment names another data root: the job must still run against the worker's (the base bake's case).
+    settings, engine = sandbox(tmp_path)
+    elsewhere = tmp_path / "elsewhere"
+    monkeypatch.setenv("LAMINARIO_DATA_ROOT", str(elsewhere))
+    job_id, public_id = queue.enqueue(engine, "probe", {"steps": 1, "seconds": 0})
+    Worker(settings).run(max_jobs=1)
+    row = job(engine, job_id)
+    assert row.status == "succeeded", row.error
+    assert (settings.data_root / "probes" / f"{public_id}.txt").exists()
+    assert not elsewhere.exists()
+
+
 def test_unknown_kind_fails_cleanly(tmp_path, monkeypatch):
     settings, engine = sandbox(tmp_path, monkeypatch)
     job_id, _ = queue.enqueue(engine, "no_such_kind", {})
