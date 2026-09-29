@@ -225,7 +225,7 @@ def fuse_stack(ctx: Context, payload: dict) -> dict:
     ctx.progress(step="fuse", planes=len(planes), width=width, height=height)
     results = {}
     for method, role in ((edf.METHOD_WAVELET, "edf_wavelet"), (edf.METHOD_VARIANCE, "edf_variance")):
-        fused = edf.fuse(read, len(planes), width, height, method,
+        fused = edf.fuse(read, len(planes), width, height, method, workers=ctx.settings.fuse_workers,
                          progress=lambda done, total, m=method: ctx.progress(step=m, tile=done, of=total))
         results[role] = fused
     template = planes[0]

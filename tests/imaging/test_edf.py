@@ -140,3 +140,40 @@ def test_power_two_size_matches_the_plugin():
 
 def test_mirror_index_does_not_repeat_the_edge():
     assert list(edf.mirror_index(np.arange(-3, 8), 5)) == [3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1]
+
+
+def test_windows_fused_in_parallel_equal_one_at_a_time():
+    """Parallel windows give the same arrays as the serial loop, grey and colour, both methods (the base bake's
+    largest NMNH stacks, 3 planes of 53,760 x 73,728 px, would take hours one window at a time)."""
+    stack, _, _ = focal_stack(300, 460, 5, 11)
+    for method in (edf.METHOD_VARIANCE, edf.METHOD_WAVELET):
+        serial = edf.fuse_array(stack, method, tile=128, margin=16)
+        parallel = edf.fuse_array(stack, method, tile=128, margin=16, workers=3)
+        assert np.array_equal(serial.height_map, parallel.height_map), method
+        assert np.array_equal(serial.composite, parallel.composite), method
+    rng = np.random.default_rng(5)
+    colour = rng.integers(0, 256, (4, 150, 230, 3), dtype=np.uint8)
+    serial = edf.fuse_array(colour, edf.METHOD_WAVELET, tile=64, margin=8)
+    seen = []
+    parallel = edf.fuse_array(colour, edf.METHOD_WAVELET, tile=64, margin=8, workers=4,
+                              progress=lambda done, total: seen.append((done, total)))
+    assert np.array_equal(serial.height_map, parallel.height_map)
+    assert np.array_equal(serial.composite, parallel.composite)
+    assert [d for d, _ in seen] == list(range(1, len(seen) + 1)) and seen[-1][0] == seen[-1][1]
+
+
+def _sleepy_height_map(stack, method, plugin_axes=False):
+    import time
+
+    time.sleep(30)
+    return edf.window_height_map(stack, method, plugin_axes)
+
+
+def test_a_stalled_parallel_fusion_fails_and_stops_its_processes(monkeypatch):
+    """No window finishing within the stall limit ends the fusion with its reason, instead of the job's timeout."""
+    import pytest
+
+    stack, _, _ = focal_stack(120, 160, 3, 2)
+    monkeypatch.setattr(edf, "window_height_map", _sleepy_height_map)
+    with pytest.raises(RuntimeError, match="stalled"):
+        edf.fuse_array(stack, edf.METHOD_VARIANCE, tile=64, margin=8, workers=2, stall_s=2)
