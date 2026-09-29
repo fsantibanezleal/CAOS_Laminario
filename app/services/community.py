@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import json
 import secrets
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import httpx2
 from sqlalchemy import delete, select, update
@@ -187,6 +187,8 @@ class Listing:
     names: dict[str, str]
     categories: dict[int, str]
     votes: tuple[int, int]
+    #: The accounts' handles, the address of their profiles (U14).
+    handles: dict[str, str] = field(default_factory=dict)
 
 
 async def listing(db: AsyncSession, raw_id: str, viewer: User | None, may_moderate: bool) -> Listing:
@@ -199,4 +201,5 @@ async def listing(db: AsyncSession, raw_id: str, viewer: User | None, may_modera
     names = {str(u.id): u.display_name for u in users}
     visible = [r for r in rows if not r.hidden or may_moderate or (viewer is not None and r.user_id == viewer.id)]
     votes = await db.run_sync(lambda session: store.votes(session.connection(), slide.id))
-    return Listing(slide, result, visible, names, categories([as_ident(r) for r in rows], result), votes)
+    handles = {str(u.id): u.handle for u in users if u.handle}
+    return Listing(slide, result, visible, names, categories([as_ident(r) for r in rows], result), votes, handles)

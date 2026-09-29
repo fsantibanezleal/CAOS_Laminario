@@ -74,6 +74,15 @@
     },
     "moderationAction": {
       "$ref": "#/$defs/ModerationActionRecord"
+    },
+    "profile": {
+      "$ref": "#/$defs/ProfileRecord"
+    },
+    "personIdentification": {
+      "$ref": "#/$defs/PersonIdentificationRecord"
+    },
+    "stock": {
+      "$ref": "#/$defs/StockRecord"
     }
   },
   "additionalProperties": false,
@@ -105,6 +114,17 @@
         },
         "is_verified": {
           "type": "boolean"
+        },
+        "handle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "required": [
@@ -1219,6 +1239,17 @@
           ],
           "default": null
         },
+        "by_handle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "source": {
           "default": false,
           "type": "boolean"
@@ -1930,6 +1961,72 @@
       "title": "PartRecord",
       "type": "object"
     },
+    "PersonIdentificationRecord": {
+      "additionalProperties": false,
+      "description": "One of an account's identifications, in its cabinet.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slide": {
+          "$ref": "#/$defs/SlideSummary"
+        },
+        "anchor": {
+          "$ref": "#/$defs/AnchorRecord"
+        },
+        "category": {
+          "anyOf": [
+            {
+              "enum": [
+                "leading",
+                "improving",
+                "supporting",
+                "maverick"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "community": {
+          "type": "boolean"
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "slide",
+        "anchor",
+        "community",
+        "created_at"
+      ],
+      "title": "PersonIdentificationRecord",
+      "type": "object"
+    },
+    "PersonRef": {
+      "additionalProperties": false,
+      "description": "An account as others may see it: its handle and display name, never its email (U14).",
+      "properties": {
+        "handle": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "handle",
+        "name"
+      ],
+      "title": "PersonRef",
+      "type": "object"
+    },
     "PlaceRecord": {
       "additionalProperties": false,
       "description": "Where the specimen was collected, after geoprivacy.",
@@ -2131,6 +2228,79 @@
       "title": "PolarisationRecord",
       "type": "object"
     },
+    "ProfileRecord": {
+      "additionalProperties": false,
+      "description": "An account's profile (``GET /api/people/{handle}``): never its email.",
+      "properties": {
+        "handle": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "contributor",
+            "identifier",
+            "curator",
+            "admin"
+          ],
+          "type": "string"
+        },
+        "joined": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "last_active": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "slides": {
+          "type": "integer"
+        },
+        "verified": {
+          "type": "integer"
+        },
+        "by_collection": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "identifications": {
+          "type": "integer"
+        },
+        "categories": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "annotations": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "handle",
+        "name",
+        "role",
+        "joined",
+        "slides",
+        "verified",
+        "identifications",
+        "annotations"
+      ],
+      "title": "ProfileRecord",
+      "type": "object"
+    },
     "QualityCheckRecord": {
       "additionalProperties": false,
       "properties": {
@@ -2330,6 +2500,17 @@
         "manifest_url": {
           "type": "string"
         },
+        "contributor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PersonRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "created_at": {
           "format": "date-time",
           "type": "string"
@@ -2457,6 +2638,70 @@
         "sha256"
       ],
       "title": "SourceRecord",
+      "type": "object"
+    },
+    "StockRecord": {
+      "additionalProperties": false,
+      "description": "A label stock a sheet is printed on (``GET /api/labels/stocks``).",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "plain",
+            "stock"
+          ],
+          "type": "string"
+        },
+        "page": {
+          "enum": [
+            "A4",
+            "Letter"
+          ],
+          "type": "string"
+        },
+        "width_mm": {
+          "type": "number"
+        },
+        "height_mm": {
+          "type": "number"
+        },
+        "columns": {
+          "type": "integer"
+        },
+        "rows": {
+          "type": "integer"
+        },
+        "per_sheet": {
+          "type": "integer"
+        },
+        "source": {
+          "type": "string"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "page",
+        "width_mm",
+        "height_mm",
+        "columns",
+        "rows",
+        "per_sheet",
+        "source"
+      ],
+      "title": "StockRecord",
       "type": "object"
     },
     "SummaryLabel": {

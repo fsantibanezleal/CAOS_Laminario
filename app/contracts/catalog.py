@@ -167,6 +167,13 @@ class AssetRecord(_Record):
     original_sha256: str | None = None
 
 
+class PersonRef(_Record):
+    """An account as others may see it: its handle and display name, never its email (U14)."""
+
+    handle: str
+    name: str
+
+
 class SlideRecord(_Record):
     #: The short id, upper case: the label, the permalink and the QR code all carry it.
     id: str
@@ -188,6 +195,8 @@ class SlideRecord(_Record):
     quality: QualityRecord
     assets: list[AssetRecord]
     manifest_url: str
+    #: Who contributed the slide (U14); None for the base collection.
+    contributor: PersonRef | None = None
     created_at: datetime
     updated_at: datetime
     published_at: datetime | None = None
@@ -349,6 +358,8 @@ class AccountRecord(_Record):
     role: Literal["contributor", "identifier", "curator", "admin"]
     is_active: bool
     is_verified: bool
+    #: The public address of the account's profile (U14).
+    handle: str | None = None
 
 
 class InvitationRecord(_Record):
@@ -505,6 +516,8 @@ class IdentificationRecord(_Record):
     node: str
     #: The account's display name; None for the source's determination of a base slide.
     by: str | None = None
+    #: The account's handle, the address of its profile (U14).
+    by_handle: str | None = None
     source: bool = False
     mine: bool = False
     body: str | None = None
@@ -578,3 +591,52 @@ class ModerationActionRecord(_Record):
     reason: str
     by: str | None = None
     created_at: datetime
+
+
+# --- the profile and the label sheets (U14) ----------------------------------------------------------------------
+
+class ProfileRecord(_Record):
+    """An account's profile (``GET /api/people/{handle}``): never its email."""
+
+    handle: str
+    name: str
+    role: Literal["contributor", "identifier", "curator", "admin"]
+    joined: datetime
+    #: Its newest published slide or identification.
+    last_active: datetime | None = None
+    slides: int
+    verified: int
+    #: Published slides by collection (``life.insects``).
+    by_collection: dict[str, int] = Field(default_factory=dict)
+    #: Current visible identifications of others' slides, and by category.
+    identifications: int
+    categories: dict[str, int] = Field(default_factory=dict)
+    annotations: int
+
+
+class PersonIdentificationRecord(_Record):
+    """One of an account's identifications, in its cabinet."""
+
+    id: str
+    slide: SlideSummary
+    anchor: AnchorRecord
+    category: Literal["leading", "improving", "supporting", "maverick"] | None = None
+    #: Whether it names the slide's community anchor now.
+    community: bool
+    created_at: datetime
+
+
+class StockRecord(_Record):
+    """A label stock a sheet is printed on (``GET /api/labels/stocks``)."""
+
+    id: str
+    name: str
+    kind: Literal["plain", "stock"]
+    page: Literal["A4", "Letter"]
+    width_mm: float
+    height_mm: float
+    columns: int
+    rows: int
+    per_sheet: int
+    source: str
+    warnings: list[str] = Field(default_factory=list)

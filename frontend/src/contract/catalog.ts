@@ -25,6 +25,9 @@ export interface LaminarioCatalog {
   identifications?: IdentificationList;
   flag?: FlagRecord;
   moderationAction?: ModerationActionRecord;
+  profile?: ProfileRecord;
+  personIdentification?: PersonIdentificationRecord;
+  stock?: StockRecord;
 }
 export interface SlideRecord {
   id: string;
@@ -44,6 +47,7 @@ export interface SlideRecord {
   quality: QualityRecord;
   assets: AssetRecord[];
   manifest_url: string;
+  contributor?: PersonRef | null;
   created_at: string;
   updated_at: string;
   published_at?: string | null;
@@ -164,6 +168,13 @@ export interface SourceRecord {
   retrieved_on: string;
   sha256: string;
 }
+/**
+ * An account as others may see it: its handle and display name, never its email (U14).
+ */
+export interface PersonRef {
+  handle: string;
+  name: string;
+}
 export interface SlidePage {
   items: SlideSummary[];
   total: number;
@@ -260,6 +271,7 @@ export interface AccountRecord {
   role: "contributor" | "identifier" | "curator" | "admin";
   is_active: boolean;
   is_verified: boolean;
+  handle?: string | null;
 }
 /**
  * An invitation as its issuer sees it. ``link`` is present only in the answer that created it, and only
@@ -543,6 +555,7 @@ export interface IdentificationRecord {
   anchor: AnchorRecord;
   node: string;
   by?: string | null;
+  by_handle?: string | null;
   source?: boolean;
   mine?: boolean;
   body?: string | null;
@@ -581,4 +594,51 @@ export interface ModerationActionRecord {
   reason: string;
   by?: string | null;
   created_at: string;
+}
+/**
+ * An account's profile (``GET /api/people/{handle}``): never its email.
+ */
+export interface ProfileRecord {
+  handle: string;
+  name: string;
+  role: "contributor" | "identifier" | "curator" | "admin";
+  joined: string;
+  last_active?: string | null;
+  slides: number;
+  verified: number;
+  by_collection?: {
+    [k: string]: number;
+  };
+  identifications: number;
+  categories?: {
+    [k: string]: number;
+  };
+  annotations: number;
+}
+/**
+ * One of an account's identifications, in its cabinet.
+ */
+export interface PersonIdentificationRecord {
+  id: string;
+  slide: SlideSummary;
+  anchor: AnchorRecord;
+  category?: ("leading" | "improving" | "supporting" | "maverick") | null;
+  community: boolean;
+  created_at: string;
+}
+/**
+ * A label stock a sheet is printed on (``GET /api/labels/stocks``).
+ */
+export interface StockRecord {
+  id: string;
+  name: string;
+  kind: "plain" | "stock";
+  page: "A4" | "Letter";
+  width_mm: number;
+  height_mm: number;
+  columns: number;
+  rows: number;
+  per_sheet: number;
+  source: string;
+  warnings?: string[];
 }

@@ -34,6 +34,9 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `identifications` | [IdentificationList](#identificationlist) | no |  |  |
 | `flag` | [FlagRecord](#flagrecord) | no |  |  |
 | `moderationAction` | [ModerationActionRecord](#moderationactionrecord) | no |  |  |
+| `profile` | [ProfileRecord](#profilerecord) | no |  |  |
+| `personIdentification` | [PersonIdentificationRecord](#personidentificationrecord) | no |  |  |
+| `stock` | [StockRecord](#stockrecord) | no |  |  |
 
 ### SlideRecord
 
@@ -56,6 +59,7 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `quality` | [QualityRecord](#qualityrecord) | yes |  |  |
 | `assets` | list of [AssetRecord](#assetrecord) | yes |  |  |
 | `manifest_url` | string | yes |  |  |
+| `contributor` | [PersonRef](#personref) or null | no |  | null |
 | `created_at` | string (date-time) | yes |  |  |
 | `updated_at` | string (date-time) | yes |  |  |
 | `published_at` | string (date-time) or null | no |  | null |
@@ -135,6 +139,7 @@ An account as ``GET /api/users/me`` returns it.
 | `role` | string (enumerated) | yes | one of: `contributor`, `identifier`, `curator`, `admin` |  |
 | `is_active` | boolean | yes |  |  |
 | `is_verified` | boolean | yes |  |  |
+| `handle` | string or null | no |  | null |
 
 ### InvitationRecord
 
@@ -351,6 +356,55 @@ A curator's hiding or restoring, with the reason.
 | `by` | string or null | no |  | null |
 | `created_at` | string (date-time) | yes |  |  |
 
+### ProfileRecord
+
+An account's profile (``GET /api/people/{handle}``): never its email.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `handle` | string | yes |  |  |
+| `name` | string | yes |  |  |
+| `role` | string (enumerated) | yes | one of: `contributor`, `identifier`, `curator`, `admin` |  |
+| `joined` | string (date-time) | yes |  |  |
+| `last_active` | string (date-time) or null | no |  | null |
+| `slides` | integer | yes |  |  |
+| `verified` | integer | yes |  |  |
+| `by_collection` | map of integer | no |  |  |
+| `identifications` | integer | yes |  |  |
+| `categories` | map of integer | no |  |  |
+| `annotations` | integer | yes |  |  |
+
+### PersonIdentificationRecord
+
+One of an account's identifications, in its cabinet.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `slide` | [SlideSummary](#slidesummary) | yes |  |  |
+| `anchor` | [AnchorRecord](#anchorrecord) | yes |  |  |
+| `category` | string (enumerated) or null | no | one of: `leading`, `improving`, `supporting`, `maverick` | null |
+| `community` | boolean | yes |  |  |
+| `created_at` | string (date-time) | yes |  |  |
+
+### StockRecord
+
+A label stock a sheet is printed on (``GET /api/labels/stocks``).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `name` | string | yes |  |  |
+| `kind` | string (enumerated) | yes | one of: `plain`, `stock` |  |
+| `page` | string (enumerated) | yes | one of: `A4`, `Letter` |  |
+| `width_mm` | number | yes |  |  |
+| `height_mm` | number | yes |  |  |
+| `columns` | integer | yes |  |  |
+| `rows` | integer | yes |  |  |
+| `per_sheet` | integer | yes |  |  |
+| `source` | string | yes |  |  |
+| `warnings` | list of string | no |  |  |
+
 ### FormatRecord
 
 | Field | Type | Required | Accepted | Default |
@@ -446,6 +500,15 @@ Where the specimen was collected, after geoprivacy.
 | `creator` | string or null | no |  | null |
 | `source` | [SourceRecord](#sourcerecord) or null | no |  | null |
 | `original_sha256` | string or null | no |  | null |
+
+### PersonRef
+
+An account as others may see it: its handle and display name, never its email (U14).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `handle` | string | yes |  |  |
+| `name` | string | yes |  |  |
 
 ### SummaryLabel
 
@@ -575,6 +638,7 @@ An identification on a slide, as a viewer may see it (``GET /api/slides/{id}/ide
 | `anchor` | [AnchorRecord](#anchorrecord) | yes |  |  |
 | `node` | string | yes |  |  |
 | `by` | string or null | no |  | null |
+| `by_handle` | string or null | no |  | null |
 | `source` | boolean | no |  | `false` |
 | `mine` | boolean | no |  | `false` |
 | `body` | string or null | no |  | null |
