@@ -259,6 +259,23 @@ def fuse_stack(ctx: Context, payload: dict) -> dict:
 
 SCANNER_EXTENSIONS = {".svs", ".ndpi", ".scn", ".tif", ".tiff", ".btf", ".bif", ".dcm", ".vms"}
 EXTENSION_BY_KIND = {"jpeg": ".jpg", "png": ".png", "webp": ".webp", "tiff": ".tif", "bigtiff": ".tif", "dicom": ".dcm"}
+#: Photograph formats that carry EXIF, where a GPS position can hide.
+GPS_KINDS = ("jpeg", "png", "webp", "tiff", "bigtiff")
+
+
+def has_gps(path: Path, kind: str) -> bool:
+    """Whether a photograph still carries a GPS position: a GPS field in its EXIF (libvips names them exif-ifd3-*),
+    or, for a TIFF, a GPS directory with entries."""
+    if kind in ("tiff", "bigtiff"):
+        import tifffile
+
+        with tifffile.TiffFile(str(path)) as tif:
+            tag = tif.pages[0].tags.get("GPSTag")
+            return bool(tag and tag.value)
+    from app.imaging.library import vips
+
+    image = vips().Image.new_from_file(str(path))
+    return any(name.startswith("exif-ifd3-") for name in image.get_fields())
 ARCHIVE_INFLATION = 4  # an archive may expand to at most four times the upload limit
 
 
@@ -307,8 +324,8 @@ def verify_upload(ctx: Context, payload: dict) -> dict:
 
     upload_id = int(payload["upload_id"])
     with ctx.engine.connect() as conn:
-        row = conn.execute(text("SELECT u.id, u.tus_id, u.size, u.filename, u.asset_id, s.short_id "
-                                "FROM upload u JOIN slide s ON s.id = u.slide_id WHERE u.id = :id"),
+        row = conn.execute(text("SELECT u.id, u.tus_id, u.size, u.filename, u.asset_id, u.slide_id, s.short_id, "
+                                "s.geoprivacy FROM upload u JOIN slide s ON s.id = u.slide_id WHERE u.id = :id"),
                            {"id": upload_id}).one()
     data = Path(payload.get("path") or ctx.settings.quarantine_root / row.tus_id)
     info = data.with_name(data.name + ".info")
@@ -355,10 +372,17 @@ def verify_upload(ctx: Context, payload: dict) -> dict:
             shutil.rmtree(folder / stem, ignore_errors=True)
         return _refuse(ctx, upload_id, leftover, f"the file cannot be read as an image: {exc}"[:300], found.kind, sha)
     ctx.progress(step="readable", width=header.width, height=header.height, planes=len(header.planes))
+    if row.geoprivacy == "private" and found.kind in GPS_KINDS and has_gps(source, found.kind):
+        # R-1203: the contribute page removes the position; a file that still has it is not stored.
+        source.unlink(missing_ok=True)
+        return _refuse(ctx, upload_id, [], "the photograph still carries its GPS position and the place is private: "
+                       "remove the position (the contribute page does) and send it again", found.kind, sha)
     with ctx.engine.begin() as conn:
-        conn.execute(text("UPDATE asset SET source_path = :path WHERE id = :id"),
+        # A file that replaces one that failed starts the image again.
+        conn.execute(text("UPDATE asset SET source_path = :path, status = 'pending', failure = NULL WHERE id = :id"),
                      {"path": str(source), "id": row.asset_id})
-    _, job = queue.enqueue(ctx.engine, "process_asset", {"asset_id": row.asset_id, "source_sha256": sha})
+    _, job = queue.enqueue(ctx.engine, "process_asset", {"asset_id": row.asset_id, "source_sha256": sha},
+                           slide_id=row.slide_id)
     with ctx.engine.begin() as conn:
         conn.execute(text("UPDATE upload SET status = 'accepted', sha256 = :sha, sniffed = :kind, "
                           "source_path = :path, job_id = :job WHERE id = :id"),

@@ -30,6 +30,7 @@ from app.config import Settings
 from app.db.engine import database_path, make_sync_engine
 from app.db.migrate import upgrade_to_head
 from app.jobs import kinds, queue
+from app.services import cases
 
 log = logging.getLogger("laminario.worker")
 
@@ -89,16 +90,24 @@ class Worker:
                 future.cancel()  # pebble terminates the running process
                 queue.put_back(engine, job.id, "the worker was asked to stop", count_attempt=False)
                 return
+        failure: str | None = None
         try:
             result = future.result()
         except concurrent.futures.TimeoutError:
-            queue.finish(engine, job.id, "failed", error=f"timed out after {job.timeout_s} s; the process was killed")
+            failure = f"timed out after {job.timeout_s} s; the process was killed"
         except ProcessExpired as exc:
-            queue.finish(engine, job.id, "failed", error=f"the job's process died ({exc.exitcode})")
+            failure = f"the job's process died ({exc.exitcode})"
         except concurrent.futures.CancelledError:
             queue.put_back(engine, job.id, "cancelled while stopping", count_attempt=False)
+            return
         except Exception as exc:  # the job raised: record what and where
-            detail = "".join(traceback.format_exception_only(type(exc), exc)).strip()
-            queue.finish(engine, job.id, "failed", error=detail)
-        else:
+            failure = "".join(traceback.format_exception_only(type(exc), exc)).strip()
+        if failure is None:
             queue.finish(engine, job.id, "succeeded", result=result)
+        else:
+            queue.finish(engine, job.id, "failed", error=failure)
+        try:
+            # A contribution may have been waiting for this job: publish it, or send it back with the reason.
+            cases.after_job(engine, job.kind, job.payload, failure is not None, failure)
+        except Exception:  # the job's outcome is recorded; a failed check is logged, never fatal to the worker
+            log.exception("checking the case of job %s failed", job.id)

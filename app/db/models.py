@@ -74,6 +74,10 @@ class Slide(Base):
     placement_node: Mapped[str] = mapped_column(String(120), nullable=False)
     #: What search matches (app/services/search.py); the FTS5 table slide_search follows it by triggers.
     search_text: Mapped[str | None] = mapped_column(Text)
+    #: Why a contribution is back to draft (an image failed), shown to its contributor.
+    status_reason: Mapped[str | None] = mapped_column(String(300))
+    #: A contribution's case as its contributor last sent it, to reopen the form (U12).
+    submission_json: Mapped[str | None] = mapped_column(Text)
     placement_override_reason: Mapped[str | None] = mapped_column(String(300))
     #: The contributor's user id (a UUID), linked to the user table when accounts arrive.
     contributor_id: Mapped[str | None] = mapped_column(String(36))
@@ -116,6 +120,10 @@ class Asset(Base):
     polarisation_state: Mapped[str | None] = mapped_column(String(4))
     polarisation_angle_deg: Mapped[float | None] = mapped_column(Float)
     caption: Mapped[str | None] = mapped_column(String(300))
+    #: The contributor's token for this image in the case (its upload_id): an edited case keeps the image it names.
+    client_token: Mapped[str | None] = mapped_column(String(128))
+    #: Why the image's verification or processing failed, shown to its contributor.
+    failure: Mapped[str | None] = mapped_column(String(300))
 
     licence_uri: Mapped[str] = mapped_column(String(200), nullable=False)
     rights_holder: Mapped[str | None] = mapped_column(String(200))

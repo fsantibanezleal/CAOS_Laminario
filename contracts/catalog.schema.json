@@ -56,6 +56,12 @@
     },
     "annotation": {
       "$ref": "#/$defs/AnnotationRecord"
+    },
+    "case": {
+      "$ref": "#/$defs/CaseRecord"
+    },
+    "caseSummary": {
+      "$ref": "#/$defs/CaseSummary"
     }
   },
   "additionalProperties": false,
@@ -364,6 +370,215 @@
         "licence"
       ],
       "title": "AssetRecord",
+      "type": "object"
+    },
+    "CaseImageRecord": {
+      "additionalProperties": false,
+      "description": "An image of a contributor's case: its state, and its file's (the last upload).",
+      "properties": {
+        "asset_id": {
+          "type": "integer"
+        },
+        "token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "family": {
+          "enum": [
+            "macro",
+            "micro"
+          ],
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "ready",
+            "failed"
+          ],
+          "type": "string"
+        },
+        "failure": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "has_file": {
+          "default": false,
+          "type": "boolean"
+        },
+        "upload_status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "upload_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "upload_job": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "asset_id",
+        "family",
+        "role",
+        "status"
+      ],
+      "title": "CaseImageRecord",
+      "type": "object"
+    },
+    "CaseRecord": {
+      "additionalProperties": false,
+      "description": "A contributor's case to reopen (``GET /api/slide-cases/{id}``): its summary and the case as last sent.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "processing",
+            "published",
+            "hidden"
+          ],
+          "type": "string"
+        },
+        "status_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "name": {
+          "type": "string"
+        },
+        "placement": {
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "images": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/CaseImageRecord"
+          },
+          "type": "array"
+        },
+        "submission": {
+          "additionalProperties": true,
+          "default": {},
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "name",
+        "placement",
+        "updated_at"
+      ],
+      "title": "CaseRecord",
+      "type": "object"
+    },
+    "CaseSummary": {
+      "additionalProperties": false,
+      "description": "A contributor's slide case in their list (``GET /api/slide-cases``).",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "processing",
+            "published",
+            "hidden"
+          ],
+          "type": "string"
+        },
+        "status_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "name": {
+          "type": "string"
+        },
+        "placement": {
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "images": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/CaseImageRecord"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "name",
+        "placement",
+        "updated_at"
+      ],
+      "title": "CaseSummary",
       "type": "object"
     },
     "CellRecord": {

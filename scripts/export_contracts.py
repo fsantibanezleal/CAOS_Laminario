@@ -46,6 +46,8 @@ CATALOG_ROOTS = {
     "facetCounts": c.FacetCounts,
     "map": c.MapRecord,
     "annotation": c.AnnotationRecord,
+    "case": c.CaseRecord,
+    "caseSummary": c.CaseSummary,
 }
 
 

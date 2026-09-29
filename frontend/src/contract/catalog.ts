@@ -19,6 +19,8 @@ export interface LaminarioCatalog {
   facetCounts?: FacetCounts;
   map?: MapRecord;
   annotation?: AnnotationRecord;
+  case?: CaseRecord;
+  caseSummary?: CaseSummary;
 }
 export interface SlideRecord {
   id: string;
@@ -448,4 +450,46 @@ export interface AnnotationRecord {
   annotation: {
     [k: string]: unknown;
   };
+}
+/**
+ * A contributor's case to reopen (``GET /api/slide-cases/{id}``): its summary and the case as last sent.
+ */
+export interface CaseRecord {
+  id: string;
+  status: "draft" | "processing" | "published" | "hidden";
+  status_reason?: string | null;
+  name: string;
+  placement: string;
+  updated_at: string;
+  images?: CaseImageRecord[];
+  submission?: {
+    [k: string]: unknown;
+  };
+}
+/**
+ * An image of a contributor's case: its state, and its file's (the last upload).
+ */
+export interface CaseImageRecord {
+  asset_id: number;
+  token?: string | null;
+  family: "macro" | "micro";
+  role: string;
+  status: "pending" | "ready" | "failed";
+  failure?: string | null;
+  has_file?: boolean;
+  upload_status?: string | null;
+  upload_reason?: string | null;
+  upload_job?: string | null;
+}
+/**
+ * A contributor's slide case in their list (``GET /api/slide-cases``).
+ */
+export interface CaseSummary {
+  id: string;
+  status: "draft" | "processing" | "published" | "hidden";
+  status_reason?: string | null;
+  name: string;
+  placement: string;
+  updated_at: string;
+  images?: CaseImageRecord[];
 }
