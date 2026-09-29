@@ -1,7 +1,7 @@
 # U3 · IIIF delivery · requirements
 
 R-020 to R-023 moved here from the design document; R-021 names the API instead of nginx as the component
-that writes `rights` (see the design, "Who writes rights"). R-301 to R-304 are this unit's own. R-012 of U2
+that writes `rights` (see the design, "Who writes rights"). R-301 to R-305 are this unit's own. R-012 of U2
 gained a third quality step during this unit; its gate is listed at the end.
 
 ```
@@ -28,6 +28,9 @@ R-303  WHEN a manifest references a remote service, THE manifest SHALL declare t
 
 R-304  WHEN a remote service passes the contract, THE check SHALL report its Image API version, its canonical licence and its dimensions.
        Gate: tests/delivery/test_remote_iiif.py::test_accepted_services_report_version_and_licence
+
+R-305  THE tile server's compose file SHALL run the pinned image with a read-only root, a read-only store, its port on loopback only, and its memory and CPU limits.
+       Gate: tests/delivery/test_iiif_tiles.py::test_tile_server_is_read_only_on_loopback
 
 R-012  (U2, extended) THE pyramid writer SHALL reach 38 dB mean PSNR at level 0, climbing JPEG Q85, Q90 (full chroma) and Q95, and SHALL record the measured PSNR when even Q95 falls short.
        Gate: tests/imaging/test_pyramid.py::test_quality_ladder_reaches_the_floor_on_noise

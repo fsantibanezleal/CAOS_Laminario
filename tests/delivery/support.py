@@ -179,3 +179,21 @@ def container(args: list[str], name: str):
         yield name
     finally:
         subprocess.run([exe, "stop", "-t", "5", name], capture_output=True, timeout=60)
+
+
+COMPOSE_FILE = Path(__file__).resolve().parents[2] / "deploy" / "iipsrv" / "compose.yaml"
+
+
+@contextlib.contextmanager
+def iipsrv_stack(store: Path, port: int, project: str):
+    """The production compose file of the tile server, on a sandbox store and a free port; always taken down."""
+    exe = docker()
+    env = os.environ | {"LAMINARIO_STORE": str(store), "LAMINARIO_IIPSRV_PORT": str(port)}
+    base = [exe, "compose", "-f", str(COMPOSE_FILE), "-p", project]
+    up = subprocess.run([*base, "up", "-d"], capture_output=True, text=True, env=env, timeout=300)
+    if up.returncode != 0:
+        raise RuntimeError(f"docker compose up failed: {up.stderr.strip()}")
+    try:
+        yield f"{project}-iipsrv-1"
+    finally:
+        subprocess.run([*base, "down"], capture_output=True, env=env, timeout=120)

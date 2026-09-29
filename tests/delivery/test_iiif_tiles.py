@@ -24,8 +24,8 @@ from app.imaging import pyramid
 from app.main import create_app
 
 from .support import (
-    IIPSRV_IMAGE, NGINX_IMAGE, container, docker, free_port, json_body, make_settings, seed_slide, serve,
-    wait_for_http,
+    IIPSRV_IMAGE, NGINX_IMAGE, container, docker, free_port, iipsrv_stack, json_body, make_settings, seed_slide,
+    serve, wait_for_http,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -110,9 +110,8 @@ def tile_server(tmp_path_factory, vips_module):
     os.chmod(target, 0o644)
     os.chmod(target.parent, 0o755)
     port = free_port()
-    name = f"laminario-test-iipsrv-{os.getpid()}"
     subprocess.run([exe, "pull", "-q", IIPSRV_IMAGE], capture_output=True, timeout=300)
-    with container(["-p", f"127.0.0.1:{port}:80", "-v", f"{store}:/images:ro", IIPSRV_IMAGE], name):
+    with iipsrv_stack(store, port, f"laminario-test-{os.getpid()}") as name:
         wait_for_http(f"http://127.0.0.1:{port}/iiif/{key}/info.json", expect=200)  # lighttpd answers first
         yield {"url": f"http://127.0.0.1:{port}", "store": store, "key": key, "file": target, "written": written,
                "name": name}
@@ -177,6 +176,22 @@ def test_tile_equals_crop(tmp_path, tile_server, vips_module):
             levels.add(factor)
         assert checked == len(planned) == 13  # corners, edges and middles; small levels have fewer distinct tiles
         assert levels == {1, 2, 4, 8}
+
+
+# R-305
+def test_tile_server_is_read_only_on_loopback(tile_server):
+    """The production compose file, as the fixture started it: pinned image, read-only, loopback, limited."""
+    exe = docker()
+    fmt = ("{{.Config.Image}}|{{.HostConfig.ReadonlyRootfs}}|{{json .HostConfig.PortBindings}}|"
+           "{{.HostConfig.Memory}}|{{.HostConfig.NanoCpus}}|{{json .Mounts}}")
+    image, readonly, ports, memory, cpus, mounts = subprocess.run(
+        [exe, "inspect", tile_server["name"], "--format", fmt], capture_output=True, text=True, check=True,
+        timeout=60).stdout.strip().split("|")
+    assert image == IIPSRV_IMAGE
+    assert readonly == "true"
+    assert '"HostIp":"127.0.0.1"' in ports and '"HostIp":"0.0.0.0"' not in ports
+    assert int(memory) == 768 * 1024 * 1024 and int(cpus) == 2_000_000_000
+    assert '"Destination":"/images"' in mounts and '"RW":false' in mounts
 
 
 # R-301

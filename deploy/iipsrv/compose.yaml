@@ -7,13 +7,14 @@
 #   docker compose -f deploy/iipsrv/compose.yaml up -d
 #
 # LAMINARIO_STORE names the slide store; unset it is the production path. Locally: <repository>/.data/store.
+# LAMINARIO_IIPSRV_PORT is the loopback port, 8149 unless set (the tests use a free one).
 name: laminario-iipsrv
 services:
   iipsrv:
     image: iipsrv/iipsrv@sha256:a1ce6fe828afc91893a03b41b360a50d84f905a96b410391ce4f8be636577353  # 1.3
     restart: unless-stopped
     ports:
-      - "127.0.0.1:8149:80"
+      - "127.0.0.1:${LAMINARIO_IIPSRV_PORT:-8149}:80"
     volumes:
       - ${LAMINARIO_STORE:-/srv/laminario/store}:/images:ro
     environment:
