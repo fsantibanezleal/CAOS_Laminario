@@ -99,6 +99,12 @@ async def iiif_request(path: str, request: Request, db: Annotated[AsyncSession, 
 
 @router.get("/api/_internal/iiif-access/{key:path}", status_code=204, include_in_schema=False)
 async def iiif_access(key: str, db: Annotated[AsyncSession, Depends(session)]) -> Response:
-    """nginx's check before it serves a tile: 204 for a published image, 404 otherwise (blocked outside)."""
-    await _public(key, db)
+    """nginx's check before it serves a tile: 204 for a published image, 403 otherwise.
+
+    nginx's ``auth_request`` reads 401 and 403 as a refusal and any other status as an error, hence 403.
+    nginx blocks this path from outside.
+    """
+    stored = iiif.storage_key(key)
+    if stored is None or await slides.get_public_pyramid(db, stored) is None:
+        return Response(status_code=403)
     return Response(status_code=204)
