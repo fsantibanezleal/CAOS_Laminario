@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from sqlalchemy import text
 from sqlalchemy.engine import Engine
 
-from app.db.base import utcnow
+from app.db.base import utcstamp
 from app.jobs import journal
 
 DEFAULT_TIMEOUT_S = {"probe": 600, "process_asset": 3600, "fuse_stack": 7200}
@@ -46,7 +46,7 @@ def enqueue(engine: Engine, kind: str, payload: dict, *, timeout_s: int | None =
                  ":slide, :now) RETURNING id"),
             {"pid": public_id, "kind": kind, "heavy": heavy, "payload": json.dumps(payload),
              "timeout": timeout_s or DEFAULT_TIMEOUT_S.get(kind, 3600), "max": max_attempts, "slide": slide_id,
-             "now": utcnow()},
+             "now": utcstamp()},
         ).scalar_one()
     journal.record(engine, job_id, "queued", {"kind": kind})
     return job_id, public_id
@@ -64,7 +64,7 @@ def claim(engine: Engine, worker: str) -> ClaimedJob | None:
                 return None
             conn.execute(text("UPDATE job SET status = 'running', attempts = attempts + 1, worker = :worker, "
                               "started_at = :now, finished_at = NULL WHERE id = :id"),
-                         {"worker": worker, "now": utcnow(), "id": row.id})
+                         {"worker": worker, "now": utcstamp(), "id": row.id})
             conn.exec_driver_sql("COMMIT")
         except Exception:
             conn.exec_driver_sql("ROLLBACK")
@@ -82,7 +82,7 @@ def finish(engine: Engine, job_id: int, status: str, *, result: dict | None = No
         conn.execute(text("UPDATE job SET status = :status, result_json = :result, error = :error, "
                           "finished_at = :now WHERE id = :id"),
                      {"status": status, "result": json.dumps(result) if result is not None else None,
-                      "error": (error or "")[:500] or None, "now": utcnow(), "id": job_id})
+                      "error": (error or "")[:500] or None, "now": utcstamp(), "id": job_id})
     data = {"result": result} if result is not None else {}
     if error:
         data["error"] = error[:500]

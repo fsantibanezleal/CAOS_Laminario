@@ -15,6 +15,8 @@ from datetime import datetime
 from sqlalchemy import text
 from sqlalchemy.engine import Connection, Engine
 
+from app.db.base import utcstamp
+
 TERMINAL = ("succeeded", "failed", "cancelled")
 
 
@@ -33,10 +35,10 @@ def record(engine: Engine, job_id: int, event: str, data: dict | None = None) ->
         conn.execute(
             text(
                 "INSERT INTO job_event (job_id, seq, event, data_json, created_at) "
-                "SELECT :job, COALESCE(MAX(seq), 0) + 1, :event, :data, CURRENT_TIMESTAMP "
+                "SELECT :job, COALESCE(MAX(seq), 0) + 1, :event, :data, :now "
                 "FROM job_event WHERE job_id = :job"
             ),
-            {"job": job_id, "event": event, "data": payload},
+            {"job": job_id, "event": event, "data": payload, "now": utcstamp()},
         )
         return conn.execute(text("SELECT MAX(seq) FROM job_event WHERE job_id = :job"), {"job": job_id}).scalar_one()
 
