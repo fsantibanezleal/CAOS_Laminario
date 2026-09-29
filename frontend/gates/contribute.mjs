@@ -20,7 +20,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import exifr from "exifr";
 import { chromium } from "playwright";
-import { FRONTEND, LANGS, ORIGIN, ROOMS, outDir, serve } from "./lib/serve.mjs";
+import { FRONTEND, LANGS, ORIGIN, ROOMS, WIDTHS, outDir, serve } from "./lib/serve.mjs";
 
 const ROOT = join(FRONTEND, "..");
 const failures = [];
@@ -228,11 +228,11 @@ try {
     "R-1208: the slide opens at its address with the scanner file's SHA-256");
   await page.screenshot({ path: join(out, "slide.png"), fullPage: true });
 
-  // The places fit: every section of the editor, the list and the account places, at a phone's width and a
-  // desktop's, in both rooms and both languages, with no sideways scroll; each one screenshotted.
+  // The places fit (R-080): every section of the editor, the list and the account places, at every width of the
+  // interface's gates, in both rooms and both languages, with no sideways scroll; each one screenshotted.
   const signedIn = await context.storageState();
   const overflow = (p) => p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  for (const width of [360, 1280]) for (const room of ROOMS) for (const lang of LANGS) {
+  for (const width of WIDTHS) for (const room of ROOMS) for (const lang of LANGS) {
     const tag = `${width}-${room}-${lang}`;
     for (const withAccount of [true, false]) {
       const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce",

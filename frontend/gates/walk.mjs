@@ -1,7 +1,8 @@
 // The pointer walk through the places built so far, against the real build and the API over the base collection.
 //
 // R-084   from the landing place, every place is reached by clicking (no keyboard, no typed address): the realms,
-//         a cabinet, a drawer, a slide, its stage, search and the map
+//         a cabinet, a drawer, a slide, its stage, search, the map, and the way to contribute (sign in, where a
+//         visitor who opens /contribute is also sent)
 // R-1107  the slide shows every image's source, record, author or rights holder, licence and, for a base slide, SHA-256
 // R-1006  after every navigation the new place's heading has the focus; a place reopened from its address (filters
 //         included) shows the same results as when it was reached by clicking
@@ -163,6 +164,17 @@ try {
   // Back to the collections from the masthead's wordmark.
   await page.locator("header a[href='/']").first().click();
   await arrived(page, (url) => url.pathname === "/", "landing-again");
+
+  // The way to contribute: the masthead's sign-in, whose form leads to the account's places (U12).
+  await page.locator("header").getByRole("link", { name: "Sign in" }).click();
+  await arrived(page, (url) => url.pathname === "/signin", "signin");
+  check(await page.locator("main form input[type=password]").count() === 1, "sign in: no password field");
+  check(await page.locator("main a[href='/forgot-password']").count() === 1, "sign in: no way to reset a password");
+  await page.locator("main a[href='/forgot-password']").click();
+  await arrived(page, (url) => url.pathname === "/forgot-password", "forgot-password");
+  await page.goto(`${ORIGIN}/contribute`, { waitUntil: "networkidle" });
+  await page.waitForURL((url) => url.pathname === "/signin" && url.searchParams.get("next") === "/contribute");
+  steps.push("a visitor opening /contribute is sent to sign in, and returns there after");
 
   // A place that does not exist says so and leads back.
   await page.goto(`${ORIGIN}/nowhere`, { waitUntil: "networkidle" });
