@@ -59,7 +59,9 @@ LAMINARIO_TEST_TMP=E:/_Temp/laminario-pytest
 ```
 
 `LAMINARIO_FIXTURES` is the local data vault the imaging tests read: `samples/` (the slide files: CMU-1, the
-Smithsonian ostracod NDPI, the NHM louse scan, the Commons thin section) and `edf-reference/` (the EPFL
+Smithsonian ostracod NDPI, the NHM louse scan, the Commons thin section; and for the contribute gate a photograph
+that carries its GPS position, `commons_san_cristobal_gps.jpg`: "Atardecer desde el cerro San Cristobal" by
+Mulatoenchile, Wikimedia Commons, CC BY-SA 3.0, SHA-256 `1435f31d200aee9c653335bf78b7c6ca5ab60a433732e4ac1a957139d03bde27`) and `edf-reference/` (the EPFL
 extended-depth-of-field plugin's three sample stacks, its outputs, and the runners that produced them). None of
 it is in git; without it those tests are skipped and say so. Put the test folder on a scratch drive: the
 pyramid tests write hundreds of megabytes.
@@ -130,7 +132,8 @@ tusd.exe -host=127.0.0.1 -port=8148 -base-path=/files/ -upload-dir=.data\quarant
 ```
 
 The worker verifies each finished upload and processes it. The upload tests start their own tusd from
-`LAMINARIO_TUSD_BIN` and skip without it.
+`LAMINARIO_TUSD_BIN` and skip without it. The web dev server and the preview proxy `/files/` to tusd keeping the
+page's host, so the addresses tusd gives the browser are the page's own, as behind nginx.
 
 ## 9. The collection tree
 
@@ -177,6 +180,18 @@ npm run gate:states                 # focus, tooltip, dialog, toast, with screen
 
 The screenshots land in `frontend/.gates/` (ignored by git) and are read before a unit closes. The specimen place
 is at `/design` in `npm run dev`.
+
+The contribute gate runs the whole path end to end and builds its own sandbox (a fresh data root, the API, the
+worker, tusd and the preview), so ports 8147, 8148 and 4909 must be free. It uploads CMU-1 and processes it, which
+takes a few minutes:
+
+```powershell
+cd frontend
+npm run build
+$env:LAMINARIO_FIXTURES = "E:/_Datos/laminario"; $env:LAMINARIO_TUSD_BIN = "<tusd.exe>"
+$env:LAMINARIO_TEST_TMP = "E:/_Temp/laminario-gates"   # where the sandbox goes; removed when the gate passes
+npm run gate:contribute
+```
 
 ## Tests and guards
 

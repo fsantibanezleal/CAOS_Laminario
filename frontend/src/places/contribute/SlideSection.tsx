@@ -7,6 +7,7 @@ import { localised, useTree } from "../../tree/TreeProvider";
 import { Select, TextField } from "../../ui/Field";
 import { Icon } from "../../ui/Icon";
 import styles from "./Contribute.module.css";
+import { labelEnd } from "./SlidePreview";
 import type { SectionProps } from "./sections";
 
 type SlideFields = CaseDraft["slide"];
@@ -18,7 +19,7 @@ function FormatDrawing({ format }: { format: SlideFields["format"] }) {
     <svg viewBox="0 0 96 64" width={96} height={64} aria-hidden="true" className={styles.formatDrawing}>
       <rect x={(96 - w * scale) / 2} y={(64 - h * scale) / 2} width={w * scale} height={h * scale} rx={1.5}
         className={format === "custom" ? styles.formatCustom : styles.formatGlass} />
-      <rect x={(96 - w * scale) / 2} y={(64 - h * scale) / 2} width={Math.min(24, w * 0.3) * scale} height={h * scale}
+      <rect x={(96 - w * scale) / 2} y={(64 - h * scale) / 2} width={labelEnd(w) * scale} height={h * scale}
         rx={1.5} className={styles.formatFrost} />
     </svg>
   );
@@ -82,10 +83,10 @@ export function SlideSection({ draft, update, errorFor }: SectionProps) {
       </fieldset>
 
       <div className={styles.grid2}>
-        <TextField label={t("slide.stain")} optional value={s.stain} maxLength={80} placeholder={t("slide.stain.example")}
+        <TextField label={t("slide.stain")} optional value={s.stain} maxLength={80} hint={t("slide.stain.example")}
           error={errorFor("slide.stain")} onChange={(e) => set({ stain: e.target.value })} />
         <TextField label={t("slide.mountant")} optional value={s.mountant} maxLength={80}
-          placeholder={t("slide.mountant.example")} error={errorFor("slide.mountant")}
+          hint={t("slide.mountant.example")} error={errorFor("slide.mountant")}
           onChange={(e) => set({ mountant: e.target.value })} />
         <TextField label={t("slide.catalogueNumber")} optional value={s.catalogueNumber} maxLength={64}
           hint={t("slide.catalogueNumber.hint")} error={errorFor("slide.catalogue_number")}
@@ -93,7 +94,7 @@ export function SlideSection({ draft, update, errorFor }: SectionProps) {
         <TextField label={t("slide.labelNote")} optional value={s.labelNote} maxLength={160}
           hint={t("slide.labelNote.hint")} error={errorFor("slide.label_note")}
           onChange={(e) => set({ labelNote: e.target.value })} />
-        <TextField label={t("slide.preparedOn")} optional value={s.preparedOn} inputMode="numeric" placeholder="1962-08"
+        <TextField label={t("slide.preparedOn")} optional value={s.preparedOn} inputMode="numeric"
           hint={t("date.partial.hint")} error={errorFor("slide.prepared_on")}
           onChange={(e) => set({ preparedOn: e.target.value })} />
         <TextField label={t("slide.preparer")} optional value={s.preparer} maxLength={120}

@@ -45,6 +45,8 @@ export function PointMap({ point, uncertainty, photos, onPick }: { point: LatLon
   const [loaded, setLoaded] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const [basemap, setBasemap] = useState<boolean | null>(null);
+  // Set once the countries are drawn: the map says what it drew (a gate waits for it, not for a timer).
+  const [drawn, setDrawn] = useState(false);
   const pick = useRef(onPick);
   pick.current = onPick;
 
@@ -81,6 +83,7 @@ export function PointMap({ point, uncertainty, photos, onPick }: { point: LatLon
     map.on("load", () => {
       api.countryShapes().then((shapes) => {
         (map.getSource("countries") as GeoJSONSource | undefined)?.setData(shapes as unknown as Data);
+        map.once("idle", () => setDrawn(true));
       }, () => undefined);
       map.addSource("photos", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
       map.addLayer({ id: "photos", type: "circle", source: "photos", paint: { "circle-radius": 6,
@@ -131,7 +134,7 @@ export function PointMap({ point, uncertainty, photos, onPick }: { point: LatLon
 
   if (unavailable) return <p className={styles.fieldHint}>{t("place.mapUnavailable")}</p>;
   return (
-    <div className={styles.pointMap}>
+    <div className={styles.pointMap} data-drawn={drawn || undefined}>
       <div ref={container} className={styles.pointMapCanvas} aria-label={t("place.map")} role="region" />
       <p className={styles.fieldHint}>{t("place.map.hint")}</p>
     </div>

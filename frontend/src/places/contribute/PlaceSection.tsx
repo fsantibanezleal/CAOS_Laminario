@@ -36,7 +36,7 @@ export function PlaceSection({ draft, update, errorFor, flagFor }: SectionProps)
   return (
     <div className={styles.sectionBody}>
       <TextField label={t("place.locality")} optional value={p.locality} maxLength={300}
-        placeholder={t("place.locality.example")} error={errorFor("specimen.locality_text")}
+        hint={t("place.locality.example")} error={errorFor("specimen.locality_text")}
         onChange={(e) => set({ locality: e.target.value })} />
 
       <Suspense fallback={<Skeleton lines={4} />}>
@@ -45,10 +45,10 @@ export function PlaceSection({ draft, update, errorFor, flagFor }: SectionProps)
       </Suspense>
 
       <div className={styles.grid3}>
-        <TextField label={t("place.lat")} optional value={p.lat} inputMode="decimal" placeholder="-33.4489"
+        <TextField label={t("place.lat")} optional value={p.lat} inputMode="decimal" hint={t("place.coordinates.hint")}
           error={errorFor("specimen.coordinates.lat") ?? errorFor("specimen.coordinates")}
           onChange={(e) => set({ lat: e.target.value })} />
-        <TextField label={t("place.lon")} optional value={p.lon} inputMode="decimal" placeholder="-70.6693"
+        <TextField label={t("place.lon")} optional value={p.lon} inputMode="decimal"
           error={errorFor("specimen.coordinates.lon")} onChange={(e) => set({ lon: e.target.value })} />
         <TextField label={t("place.uncertainty")} optional value={p.uncertainty} inputMode="numeric"
           hint={t("place.uncertainty.hint")} error={errorFor("specimen.coordinates.uncertainty_m")}

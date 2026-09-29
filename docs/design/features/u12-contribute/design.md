@@ -9,9 +9,11 @@ wiki page [14 Contribute](../../../architecture/14_contribute.md). This page rec
 |---|---|
 | Codes and parameters on every validation error and flag | `app/contracts/ingest.py`, `app/contracts/errors.py`, `app/collections/service.py` |
 | The case's lifecycle: submit, publication when processed, back to draft on failure, the contributor's drafts | `app/services/cases.py`, `app/routers/cases.py`, `app/jobs/kinds.py`, migration 0010 |
-| A private case's files refused while they carry a GPS position | `app/uploads/verify.py` |
-| The account places: sign in, join from an invitation, reset a password, sign out | `frontend/src/places/account/` |
+| A private case's files refused while they carry a GPS position | `app/jobs/kinds.py` (`has_gps`, the verify job) |
+| The account places: sign in, join from an invitation, reset a password, sign out; the masthead's account | `frontend/src/places/account/`, `frontend/src/account/`, `frontend/src/ui/AccountMenu.tsx`; registration refusals with codes in `app/routers/accounts.py` |
 | The contribute place and its parts: the case form, images with their EXIF, the location routine, calibration, anchor and placement, uploads over tus, processing progress | `frontend/src/places/contribute/`, `frontend/src/contribute/` |
+| The parts vocabulary for the part field | `GET /api/vocab/parts` in `app/routers/collections.py` |
+| The original file's SHA-256 on each image, shown on its slide | `app/jobs/kinds.py`, `AssetRecord.original_sha256` |
 | The end-to-end gate | `frontend/gates/contribute.mjs` |
 
 ## Decisions

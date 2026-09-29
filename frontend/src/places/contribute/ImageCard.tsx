@@ -102,7 +102,7 @@ export function ImageCard({ image, index, count, draft, hasFile, onChange, onRem
         </div>
       ) : (
         <TextField label={t("images.iiifUrl")} value={image.remoteIiif} type="url" inputMode="url"
-          placeholder="https://example.org/iiif/3/image-id" hint={t("images.iiifUrl.hint")}
+          hint={t("images.iiifUrl.hint")}
           error={errorFor(`${at}.remote_iiif`) ?? errorFor(`${at}.upload_id`)}
           onChange={(e) => onChange({ remoteIiif: e.target.value })} />
       )}

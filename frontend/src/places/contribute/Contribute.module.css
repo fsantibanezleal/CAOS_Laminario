@@ -437,6 +437,12 @@
   min-width: 0;
 }
 
+/* A grid item's automatic minimum width is its content's: without this the rail's row of steps (a scroller on a
+   phone) would widen the column, the drawing and the page. */
+.side > * {
+  min-width: 0;
+}
+
 .rail ol {
   display: flex;
   gap: var(--s-1);

@@ -19,6 +19,7 @@ import { Place } from "../../router/Place";
 import { Button } from "../../ui/Button";
 import { EmptyState, Skeleton } from "../../ui/Feedback";
 import { Glyph } from "../../ui/Icon";
+import { AnchorName } from "./AnchorName";
 import styles from "./Contribute.module.css";
 import { ImagesSection } from "./ImagesSection";
 import { PlaceSection } from "./PlaceSection";
@@ -221,7 +222,7 @@ export function CaseEditor() {
   return (
     <Place title={`${t("contribute.case")}: ${title}`} trail={trail} wide
       heading={<span className={styles.editorHeading}>
-        {draft.specimen.anchor?.kind === "taxon" ? <i>{title}</i> : title}
+        {draft.specimen.anchor ? <AnchorName {...draft.specimen.anchor} /> : title}
         {record ? <span className={styles.badge} data-status={record.status}>{t(`contribute.status.${record.status}`)}</span>
           : <span className={styles.badge}>{t("contribute.status.unsent")}</span>}
       </span>}>

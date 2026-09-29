@@ -4,6 +4,7 @@
 // published slide's own drawing, with its real label and code, is made by the server (app/labels).
 import { COVERSLIP_MM, SLIDE_MM, type CaseDraft } from "../../contribute/draft";
 import { useI18n } from "../../i18n";
+import { isItalicName } from "../../slide/names";
 import styles from "./Contribute.module.css";
 
 function mm(value: string): number | null {
@@ -28,10 +29,15 @@ export function coverSize(draft: CaseDraft): [number, number] | null {
   return w && h ? [Math.max(w, h), Math.min(w, h)] : null;
 }
 
+/** The frosted label end, as app/labels/layout.py draws it: 20 mm on a glass of 70 mm or more, else 0.3 of its length. */
+export function labelEnd(long: number): number {
+  return long >= 70 ? 20 : 0.3 * long;
+}
+
 export function SlidePreview({ draft }: { draft: CaseDraft }) {
   const { t } = useI18n();
   const [w, h] = slideSize(draft);
-  const label = Math.min(24, w * 0.3);
+  const label = labelEnd(w);
   const cover = coverSize(draft);
   const free = w - label;
   const fits = cover ? cover[0] <= free && cover[1] <= h : true;
@@ -43,6 +49,11 @@ export function SlidePreview({ draft }: { draft: CaseDraft }) {
   const number = draft.slide.catalogueNumber.trim();
   const date = draft.specimen.collectedOn.trim();
   const pad = 1.4;
+  // Courier Prime's advance is 0.6 em, so a line of size s in the label holds floor(width / (0.6 s)) characters.
+  const fit = (text: string, size: number) => {
+    const chars = Math.max(4, Math.floor((label - 2 * pad - 1.8) / (0.6 * size)));
+    return text.length > chars ? `${text.slice(0, chars - 1)}…` : text;
+  };
   const qr = Math.min(label - 2 * pad, h * 0.34);
   const described = [name, number, t(`format.${draft.slide.format}`),
     cover ? t("preview.coverslip", { w: cover[0], h: cover[1] }) : t("coverslip.none")].filter(Boolean).join(", ");
@@ -54,11 +65,11 @@ export function SlidePreview({ draft }: { draft: CaseDraft }) {
         <rect x={0} y={0} width={label} height={h} rx={0.8} className={styles.frost} />
         <rect x={pad} y={pad} width={label - 2 * pad} height={h - 2 * pad} rx={0.3} className={styles.labelPaper} />
         <text x={pad + 0.9} y={pad + 3.2} className={styles.labelName}
-          fontStyle={anchor?.kind === "taxon" ? "italic" : "normal"}>
-          {name.length > 22 ? `${name.slice(0, 21)}…` : name}
+          fontStyle={anchor && isItalicName(anchor) ? "italic" : "normal"}>
+          {fit(name, 2.1)}
         </text>
-        {number ? <text x={pad + 0.9} y={pad + 6} className={styles.labelLine}>{number}</text> : null}
-        {date ? <text x={pad + 0.9} y={pad + 8.6} className={styles.labelLine}>{date}</text> : null}
+        {number ? <text x={pad + 0.9} y={pad + 6} className={styles.labelLine}>{fit(number, 1.8)}</text> : null}
+        {date ? <text x={pad + 0.9} y={pad + 8.6} className={styles.labelLine}>{fit(date, 1.8)}</text> : null}
         <rect x={label - pad - qr - 0.6} y={h - pad - qr - 0.6} width={qr} height={qr} className={styles.qrPlace} />
         {cover ? (
           <>
@@ -71,8 +82,8 @@ export function SlidePreview({ draft }: { draft: CaseDraft }) {
         )}
       </svg>
       <figcaption className={styles.previewCaption}>
-        <span>{t(`format.${draft.slide.format}`)}</span>
         <span>{t("preview.size", { w: Math.round(w * 10) / 10, h: Math.round(h * 10) / 10 })}</span>
+        <span>{draft.slide.format === "custom" ? t("format.custom") : t(`format.${draft.slide.format}.note`)}</span>
         {cover && !fits ? <span className={styles.previewWarn}>{t("preview.coverTooLarge")}</span> : null}
       </figcaption>
     </figure>

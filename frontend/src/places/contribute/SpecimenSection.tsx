@@ -58,23 +58,12 @@ export function SpecimenSection({ draft, update, errorFor }: SectionProps) {
 
       {kind === "taxon" ? (
         <div className={styles.grid2}>
-          <div className={styles.field}>
-            <label className={styles.fieldLabel} htmlFor="part">{t("specimen.part")}
-              <span className={styles.optional}> ({t("field.optional")})</span></label>
-            <select id="part" className={styles.select} value={s.part} aria-describedby="part-hint"
-              aria-invalid={errorFor("specimen.part") ? true : undefined}
-              onChange={(e) => set({ part: e.target.value })}>
-              <option value="">{t("specimen.part.whole")}</option>
-              {[...partOptions].map(([group, options]) => (
-                <optgroup key={group} label={known(`specimen.partGroup.${group}`) ? t(`specimen.partGroup.${group}` as
-                  MessageKey) : group}>
-                  {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-                </optgroup>
-              ))}
-            </select>
-            <p id="part-hint" className={styles.fieldHint}>{t("specimen.part.hint")}</p>
-            {errorFor("specimen.part") ? <p className={styles.fieldError}>{errorFor("specimen.part")}</p> : null}
-          </div>
+          <Select label={t("specimen.part")} optional value={s.part} hint={t("specimen.part.hint")}
+            error={errorFor("specimen.part")} onChange={(e) => set({ part: e.target.value })}
+            options={[{ value: "", label: t("specimen.part.whole") }]}
+            groups={[...partOptions].map(([group, options]) => ({
+              label: known(`specimen.partGroup.${group}`) ? t(`specimen.partGroup.${group}` as MessageKey) : group,
+              options }))} />
           <Select label={t("specimen.typeStatus")} optional value={s.typeStatus}
             error={errorFor("specimen.type_status")}
             onChange={(e) => set({ typeStatus: e.target.value as CaseDraft["specimen"]["typeStatus"] })}
@@ -92,14 +81,14 @@ export function SpecimenSection({ draft, update, errorFor }: SectionProps) {
             {errorFor("specimen.preservation") ? <p className={styles.fieldError}>{errorFor("specimen.preservation")}</p>
               : null}
           </fieldset>
-          <AnchorField kind="taxon" value={s.host} optional onChange={(host) => set({ host })}
+          <AnchorField kind="taxon" value={s.host} optional placeholder="" onChange={(host) => set({ host })}
             label={t("specimen.host")} hint={t("specimen.host.hint")} error={errorFor("specimen.host", { prefix: true })} />
         </div>
       ) : null}
 
       <div className={styles.grid2}>
         <TextField label={t("specimen.collectedOn")} optional value={s.collectedOn} inputMode="numeric"
-          placeholder="2019-04-20" hint={t("date.partial.hint")} error={errorFor("specimen.collected_on")}
+          hint={t("date.partial.hint")} error={errorFor("specimen.collected_on")}
           onChange={(e) => set({ collectedOn: e.target.value })} />
         <TextField label={t("specimen.collector")} optional value={s.collector} maxLength={120} autoComplete="name"
           error={errorFor("specimen.collector")} onChange={(e) => set({ collector: e.target.value })} />

@@ -11,6 +11,7 @@ import type { AnchorSuggestion } from "../../contract/catalog";
 import { useI18n } from "../../i18n";
 import { Button } from "../../ui/Button";
 import { Glyph } from "../../ui/Icon";
+import { AnchorName } from "./AnchorName";
 import styles from "./Contribute.module.css";
 
 interface AnchorFieldProps {
@@ -21,12 +22,14 @@ interface AnchorFieldProps {
   hint?: string;
   error?: string;
   optional?: boolean;
+  /** The example in the empty field; by default a name of the kind (none for a host, whose example would mislead). */
+  placeholder?: string;
 }
 
 type Lookup = { state: "idle" } | { state: "busy" } | { state: "done"; items: AnchorSuggestion[] }
   | { state: "failed"; unavailable: boolean };
 
-export function AnchorField({ kind, value, onChange, label, hint, error, optional }: AnchorFieldProps) {
+export function AnchorField({ kind, value, onChange, label, hint, error, optional, placeholder }: AnchorFieldProps) {
   const { t } = useI18n();
   const id = useId();
   const [query, setQuery] = useState("");
@@ -76,7 +79,7 @@ export function AnchorField({ kind, value, onChange, label, hint, error, optiona
         <div className={styles.chosen}>
           <div>
             <p className={styles.chosenName}>
-              {kind === "taxon" ? <i>{value.name}</i> : value.name}
+              <AnchorName kind={kind} rank={value.rank} name={value.name} />
               {value.rank ? <span className={styles.rank}>{rankName(t, value.rank)}</span> : null}
             </p>
             <p className={styles.chosenRef}>
@@ -112,7 +115,7 @@ export function AnchorField({ kind, value, onChange, label, hint, error, optiona
           aria-activedescendant={open && active >= 0 ? `${listId}-${active}` : undefined}
           aria-invalid={error ? true : undefined} aria-describedby={[hint ? `${id}-hint` : "", error ? `${id}-error` : "",
             `${id}-status`].filter(Boolean).join(" ")}
-          autoComplete="off" spellCheck={false} value={query} placeholder={t(`anchor.placeholder.${kind}`)}
+          autoComplete="off" spellCheck={false} value={query} placeholder={placeholder ?? t(`anchor.placeholder.${kind}`)}
           onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
           onBlur={() => window.setTimeout(() => setOpen(false), 150)}
@@ -139,7 +142,7 @@ export function AnchorField({ kind, value, onChange, label, hint, error, optiona
             className={styles.option} onMouseDown={(e) => e.preventDefault()} onClick={() => choose(item)}
             onMouseEnter={() => setActive(i)}>
             <span className={styles.optionName}>
-              {kind === "taxon" ? <i>{item.name}</i> : item.name}
+              <AnchorName kind={kind} rank={item.rank} name={item.name} />
               {item.rank ? <span className={styles.rank}>{rankName(t, item.rank)}</span> : null}
               {item.classification ? <span className={styles.rank}>{item.classification}</span> : null}
             </span>

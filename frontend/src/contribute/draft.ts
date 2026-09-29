@@ -44,6 +44,9 @@ export const LICENCES = [
   { uri: "https://creativecommons.org/licenses/by-nc/4.0/", short: "CC BY-NC 4.0" },
   { uri: "https://creativecommons.org/licenses/by-nc-sa/4.0/", short: "CC BY-NC-SA 4.0" },
   { uri: "https://creativecommons.org/publicdomain/zero/1.0/", short: "CC0 1.0" },
+  // Earlier versions, for an image already published under one (the policy accepts 2.0 to 4.0 of BY and BY-SA).
+  { uri: "https://creativecommons.org/licenses/by/3.0/", short: "CC BY 3.0" },
+  { uri: "https://creativecommons.org/licenses/by-sa/3.0/", short: "CC BY-SA 3.0" },
 ] as const;
 
 /** What the browser read from a photograph before anything was sent. */
