@@ -18,7 +18,12 @@ import pytest
 
 
 def _fixture_root() -> Path | None:
+    """``LAMINARIO_FIXTURES`` from the process environment, else from the settings (the local ``.env``)."""
     value = os.environ.get("LAMINARIO_FIXTURES")
+    if not value:
+        from app.config import Settings
+
+        value = Settings().fixtures
     if not value:
         return None
     path = Path(value)

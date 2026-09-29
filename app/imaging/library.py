@@ -26,10 +26,21 @@ class LibraryInfo:
     bin_dir: str | None
 
 
+def _bin_dir() -> str | None:
+    """``LAMINARIO_VIPS_BIN`` from the process environment, else from the settings (the local ``.env``)."""
+    value = os.environ.get(ENV_VAR)
+    if value:
+        return value
+    from app.config import get_settings
+
+    configured = get_settings().vips_bin
+    return str(configured) if configured else None
+
+
 @lru_cache
 def vips():
     """The ``pyvips`` module, with the library located per the environment."""
-    bin_dir = os.environ.get(ENV_VAR)
+    bin_dir = _bin_dir()
     if bin_dir:
         folder = Path(bin_dir)
         if not folder.is_dir():
@@ -46,4 +57,4 @@ def info() -> LibraryInfo:
     module = vips()
     version = ".".join(str(module.version(i)) for i in range(3))
     has_openslide = module.type_find("VipsForeign", "openslideload") != 0
-    return LibraryInfo(version=version, openslide=has_openslide, bin_dir=os.environ.get(ENV_VAR))
+    return LibraryInfo(version=version, openslide=has_openslide, bin_dir=_bin_dir())
