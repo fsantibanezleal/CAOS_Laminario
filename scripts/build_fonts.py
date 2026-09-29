@@ -32,6 +32,7 @@ from fontTools.varLib import instancer
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "frontend" / "public" / "fonts"
+LABEL_FONTS = ROOT / "app" / "labels" / "fonts"
 COMMIT = "23e54b51ddffbc7713c583748e3bd86f62b1fa4a"  # google/fonts main on 2026-09-24
 UPSTREAM = f"https://raw.githubusercontent.com/google/fonts/{COMMIT}/ofl/"
 
@@ -84,9 +85,9 @@ def upstream(path: str) -> bytes:
     return data
 
 
-def woff2(font: TTFont) -> bytes:
+def woff2(font: TTFont, flavor: str | None = "woff2") -> bytes:
     options = subset.Options()
-    options.flavor = "woff2"
+    options.flavor = flavor
     options.layout_features = ["*"]
     options.name_IDs = ["*"]
     options.name_languages = ["*"]
@@ -95,7 +96,7 @@ def woff2(font: TTFont) -> bytes:
     subsetter.populate(text=TEXT)
     subsetter.subset(font)
     font.recalcTimestamp = False  # the build is reproducible: --check compares bytes
-    font.flavor = "woff2"
+    font.flavor = flavor
     out = io.BytesIO()
     font.save(out, reorderTables=False)
     return out.getvalue()
@@ -124,7 +125,7 @@ def rename(font: TTFont, style: str) -> None:
                   "License requires of a Modified Version of a font with a Reserved Font Name.", 10, 3, 1, 0x409)
 
 
-def build() -> dict[str, bytes]:
+def build() -> dict[Path, bytes]:
     files: dict[str, bytes] = {}
     for src, style, name in (("sourcesans3/SourceSans3[wght].ttf", "Regular", "laminario-sans-roman.woff2"),
                              ("sourcesans3/SourceSans3-Italic[wght].ttf", "Italic", "laminario-sans-italic.woff2")):
@@ -134,13 +135,18 @@ def build() -> dict[str, bytes]:
     fraunces = TTFont(io.BytesIO(upstream("fraunces/Fraunces[SOFT,WONK,opsz,wght].ttf")))
     fraunces = instancer.instantiateVariableFont(fraunces, {"SOFT": 50, "WONK": 0, "wght": (400, 700)})
     files["fraunces-display.woff2"] = woff2(fraunces)
+    labels: dict[str, bytes] = {}
     for style in ("Regular", "Italic", "Bold"):
         font = TTFont(io.BytesIO(upstream(f"courierprime/CourierPrime-{style}.ttf")))
         files[f"courier-prime-{style.lower()}.woff2"] = woff2(font)
+        # The same subset as TrueType, which the PDF labels embed (reportlab reads TrueType, not WOFF2).
+        font = TTFont(io.BytesIO(upstream(f"courierprime/CourierPrime-{style}.ttf")))
+        labels[f"courier-prime-{style.lower()}.ttf"] = woff2(font, flavor=None)
     # The licence texts are stored with LF line endings, as git keeps text in this repository (upstream has CRLF).
     for name, src in (("laminario-sans", "sourcesans3"), ("fraunces", "fraunces"), ("courier-prime", "courierprime")):
         files[f"{name}-OFL.txt"] = upstream(f"{src}/OFL.txt").replace(b"\r\n", b"\n")
-    return files
+    labels["courier-prime-OFL.txt"] = files["courier-prime-OFL.txt"]
+    return {**{OUT / n: data for n, data in files.items()}, **{LABEL_FONTS / n: data for n, data in labels.items()}}
 
 
 def main() -> int:
@@ -149,16 +155,17 @@ def main() -> int:
     args = parser.parse_args()
     files = build()
     if args.check:
-        stale = [n for n, data in files.items() if not (OUT / n).exists() or (OUT / n).read_bytes() != data]
+        stale = [str(path.relative_to(ROOT)) for path, data in files.items()
+                 if not path.exists() or path.read_bytes() != data]
         if stale:
             print("fonts differ from a rebuild:", ", ".join(stale))
             return 1
         print(f"fonts: {len(files)} files match a rebuild")
         return 0
-    OUT.mkdir(parents=True, exist_ok=True)
-    for name, data in files.items():
-        (OUT / name).write_bytes(data)
-        print(f"{name}: {len(data) / 1024:.1f} KB")
+    for path, data in files.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+        print(f"{path.relative_to(ROOT)}: {len(data) / 1024:.1f} KB")
     return 0
 
 
