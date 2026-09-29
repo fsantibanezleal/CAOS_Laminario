@@ -29,6 +29,9 @@
     },
     "createdSlideCase": {
       "$ref": "#/$defs/CreatedSlideCase"
+    },
+    "upload": {
+      "$ref": "#/$defs/UploadRecord"
     }
   },
   "additionalProperties": false,
@@ -1182,6 +1185,119 @@
         "sha256"
       ],
       "title": "SourceRecord",
+      "type": "object"
+    },
+    "UploadRecord": {
+      "additionalProperties": false,
+      "description": "An upload as its contributor sees it (``GET /api/uploads``).",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "slide_id": {
+          "type": "string"
+        },
+        "asset_id": {
+          "type": "integer"
+        },
+        "filename": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "size": {
+          "type": "integer"
+        },
+        "wsi": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "uploading",
+            "received",
+            "accepted",
+            "rejected",
+            "cancelled"
+          ],
+          "type": "string"
+        },
+        "sniffed": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "job_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "slide_id",
+        "asset_id",
+        "size",
+        "wsi",
+        "status",
+        "created_at"
+      ],
+      "title": "UploadRecord",
       "type": "object"
     },
     "ValidationError": {

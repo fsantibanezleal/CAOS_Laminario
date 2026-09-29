@@ -37,6 +37,7 @@ CATALOG_ROOTS = {
     "account": c.AccountRecord,
     "invitation": c.InvitationRecord,
     "createdSlideCase": c.CreatedSlideCase,
+    "upload": c.UploadRecord,
 }
 
 

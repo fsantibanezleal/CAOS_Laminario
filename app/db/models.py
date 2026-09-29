@@ -1,5 +1,5 @@
 """Tables for the slide case (``slide``, ``asset``), processing (``job``, ``job_event``) and accounts (``user``,
-``accesstoken``, ``invitation``).
+``accesstoken``, ``invitation``) and uploads (``upload``).
 
 Other tables arrive with the units that need them (users and invitations, jobs, uploads, identifications),
 each with its own migration. Columns mirror the ingestion contract; the catalog record is assembled from them.
@@ -9,7 +9,9 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
-from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Index, Integer, String, Text, UniqueConstraint
+from sqlalchemy import (
+    BigInteger, Boolean, Date, DateTime, Float, ForeignKey, Index, Integer, String, Text, UniqueConstraint,
+)
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTableUUID
 from fastapi_users_db_sqlalchemy.access_token import SQLAlchemyBaseAccessTokenTableUUID
 from fastapi_users_db_sqlalchemy.generics import GUID
@@ -215,3 +217,34 @@ class Invitation(Base):
     used_by_id: Mapped[object | None] = mapped_column(GUID, ForeignKey("user.id", ondelete="SET NULL"))
     revoked_at: Mapped[datetime | None] = mapped_column(DateTime)
     mailed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+
+class Upload(Base):
+    """One file sent through tusd for one asset of a contributor's draft.
+
+    uploading (pre-create accepted it) -> received (tusd has every byte) -> accepted (verified, in the source store,
+    processing queued) or rejected (with the reason); cancelled when the client terminates it.
+    """
+
+    __tablename__ = "upload"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    #: The id tusd stores the upload under, chosen by the pre-create hook.
+    tus_id: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    user_id: Mapped[object] = mapped_column(GUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    slide_id: Mapped[int] = mapped_column(ForeignKey("slide.id", ondelete="CASCADE"), nullable=False)
+    asset_id: Mapped[int] = mapped_column(ForeignKey("asset.id", ondelete="CASCADE"), nullable=False)
+    filename: Mapped[str | None] = mapped_column(String(255))
+    declared_type: Mapped[str | None] = mapped_column(String(100))
+    size: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    wsi: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    status: Mapped[str] = mapped_column(String(12), nullable=False, default="uploading")
+    sha256: Mapped[str | None] = mapped_column(String(64))
+    sniffed: Mapped[str | None] = mapped_column(String(40))
+    reason: Mapped[str | None] = mapped_column(String(300))
+    source_path: Mapped[str | None] = mapped_column(String(500))
+    job_id: Mapped[str | None] = mapped_column(String(32))
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime)
+
+    __table_args__ = (Index(None, "user_id", "status"), Index(None, "asset_id"))

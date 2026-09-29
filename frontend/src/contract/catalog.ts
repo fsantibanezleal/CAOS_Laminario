@@ -10,6 +10,7 @@ export interface LaminarioCatalog {
   account?: AccountRecord;
   invitation?: InvitationRecord;
   createdSlideCase?: CreatedSlideCase;
+  upload?: UploadRecord;
 }
 export interface SlideRecord {
   id: string;
@@ -239,4 +240,22 @@ export interface CreatedSlideCase {
   id: string;
   status: string;
   flags?: ValidationFlag[];
+}
+/**
+ * An upload as its contributor sees it (``GET /api/uploads``).
+ */
+export interface UploadRecord {
+  id: number;
+  slide_id: string;
+  asset_id: number;
+  filename?: string | null;
+  size: number;
+  wsi: boolean;
+  status: "uploading" | "received" | "accepted" | "rejected" | "cancelled";
+  sniffed?: string | null;
+  sha256?: string | null;
+  reason?: string | null;
+  job_id?: string | null;
+  created_at: string;
+  finished_at?: string | null;
 }
