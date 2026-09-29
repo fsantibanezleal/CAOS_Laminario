@@ -8,9 +8,9 @@ life.molluscs 5 | taxon=Deroceras laeve@species | whole_mount | | brightfield | 
 life.molluscs 7 | taxon=Helix pomatia@species | whole_mount | | brightfield | | | radula
 life.molluscs 15 | taxon=Acanthodoris@genus | whole_mount | | brightfield | | | radula, Yale Peabody Museum
 life.molluscs 24 | taxon=Amphibulima patula@species | whole_mount | | brightfield | | | radula, 1 mm bar, Yale Peabody Museum
-life.molluscs 27 | taxon=Anomia@genus@Animalia | section | | brightfield | haematoxylin and eosin | | Yale Peabody Museum
-life.molluscs 32 | taxon=Anomia@genus@Animalia | section | | brightfield | haematoxylin and eosin | | Yale Peabody Museum
-life.molluscs 52 | taxon=Teuthida@order | whole_mount | | brightfield | | | paralarva, 0.5 mm bar, Yale Peabody Museum
+life.molluscs 27 | taxon=#2031838 | section | | brightfield | haematoxylin and eosin | | Yale Peabody Museum
+life.molluscs 32 | taxon=#2031838 | section | | brightfield | haematoxylin and eosin | | Yale Peabody Museum
+life.molluscs 52 | taxon=Cephalopoda@class | whole_mount | | brightfield | | | squid paralarva, 0.5 mm bar, Yale Peabody Museum; the backbone has no order Teuthida | name=Teuthida
 life.molluscs 55 | taxon=Callistoctopus macropus@species | whole_mount | | brightfield | | | radula, Yale Peabody Museum
 life.molluscs 56 | taxon=Doryteuthis pealeii@species | whole_mount | | brightfield | | | skin with chromatophores, Yale Peabody Museum
 life.molluscs 60 | taxon=Mollusca@phylum | whole_mount | | brightfield | | | aplacophoran spicules, 125 um bar, Yale Peabody Museum

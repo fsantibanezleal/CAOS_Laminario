@@ -1,0 +1,2834 @@
+# The base collection's curated selection, generated from data/base/picks/*.txt by
+# python -m app.base select; each pick was chosen by looking at its image on a harvest sheet.
+earth.fossils:
+- commons: File:1979-rem 01 hg.jpg
+  taxon: Ostracoda@class
+  preservation: fossil
+  prep: whole_mount
+  modality: sem_external
+  note: from marine sediment, Hannes Grobe
+- commons: File:1979-rem 04 hg.jpg
+  taxon: Elphidium@genus@Chromista
+  preservation: fossil
+  prep: whole_mount
+  modality: sem_external
+  note: benthic foraminifer, Hannes Grobe
+- commons: File:1979-rem 11 hg.jpg
+  taxon: Discoaster surculus@species
+  preservation: fossil
+  prep: strew
+  modality: sem_external
+  note: nannofossil, Hannes Grobe
+- commons: File:Alveolina Cross-section.jpg
+  taxon: Alveolina@genus@Chromista
+  preservation: fossil
+  prep: thin_section
+  modality: brightfield
+  note: cross-section, 40x, 500 um bar
+- commons: File:Cosmochlaina.png
+  taxon: Cosmochlaina@genus
+  preservation: fossil
+  prep: whole_mount
+  modality: brightfield
+  note: Burgsvik beds, Gotland (Silurian); mean cell diameter 12 um
+- commons: File:Cribostomoides-sp hg.jpg
+  taxon: Cribrostomoides@genus
+  preservation: fossil
+  prep: whole_mount
+  modality: sem_external
+  note: benthic foraminifer from marine sediment, Hannes Grobe (Alfred Wegener Institute)
+  name: Cribostomoides sp.
+- commons: File:Diatomaceous Earth BrightField.jpg
+  taxon: Bacillariophyceae@class
+  preservation: fossil
+  prep: strew
+  modality: brightfield
+  note: diatomaceous earth (kieselguhr)
+- commons: File:Gephyrocapsa-oceanica hg.jpg
+  taxon: Gephyrocapsa oceanica@species
+  preservation: fossil
+  prep: strew
+  modality: sem_external
+  note: coccolith from marine sediment, Hannes Grobe (Alfred Wegener Institute)
+- commons: File:Ghostshrimp.jpg
+  taxon: Glypturus acanthochirus@species
+  preservation: fossil
+  prep: whole_mount
+  modality: reflected
+  note: ghost-shrimp claw fragment under 2 mm, Pinecrest Beds, Hillsborough County
+  locality_text: Hillsborough County, Florida
+- commons: File:Helicosphaera-carteri hg.jpg
+  taxon: Helicosphaera carteri@species
+  preservation: fossil
+  prep: strew
+  modality: sem_external
+  note: coccolith from marine sediment, Hannes Grobe (Alfred Wegener Institute)
+- commons: File:Juxilyocypris schwarzbachi Carapace female dorsal.jpg
+  taxon: Juxilyocypris@genus
+  preservation: fossil
+  prep: whole_mount
+  modality: sem_external
+  note: female carapace, dorsal view; the backbone lists the genus only
+  name: Juxilyocypris schwarzbachi
+- commons: File:ETH-BIB-Psaronius-Dünnschliff, Chemnitz-Dia 247-01823-1.tif
+  taxon: Psaronius@genus@Plantae
+  preservation: fossil
+  prep: thin_section
+  modality: brightfield
+  note: thin section of a Psaronius tree-fern stem, Chemnitz; historical glass plate with its label
+  locality_text: Chemnitz, Germany
+- commons: File:Miocene wood.jpg
+  taxon: Tracheophyta@phylum
+  preservation: fossil
+  prep: thin_section
+  part: wood
+  modality: brightfield
+  note: fossil wood from Miocene beds
+- commons: File:Polished petrified wood cells.jpg
+  taxon: Tracheophyta@phylum
+  preservation: fossil
+  prep: polished_section
+  part: wood
+  modality: reflected
+  note: polished petrified wood showing the cells, locality unknown
+- commons: File:Клеточная структура.jpg
+  taxon: Tracheophyta@phylum
+  preservation: fossil
+  prep: polished_section
+  part: wood
+  modality: reflected
+  note: petrified wood, Ukraine
+  locality_text: Ukraine
+- commons: File:Fossil spores.jpg
+  taxon: Plantae@kingdom
+  preservation: fossil
+  prep: polished_section
+  part: spore
+  modality: fluorescence
+  note: fossil spores, 50x oil objective, fluorescence
+- commons: File:Auliscus oamaruensis.jpg
+  taxon: Auliscus oamaruensis@species
+  preservation: fossil
+  prep: strew
+  modality: brightfield
+  note: Oamaru diatomite, 32 to 40 million years, focus-stacked
+- commons: File:Diatoms (fossile) - 160x (14144602734).jpg
+  taxon: Bacillariophyceae@class
+  preservation: fossil
+  prep: strew
+  modality: brightfield
+  note: Oamaru, Forresters Hill diatomite, prepared by Anne Gleich
+- commons: File:Anthocyrtis grossularia Ehrenberg - Radiolarian (34728144180).jpg
+  taxon: '#3236147'
+  preservation: fossil
+  prep: strew
+  modality: brightfield
+  note: Barbados, late Eocene, prepared by Andreas Drews, shown as a negative
+- commons: File:Calocyclas sp. - Radiolarian (33510408555).jpg
+  taxon: Calocyclas@genus@Chromista
+  preservation: fossil
+  prep: strew
+  modality: brightfield
+  note: Barbados, Middle Eocene to Oligocene, prepared by Andreas Drews, shown as a negative
+- commons: File:220406-1 PPL GRNST Forams 20x.jpg
+  taxon: Foraminifera@phylum
+  preservation: fossil
+  prep: thin_section
+  modality: polarised_ppl
+  note: foraminiferal grainstone in thin section
+- commons: File:Osculapollis sp. F.jpg
+  taxon: Osculapollis@genus
+  preservation: fossil
+  prep: strew
+  part: pollen
+  modality: brightfield
+  note: Osculapollis sp. F, middle Late Cretaceous (Coniacian), Magothy Formation
+- zenodo:
+    record: '18397703'
+    file: 5_Cuticle_2023-12-13 13.27.36.ndpi
+  taxon: Plantae@kingdom
+  preservation: fossil
+  prep: whole_mount
+  modality: brightfield
+  note: fossil plant cuticle, Paleogene, NMNH Paleobotany; the sheet gives no determination
+  locality_text: USA
+  collector: Joe Milligan
+  stack: policy
+- zenodo:
+    record: '18397703'
+    file: 6_40935_Bowmanites_moorei.ndpi
+  taxon: Bowmanites@genus@Plantae
+  preservation: fossil
+  prep: section
+  modality: brightfield
+  note: coal ball, Pennsylvanian, NMNH Paleobotany; paratype of Bowmanites moorei Mamay, which the backbone does not list;
+    the sheet does not say whether the preparation is a peel or a ground section
+  locality_text: Kansas, USA
+  type_status: paratype
+  catalogue_number: USNM P 40935
+  name: Bowmanites moorei
+  stack: policy
+- zenodo:
+    record: '18397703'
+    file: 8_Slide_ostracod_A_specimen_fossil_NMNH.ndpi
+  taxon: Ostracoda@class
+  preservation: fossil
+  prep: whole_mount
+  modality: brightfield
+  note: ostracod A, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt
+  locality_text: Texas, USA
+  stack: policy
+- zenodo:
+    record: '18397703'
+    file: 9_Slide_ostracod_B_specimen_fossil_NMNH.ndpi
+  taxon: Ostracoda@class
+  preservation: fossil
+  prep: whole_mount
+  modality: brightfield
+  note: ostracod B, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt
+  locality_text: Texas, USA
+  stack: policy
+earth.rocks:
+- commons: File:Duren spore (sporinite) - petrographic component of coal.jpg
+  rock: coal
+  prep: polished_section
+  modality: reflected
+  note: sporinite (durain), Okino-Klyuchevskoye deposit
+- commons: File:Fusen (fusinite, semifusinite) - the main petrographic component of coal.jpg
+  rock: coal
+  prep: polished_section
+  modality: reflected
+  note: fusinite and semifusinite
+- commons: File:Fusinite of the "star structure" (destroyed cell shells) is a petrographic component of coal.jpg
+  rock: coal
+  prep: polished_section
+  modality: reflected
+  note: fusinite with the star structure of crushed cell walls
+- commons: File:Vitren (collinit and tellinit) - the main petrographic constituent of coal.jpg
+  rock: coal
+  prep: polished_section
+  modality: reflected
+  note: vitrain (collinite and telinite)
+- commons: File:Gabbro from Rum in Scotland - Thin Section.jpg
+  rock: gabbro
+  prep: thin_section
+  modality: polarised_xpl
+  note: clinopyroxene in a foliated groundmass of plagioclase and olivine, 30 um thick section
+  locality_text: Rum Layered Intrusion, Scotland
+- commons: File:Serpentinized peridotite.JPG
+  rock: peridotite
+  prep: thin_section
+  modality: polarised_xpl
+  note: olivine island in a serpentine groundmass of a serpentinised peridotite, field of view 2 mm
+- commons: File:Canadian Oil Sands in plain polarized light.jpg
+  rock: sand
+  prep: thin_section
+  modality: polarised_ppl
+  note: 'oil sand: grains, fines, bitumen and voids'
+  name: oil sands
+- pair:
+    ppl: File:Basalt-microscop.jpg
+    xpl: File:Basalt-microscop-crossed polars.jpg
+  rock: basalt
+  prep: thin_section
+  note: fine-grained basalt, one polar and crossed polars
+- pair:
+    ppl: File:Diorite (GeoDIL number - 2629).jpg
+    xpl: File:Diorite (GeoDIL number - 2630).jpg
+  rock: diorite
+  prep: thin_section
+  note: green hornblende is the dominant mineral
+- pair:
+    ppl: File:Dacite (GeoDIL number - 2632).jpg
+    xpl: File:Dacite (GeoDIL number - 2631).jpg
+  rock: dacite
+  prep: thin_section
+  note: markedly porphyritic
+- pair:
+    ppl: File:Gabro2a.jpg
+    xpl: File:Gabro2b.jpg
+  rock: gabbro
+  prep: thin_section
+  note: plagioclase and clinopyroxene
+- pair:
+    ppl: File:Granophyr Struktur LPL.jpg
+    xpl: File:Granophyr Struktur XPL.jpg
+  rock: rhyolite
+  prep: thin_section
+  note: granophyric intergrowth of quartz and feldspar
+- pair:
+    ppl: File:Glaukonit LPL.jpg
+    xpl: File:Glaukonit XPL.jpg
+  rock: sandstone
+  prep: thin_section
+  note: glauconite pellets in a micrite-cemented calcareous sandstone, Faltenmolasse
+  name: Kalksandstein
+- pair:
+    ppl: File:Ashe MMS amphibolite PPL.jpg
+    xpl: File:Ashe MMS Amphibolite XPL.jpg
+  rock: amphibolite
+  prep: thin_section
+  note: Ashe Metamorphic Suite
+- pair:
+    ppl: File:Ashe MMS pelite PPL.jpg
+    xpl: File:Ashe MMS pelite XPL.jpg
+  rock: pelite
+  prep: thin_section
+  note: Ashe Metamorphic Suite
+- pair:
+    ppl: File:Cordierit-Magnetit-Hornfels LPL.jpg
+    xpl: File:Cordierit-Magnetit-Hornfels XPL.jpg
+  rock: hornfels
+  prep: thin_section
+  note: cordierite-magnetite hornfels
+- pair:
+    ppl: File:Eklogit 1 LPL.jpg
+    xpl: File:Eklogit 1 XPL.jpg
+  rock: eclogite
+  prep: thin_section
+  note: overview
+  locality_text: Autengrün, Münchberg massif, Bavaria, Germany
+- pair:
+    ppl: File:Fleckengneis lpl.jpg
+    xpl: File:Fleckengneis xpl.jpg
+  rock: gneiss
+  prep: thin_section
+  note: spotted gneiss with allanite, 20 um bar
+  name: Fleckengneis
+- commons: File:110113-2 ppl 20x.tif
+  rock: granite
+  prep: thin_section
+  modality: polarised_xpl
+  note: 1 mm bar
+- commons: File:Anorthosite-microsection.jpg
+  rock: anorthosite
+  prep: thin_section
+  modality: polarised_xpl
+  note: skeletal magnetite
+  locality_text: Bushveld Complex, South Africa
+- commons: File:Bronzitite.jpg
+  rock: orthopyroxenite
+  prep: thin_section
+  modality: polarised_xpl
+  note: olivine and pyroxene
+  name: bronzitite
+- commons: File:Bushveld gabbro.jpg
+  rock: gabbro
+  prep: thin_section
+  modality: polarised_xpl
+  locality_text: Bushveld Complex, South Africa
+- commons: File:CSIRO ScienceImage 1483 Olivine Adcumulate.jpg
+  rock: komatiite
+  prep: thin_section
+  modality: polarised_xpl
+  note: olivine adcumulate, Archaean, field of view 20 mm
+  locality_text: Agnew, Western Australia
+- commons: File:CSIRO ScienceImage 1484 Komatiite Pyroxene Needles.jpg
+  rock: komatiite
+  prep: thin_section
+  modality: polarised_ppl
+  note: spinifex texture of pyroxene needles, Archaean, field of view 15 mm
+- commons: File:Dunite.JPG
+  rock: dunite
+  prep: thin_section
+  modality: polarised_xpl
+  note: olivine, field of view 7 mm
+- commons: File:ETH-BIB-Chilen. Andesit Schliff-Dia 247-M-00046.tif
+  rock: andesite
+  prep: thin_section
+  modality: polarised_xpl
+  note: Chilean andesite, autochrome plate by Leo Wehrli
+  locality_text: Andes, Chile
+- commons: File:Flow in Obsidian.JPG
+  rock: obsidian
+  prep: thin_section
+  modality: polarised_ppl
+  note: magmatic flow in volcanic glass, field of view 2 mm
+  locality_text: Ponza, Italy
+- commons: File:Gregorite.JPG
+  rock: carbonatite
+  prep: thin_section
+  modality: polarised_xpl
+  note: rounded gregoryite crystals in natrocarbonatite, field of view 2 mm
+  locality_text: Ol Doinyo Lengai, Tanzania
+  name: natrocarbonatite
+- commons: File:Antigorit XPL.jpg
+  rock: serpentinite
+  prep: thin_section
+  modality: polarised_xpl
+  note: bladed antigorite
+  locality_text: Erbendorf, Upper Palatinate, Germany
+- commons: File:Blue Glaucophane.JPG
+  rock: schist
+  prep: thin_section
+  modality: polarised_ppl
+  note: glaucophane and stilpnomelane, field of view 7 mm
+  name: blueschist
+- commons: File:Blueschist.JPG
+  rock: schist
+  prep: thin_section
+  modality: polarised_ppl
+  note: glaucophane, field of view 2 mm
+  locality_text: Ghinivert, Cottian Alps, Italy
+  name: blueschist
+- commons: File:Calc-silicate marble.JPG
+  rock: marble
+  prep: thin_section
+  modality: polarised_xpl
+  note: pyroxene and olivine in a calc-silicate marble, field of view 7 mm
+  locality_text: Brazil
+- commons: File:Ductile Deformation.JPG
+  rock: mylonite
+  prep: thin_section
+  modality: polarised_xpl
+  note: crossed polars with compensator plate, field of view 7 mm
+- commons: File:Eclogites.JPG
+  rock: eclogite
+  prep: thin_section
+  modality: polarised_ppl
+  note: garnet, glaucophane and omphacite, field of view 7 mm
+- commons: File:Eklogit-retrograd.jpg
+  rock: eclogite
+  prep: thin_section
+  modality: polarised_xpl
+  note: symplectite of hornblende and plagioclase in retrogressed eclogite
+- commons: File:ETH-BIB-Marmor Carrara-Dia 247-M-00056.tif
+  rock: marble
+  prep: thin_section
+  modality: polarised_xpl
+  note: Carrara marble, autochrome plate by Leo Wehrli
+  locality_text: Carrara, Italy
+- commons: File:ETH-BIB-Marmor, Andermatt-Dia 247-M-00016.tif
+  rock: marble
+  prep: thin_section
+  modality: polarised_xpl
+  note: autochrome plate by Leo Wehrli
+  locality_text: Andermatt, Switzerland
+- commons: File:Garnet-mica-shist-ll-nicols 1.jpg
+  rock: schist
+  prep: thin_section
+  modality: polarised_ppl
+  note: garnet, biotite, muscovite and quartz
+  name: garnet-mica schist
+- commons: File:Granulite-micro.jpg
+  rock: granofels
+  prep: thin_section
+  modality: polarised_xpl
+  note: two nicols
+  name: granulite
+- commons: File:Cassiterite prebuz.jpg
+  rock: greisen
+  prep: thin_section
+  modality: polarised_xpl
+  note: zoned cassiterite in quartz-topaz greisen, image width 3.3 mm
+  locality_text: Haupt- and Ottoschacht dump, Přebuz, Czech Republic
+- commons: File:1706141 xpl 20x.tif
+  rock: clay
+  prep: thin_section
+  modality: polarised_xpl
+  note: varved clay, 1 mm bar
+- commons: File:Back-reef sediment from the Great Barrier Reef - thin section.jpg
+  rock: lime-sand
+  prep: thin_section
+  modality: polarised_ppl
+  note: seagrass facies of a back-reef, many benthic foraminifera
+  locality_text: Great Barrier Reef, Australia
+- commons: File:Beach rudstone from a hypersaline lagoon, Bahamas.jpg
+  rock: rudstone
+  prep: thin_section
+  modality: brightfield
+  note: gastropods and sea-urchin spines, beach of a hypersaline lagoon, scan of the thin section, sample AM 316
+  locality_text: Andros, Bahamas
+- commons: File:Beach rudstone with foraminifers, Bahamas.jpg
+  rock: rudstone
+  prep: thin_section
+  modality: brightfield
+  note: foraminifera, green and red algae and coral, scan of the thin section, sample AM 258
+  locality_text: Bahamas
+- commons: File:ETH-BIB-Molasse-Sandstein Bäch-Dia 247-M-00011.tif
+  rock: sandstone
+  prep: thin_section
+  modality: polarised_xpl
+  note: Molasse sandstone, autochrome plate by Leo Wehrli
+  locality_text: Bäch, Switzerland
+- commons: File:Grainstone from an ooid shoal in the Bahamas, collected at Pond Key, near Lee Stocking Island, behind Norman.jpg
+  rock: grainstone
+  prep: thin_section
+  modality: brightfield
+  note: ooid shoal, scan of the thin section
+  locality_text: Pond Key, Lee Stocking Island, Bahamas
+- commons: File:Maerl - Sediment from Tromsø, Norway - thin section.jpg
+  rock: lime-gravel
+  prep: thin_section
+  modality: polarised_ppl
+  note: 'maerl: red calcareous algae with barnacles, serpulids and molluscs'
+  locality_text: Tromsø, Norway
+- commons: File:Marine sediment in Guadeloupe (Atlantic side).jpg
+  rock: lime-sand
+  prep: thin_section
+  modality: polarised_ppl
+  note: bivalves, gastropods, Halimeda and coralline algae
+  locality_text: Guadeloupe
+- commons: File:Modern sediment composed of the green alga Halimeda - thin section.jpg
+  rock: lime-sand
+  prep: thin_section
+  modality: polarised_ppl
+  note: Halimeda sediment
+  locality_text: Great Barrier Reef, Australia
+- commons: File:Modern sediment from north of Gothenburg - thin section.jpg
+  rock: lime-sand
+  prep: thin_section
+  modality: polarised_ppl
+  note: beach sediment of bivalves, barnacles, echinoids, coralline algae, serpulids and brachiopods
+  locality_text: north of Gothenburg, Sweden
+- commons: File:Ooidal grainstone with foraminifera, Bahamas.jpg
+  rock: grainstone
+  prep: thin_section
+  modality: brightfield
+  note: ooidal grainstone with foraminifera, red algae and mollusc fragments, scan of the thin section, sample AM 173
+- commons: File:Ooidal grainstone, Bahamas.jpg
+  rock: grainstone
+  prep: thin_section
+  modality: brightfield
+  note: ooidal grainstone with intraclasts, scan of the thin section, sample AM 257
+- commons: File:Peloidal grainstone from the north tip of Baraterre Island, Exumas, Bahamas.jpg
+  rock: grainstone
+  prep: thin_section
+  modality: brightfield
+  note: peloidal grainstone of a stabilised sand flat, scan of the thin section, GeoZentrum Nordbayern
+  locality_text: Baraterre Island, Exumas, Bahamas
+- commons: File:Pyramids of anhydrite.jpg
+  rock: siltstone
+  prep: thin_section
+  modality: polarised_xpl
+  note: vein of anhydrite with triangular forms cutting siltstone
+- commons: File:JaH 026 type L3.1 xpolar.jpg
+  rock: ordinary-chondrite
+  prep: thin_section
+  modality: polarised_xpl
+  note: type L3.1
+  locality_text: Jiddat al Harasis, Oman
+  name: JaH 026
+- commons: File:Northwest Africa (NWA) 2224 Meteorite Thin Section.jpg
+  rock: carbonaceous-chondrite
+  prep: thin_section
+  modality: polarised_xpl
+  note: CV3, gigapixel mosaic of the whole thin section; the source says a low degree polarized light filter
+  name: Northwest Africa 2224
+- commons: File:NWA 5930 Meteorite Thin Section Chondrule - Image 7.jpg
+  rock: carbonaceous-chondrite
+  prep: thin_section
+  modality: brightfield
+  note: chondrule in a CV3 chondrite, focus-stacked mosaic, 10x objective, visible light
+  name: Northwest Africa 5930
+- commons: File:Baratta sf py gt.tif
+  rock: vein-ore
+  prep: polished_section
+  modality: reflected
+  note: goethite replacing pyrite in quartz
+  locality_text: Baratta goldfield, South Australia
+- commons: File:Bird in Hand-Gold-1.TIF
+  rock: vein-ore
+  prep: polished_section
+  modality: reflected
+  note: native gold on and between pyrite crystals, quartz dark grey, 0.5 mm bar
+  locality_text: Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
+- commons: File:Bird in Hand-Gold-2.jpg
+  rock: vein-ore
+  prep: polished_section
+  modality: reflected
+  note: native gold with pyrite in quartz
+  locality_text: Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
+- commons: File:Bird in Hand-Gold-sulphides.jpg
+  rock: vein-ore
+  prep: polished_section
+  modality: reflected
+  note: pyrite replaced by chalcopyrite, covellite and galena
+  locality_text: Bird in Hand gold deposit, Mount Lofty Ranges, South Australia
+- commons: File:Kitticoola py-hem.tif
+  rock: vein-ore
+  prep: polished_section
+  modality: reflected
+  note: hematite overgrowing pyrite in quartz
+  locality_text: Kitticoola goldmine, Palmer, South Australia
+- commons: File:Rapitan BIF south australia.jpg
+  rock: banded-ironstone
+  prep: polished_section
+  modality: reflected
+  note: 'Rapitan-type bedded iron ore: magnetite and minor hematite in sericite and quartz, Neoproterozoic'
+  locality_text: South Australia
+- commons: File:051002-7 PPL GRNST skeletal pel 20x.jpg
+  rock: grainstone
+  prep: thin_section
+  modality: polarised_ppl
+  note: skeletal peloidal grainstone with bryozoans and foraminifera
+earth.minerals:
+- pair:
+    ppl: File:Olivín1a.jpg
+    xpl: File:Olivín1b.jpg
+  mineral: olivine
+  prep: thin_section
+  note: one olivine grain in a gabbro
+- commons: File:2905c R Tahiti.jpg
+  mineral: olivine
+  prep: whole_mount
+  modality: reflected
+  note: olivine crystals separated from river sand, field width 5.5 mm
+  locality_text: Hitiaa River, Tahiti
+- commons: File:Argo000712 001.jpg
+  mineral: olivine
+  prep: thin_section
+  modality: polarised_xpl
+  note: olivine crystal under a petrographic microscope
+- commons: File:Lightning on a crystal egg.JPG
+  mineral: Serpentine
+  prep: thin_section
+  modality: polarised_xpl
+  note: olivine wholly replaced by serpentine, with radial fractures from the volume increase, field of view 7 mm
+- commons: File:Olivine in basalt.JPG
+  mineral: olivine
+  prep: thin_section
+  modality: polarised_xpl
+  note: euhedral olivine in basalt, field of view 2 mm
+- commons: File:Olivino con extinción ondulada.jpg
+  mineral: olivine
+  prep: thin_section
+  modality: polarised_xpl
+  note: undulose extinction, a shock indicator in an equilibrated ordinary chondrite, 80x
+- commons: File:Serpentinitisierung XPL.jpg
+  mineral: Chrysotile
+  prep: thin_section
+  modality: polarised_xpl
+  note: 'beginning serpentinisation: chrysotile veins around three olivine crystals in a volcanic rock'
+- commons: File:Skeletal olivine.JPG
+  mineral: olivine
+  prep: thin_section
+  modality: polarised_ppl
+  note: skeletal olivine in komatiite lava
+  locality_text: Alexo, Ontario, Canada
+- commons: File:Amfibol-nokoly2.jpg
+  mineral: amphibole
+  prep: thin_section
+  modality: polarised_xpl
+  note: amphibole grain with biotite and plagioclase, two nicols
+- commons: File:Plagioklas1.jpg
+  mineral: plagioclase
+  prep: thin_section
+  modality: polarised_xpl
+  note: plagioclase with biotite and amphibole, two nicols
+- commons: File:Min Hbde 20x XPL.jpg
+  mineral: hornblende
+  prep: thin_section
+  modality: polarised_xpl
+  note: hornblende, 20x
+- commons: File:Min Oliv 20x XPL.jpg
+  mineral: olivine
+  prep: thin_section
+  modality: polarised_xpl
+  note: olivine, 20x
+- commons: File:Petrología Metamórfica- Granates 01.jpg
+  mineral: garnet
+  prep: thin_section
+  modality: polarised_xpl
+  note: garnets in a metapelite, 5x, field diameter 4 mm
+- commons: File:(2015-04-02A) FI HPOL PyrWeiAver-S-A.jpg
+  mineral: Halite
+  prep: thin_section
+  modality: polarised_xpl
+  note: rock salt with fluid inclusions, carnallite and gas bubbles, polarisers almost crossed, 40x objective
+- commons: File:(2015-12-11) ANHYDRIT 01 PWA DL.jpg
+  mineral: Anhydrite
+  prep: thin_section
+  modality: polarised_xpl
+  note: anhydrite of an anhydrite line in rock salt, with inclusions
+- commons: File:Cartwheel Leucite.JPG
+  mineral: Leucite
+  prep: thin_section
+  modality: polarised_ppl
+  note: skeletal cartwheel leucite
+  locality_text: Vulsini volcano, central Italy
+- commons: File:Cordierite volcanic.jpg
+  mineral: Cordierite
+  prep: thin_section
+  modality: polarised_xpl
+  note: sector-twinned cordierite phenocryst in a rhyolite
+  locality_text: San Vincenzo, Tuscany, Italy
+- commons: File:Elba island.JPG
+  mineral: Corundum
+  prep: thin_section
+  modality: polarised_ppl
+  note: corundum with a blue core, biotite and hercynite in a mafic microgranular enclave
+  locality_text: Elba, Italy
+- commons: File:Haüyne crystal.JPG
+  mineral: Haüyne
+  prep: thin_section
+  modality: polarised_ppl
+  note: haüyne phenocryst in a haüyne foidite
+  locality_text: Melfi, Potenza, Italy
+- commons: File:Green Actinolite.JPG
+  mineral: Actinolite
+  prep: thin_section
+  modality: polarised_ppl
+  note: fibrous actinolite
+- commons: File:Hyercinite.JPG
+  mineral: Hercynite
+  prep: thin_section
+  modality: polarised_ppl
+  note: green hercynite with pink zoning in a metamorphic ejecta of the 79 AD eruption
+matter.crystals:
+- commons: File:Acido acetilsalicilico.jpg
+  crystal: chemical
+  prep: fluid_mount
+  modality: polarised_xpl
+  note: microcrystals of acetylsalicylic acid between polarising filters, 60x
+  name: acetylsalicylic acid
+- commons: File:ADRENA 1 final.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: adrenaline crystals, Josef Reischig archive, 300x
+  name: adrenaline
+- commons: File:Amino acid.png
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: amino acids recrystallised on a glass slide
+  name: amino acid
+- commons: File:CaNO3.JPG
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: recrystallised from solution on a slide, crossed polarisers
+  name: calcium nitrate
+- commons: File:Carbamide.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: melted carbamide, with a lambda plate
+  name: urea
+- commons: File:Cholesterol Crystals Synovial Fluid Polarized Light.jpg
+  crystal: biogenic
+  prep: fluid_mount
+  modality: polarised_xpl
+  note: cholesterol crystals in fresh synovial fluid, crossed polarisers with a quarter-wave plate
+  name: cholesterol
+- commons: File:Citric acid crystals.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: citric acid, Josef Reischig archive, 250x
+  name: citric acid
+- commons: File:Coumarin.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: coumarin crystals, 40x
+  name: coumarin
+- commons: File:Crystals of cytostatics Refador.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: crystals of the cytostatic Refador, Josef Reischig archive, 600x
+  name: Refador
+- commons: File:Crystals of Uric acid in Polarized light.jpg
+  crystal: biogenic
+  prep: fluid_mount
+  modality: polarised_xpl
+  note: uric acid crystal
+  name: uric acid
+- commons: File:Crystals of vitamin B6.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: vitamin B6, Josef Reischig archive, 1650x
+  name: pyridoxine
+- commons: File:Crystals of vitamin C.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: vitamin C, Josef Reischig archive, 250x
+  name: ascorbic acid
+- commons: File:Faza antyferroelektryczna.jpg
+  crystal: liquid
+  prep: whole_mount
+  modality: polarised_xpl
+  note: antiferroelectric phase of a rod-like chiral liquid crystal at 65 C, x20
+  name: chiral liquid crystal
+- commons: File:Faza ciekłokrystaliczna smektyczna A.jpg
+  crystal: liquid
+  prep: whole_mount
+  modality: polarised_xpl
+  note: chiral smectic A phase of a rod-like liquid crystal at 110 C, x20
+  name: chiral liquid crystal
+- commons: File:Faza smektyczna I.jpg
+  crystal: liquid
+  prep: whole_mount
+  modality: polarised_xpl
+  note: smectic I phase of a hockey-stick shaped liquid crystal at 85 C, x20
+  name: bent-core liquid crystal
+- commons: File:Ferroelectric liquid crystal image from a polarizing microscope.jpg
+  crystal: liquid
+  prep: whole_mount
+  modality: polarised_xpl
+  note: ferroelectric liquid crystal
+  name: ferroelectric liquid crystal
+- commons: File:Fingerprint texture of a liquid crystal resembling Van Gogh's style.png
+  crystal: liquid
+  prep: whole_mount
+  modality: polarised_xpl
+  note: fingerprint texture of a thermotropic fluoro-substituted ester with ferro- and antiferroelectric SmC* phases
+  name: fluoro-substituted ester
+- commons: File:Fluorescent uric acid.JPG
+  crystal: biogenic
+  prep: fluid_mount
+  modality: polarised_xpl
+  note: spiked rods of monosodium urate from synovial fluid (gout)
+  name: monosodium urate
+- commons: File:KNO3klein1c.tif
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: crystallised from aqueous solution
+  name: potassium nitrate
+- commons: File:Raphide.jpg
+  crystal: biogenic
+  prep: whole_mount
+  modality: brightfield
+  note: raphides in a leaf of Hypoestes phyllostachya
+- commons: File:-Snow Crystal- MET DP351879.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: plate with sectors, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351880.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: stellar dendrite, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351881.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: hexagonal plate, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351882.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: fern-like stellar dendrite, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351883.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: broad branches, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351884.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: stellar plate, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351887.jpg
+  crystal: ice/hexagonal
+  classification: CP
+  prep: whole_mount
+  modality: brightfield
+  note: column capped with plates at both ends, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351888.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: triangular plate, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351889.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: simple star, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351892.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: fern-like dendrite, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351900.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: stellar plate with ribs, Wilson Bentley
+  name: snow crystal
+- commons: File:-Snow Crystal- MET DP351904.jpg
+  crystal: ice/hexagonal
+  classification: P
+  prep: whole_mount
+  modality: brightfield
+  note: stellar dendrite, Wilson Bentley
+  name: snow crystal
+- commons: File:Ascorbinsäure in polarisiertem Licht 2.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: spherulites of ascorbic acid in polarised light
+  name: ascorbic acid
+- commons: File:Citric acid crystals in polarized light.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: citric acid in polarised transmitted light
+  name: citric acid
+- commons: File:Allismicro Crystalized sea salt.jpeg
+  crystal: chemical/cubic
+  prep: whole_mount
+  modality: brightfield
+  note: crystallised sea salt
+  name: sodium chloride
+- commons: File:Cloruro di sodio cristallizzato.jpg
+  crystal: chemical/cubic
+  prep: whole_mount
+  modality: brightfield
+  note: crystallised sodium chloride
+  name: sodium chloride
+- commons: File:Weinsäure in polarisiertem Licht.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: tartaric acid in polarised light
+  name: tartaric acid
+- commons: File:Weinsäurekristall 800fach Polfilter a.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: tartaric acid crystal, 800x with a polarising filter, field about 120 x 80 um
+  name: tartaric acid
+- commons: File:01 Vanillin Crystals.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: vanillin crystals
+  name: vanillin
+- commons: File:Vanillin in polarisiertem Licht 2.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: vanillin in polarised light
+  name: vanillin
+- commons: File:Beta-alaniini kristallid polariseeritud valguses.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: beta-alanine, 10x objective
+  name: beta-alanine
+- commons: File:H-β-(2-Pyridyl)-Ala-OH films in polarized light.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: crystalline film of an amino-acid derivative
+  name: H-beta-(2-pyridyl)-Ala-OH
+- commons: File:Жар птица.jpg
+  crystal: chemical
+  prep: whole_mount
+  modality: polarised_xpl
+  note: amino acid crystals in polarised light
+  name: amino acid
+- commons: File:Polarized orchid root cross section.jpg
+  crystal: biogenic
+  prep: section
+  modality: polarised_xpl
+  note: 'orchid root in polarised light: pith, vascular bundles, cortex, velamen and raphides, 50x'
+  name: calcium oxalate raphides
+- commons: File:Rafidios en cáscara de banana.jpg
+  crystal: biogenic
+  prep: whole_mount
+  modality: brightfield
+  note: raphides in banana peel
+  name: calcium oxalate raphides
+- commons: File:Raphides from variegated ivy.jpg
+  crystal: biogenic
+  prep: fluid_mount
+  modality: brightfield
+  note: raphides from liquidised variegated ivy, 600x
+  name: calcium oxalate raphides
+- commons: File:Raphides in idioblast.jpg
+  crystal: biogenic
+  prep: fluid_mount
+  modality: brightfield
+  note: needle crystals in an idioblast sac, 600x
+  name: calcium oxalate raphides
+life.amphibians:
+- commons: File:Chromatin fibers (261 19) Mitosis; Xenopus egg.jpg
+  taxon: Xenopus@genus
+  prep: section
+  part: egg
+  modality: brightfield
+  note: chromatin fibres of a mitosis in an egg, Josef Reischig archive
+- commons: File:Frog Columnar Epithelium.jpg
+  taxon: Anura@order
+  prep: section
+  modality: brightfield
+  note: columnar epithelium
+- commons: File:Frog liver cells.jpg
+  taxon: Anura@order
+  prep: section
+  part: liver
+  modality: brightfield
+  note: liver cells, Russian Science Photo Competition 2021
+- commons: File:Frogskin100x.jpg
+  taxon: Anura@order
+  prep: section
+  part: skin
+  modality: brightfield
+  note: skin, 100x
+- commons: File:Schleimdrüsen.jpg
+  taxon: Hyla arborea@species
+  prep: section
+  part: skin
+  modality: brightfield
+  note: mucous glands of the skin
+- commons: File:Пигментные клетки кожи головастика 25Х JENAVAL.jpg
+  taxon: Anura@order
+  prep: whole_mount
+  part: skin
+  modality: brightfield
+  note: pigment cells of tadpole skin, 25x
+- commons: File:Blood smear (251 03) Amphibian.jpg
+  taxon: Amphibia@class
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: blood film, Josef Reischig archive
+- commons: File:Frogblood400x2.jpg
+  taxon: Ranidae@family
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: 400x
+- commons: File:Frogrbc1000x.jpg
+  taxon: Ranidae@family
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: red blood cells, 1000x
+- commons: File:Frog`s red blood cells under a microscope.jpg
+  taxon: Ranidae@family
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: red blood cells
+- commons: File:Red blood cells under a microscope.jpg
+  taxon: Anura@order
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: red blood cells
+- commons: File:Z-bozon.jpg
+  taxon: Anura@order
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: blood cells
+life.arthropods:
+- commons: File:Demodex mite 1.JPG
+  taxon: Demodex canis@species
+  prep: section
+  modality: brightfield
+  note: in a hair follicle of a dog
+  host: Canis lupus@species
+- commons: File:Dermanyssus-bird-mite.jpg
+  taxon: Dermanyssus gallinae@species
+  prep: whole_mount
+  modality: brightfield
+  note: poultry red mite
+- commons: File:Ear mite 1.JPG
+  taxon: Otodectes cynotis@species
+  prep: whole_mount
+  modality: brightfield
+  note: ear mite
+- commons: File:Grain mite 1.JPG
+  taxon: Acarus siro@species
+  prep: whole_mount
+  modality: brightfield
+  note: grain mite
+- commons: File:Itch mite (247 32A).jpg
+  taxon: Sarcoptes scabiei@species
+  prep: whole_mount
+  modality: brightfield
+  note: itch mite
+- commons: File:Megninia-feather-mite.JPG
+  taxon: Megninia@genus@Animalia
+  prep: whole_mount
+  modality: brightfield
+  note: feather mite
+- commons: File:Notoedres-cati-mite.JPG
+  taxon: Notoedres cati@species
+  prep: whole_mount
+  modality: brightfield
+- commons: File:Red spider mite (265 01) Total preparation.jpg
+  taxon: Tetranychus@genus
+  prep: whole_mount
+  modality: brightfield
+  note: red spider mite, whole preparation
+- commons: File:Adult specimen of Loxosceles laeta observed in microscope.jpg
+  taxon: Loxosceles laeta@species
+  prep: whole_mount
+  modality: brightfield
+  note: Chilean recluse spider
+- commons: File:Chromatophores d' Holocnemus pluchei.jpg
+  taxon: Holocnemus pluchei@species
+  prep: section
+  modality: brightfield
+  note: chromatophores
+- commons: File:Daphnia (248 29) Total preparation.jpg
+  taxon: Daphnia@genus@Animalia
+  prep: whole_mount
+  modality: brightfield
+  note: whole preparation
+- commons: File:Daphnia con embriones partenogenéticos.jpg
+  taxon: Daphnia@genus@Animalia
+  prep: fluid_mount
+  modality: darkfield
+  note: with parthenogenetic embryos
+- commons: File:Calanoida (YPM IZ 102004) 016.jpeg
+  taxon: Calanoida@order
+  prep: whole_mount
+  modality: brightfield
+  note: Yale Peabody Museum, 0.5 mm bar
+- commons: File:Calanoida (YPM IZ 102069) 004.jpeg
+  taxon: Calanoida@order
+  prep: whole_mount
+  modality: brightfield
+  note: Yale Peabody Museum, 1 mm bar
+- commons: File:A micrograph showing four ostracods.jpg
+  taxon: Ostracoda@class
+  prep: fluid_mount
+  modality: darkfield
+  note: four living ostracods
+- commons: File:Acanthocyclops.jpg
+  taxon: Acanthocyclops@genus
+  prep: fluid_mount
+  modality: brightfield
+- commons: File:Apareamiento de copépodos Boeckella gracilis.jpg
+  taxon: Boeckella gracilis@species
+  prep: fluid_mount
+  modality: darkfield
+  note: mating pair
+- commons: File:Artemia salina campo oscuro.jpg
+  taxon: Artemia salina@species
+  prep: fluid_mount
+  modality: darkfield
+  note: brine shrimp
+life.birds:
+- commons: File:Bone (254 02) Bird bone cross-section.jpg
+  taxon: Aves@class
+  prep: section
+  part: bone
+  modality: brightfield
+  note: bird bone cross-section, Josef Reischig archive, 0.1 mm bar
+- commons: File:Traquea avestruz ver.jpg
+  taxon: Struthio camelus@species
+  prep: section
+  part: trachea
+  modality: brightfield
+  note: ostrich trachea
+- commons: File:Traquea avestruz.JPG
+  taxon: Struthio camelus@species
+  prep: section
+  part: trachea
+  modality: brightfield
+  note: ostrich trachea, wall with cartilage
+- commons: File:Blood smear (251 04) Bird.jpg
+  taxon: Aves@class
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: blood film, Josef Reischig archive, 10 um bar
+- commons: File:Chickenrbc1000x.jpg
+  taxon: Gallus gallus@species
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: chicken red blood cells, 1000x
+- commons: File:Auge Entwicklung.jpg
+  taxon: Gallus gallus@species
+  prep: section
+  part: eye
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: chicken embryo, brain vesicle and optic cup with the lens
+- commons: File:Organotypic chicken spinal cord.tiff
+  taxon: Gallus gallus@species
+  prep: whole_mount
+  part: spinal-cord
+  modality: fluorescence
+  stain: DAPI and propidium iodide
+  note: organotypic culture of chicken spinal cord
+- commons: File:A feather of a bird under the microscope.jpg
+  taxon: Aves@class
+  prep: whole_mount
+  part: feather
+  modality: reflected
+  note: feather under the microscope
+- commons: File:A feather of a jay.jpg
+  taxon: Garrulus glandarius@species
+  prep: whole_mount
+  part: feather
+  modality: reflected
+  note: jay feather with the blue barbs
+- commons: File:A feather of a peacock under the microscope.jpg
+  taxon: Pavo cristatus@species
+  prep: whole_mount
+  part: feather
+  modality: reflected
+  note: peacock feather under the microscope
+- commons: File:A feather of a raven.jpg
+  taxon: Corvus corax@species
+  prep: whole_mount
+  part: feather
+  modality: reflected
+  note: raven feather
+- commons: File:A tail feather of a peacock.jpg
+  taxon: Pavo cristatus@species
+  prep: whole_mount
+  part: feather
+  modality: reflected
+  note: peacock tail feather
+- commons: File:Featherzoom3.jpg
+  taxon: Aves@class
+  prep: whole_mount
+  part: feather
+  modality: brightfield
+  note: barbules, 700x
+- commons: File:Featherzoom4.jpg
+  taxon: Aves@class
+  prep: whole_mount
+  part: feather
+  modality: brightfield
+  note: barbules, 1400x
+- commons: File:Microscopic Photo of a brown feather at x5 magnification.png
+  taxon: Aves@class
+  prep: whole_mount
+  part: feather
+  modality: brightfield
+  note: brown feather, 5x
+- commons: File:Raquis de pluma.jpg
+  taxon: Aves@class
+  prep: whole_mount
+  part: feather
+  modality: reflected
+  note: rachis, stereo microscope, 40x
+- commons: File:The pollen and the wing.jpg
+  taxon: Aves@class
+  prep: whole_mount
+  part: feather
+  modality: brightfield
+  note: wing feather carrying two pollen grains
+- commons: File:Перо черного коршуна (Milvus Migrans).jpg
+  taxon: Milvus migrans@species
+  prep: whole_mount
+  part: feather
+  modality: reflected
+  note: black kite feather
+life.microbes:
+- commons: File:Male and female haem columbae.jpg
+  taxon: '#11378615'
+  prep: smear
+  part: blood
+  modality: brightfield
+  stain: Giemsa
+  note: male (upper left) and female gametocytes in pigeon blood
+  host: Columba livia@species
+  name: Haemoproteus columbae
+- commons: File:1000x Magnification of Gram Stain of Staphylococcus xylosus Under Brightfield Microscopy.jpg
+  taxon: Staphylococcus xylosus@species
+  prep: smear
+  modality: brightfield
+  stain: Gram
+  note: 1000x
+- commons: File:Bacillus subtilis Gram stain.jpg
+  taxon: Bacillus subtilis@species
+  prep: smear
+  modality: brightfield
+  stain: Gram
+- commons: File:Bacillus anthracis Gram.jpg
+  taxon: Bacillus anthracis@species
+  prep: smear
+  modality: brightfield
+  stain: Gram
+- commons: File:Gram stain of Streptococcus pneumoniae.jpg
+  taxon: Streptococcus pneumoniae@species
+  prep: smear
+  modality: brightfield
+  stain: Gram
+- commons: File:20101212 205549 LactobacillusAcidophilus.jpg
+  taxon: Lactobacillus acidophilus@species
+  prep: smear
+  modality: brightfield
+  stain: Gram
+  note: with an eyepiece scale
+- commons: File:Purple polka dots.tif
+  taxon: Staphylococcus@genus
+  prep: smear
+  modality: brightfield
+  stain: Gram
+- commons: File:Bordetella pertussis.jpg
+  taxon: Bordetella pertussis@species
+  prep: smear
+  modality: brightfield
+  stain: Gram
+- commons: File:Aeromonas veronii biovar sobria Gram Stain on Microscope Slide.jpg
+  taxon: Aeromonas@genus
+  prep: smear
+  modality: brightfield
+  stain: Gram
+- commons: File:20100905 211652 SpirochetesZoom.jpg
+  taxon: Spirochaetota@phylum
+  prep: smear
+  modality: brightfield
+  stain: Gram
+  note: spirochaetes with an eyepiece scale
+- commons: File:Chroococcidiopsis thermalis.jpg
+  taxon: Chroococcidiopsis thermalis@species
+  prep: fluid_mount
+  modality: brightfield
+  note: 30 um bar
+- commons: File:Chroococcus.jpg
+  taxon: Chroococcus@genus
+  prep: fluid_mount
+  modality: brightfield
+- commons: File:Dolichospermum sp..jpg
+  taxon: Dolichospermum@genus
+  prep: fluid_mount
+  modality: brightfield
+  note: helical filament, 10 um bar
+- commons: File:Alga Didymo vista con campo claro.jpg
+  taxon: Didymosphenia geminatum@species
+  prep: fluid_mount
+  modality: brightfield
+  note: didymo
+- commons: File:Alga Didymo vista con campo oscuro.jpg
+  taxon: Didymosphenia geminatum@species
+  prep: fluid_mount
+  modality: darkfield
+  note: didymo colony
+- commons: File:CSIRO ScienceImage 4905 diatom.jpg
+  taxon: Skeletonema@genus
+  prep: fluid_mount
+  modality: brightfield
+  note: CSIRO Science Image
+- commons: File:Cymbella peraspera.jpg
+  taxon: Cymbella peraspera@species
+  prep: whole_mount
+  modality: brightfield
+- commons: File:Mature Plasmodium malariae schizont PHIL 2715 lores.jpg
+  taxon: Plasmodium malariae@species
+  prep: smear
+  part: blood
+  modality: brightfield
+  stain: Giemsa
+  note: mature schizont, CDC PHIL 2715
+- commons: File:Plasmodium ovale with characteristics James Dots.jpg
+  taxon: Plasmodium@genus@Chromista
+  prep: smear
+  part: blood
+  modality: brightfield
+  stain: Giemsa
+  note: determined as Plasmodium ovale by the source (no backbone species record); James dots
+- commons: File:Plasmodium (259 16).jpg
+  taxon: Plasmodium@genus@Chromista
+  prep: smear
+  part: blood
+  modality: brightfield
+  stain: Giemsa
+  note: determined as Plasmodium berghei by the source (no backbone species record)
+- commons: File:Aquatic Trypanosoma.jpg
+  taxon: Trypanosoma@genus
+  prep: smear
+  modality: brightfield
+  stain: Giemsa
+- commons: File:20180501paramecium13stack (41837085141).jpg
+  taxon: Paramecium@genus
+  prep: fluid_mount
+  modality: brightfield
+  note: focus-stacked
+- commons: File:Cilia EVOS Image.jpg
+  taxon: Paramecium@genus
+  prep: fluid_mount
+  modality: brightfield
+  note: cilia
+- commons: File:Колония инфузорий Vorticella microstoma.jpg
+  taxon: Vorticella microstoma@species
+  prep: fluid_mount
+  modality: brightfield
+  note: colony
+- commons: File:Ciliated Protozoa Vorticella (44716054772).png
+  taxon: Vorticella@genus
+  prep: fluid_mount
+  modality: phase_contrast
+- commons: File:Dividing stentor.jpg
+  taxon: Stentor@genus@Chromista
+  prep: fluid_mount
+  modality: brightfield
+  note: dividing
+- commons: File:Mikrofoto.de-Stentor-1.jpg
+  taxon: Stentor@genus@Chromista
+  prep: fluid_mount
+  modality: brightfield
+  note: mikro-foto.de
+- commons: File:20100306 204728 Euglena.jpg
+  taxon: Euglena@genus
+  prep: fluid_mount
+  modality: brightfield
+  note: with an eyepiece scale
+- commons: File:Euglena - 400x (8999902391).jpg
+  taxon: Euglena@genus
+  prep: fluid_mount
+  modality: brightfield
+  note: 400x
+- commons: File:Euglena deses 619343814.jpg
+  taxon: Euglena deses@species
+  prep: fluid_mount
+  modality: brightfield
+- commons: File:Giardia intestinalis (259 17).jpg
+  taxon: Giardia@genus@Protozoa
+  prep: smear
+  modality: brightfield
+  note: trophozoites, 10 um bar
+- commons: File:Amoeba proteus (Light Microscope).jpg
+  taxon: Amoeba proteus@species
+  prep: fluid_mount
+  modality: brightfield
+- commons: File:Amoeba proteus with many pseudopodia.jpg
+  taxon: Amoeba proteus@species
+  prep: fluid_mount
+  modality: dic
+  note: many pseudopodia
+- commons: File:Ceratium 1.jpg
+  taxon: Ceratium@genus@Chromista
+  prep: fluid_mount
+  modality: brightfield
+- commons: File:Ceratium sp umitunoobimusi.jpg
+  taxon: Ceratium@genus@Chromista
+  prep: fluid_mount
+  modality: brightfield
+life.fishes:
+- commons: File:Fin Of Common Carp Under Microscope (148598011).jpeg
+  taxon: Cyprinus carpio@species
+  prep: whole_mount
+  modality: brightfield
+  note: fin
+- commons: File:Parasite160015-fig1 - olive flounder (Paralichthys olivaceus) muscle showing the muscle fibres substituted
+    with Kudoa spores.png
+  taxon: Paralichthys olivaceus@species
+  prep: section
+  part: muscle
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: olive flounder muscle; the arrows of the source figure mark parasites between the fibres
+- commons: File:Scale of Poecilia reticulata 1.jpg
+  taxon: Poecilia reticulata@species
+  prep: whole_mount
+  part: scale
+  modality: brightfield
+  note: guppy scale
+- commons: File:Scale of Poecilia reticulata 2.jpg
+  taxon: Poecilia reticulata@species
+  prep: whole_mount
+  part: scale
+  modality: brightfield
+  note: guppy scale, detail
+- commons: File:Европейский липарис Liparis liparis.jpg
+  taxon: Liparis liparis@species
+  prep: fluid_mount
+  part: larva
+  modality: brightfield
+  note: larva
+- commons: File:Чешуя рыбы (кета).tif
+  taxon: Oncorhynchus keta@species
+  prep: whole_mount
+  part: scale
+  modality: dic
+  note: chum salmon scale
+- commons: File:Concentricity.jpg
+  taxon: Danio rerio@species
+  prep: whole_mount
+  part: eye
+  modality: fluorescence
+  note: retina of a 72-hour larva, horizontal and amacrine cells, confocal
+- commons: File:Danio rerio larvae.tif
+  taxon: Danio rerio@species
+  prep: whole_mount
+  part: larva
+  modality: fluorescence
+  note: larvae
+- commons: File:Homologous recombination in intestinal zebrafish tissue.jpg
+  taxon: Danio rerio@species
+  prep: section
+  part: intestine
+  modality: fluorescence
+  note: intestinal tissue, homologous recombination reporter
+- commons: File:LaminAC zebrafish tail.tif
+  taxon: Danio rerio@species
+  prep: whole_mount
+  modality: fluorescence
+  note: tail, lamin A/C immunostaining
+- commons: File:A blood smear of rainbow trout.jpg
+  taxon: Oncorhynchus mykiss@species
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: rainbow trout blood smear
+- commons: File:Crucian carp-gills microscope prPNr°20.jpg
+  taxon: Carassius carassius@species
+  prep: fluid_mount
+  part: gill
+  modality: brightfield
+  note: crucian carp gills under the microscope
+- commons: File:EPITHELIUM (GILL COVERING) OF A CHANNEL CATFISH DAMAGED BY EXPOSURE TO METHYL MERCURIC CHLORIDE IN THE WATER.
+    CAMERA... - NARA - 551615.jpg
+  taxon: Ictalurus punctatus@species
+  prep: section
+  part: gill
+  modality: brightfield
+  note: gill epithelium damaged by methyl mercuric chloride in the water, camera-microscope study, National Water Quality
+    Laboratory (US EPA Documerica)
+- commons: File:HIGHLY MAGNIFIED PORTION OF EPITHELIUM (GILL COVERING) OF HEALTHY CHANNEL CATFISH. CAMERA MICROSCOPE STUDY
+    MADE AT... - NARA - 551616.jpg
+  taxon: Ictalurus punctatus@species
+  prep: section
+  part: gill
+  modality: brightfield
+  note: healthy gill epithelium, high magnification, camera-microscope study (US EPA Documerica)
+- commons: File:THE EPITHELIUM (GILL COVERING) OF A HEALTHY CHANNEL CATFISH CAMERA MICROSCOPE STUDY MADE AT THE NATIONAL WATER...
+    - NARA - 551614.jpg
+  taxon: Ictalurus punctatus@species
+  prep: section
+  part: gill
+  modality: brightfield
+  note: healthy gill filament with its lamellae, camera-microscope study (US EPA Documerica)
+life.fungi:
+- commons: File:2010-11-30 Ascobolus immersus 124055.jpg
+  taxon: Ascobolus immersus@species
+  prep: squash
+  modality: brightfield
+  note: asci with ascospores
+- commons: File:2017-01-28 Hysterobrevium smilacis (Schwein.) E. Boehm & C.L. Schoch 724915.jpg
+  taxon: Hysterobrevium smilacis@species
+  prep: squash
+  modality: brightfield
+  stain: cotton blue
+  note: ascus among paraphyses
+- commons: File:2017-11-07 Scutellinia umbrorum (Fr.) Lambotte 809081.jpg
+  taxon: Scutellinia umbrorum@species
+  prep: squash
+  modality: brightfield
+  stain: cotton blue
+  note: ascus with a scale in the eyepiece
+- commons: File:Asco1000.jpg
+  taxon: '#8766080'
+  prep: section
+  modality: brightfield
+  stain: safranin and fast green
+  note: hymenium with asci
+- commons: File:Asco1009.jpg
+  taxon: Morchella@genus
+  prep: section
+  modality: brightfield
+  stain: safranin and fast green
+  note: ascocarp in section
+- commons: File:Asco1002.jpg
+  taxon: Schizosaccharomyces@genus
+  prep: smear
+  modality: brightfield
+  stain: safranin and fast green
+  note: fission yeast asci
+- commons: File:Baking yeast cells under 40x microscope objective.jpg
+  taxon: Saccharomyces cerevisiae@species
+  prep: fluid_mount
+  modality: brightfield
+  note: baking yeast, 40x objective
+- commons: File:Conidia and conidiophore of Paecilomyces.jpg
+  taxon: Paecilomyces@genus
+  prep: whole_mount
+  modality: brightfield
+  stain: lactophenol cotton blue
+  note: conidia and conidiophore
+- commons: File:Conidia, Strigma, Vesicle, and Conidiophores of Aspergillus in LPCB Tease Mount Microscopy.jpg
+  taxon: Aspergillus@genus@Fungi
+  prep: whole_mount
+  modality: brightfield
+  stain: lactophenol cotton blue
+  note: conidiophores in a tease mount
+- commons: File:Aspergillus niger hyphae.jpg
+  taxon: Aspergillus niger@species
+  prep: whole_mount
+  modality: brightfield
+  note: hyphae, 100 um bar
+- commons: File:Basi1000.jpg
+  taxon: Coprinus@genus
+  prep: section
+  modality: brightfield
+  stain: safranin and fast green
+  note: gill with basidia
+- commons: File:2009-03-02 Entoloma corneum basidium 1 19047.jpg
+  taxon: Entoloma corneum@species
+  prep: squash
+  modality: brightfield
+  note: basidium with sterigmata
+- commons: File:Amanita rubescens - micrographic study (Nordrhein-Westfalen, Germany) 7.jpg
+  taxon: Amanita rubescens@species
+  prep: squash
+  modality: brightfield
+  stain: Congo red
+  note: basidia
+- commons: File:2012-02-24 Galerina clavata (Velen.) Kuhner 201167.jpg
+  taxon: Galerina clavata@species
+  prep: squash
+  modality: brightfield
+  stain: Congo red
+  note: cheilocystidia with a scale
+- commons: File:2011-11-12 Pluteus salicinus (Pers.) P. Kumm 181970.jpg
+  taxon: Pluteus salicinus@species
+  prep: squash
+  modality: brightfield
+  stain: Congo red
+  note: cystidia, four views
+- commons: File:Backusella sporangium.jpg
+  taxon: Backusella@genus
+  prep: whole_mount
+  modality: brightfield
+  note: sporangium
+- commons: File:Cunninghamella echinulata UAMH11661.jpg
+  taxon: Cunninghamella echinulata@species
+  prep: whole_mount
+  modality: phase_contrast
+  note: sporangiola on vesicles
+- commons: File:Dicranophora fulva J. Schröter (380480).jpg
+  taxon: Dicranophora fulva@species
+  prep: whole_mount
+  modality: darkfield
+  note: sporangia
+life.insects:
+- nhm: NHMUK010173454
+  prep: whole_mount
+  modality: brightfield
+  note: human head lice from village natives
+  host: Homo sapiens@species
+  locality_text: Niupani, Rennell Island
+  collected_on: '1962-08-31'
+- nhm: NHMUK010173452
+  prep: whole_mount
+  modality: brightfield
+  note: 'label: human'
+  host: Homo sapiens@species
+- nhm: NHMUK010173435
+  prep: whole_mount
+  modality: brightfield
+  note: label host Ateles ater, from London Zoo
+  host: Ateles@genus@Animalia
+  locality_text: London Zoo (host from South and Central America)
+  collected_on: '1966'
+- nhm: NHMUK010155449
+  prep: whole_mount
+  modality: brightfield
+  note: 'Slide Digitisation Pilot: slide photograph and two microscope images'
+- nhm: NHMUK010155561
+  prep: whole_mount
+  modality: brightfield
+- nhm: NHMUK010175464
+  prep: whole_mount
+  modality: brightfield
+  note: female
+  host: Otomys orestes@species
+  locality_text: Mt Kenya, East Africa
+  collected_on: '1966-03-21'
+  collector: R. Harmsen
+- nhm: NHMUK010684185
+  prep: whole_mount
+  modality: brightfield
+  note: collected from a living bird in London Zoo
+  host: Pelecanus erythrorhynchos@species
+  locality_text: Louisiana, U.S.A.
+  collected_on: '1953-10-20'
+- nhm: NHMUK010679495
+  prep: whole_mount
+  modality: brightfield
+  note: Meinertzhagen collection
+  host: Crypturellus soui@species
+  locality_text: British Guiana
+- nhm: NHMUK010672808
+  prep: whole_mount
+  modality: brightfield
+  host: Turdus falcklandii@species
+  locality_text: Kidney Island, Falkland Islands
+  collected_on: '1961-11-21'
+  collector: R. W. Woods
+- nhm: NHMUK010671467
+  prep: whole_mount
+  modality: brightfield
+  note: neotype and neallotype, Meinertzhagen collection
+  host: Columba palumbus@species
+  locality_text: Somerset, England
+  collected_on: 1934-05
+- nhm: NHMUK010679559
+  prep: whole_mount
+  modality: brightfield
+  note: neotype, Meinertzhagen collection
+  host: Cygnus cygnus@species
+  locality_text: South Uist
+  collected_on: 1934-01
+- nhm: NHMUK010690240
+  prep: whole_mount
+  modality: brightfield
+  note: paratype; the label names the host Notornis mantelli, the takahe
+  host: Porphyrio hochstetteri@species
+  locality_text: Takahe Valley, Lake Te Anau, New Zealand
+- nhm: NHMUK010668672
+  prep: whole_mount
+  modality: brightfield
+  note: holotype
+  host: Eudyptes@genus@Animalia
+  locality_text: Kidney Isle
+- nhm: NHMUK010155747
+  prep: whole_mount
+  modality: brightfield
+  note: from Vicia cracca flowers
+  locality_text: Nancledra, Cornwall
+  collected_on: '1990-08-10'
+- nhm: NHMUK010154064
+  prep: whole_mount
+  modality: brightfield
+- commons: File:Acheta domesticus, Rechter Vorderflügel..jpg
+  taxon: Acheta domesticus@species
+  prep: whole_mount
+  modality: brightfield
+  note: right forewing with the stridulatory file, 100 um bar
+- commons: File:Diptera (YPM IZ 091295).jpeg
+  taxon: Diptera@order
+  prep: whole_mount
+  modality: brightfield
+  note: wing, Yale Peabody Museum
+- commons: File:Fliegenflügel im Mikroskop Dunkelfeld.JPG
+  taxon: Diptera@order
+  prep: whole_mount
+  modality: darkfield
+  note: fly wing
+- commons: File:Honeybeewing100x3.jpg
+  taxon: Apis mellifera@species
+  prep: whole_mount
+  modality: brightfield
+  note: wing, 100x
+- commons: File:Green shield bug wing.jpg
+  taxon: Palomena prasina@species
+  prep: whole_mount
+  modality: brightfield
+  note: wing
+- commons: File:Butterfly proboscis (galea).jpg
+  taxon: Lepidoptera@order
+  prep: whole_mount
+  modality: brightfield
+  note: proboscis (galea)
+- commons: File:Lepidoptera (YPM IZ 098910).jpeg
+  taxon: Lepidoptera@order
+  prep: whole_mount
+  modality: brightfield
+  note: head of a caterpillar, Yale Peabody Museum
+- commons: File:Acalles camelus metatarsus.jpg
+  taxon: Acalles camelus@species
+  prep: whole_mount
+  modality: darkfield
+  note: metatarsus
+- zenodo:
+    record: '18397703'
+    file: 10_Ctenidiosomus_perpexsus_Holotype_2025_09_08_12_31_29.ndpi
+  taxon: Ctenidiosomus perplexus@species
+  prep: whole_mount
+  modality: brightfield
+  note: flea, holotype, NMNH Entomology; described by Tipton and Machado-Allison (1972); the sheet spells the name perpexsus
+  locality_text: Trujillo, Venezuela
+  type_status: holotype
+  catalogue_number: USNMENT01866405
+  stack: policy
+- zenodo:
+    record: '18397703'
+    file: 11_Ctenidiosomus_perpexsus_Allotype_2025_09_08_12_43_17.ndpi
+  taxon: Ctenidiosomus perplexus@species
+  prep: whole_mount
+  modality: brightfield
+  note: flea, allotype (the file name; the sheet's type column repeats holotype), NMNH Entomology
+  locality_text: Trujillo, Venezuela
+  type_status: allotype
+  catalogue_number: USNMENT01866406
+  stack: policy
+- zenodo:
+    record: '18461326'
+    file: 12_Tetraleurodes_85_10304_2024-01-04 11.10.43.ndpi
+  taxon: Tetraleurodes@genus
+  prep: whole_mount
+  modality: brightfield
+  note: whitefly, USDA Entomology
+  locality_text: California, USA
+  collector: Ian Stocks
+  stack: policy
+- zenodo:
+    record: '18461326'
+    file: 13_Ptiliidae_FM_46745_2025_09_08_12_49_22.ndpi
+  taxon: Ptiliidae@family
+  prep: whole_mount
+  modality: brightfield
+  note: featherwing beetle, Field Museum Entomology FM 46745
+  locality_text: Florida, USA
+  collector: Bruno de Medeiros
+  stack: policy
+- zenodo:
+    record: '18461326'
+    file: 14_Ptiliidae_FM_66-245_2025_09_08_12_38_40.ndpi
+  taxon: Ptiliidae@family
+  prep: whole_mount
+  modality: brightfield
+  note: featherwing beetle, Field Museum Entomology FM 66-245
+  locality_text: Florida, USA
+  collector: Bruno de Medeiros
+  stack: policy
+life.invertebrates:
+- commons: File:Adelodrilus anisosetosus (YPM IZ 072283) 002.jpeg
+  taxon: Adelodrilus anisosetosus@species
+  prep: whole_mount
+  modality: brightfield
+  note: whole oligochaete, 1 mm bar
+- commons: File:Aglaophamus circinata (YPM IZ 072334) 001.jpeg
+  taxon: Aglaophamus circinata@species
+  prep: whole_mount
+  modality: brightfield
+  note: parapodium
+- commons: File:Alitta succinea (YPM IZ 071019) 001.jpeg
+  taxon: Alitta succinea@species
+  prep: whole_mount
+  modality: brightfield
+  note: parapodium, 0.5 mm bar
+- commons: File:Alitta succinea (YPM IZ 071019) 005.jpeg
+  taxon: Alitta succinea@species
+  prep: whole_mount
+  modality: brightfield
+  note: stained parapodium, image by E. A. Lazo-Wasem
+- commons: File:Allolobophora (YPM IZ 097992).jpeg
+  taxon: Allolobophora@genus
+  prep: section
+  modality: brightfield
+  note: earthworm section
+- commons: File:Amphinomidae (YPM IZ 002480.AN) 001.jpeg
+  taxon: Amphinomidae@family
+  prep: whole_mount
+  modality: brightfield
+  note: fireworm parapodium
+- commons: File:Cells from Catostylus tagi (jellyfish).jpg
+  taxon: Catostylus tagi@species
+  prep: smear
+  modality: brightfield
+  note: jellyfish cells
+- commons: File:Eurytele nematocyst.JPG
+  taxon: Catostylus tagi@species
+  prep: smear
+  modality: brightfield
+  note: discharged eurytele nematocyst
+- commons: File:Hydra (YPM IZ 073680).jpeg
+  taxon: '#9811888'
+  prep: section
+  modality: brightfield
+  note: serial sections
+- commons: File:Hydra (YPM IZ 073681).jpeg
+  taxon: '#9811888'
+  prep: whole_mount
+  modality: brightfield
+  note: with a bud
+- commons: File:Hydra (YPM IZ 073682).jpeg
+  taxon: '#9811888'
+  prep: whole_mount
+  modality: brightfield
+- commons: File:Hydra (YPM IZ 091796).jpeg
+  taxon: '#9811888'
+  prep: whole_mount
+  modality: brightfield
+  note: tentacles
+- commons: File:Nematoda sp. (2).jpg
+  taxon: Nematoda@phylum
+  prep: fluid_mount
+  modality: brightfield
+  note: anterior end
+- commons: File:C. elegans nematodes.tif
+  taxon: Caenorhabditis elegans@species
+  prep: whole_mount
+  modality: fluorescence
+  stain: Nile red
+  note: lipid staining, 200 um bar
+- commons: File:Caenorhabditis elegans DAPI.jpg
+  taxon: Caenorhabditis elegans@species
+  prep: whole_mount
+  modality: fluorescence
+  stain: DAPI
+  note: nuclei
+- commons: File:Varbuss.jpg
+  taxon: Caenorhabditis elegans@species
+  prep: whole_mount
+  modality: fluorescence
+  note: green fluorescent protein, photograph by Heiti Paves
+- commons: File:Ancylostoma (YPM IZ 095211).jpeg
+  taxon: Ancylostoma@genus
+  prep: whole_mount
+  modality: brightfield
+  note: hookworms
+- commons: File:Ancylostoma caninum (YPM IZ 090672).jpeg
+  taxon: Ancylostoma caninum@species
+  prep: whole_mount
+  modality: brightfield
+  note: dog hookworm, stained anterior end
+- commons: File:Cerebratulus marginatus (YPM IZ 096550).jpeg
+  taxon: Cerebratulus marginatus@species
+  prep: section
+  modality: brightfield
+  note: transverse section
+- commons: File:Cerebratulus marginatus (YPM IZ 096554).jpeg
+  taxon: Cerebratulus marginatus@species
+  prep: section
+  modality: brightfield
+  note: transverse section
+- commons: File:CLSM Nemertea Malykin Wiki 2021 Actin letterts.tif
+  taxon: Nemertea@phylum
+  prep: whole_mount
+  modality: fluorescence
+  note: confocal, actin, Russian Science Photo Competition 2021
+- commons: File:Nemertopsis gracilis (YPM IZ 000057.NM) 001.jpeg
+  taxon: Nemertopsis gracilis@species
+  prep: section
+  modality: brightfield
+  note: serial sections, 1 mm bar
+- commons: File:Nemertopsis gracilis (YPM IZ 000057.NM) 002.jpeg
+  taxon: Nemertopsis gracilis@species
+  prep: section
+  modality: brightfield
+  note: transverse section, 0.125 mm bar
+- commons: File:Espiculas Acervochalina copperingi 100X.JPG
+  taxon: '#2240872'
+  prep: strew
+  modality: brightfield
+  note: spicules, 100x; the backbone treats Acervochalina as a synonym of Chalinula
+  name: Acervochalina copperingi
+- commons: File:Espiculas de Uruguaya coralloides.JPG
+  taxon: Uruguaya@genus
+  prep: strew
+  modality: brightfield
+  note: spicules; the backbone lists the genus only
+  name: Uruguaya coralloides
+- commons: File:Leucosolenia Skeleton-1.jpg
+  taxon: Leucosolenia@genus
+  prep: whole_mount
+  modality: brightfield
+  note: skeleton
+- commons: File:Batillipes adriaticus.jpg
+  taxon: Batillipes adriaticus@species
+  prep: fluid_mount
+  modality: brightfield
+  note: marine tardigrade
+- commons: File:Isohypibius malawiensis Paratype.jpg
+  taxon: '#12205770'
+  prep: whole_mount
+  modality: brightfield
+  note: paratype; the accepted name is Grevenius malawiensis
+  type_status: paratype
+  name: Isohypibius malawiensis
+- commons: File:Tardigrado del orden Echiniscoidea en campo claro.jpg
+  taxon: Echiniscoidea@order
+  prep: fluid_mount
+  modality: brightfield
+- commons: File:Tardigrado del orden Echiniscoidea en campo oscuro.jpg
+  taxon: Echiniscoidea@order
+  prep: fluid_mount
+  modality: darkfield
+- commons: File:Tardígrado campo oscuro con luz polarizada.jpg
+  taxon: Tardigrada@phylum
+  prep: fluid_mount
+  modality: darkfield
+  note: darkfield with polarised light
+- commons: File:Tardígrado género Milnesium.jpg
+  taxon: Milnesium@genus
+  prep: fluid_mount
+  modality: darkfield
+- commons: File:20090517 005212 VeryStrangeRotifer.jpg
+  taxon: Rotifera@phylum
+  prep: fluid_mount
+  modality: brightfield
+  note: loricate rotifer against an eyepiece scale
+- commons: File:Asplancha priodonta (8740855303).jpg
+  taxon: Asplanchna priodonta@species
+  prep: fluid_mount
+  modality: brightfield
+  name: Asplancha priodonta
+- commons: File:Bdelloid rotifers during feeding.png
+  taxon: Bdelloidea@order
+  prep: fluid_mount
+  modality: brightfield
+  note: feeding
+- commons: File:Brachionus quadridentatus 130480351.jpg
+  taxon: Brachionus quadridentatus@species
+  prep: fluid_mount
+  modality: brightfield
+- commons: File:Dugesia Turbellaria wm (12) anterior.jpg
+  taxon: '#2502872'
+  prep: whole_mount
+  modality: brightfield
+  note: anterior end
+- commons: File:Dugesia Turbellaria wm (14) medial view.jpg
+  taxon: '#2502872'
+  prep: whole_mount
+  modality: brightfield
+  note: pharynx
+- commons: File:Dugesia Turbellaria wm anterior ramus and ceca.jpg
+  taxon: '#2502872'
+  prep: whole_mount
+  modality: brightfield
+  note: intestinal ceca
+life.mammals:
+- commons: File:Abdruck einer Mohairfaser.jpg
+  taxon: Capra hircus@species
+  prep: whole_mount
+  part: hair
+  modality: brightfield
+  note: impression of a mohair fibre in transmitted light
+- commons: File:Tiger Hair.jpg
+  taxon: Panthera tigris@species
+  prep: whole_mount
+  part: hair
+  modality: polarised_xpl
+  note: tiger hair in polarised light, 20 um bar
+- commons: File:Волос.tif
+  taxon: Homo sapiens@species
+  prep: whole_mount
+  part: hair
+  modality: dic
+  note: hair surface, 50x objective
+- commons: File:ESEM BSE cat hair No1194 10kV 1000x 680Pa.jpg
+  taxon: Felis catus@species
+  prep: whole_mount
+  part: hair
+  modality: sem_external
+  note: uncoated cat hair, environmental SEM (backscattered electrons), 1000x
+- commons: File:Histologie Haar (1).JPG
+  taxon: Homo sapiens@species
+  prep: section
+  part: hair
+  modality: brightfield
+  note: oblique section of the scalp through hair follicles at several levels
+- commons: File:Human follicle 200x mag.jpg
+  taxon: Homo sapiens@species
+  prep: whole_mount
+  part: hair
+  modality: brightfield
+  note: hair follicle, 200x
+- commons: File:Limbo esclerocorneal (corneal limbus).jpg
+  taxon: Sus scrofa@species
+  prep: section
+  part: eye
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: corneal limbus, sclera and cornea of a pig eye
+- commons: File:Dogcardiacmuscle400.jpg
+  taxon: Canis lupus@species
+  prep: section
+  part: heart
+  modality: brightfield
+  note: dog cardiac muscle, 400x
+- commons: File:DogColumnarCiliatedEpithelium400x2.jpg
+  taxon: Canis lupus@species
+  prep: section
+  modality: brightfield
+  note: dog ciliated columnar epithelium, 400x
+- commons: File:DogColumnarEpithelium400x2.jpg
+  taxon: Canis lupus@species
+  prep: section
+  modality: brightfield
+  note: dog columnar epithelium, 400x
+- commons: File:DogColumnarEpithelium400x5.jpg
+  taxon: Canis lupus@species
+  prep: section
+  modality: brightfield
+  note: dog columnar epithelium, 400x
+- commons: File:Dogsquamos100x.jpg
+  taxon: Canis lupus@species
+  prep: section
+  modality: brightfield
+  note: dog squamous epithelium, 100x
+- commons: File:Acinar cells.JPG
+  taxon: Homo sapiens@species
+  prep: section
+  part: pancreas
+  modality: brightfield
+  note: acinar cells
+- commons: File:Human blood.jpg
+  taxon: Homo sapiens@species
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: blood smear
+- commons: File:AML M6 erythroid (Overview of peripheral blood stain, May-Grünwald Giemsa).jpg
+  taxon: Homo sapiens@species
+  prep: smear
+  part: blood
+  modality: brightfield
+  stain: May-Grünwald Giemsa
+  note: peripheral blood in erythroid acute myeloid leukaemia (FAB M6), overview
+- commons: File:Band form neutrophil in Wright stained PBS microscopy.jpg
+  taxon: Homo sapiens@species
+  prep: smear
+  part: blood
+  modality: brightfield
+  stain: Wright
+  note: band neutrophil
+- commons: File:Normal Epidermis and Dermis with Intradermal Nevus 10x.JPG
+  taxon: Homo sapiens@species
+  prep: section
+  part: skin
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: normal epidermis and dermis with a benign intradermal naevus, 10x
+- commons: File:Piel de humano.jpg
+  taxon: Homo sapiens@species
+  prep: section
+  part: skin
+  modality: brightfield
+  note: thin skin, epidermis and dermis
+- commons: File:Кожа подушечки пальца (большое увеличение).jpg
+  taxon: Homo sapiens@species
+  prep: section
+  part: skin
+  modality: brightfield
+  note: finger-pad skin, high magnification
+- commons: File:Growing retinal axons.tif
+  taxon: Mus musculus@species
+  prep: whole_mount
+  part: eye
+  modality: fluorescence
+  note: retinal explant in culture with growing axons
+- commons: File:Hiire munarakud.jpg
+  taxon: Mus musculus@species
+  prep: fluid_mount
+  part: egg
+  modality: brightfield
+  note: mouse ova
+- commons: File:Rainbow visual axons.tif
+  taxon: Mus musculus@species
+  prep: section
+  part: brain
+  modality: fluorescence
+  note: retinal axons arborising in the visual thalamus
+- commons: File:10dayMouseEmb.jpg
+  taxon: Mus musculus@species
+  prep: section
+  part: embryo
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: sagittal section of a 10-day embryo
+- commons: File:Corte transversal de un embrión de ratón..jpg
+  taxon: Mus musculus@species
+  prep: section
+  part: embryo
+  modality: brightfield
+  note: transverse section of an embryo, University of Jaén practical class
+- commons: File:E15.5 mouse embryonic testes.tif
+  taxon: Mus musculus@species
+  prep: section
+  part: testis
+  modality: fluorescence
+  note: E15.5 embryonic testis, paraffin section, antibody staining
+- commons: File:Benign urine cytology - 2 -- high mag.jpg
+  taxon: Homo sapiens@species
+  prep: smear
+  modality: brightfield
+  stain: Papanicolaou
+  note: benign urine cytology, high magnification
+- commons: File:Benign urine cytology - 2a -- very high mag.jpg
+  taxon: Homo sapiens@species
+  prep: smear
+  modality: brightfield
+  stain: Papanicolaou
+  note: benign urine cytology, very high magnification
+- openslide: DICOM/3DHISTECH-2.zip
+  taxon: Mus musculus@species
+  prep: section
+  part: spleen
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: mouse spleen and liver on one slide, DICOM from a 3DHISTECH scan
+- openslide: Philips-TIFF/Philips-1.tiff
+  taxon: Homo sapiens@species
+  prep: section
+  part: lymph-node
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: lymph node section from the CAMELYON16 data set
+- openslide: Ventana/Ventana-1.bif
+  taxon: Homo sapiens@species
+  prep: section
+  part: liver
+  modality: brightfield
+  stain: trichrome
+  note: liver, scanned on a Ventana DP 200
+- openslide: Hamamatsu/Hamamatsu-1.ndpi
+  taxon: Homo sapiens@species
+  prep: smear
+  part: bone-marrow
+  modality: brightfield
+  note: bone marrow aspirate smear, scanned on a Hamamatsu NanoZoomer S360
+life.molluscs:
+- commons: File:Deroceras laeve epithelium 400 saturn.jpg
+  taxon: Deroceras laeve@species
+  prep: section
+  modality: brightfield
+  stain: Picro-Sirius
+  note: epithelium, 400x
+- commons: File:Deroceras laeve muscle 200 HE.jpg
+  taxon: Deroceras laeve@species
+  prep: section
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: muscle, 200x
+- commons: File:Deroceras laeve radula 400 orcein.jpg
+  taxon: Deroceras laeve@species
+  prep: whole_mount
+  modality: brightfield
+  stain: orcein
+  note: radula, 400x
+- commons: File:Helix pomatia radula (250 14) radula.jpg
+  taxon: Helix pomatia@species
+  prep: whole_mount
+  modality: brightfield
+  note: radula
+- commons: File:Acanthodoris (YPM IZ 010749.GP).jpeg
+  taxon: Acanthodoris@genus
+  prep: whole_mount
+  modality: brightfield
+  note: radula, Yale Peabody Museum
+- commons: File:Amphibulima patula (YPM IZ 078978) 001.jpeg
+  taxon: Amphibulima patula@species
+  prep: whole_mount
+  modality: brightfield
+  note: radula, 1 mm bar, Yale Peabody Museum
+- commons: File:Anomia (YPM IZ 101624) 001.jpeg
+  taxon: '#2031838'
+  prep: section
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: Yale Peabody Museum
+- commons: File:Anomia (YPM IZ 101624) 006.jpeg
+  taxon: '#2031838'
+  prep: section
+  modality: brightfield
+  stain: haematoxylin and eosin
+  note: Yale Peabody Museum
+- commons: File:Teuthida (YPM IZ 101491).jpeg
+  taxon: Cephalopoda@class
+  prep: whole_mount
+  modality: brightfield
+  note: squid paralarva, 0.5 mm bar, Yale Peabody Museum; the backbone has no order Teuthida
+  name: Teuthida
+- commons: File:Callistoctopus macropus (YPM IZ 096643).jpeg
+  taxon: Callistoctopus macropus@species
+  prep: whole_mount
+  modality: brightfield
+  note: radula, Yale Peabody Museum
+- commons: File:Loligo pealei (YPM IZ 102940).jpeg
+  taxon: Doryteuthis pealeii@species
+  prep: whole_mount
+  modality: brightfield
+  note: skin with chromatophores, Yale Peabody Museum
+- commons: File:Aplacophora (YPM IZ 049958) 002.jpeg
+  taxon: Mollusca@phylum
+  prep: whole_mount
+  modality: brightfield
+  note: aplacophoran spicules, 125 um bar, Yale Peabody Museum
+life.plants:
+- commons: File:20090823 2027SS Spirogyra.jpg
+  taxon: Spirogyra@genus
+  prep: whole_mount
+  modality: brightfield
+  note: filament with helical chloroplasts
+- commons: File:Coelastrum microporum EPA.jpg
+  taxon: Coelastrum microporum@species
+  prep: whole_mount
+  modality: brightfield
+  note: colonies, plankton sample
+- commons: File:Botryococcus terribilis.jpg
+  taxon: Botryococcus@genus
+  prep: whole_mount
+  modality: brightfield
+  note: colonial green alga in oil
+- commons: File:CSIRO ScienceImage 7595 Dunaliella.jpg
+  taxon: Dunaliella@genus
+  prep: fluid_mount
+  modality: brightfield
+  note: CSIRO Science Image
+- commons: File:Diphyscium foliosum (b, 113100-471926) 9604.JPG
+  taxon: Diphyscium foliosum@species
+  prep: whole_mount
+  part: leaf
+  modality: brightfield
+  note: moss leaf, 200 um bar
+- commons: File:Andreaea rupestris (c, 113340-471133) 6461.JPG
+  taxon: Andreaea rupestris@species
+  prep: whole_mount
+  part: leaf
+  modality: brightfield
+  note: moss leaf, 200 um bar
+- commons: File:Marchantia antheridial head.jpg
+  taxon: Marchantia@genus
+  prep: section
+  modality: brightfield
+  stain: safranin and fast green
+  note: antheridial head in section
+- commons: File:Marchantia antheridia.jpg
+  taxon: Marchantia@genus
+  prep: section
+  modality: brightfield
+  stain: safranin and fast green
+  note: antheridia in section
+- commons: File:Salaginella stem.jpg
+  taxon: Selaginella@genus
+  prep: section
+  part: stem
+  modality: brightfield
+  note: stem in cross section
+- commons: File:Isoetes stem sporangia.jpg
+  taxon: Isoetes@genus
+  prep: section
+  modality: brightfield
+  stain: safranin and fast green
+  note: stem with sporangia
+- commons: File:Isoetes sporangia.jpg
+  taxon: Isoetes@genus
+  prep: section
+  modality: brightfield
+  stain: safranin and fast green
+  note: sporangia
+- commons: File:Equestium telmateia ts.jpg
+  taxon: Equisetum telmateia@species
+  prep: section
+  part: stem
+  modality: brightfield
+  note: stem in transverse section
+- commons: File:Equisetum apical cell.jpg
+  taxon: Equisetum@genus
+  prep: section
+  part: meristem
+  modality: brightfield
+  note: shoot apex with its apical cell
+- commons: File:Cyrtomium sorus.jpg
+  taxon: Cyrtomium@genus
+  prep: section
+  part: leaf
+  modality: brightfield
+  note: sorus in cross section
+- commons: File:Dicksonia sorus.jpg
+  taxon: Dicksonia@genus@Plantae
+  prep: section
+  part: leaf
+  modality: brightfield
+  note: sorus in cross section
+- commons: File:CS of cycas leaflet.jpg
+  taxon: Cycas@genus
+  prep: section
+  part: leaf
+  modality: brightfield
+  stain: safranin
+  note: leaflet in cross section
+- commons: File:Cycas revoluta.tif
+  taxon: Cycas revoluta@species
+  prep: section
+  part: leaf
+  modality: brightfield
+  note: leaf in cross section
+- commons: File:Ginkgo BundleSheathCells 1 (36234398931).jpg
+  taxon: Ginkgo biloba@species
+  prep: section
+  part: leaf
+  modality: brightfield
+  note: bundle sheath cells
+- commons: File:Transverse section of the secondary structure, genus Thuja 01.JPG
+  taxon: Thuja@genus
+  prep: section
+  part: wood
+  modality: brightfield
+  note: secondary xylem, transverse
+- commons: File:Cross section of Larix.jpg
+  taxon: Larix gmelinii@species
+  prep: section
+  part: wood
+  modality: brightfield
+  note: wood in cross section
+- commons: File:Abies concolor tangential.jpg
+  taxon: Abies concolor@species
+  prep: section
+  part: wood
+  modality: brightfield
+  note: wood, tangential section
+- commons: File:Sparganium emersum sl5.jpg
+  taxon: Sparganium emersum@species
+  prep: section
+  part: leaf
+  modality: brightfield
+  note: leaf in cross section, 1 mm bar
+- commons: File:Проводящий пучок листа ананаса.jpg
+  taxon: Ananas comosus@species
+  prep: section
+  part: leaf
+  modality: brightfield
+  note: vascular bundle of the leaf
+- commons: File:Поперечное сечение листа ананаса, поляризация.jpg
+  taxon: Ananas comosus@species
+  prep: section
+  part: leaf
+  modality: polarised_xpl
+  note: leaf in cross section between crossed polars
+- commons: File:Микроструктура ряски Lemna minor.jpg
+  taxon: Lemna minor@species
+  prep: whole_mount
+  modality: brightfield
+  note: frond cells
+- commons: File:Gleditsia triacanthos - transverse section of stem.jpg
+  taxon: Gleditsia triacanthos@species
+  prep: section
+  part: stem
+  modality: brightfield
+  note: stem in transverse section
+- commons: File:Aquatic buttercup 400x 1.jpg
+  taxon: Ranunculus@genus
+  prep: whole_mount
+  part: leaf
+  modality: brightfield
+  note: aquatic buttercup leaf, 400x
+- commons: File:Ficaria verna (subsp. verna) sl18.jpg
+  taxon: Ficaria verna@species
+  prep: whole_mount
+  part: leaf
+  modality: brightfield
+  note: leaf with veins, 2 mm bar
+- zenodo:
+    record: '18397703'
+    file: 7_Colorados_8_2024_05_15_14_45_00.ndpi
+  taxon: Tracheophyta@phylum
+  prep: section
+  part: wood
+  modality: brightfield
+  note: wood tissue, sample 8 of the Colorados series, Instituto Alexander von Humboldt, botany; the sheet gives no determination
+  locality_text: Colombia
+  collector: Diana Perez
+  stack: policy
+life.pollen:
+- commons: File:Carex pilosa pollen.jpg
+  taxon: Carex pilosa@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: pollen grains
+- commons: File:Coronilla varia pollen.jpg
+  taxon: Coronilla varia@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: pollen grains
+- commons: File:Genista tinctoria pollen.jpg
+  taxon: Genista tinctoria@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: pollen grains
+- commons: File:Lupinus pollen.jpg
+  taxon: Lupinus@genus
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: pollen grains
+- commons: File:Black-cutch1.jpg
+  taxon: Senegalia catechu@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: polyads
+- commons: File:Asaurum europeaeum Pollen 400x.jpg
+  taxon: Asarum europaeum@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: 400x
+- commons: File:Buxus sempervirens Pollen 400x.jpg
+  taxon: Buxus sempervirens@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: 400x
+- commons: File:Cornus mas Pollen 400x.jpg
+  taxon: Cornus mas@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: 400x
+- commons: File:Hamamelis Pollen 400x.jpg
+  taxon: Hamamelis@genus
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: 400x
+- commons: File:Liriodendron zoom40 07-09-25 2.png
+  taxon: Liriodendron tulipifera@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: tulip tree, 40x objective
+- commons: File:Magnolia Pollen 400x.jpg
+  taxon: Magnolia@genus
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: 400x
+- commons: File:Philadelphus pollen.jpg
+  taxon: Philadelphus@genus
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: mock-orange
+- commons: File:Polen Pelargonium.jpg
+  taxon: Pelargonium@genus
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+- commons: File:Pollen grains of Annona reticulata.jpg
+  taxon: Annona reticulata@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: tetrads
+- commons: File:Pollen grains of Monoon longifolium.jpg
+  taxon: '#3156422'
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: accepted as Polyalthia longifolia
+  name: Monoon longifolium
+- commons: File:Scilla Pollen 400x in Glycerin.jpg
+  taxon: Scilla@genus
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: 400x, in glycerine
+- commons: File:Pollen grain of yellow elder.jpg
+  taxon: Tecoma stans@species
+  prep: whole_mount
+  part: pollen
+  modality: brightfield
+  note: yellow elder
+- commons: File:2009-10-30 Clitopilus prunulus 27673.jpg
+  taxon: Clitopilus prunulus@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 27673
+- commons: File:2010-09-21 Scleroderma citrinum Pers 108904.jpg
+  taxon: Scleroderma citrinum@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 108904, with an eyepiece scale
+- commons: File:2010-11-30 Ascobolus immersus 124058.jpg
+  taxon: Ascobolus immersus@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 124058
+- commons: File:2011-03-08 Hygrocybe flavescens spores 64217.jpg
+  taxon: Hygrocybe flavescens@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 64217, with an eyepiece scale
+- commons: File:2011-04-26 Gyromitra esculenta Spores 66581.jpg
+  taxon: Gyromitra esculenta@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 66581, with an eyepiece scale
+- commons: File:2011-08-27 Ustilago maydis (DC.) Corda 183839.jpg
+  taxon: Ustilago maydis@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: teliospores, Mushroom Observer 183839, with an eyepiece scale
+- commons: File:2011-10-06 Conocybe siliginea (Fr. -Fr.) Kuhner 173108.jpg
+  taxon: Conocybe siliginea@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 173108, with an eyepiece scale
+- commons: File:2011-11-15 Royoporus badius (Pers.) A.B. De 185780.jpg
+  taxon: '#9439058'
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 185780, with an eyepiece scale; accepted as Picipes badius
+  name: Royoporus badius
+- commons: File:2011-11-30 Leucogaster citrina 186473.jpg
+  taxon: Leucogaster citrinus@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 186473
+- commons: File:2012-01-24 Lentinellus ursinus (Fr.) Kühner 196906.jpg
+  taxon: Lentinellus ursinus@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 196906, with an eyepiece scale
+- commons: File:2012-01-28 Botryobasidium aureum Parmasto 197214.jpg
+  taxon: Botryobasidium aureum@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 197214
+- commons: File:2012-01-28 Hygrophoropsis aurantiaca var. rufa D.A. Reid 197652.jpg
+  taxon: Hygrophoropsis aurantiaca@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: Mushroom Observer 197652, with an eyepiece scale
+- commons: File:Polypodium glycyrrhiza spores.jpg
+  taxon: Polypodium glycyrrhiza@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: licorice fern, 40x objective
+- commons: File:Andreaea rupestris (d, 113642-470243) 5930.JPG
+  taxon: Andreaea rupestris@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: 50 um bar
+- commons: File:Campylostelium saxicola (a, 143336-475803) 7375.JPG
+  taxon: Campylostelium saxicola@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: 50 um bar
+- commons: File:Diphyscium foliosum (b, 113100-471926) 9617.JPG
+  taxon: Diphyscium foliosum@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: 50 um bar
+- commons: File:Diphyscium foliosum (c, 144650-474724) 2214.JPG
+  taxon: Diphyscium foliosum@species
+  prep: whole_mount
+  part: spore
+  modality: brightfield
+  note: 50 um bar
+life.reptiles:
+- commons: File:A blood smear showing red blood cells of turtle.jpg
+  taxon: Testudines@class
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: turtle red blood cells
+- commons: File:Blood smear garter snake.jpg
+  taxon: Thamnophis@genus
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: garter snake; nucleated red blood cells, photographed through the eyepiece of a Nikon YS100
+- commons: File:Turtlerbc1000x.jpg
+  taxon: Testudines@class
+  prep: smear
+  part: blood
+  modality: brightfield
+  note: turtle red blood cells, 1000x
+- commons: File:Кожа хамелеона.jpg
+  taxon: Chamaeleonidae@family
+  prep: whole_mount
+  part: skin
+  modality: sem_external
+  note: shed skin, pores of about 200 nm in each segment, false colour
+- commons: File:Peeling snake skin.jpg
+  taxon: Squamata@class
+  prep: whole_mount
+  part: skin
+  modality: brightfield
+  note: peeling snake skin removed by dissection
+  name: Serpentes
+- commons: File:Pelle di serpente (Serpentes o Ophidia) - 1.jpg
+  taxon: Squamata@class
+  prep: whole_mount
+  part: skin
+  modality: brightfield
+  note: scales of a shed skin (exuvia), optical microscope
+  name: Serpentes
+- commons: File:Pelle di serpente (Serpentes o Ophidia) - 2.jpg
+  taxon: Squamata@class
+  prep: whole_mount
+  part: skin
+  modality: sem_external
+  note: scales of a shed skin (exuvia)
+  name: Serpentes
+matter.materials:
+- commons: File:CSIRO ScienceImage 7231 Flax fibre.jpg
+  material: flax
+  prep: whole_mount
+  modality: sem_external
+  note: flax fibre, CSIRO, 10 um bar
+- commons: File:Erste ultraschall-aufgeschlossene-Flachsfaser.jpg
+  material: flax
+  prep: whole_mount
+  modality: sem_external
+  note: ultrasonically disintegrated flax fibre (SETRALIT)
+- commons: File:PSetralit Nfu 4-006 (nicht fibrillierte Naturfaser).jpg
+  material: hemp
+  prep: whole_mount
+  modality: sem_external
+  note: non-fibrillated hemp fibre (SETRALIT), x500
+- commons: File:Плетение нейлоновых чулок плотностью 12 ден.tif
+  material: polyamide
+  prep: whole_mount
+  modality: polarised_xpl
+  note: knit of 12 denier nylon stockings, crossed polarisers with retarder
+- commons: File:Плетение нейлоновых чулок плотностью 20 ден.tif
+  material: polyamide
+  prep: whole_mount
+  modality: polarised_xpl
+  note: knit of 20 denier nylon stockings, crossed polarisers with retarder
+- commons: File:Плетение нейлоновых чулок плотностью 40 ден.tif
+  material: polyamide
+  prep: whole_mount
+  modality: polarised_xpl
+  note: knit of 40 denier nylon stockings, crossed polarisers with retarder
+- commons: File:Spherulite crossed polarisation filter.png
+  material: polyamide
+  prep: section
+  modality: polarised_xpl
+  note: spherulites in polyamide 6.6, 10 um microtome section, crossed polarisation filters
+- commons: File:Almidon arqueologico de Zamia amblyphyllidia Artef. 4. UTU-27.jpg
+  material: starch
+  prep: whole_mount
+  modality: brightfield
+  note: archaeological starch grain of Zamia amblyphyllidia (marunguey) recovered from a stone tool, site Utu-27
+  locality_text: Puerto Rico
+- commons: File:Gartenbohne (Phaseolus vulgaris) Stärke.jpg
+  material: starch
+  prep: whole_mount
+  modality: polarised_xpl
+  note: starch of the bean seed (Phaseolus vulgaris) in polarised transmitted light
+- commons: File:Stärkemehl 800 fach Polfilter.jpg
+  material: maize-starch
+  prep: whole_mount
+  modality: polarised_xpl
+  note: cornstarch at 800x with a polarising filter, field 200 x 150 um
+- commons: File:002-Sol-tub-6xHF-gesBl.jpg
+  material: potato-starch
+  prep: whole_mount
+  modality: brightfield
+  note: potato starch grains (amyloplasts), 6x
+- commons: File:003-Sol-tub-40xHF-hoch.jpg
+  material: potato-starch
+  prep: whole_mount
+  modality: brightfield
+  note: potato starch grains (amyloplasts), 40x
+- commons: File:008-Sol-tub-63xOel-Pol2-hoch.jpg
+  material: potato-starch
+  prep: whole_mount
+  modality: polarised_xpl
+  note: potato starch grains with a polarisation filter, 63x oil
+- commons: File:Leucoplasts in potato. బంగాళా దుంప లో లూకో ప్లాస్టు లు.jpg
+  material: potato-starch
+  prep: section
+  modality: brightfield
+  note: leucoplasts (starch grains) in potato cells
+- commons: File:Potato 20x (35532237083).jpg
+  material: potato-starch
+  prep: section
+  modality: brightfield
+  note: potato tissue with starch, 20x, Plant Image Library
+- commons: File:Potato amyloplast granules observed at 200 magnification under a polarized microscope with interference plate
+    inserted. Massimo Brizzi 2021.jpg
+  material: potato-starch
+  prep: whole_mount
+  modality: polarised_xpl
+  note: potato amyloplast granules, 200x, polarising microscope with interference plate
+- commons: File:Potato starch microphoto.jpg
+  material: potato-starch
+  prep: whole_mount
+  modality: brightfield
+  note: potato starch grains
+- commons: File:Barrel-cactus-green-blue-1280.jpg
+  material: paper
+  prep: whole_mount
+  modality: fluorescence
+  note: handmade paper of barrel-cactus fibres, laser confocal, pseudo-colour
+- commons: File:Cattail-handmade-paper-1280.jpg
+  material: paper
+  prep: whole_mount
+  modality: fluorescence
+  note: handmade paper of cattail fibres, laser confocal, pseudo-colour
+- commons: File:Office paper FOV 100.png
+  material: paper
+  prep: whole_mount
+  modality: sem_external
+  note: office paper, field of view 100 um
+- commons: File:Papel1.jpg
+  material: paper
+  prep: whole_mount
+  modality: brightfield
+  note: paper at 75x
+- commons: File:Paper Micrograph Bright.png
+  material: paper
+  prep: whole_mount
+  modality: brightfield
+  note: Whatman lens tissue, 10x
+  pixel_size_um: 1.559
+- commons: File:Paper Micrograph Cross-Polarised.png
+  material: paper
+  prep: whole_mount
+  modality: polarised_xpl
+  note: Whatman lens tissue, crossed polars, 10x
+  pixel_size_um: 1.559
+- commons: File:Paper Micrograph Dark.png
+  material: paper
+  prep: whole_mount
+  modality: darkfield
+  note: Whatman lens tissue, 10x
+  pixel_size_um: 1.559
+- commons: File:PaperAutofluorescence.jpg
+  material: paper
+  prep: whole_mount
+  modality: fluorescence
+  note: tissue paper, autofluorescence of the fibres under ultraviolet light
+- commons: File:Zellstoff 200 fach Polfilter.jpg
+  material: wood-pulp
+  prep: whole_mount
+  modality: polarised_xpl
+  note: pulp from a paper bag, 200x with a polarising filter, field about 800 x 600 um
+- commons: File:Zellstoff 200fach Polfilter.jpg
+  material: wood-pulp
+  prep: whole_mount
+  modality: polarised_xpl
+  note: pulp from a paper tissue, 200x with a polarising filter
+- commons: File:Кусочек фиолетового картона под микроскопом.jpg
+  material: cardboard
+  prep: whole_mount
+  modality: reflected
+  note: purple cardboard, printed dots, physics lesson on light filters

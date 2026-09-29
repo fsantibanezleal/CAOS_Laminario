@@ -1,0 +1,21 @@
+# Fishes, reviewed on the life.fishes harvest sheet (30 candidates) on 2026-09-29. Excluded: SEM, X-ray microscopy
+# and 3D renderings, stereo photographs of larvae in a dish, collages and multi-panel figures, and the three Reischig
+# scale preparations, whose illumination (their colours suggest crossed polars) the source does not state, and two
+# scale images whose fish is not identified (the backbone has no ray-finned fish class to anchor them to). Five
+# identified micrographs found by full-text search are added at the end of the sheet (numbers 31 to 35).
+[life.fishes]
+life.fishes 6 | taxon=Cyprinus carpio@species | whole_mount | | brightfield | | | fin
+life.fishes 12 | taxon=Paralichthys olivaceus@species | section | muscle | brightfield | haematoxylin and eosin | | olive flounder muscle; the arrows of the source figure mark parasites between the fibres
+life.fishes 15 | taxon=Poecilia reticulata@species | whole_mount | scale | brightfield | | | guppy scale
+life.fishes 16 | taxon=Poecilia reticulata@species | whole_mount | scale | brightfield | | | guppy scale, detail
+life.fishes 18 | taxon=Liparis liparis@species | fluid_mount | larva | brightfield | | | larva
+life.fishes 19 | taxon=Oncorhynchus keta@species | whole_mount | scale | dic | | | chum salmon scale
+life.fishes 23 | taxon=Danio rerio@species | whole_mount | eye | fluorescence | | | retina of a 72-hour larva, horizontal and amacrine cells, confocal
+life.fishes 24 | taxon=Danio rerio@species | whole_mount | larva | fluorescence | | | larvae
+life.fishes 25 | taxon=Danio rerio@species | section | intestine | fluorescence | | | intestinal tissue, homologous recombination reporter
+life.fishes 29 | taxon=Danio rerio@species | whole_mount | | fluorescence | | | tail, lamin A/C immunostaining
+life.fishes 31 | taxon=Oncorhynchus mykiss@species | smear | blood | brightfield | | | rainbow trout blood smear
+life.fishes 32 | taxon=Carassius carassius@species | fluid_mount | gill | brightfield | | | crucian carp gills under the microscope
+life.fishes 33 | taxon=Ictalurus punctatus@species | section | gill | brightfield | | | gill epithelium damaged by methyl mercuric chloride in the water, camera-microscope study, National Water Quality Laboratory (US EPA Documerica)
+life.fishes 34 | taxon=Ictalurus punctatus@species | section | gill | brightfield | | | healthy gill epithelium, high magnification, camera-microscope study (US EPA Documerica)
+life.fishes 35 | taxon=Ictalurus punctatus@species | section | gill | brightfield | | | healthy gill filament with its lamellae, camera-microscope study (US EPA Documerica)

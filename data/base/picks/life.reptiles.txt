@@ -1,0 +1,14 @@
+# Reptiles, reviewed on the life.reptiles harvest sheet (16 candidates) on 2026-09-29. The open supply is small: the
+# two reptile categories on Commons hold 15 files, most of them multi-panel figures of papers (fossil bone
+# histology, blood parasites of Malagasy snakes and chameleons, a garter-snake retina); full-text searches of
+# Commons, the Wellcome Collection and GBIF found three more (named in data/base/harvest.yaml). Scanning electron
+# micrographs are kept as labelled external images. The collection stays below the floor of 12 (finding F-031) and
+# is open for contribution.
+[life.reptiles]
+life.reptiles 1 | taxon=Testudines@class | smear | blood | brightfield | | | turtle red blood cells
+life.reptiles 4 | taxon=Thamnophis@genus | smear | blood | brightfield | | | garter snake; nucleated red blood cells, photographed through the eyepiece of a Nikon YS100
+life.reptiles 12 | taxon=Testudines@class | smear | blood | brightfield | | | turtle red blood cells, 1000x
+life.reptiles 13 | taxon=Chamaeleonidae@family | whole_mount | skin | sem_external | | | shed skin, pores of about 200 nm in each segment, false colour
+life.reptiles 14 | taxon=Squamata@class | whole_mount | skin | brightfield | | | peeling snake skin removed by dissection | name=Serpentes
+life.reptiles 15 | taxon=Squamata@class | whole_mount | skin | brightfield | | | scales of a shed skin (exuvia), optical microscope | name=Serpentes
+life.reptiles 16 | taxon=Squamata@class | whole_mount | skin | sem_external | | | scales of a shed skin (exuvia) | name=Serpentes
