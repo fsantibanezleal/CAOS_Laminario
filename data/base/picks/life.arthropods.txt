@@ -1,0 +1,23 @@
+# Arachnids and other arthropods, reviewed on the life.arthropods harvest sheet (58 candidates) on 2026-09-29.
+# The NHM mite and springtail queries gave no record with a microscope image. Excluded: sections annotated with
+# letters (figure plates), stereo photographs of whole amphipods, labelled anatomy diagrams, unidentified mites.
+# No open candidate was found for myriapods, scorpions or springtails; they stay open for contribution.
+[life.arthropods]
+life.arthropods 1 | taxon=Demodex canis@species | section | | brightfield | | | in a hair follicle of a dog | host=Canis lupus@species
+life.arthropods 2 | taxon=Dermanyssus gallinae@species | whole_mount | | brightfield | | | poultry red mite
+life.arthropods 3 | taxon=Otodectes cynotis@species | whole_mount | | brightfield | | | ear mite
+life.arthropods 5 | taxon=Acarus siro@species | whole_mount | | brightfield | | | grain mite
+life.arthropods 7 | taxon=Sarcoptes scabiei@species | whole_mount | | brightfield | | | itch mite
+life.arthropods 8 | taxon=Megninia@genus@Animalia | whole_mount | | brightfield | | | feather mite
+life.arthropods 9 | taxon=Notoedres cati@species | whole_mount | | brightfield
+life.arthropods 10 | taxon=Tetranychus@genus | whole_mount | | brightfield | | | red spider mite, whole preparation
+life.arthropods 17 | taxon=Loxosceles laeta@species | whole_mount | | brightfield | | | Chilean recluse spider
+life.arthropods 26 | taxon=Holocnemus pluchei@species | section | | brightfield | | | chromatophores
+life.arthropods 32 | taxon=Daphnia@genus@Animalia | whole_mount | | brightfield | | | whole preparation
+life.arthropods 37 | taxon=Daphnia@genus@Animalia | fluid_mount | | darkfield | | | with parthenogenetic embryos
+life.arthropods 41 | taxon=Calanoida@order | whole_mount | | brightfield | | | Yale Peabody Museum, 0.5 mm bar
+life.arthropods 43 | taxon=Calanoida@order | whole_mount | | brightfield | | | Yale Peabody Museum, 1 mm bar
+life.arthropods 47 | taxon=Ostracoda@class | fluid_mount | | darkfield | | | four living ostracods
+life.arthropods 50 | taxon=Acanthocyclops@genus | fluid_mount | | brightfield
+life.arthropods 53 | taxon=Boeckella gracilis@species | fluid_mount | | darkfield | | | mating pair
+life.arthropods 54 | taxon=Artemia salina@species | fluid_mount | | darkfield | | | brine shrimp

@@ -1,0 +1,36 @@
+# Whole-slide images, chosen on 2026-09-29 from the two open sources of dossier 10.
+# Smithsonian NMNH scans on Zenodo (CC BY 4.0; records 18397703, part III, and 18461326, part IV): every file except
+# the 26 GB Prototaxites scan. Facts come from each record's METADATA_WSI_specimens_NHC_part_*.xlsx (specimen,
+# specimen ID, type, locality, country, age, museum, collector or analyst, z-planes). Every scan is a focal stack
+# (3 to 81 planes); the ingest policy selects the planes that are kept.
+# OpenSlide test data (CC0 1.0): only the items whose index entry names the tissue and the organism is identifiable;
+# the CMU-n slides, whose tissue is not recorded, are left out, and Zeiss CZI, which OpenSlide 4.0.1 does not read.
+[life.plants]
+zenodo 18397703 7_Colorados_8_2024_05_15_14_45_00.ndpi | taxon=Tracheophyta@phylum | section | wood | brightfield | | | wood tissue, sample 8 of the Colorados series, Instituto Alexander von Humboldt, botany; the sheet gives no determination | locality=Colombia; collector=Diana Perez; stack=policy
+
+[life.insects]
+zenodo 18397703 10_Ctenidiosomus_perpexsus_Holotype_2025_09_08_12_31_29.ndpi | taxon=Ctenidiosomus perplexus@species | whole_mount | | brightfield | | | flea, holotype, NMNH Entomology; described by Tipton and Machado-Allison (1972); the sheet spells the name perpexsus | locality=Trujillo, Venezuela; type=holotype; catalogue=USNMENT01866405; stack=policy
+zenodo 18397703 11_Ctenidiosomus_perpexsus_Allotype_2025_09_08_12_43_17.ndpi | taxon=Ctenidiosomus perplexus@species | whole_mount | | brightfield | | | flea, allotype (the file name; the sheet's type column repeats holotype), NMNH Entomology | locality=Trujillo, Venezuela; type=allotype; catalogue=USNMENT01866406; stack=policy
+zenodo 18461326 12_Tetraleurodes_85_10304_2024-01-04 11.10.43.ndpi | taxon=Tetraleurodes@genus | whole_mount | | brightfield | | | whitefly, USDA Entomology | locality=California, USA; collector=Ian Stocks; stack=policy
+zenodo 18461326 13_Ptiliidae_FM_46745_2025_09_08_12_49_22.ndpi | taxon=Ptiliidae@family | whole_mount | | brightfield | | | featherwing beetle, Field Museum Entomology FM 46745 | locality=Florida, USA; collector=Bruno de Medeiros; stack=policy
+zenodo 18461326 14_Ptiliidae_FM_66-245_2025_09_08_12_38_40.ndpi | taxon=Ptiliidae@family | whole_mount | | brightfield | | | featherwing beetle, Field Museum Entomology FM 66-245 | locality=Florida, USA; collector=Bruno de Medeiros; stack=policy
+
+[life.mammals]
+# DICOM/3DHISTECH-2.zip (mouse spleen and liver) was dropped on 2026-09-29: its level 0 is 267,776 x 370,688 px,
+# over the imaging engine's limit of 200,000 px a side, so the product refuses it (finding F-043). The Leica
+# samples are licensed 'distributable', outside the base policy, and the other CC0 samples do not state their
+# species; Philips-2 takes its place: CC0, from CAMELYON16 (sentinel lymph nodes of patients), with a macro image.
+openslide Philips-TIFF/Philips-2.tiff | taxon=Homo sapiens@species | section | lymph-node | brightfield | haematoxylin and eosin | | lymph node section from the CAMELYON16 data set, with the slide's macro image
+openslide Philips-TIFF/Philips-1.tiff | taxon=Homo sapiens@species | section | lymph-node | brightfield | haematoxylin and eosin | | lymph node section from the CAMELYON16 data set
+# Ventana/Ventana-1.bif (human liver, CC0) was dropped on 2026-09-29: its tiles are joined in the LEFT direction,
+# which no OpenSlide release reads (4.0.1 knows RIGHT and UP; openslide issues 234 and 303), so the product cannot
+# open it (finding F-045). The other Ventana samples are licensed 'distributable'. Philips-3 takes its place: CC0,
+# CAMELYON16, with its label and macro images.
+openslide Philips-TIFF/Philips-3.tiff | taxon=Homo sapiens@species | section | lymph-node | brightfield | haematoxylin and eosin | | lymph node section from the CAMELYON16 data set, with the slide's label and macro images
+openslide Hamamatsu/Hamamatsu-1.ndpi | taxon=Homo sapiens@species | smear | bone-marrow | brightfield | | | bone marrow aspirate smear, scanned on a Hamamatsu NanoZoomer S360
+
+[earth.fossils]
+zenodo 18397703 5_Cuticle_2023-12-13 13.27.36.ndpi | taxon=Plantae@kingdom | whole_mount | | brightfield | | | fossil plant cuticle, Paleogene, NMNH Paleobotany; the sheet gives no determination | locality=USA; collector=Joe Milligan; stack=policy
+zenodo 18397703 6_40935_Bowmanites_moorei.ndpi | taxon=Bowmanites@genus@Plantae | section | | brightfield | | | coal ball, Pennsylvanian, NMNH Paleobotany; paratype of Bowmanites moorei Mamay, which the backbone does not list; the sheet does not say whether the preparation is a peel or a ground section | locality=Kansas, USA; type=paratype; catalogue=USNM P 40935; name=Bowmanites moorei; stack=policy
+zenodo 18397703 8_Slide_ostracod_A_specimen_fossil_NMNH.ndpi | taxon=Ostracoda@class | whole_mount | | brightfield | | | ostracod A, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt | locality=Texas, USA; stack=policy
+zenodo 18397703 9_Slide_ostracod_B_specimen_fossil_NMNH.ndpi | taxon=Ostracoda@class | whole_mount | | brightfield | | | ostracod B, Late Cretaceous, NMNH Ostracoda, analysed by Gene Hunt | locality=Texas, USA; stack=policy

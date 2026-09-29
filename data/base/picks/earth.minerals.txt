@@ -1,0 +1,54 @@
+# Minerals, reviewed on the earth.minerals harvest sheet (100 candidates) on 2026-09-29, with mineral subjects
+# found on the earth.rocks sheet. Mineral names follow the IMA list (a group name when the source names only the
+# group). Crossed polars are recorded when the source says so, or when interference colours sit on an extinct
+# (black) ground; the chemical and biological crystals of this sheet go to the crystals collection. Excluded:
+# ultraviolet photographs of hand specimens, museum displays, diagrams of interference figures and of the
+# polarising microscope, equipment and classroom photographs, images with arrows or text, SEM, and a DNA image.
+[earth.minerals]
+pair earth.minerals 16 17 | mineral=olivine | thin_section | | | | | one olivine grain in a gabbro
+earth.minerals 1 | mineral=olivine | whole_mount | | reflected | | | olivine crystals separated from river sand, field width 5.5 mm | locality=Hitiaa River, Tahiti
+earth.minerals 3 | mineral=olivine | thin_section | | polarised_xpl | | | olivine crystal under a petrographic microscope
+earth.minerals 11 | mineral=Serpentine | thin_section | | polarised_xpl | | | olivine wholly replaced by serpentine, with radial fractures from the volume increase, field of view 7 mm
+earth.minerals 12 | mineral=olivine | thin_section | | polarised_xpl | | | euhedral olivine in basalt, field of view 2 mm
+earth.minerals 15 | mineral=olivine | thin_section | | polarised_xpl | | | undulose extinction, a shock indicator in an equilibrated ordinary chondrite, 80x
+earth.minerals 18 | mineral=Chrysotile | thin_section | | polarised_xpl | | | beginning serpentinisation: chrysotile veins around three olivine crystals in a volcanic rock
+earth.minerals 20 | mineral=olivine | thin_section | | polarised_ppl | | | skeletal olivine in komatiite lava | locality=Alexo, Ontario, Canada
+earth.minerals 38 | mineral=amphibole | thin_section | | polarised_xpl | | | amphibole grain with biotite and plagioclase, two nicols
+earth.minerals 46 | mineral=plagioclase | thin_section | | polarised_xpl | | | plagioclase with biotite and amphibole, two nicols
+earth.minerals 57 | mineral=hornblende | thin_section | | polarised_xpl | | | hornblende, 20x
+earth.minerals 58 | mineral=olivine | thin_section | | polarised_xpl | | | olivine, 20x
+earth.minerals 60 | mineral=garnet | thin_section | | polarised_xpl | | | garnets in a metapelite, 5x, field diameter 4 mm
+earth.minerals 61 | mineral=Halite | thin_section | | polarised_xpl | | | rock salt with fluid inclusions, carnallite and gas bubbles, polarisers almost crossed, 40x objective
+earth.minerals 62 | mineral=Anhydrite | thin_section | | polarised_xpl | | | anhydrite of an anhydrite line in rock salt, with inclusions
+earth.rocks 14 | mineral=Leucite | thin_section | | polarised_ppl | | | skeletal cartwheel leucite | locality=Vulsini volcano, central Italy
+earth.rocks 15 | mineral=Cordierite | thin_section | | polarised_xpl | | | sector-twinned cordierite phenocryst in a rhyolite | locality=San Vincenzo, Tuscany, Italy
+earth.rocks 28 | mineral=Corundum | thin_section | | polarised_ppl | | | corundum with a blue core, biotite and hercynite in a mafic microgranular enclave | locality=Elba, Italy
+earth.rocks 59 | mineral=Haüyne | thin_section | | polarised_ppl | | | haüyne phenocryst in a haüyne foidite | locality=Melfi, Potenza, Italy
+earth.rocks 98 | mineral=Actinolite | thin_section | | polarised_ppl | | | fibrous actinolite
+earth.rocks 100 | mineral=Hercynite | thin_section | | polarised_ppl | | | green hercynite with pink zoning in a metamorphic ejecta of the 79 AD eruption
+
+[earth.rocks]
+earth.minerals 7 | rock=gabbro | thin_section | | polarised_xpl | | | clinopyroxene in a foliated groundmass of plagioclase and olivine, 30 um thick section | locality=Rum Layered Intrusion, Scotland
+earth.minerals 19 | rock=peridotite | thin_section | | polarised_xpl | | | olivine island in a serpentine groundmass of a serpentinised peridotite, field of view 2 mm
+earth.minerals 55 | rock=sand | thin_section | | polarised_ppl | | | oil sand: grains, fines, bitumen and voids | name=oil sands
+
+[matter.crystals]
+earth.minerals 64 | crystal=chemical | fluid_mount | | polarised_xpl | | | microcrystals of acetylsalicylic acid between polarising filters, 60x | name=acetylsalicylic acid
+earth.minerals 65 | crystal=chemical | whole_mount | | polarised_xpl | | | adrenaline crystals, Josef Reischig archive, 300x | name=adrenaline
+earth.minerals 66 | crystal=chemical | whole_mount | | polarised_xpl | | | amino acids recrystallised on a glass slide | name=amino acid
+earth.minerals 73 | crystal=chemical | whole_mount | | polarised_xpl | | | recrystallised from solution on a slide, crossed polarisers | name=calcium nitrate
+earth.minerals 74 | crystal=chemical | whole_mount | | polarised_xpl | | | melted carbamide, with a lambda plate | name=urea
+earth.minerals 79 | crystal=biogenic | fluid_mount | | polarised_xpl | | | cholesterol crystals in fresh synovial fluid, crossed polarisers with a quarter-wave plate | name=cholesterol
+earth.minerals 80 | crystal=chemical | whole_mount | | polarised_xpl | | | citric acid, Josef Reischig archive, 250x | name=citric acid
+earth.minerals 82 | crystal=chemical | whole_mount | | polarised_xpl | | | coumarin crystals, 40x | name=coumarin
+earth.minerals 85 | crystal=chemical | whole_mount | | polarised_xpl | | | crystals of the cytostatic Refador, Josef Reischig archive, 600x | name=Refador
+earth.minerals 86 | crystal=biogenic | fluid_mount | | polarised_xpl | | | uric acid crystal | name=uric acid
+earth.minerals 87 | crystal=chemical | whole_mount | | polarised_xpl | | | vitamin B6, Josef Reischig archive, 1650x | name=pyridoxine
+earth.minerals 88 | crystal=chemical | whole_mount | | polarised_xpl | | | vitamin C, Josef Reischig archive, 250x | name=ascorbic acid
+earth.minerals 91 | crystal=liquid | whole_mount | | polarised_xpl | | | antiferroelectric phase of a rod-like chiral liquid crystal at 65 C, x20 | name=chiral liquid crystal
+earth.minerals 92 | crystal=liquid | whole_mount | | polarised_xpl | | | chiral smectic A phase of a rod-like liquid crystal at 110 C, x20 | name=chiral liquid crystal
+earth.minerals 94 | crystal=liquid | whole_mount | | polarised_xpl | | | smectic I phase of a hockey-stick shaped liquid crystal at 85 C, x20 | name=bent-core liquid crystal
+earth.minerals 95 | crystal=liquid | whole_mount | | polarised_xpl | | | ferroelectric liquid crystal | name=ferroelectric liquid crystal
+earth.minerals 96 | crystal=liquid | whole_mount | | polarised_xpl | | | fingerprint texture of a thermotropic fluoro-substituted ester with ferro- and antiferroelectric SmC* phases | name=fluoro-substituted ester
+earth.minerals 97 | crystal=biogenic | fluid_mount | | polarised_xpl | | | spiked rods of monosodium urate from synovial fluid (gout) | name=monosodium urate
+earth.minerals 100 | crystal=chemical | whole_mount | | polarised_xpl | | | crystallised from aqueous solution | name=potassium nitrate

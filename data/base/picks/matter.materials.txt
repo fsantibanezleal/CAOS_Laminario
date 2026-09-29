@@ -1,0 +1,34 @@
+# Materials, reviewed on the matter.materials harvest sheet (89 candidates) on 2026-09-29. Excluded: fibre images
+# whose source records no author (the Strathclyde forensic series), images with measurement labels or text
+# overlays, anaglyphs, engravings and drawings, fabrics whose fibre is not named, polyethylene and CR-39 images
+# (materials outside the vocabulary), stereo photographs of film edges, and SEM images of blends and inks.
+# Scanning electron micrographs of named fibres and paper are kept as labelled external images.
+[matter.materials]
+matter.materials 9 | material=flax | whole_mount | | sem_external | | | flax fibre, CSIRO, 10 um bar
+matter.materials 10 | material=flax | whole_mount | | sem_external | | | ultrasonically disintegrated flax fibre (SETRALIT)
+matter.materials 14 | material=hemp | whole_mount | | sem_external | | | non-fibrillated hemp fibre (SETRALIT), x500
+matter.materials 25 | material=polyamide | whole_mount | | polarised_xpl | | | knit of 12 denier nylon stockings, crossed polarisers with retarder
+matter.materials 26 | material=polyamide | whole_mount | | polarised_xpl | | | knit of 20 denier nylon stockings, crossed polarisers with retarder
+matter.materials 29 | material=polyamide | whole_mount | | polarised_xpl | | | knit of 40 denier nylon stockings, crossed polarisers with retarder
+matter.materials 52 | material=polyamide | section | | polarised_xpl | | | spherulites in polyamide 6.6, 10 um microtome section, crossed polarisation filters
+matter.materials 31 | material=starch | whole_mount | | brightfield | | | archaeological starch grain of Zamia amblyphyllidia (marunguey) recovered from a stone tool, site Utu-27 | locality=Puerto Rico
+matter.materials 34 | material=starch | whole_mount | | polarised_xpl | | | starch of the bean seed (Phaseolus vulgaris) in polarised transmitted light
+matter.materials 37 | material=maize-starch | whole_mount | | polarised_xpl | | | cornstarch at 800x with a polarising filter, field 200 x 150 um
+matter.materials 39 | material=potato-starch | whole_mount | | brightfield | | | potato starch grains (amyloplasts), 6x
+matter.materials 40 | material=potato-starch | whole_mount | | brightfield | | | potato starch grains (amyloplasts), 40x
+matter.materials 41 | material=potato-starch | whole_mount | | polarised_xpl | | | potato starch grains with a polarisation filter, 63x oil
+matter.materials 46 | material=potato-starch | section | | brightfield | | | leucoplasts (starch grains) in potato cells
+matter.materials 48 | material=potato-starch | section | | brightfield | | | potato tissue with starch, 20x, Plant Image Library
+matter.materials 49 | material=potato-starch | whole_mount | | polarised_xpl | | | potato amyloplast granules, 200x, polarising microscope with interference plate
+matter.materials 50 | material=potato-starch | whole_mount | | brightfield | | | potato starch grains
+matter.materials 71 | material=paper | whole_mount | | fluorescence | | | handmade paper of barrel-cactus fibres, laser confocal, pseudo-colour
+matter.materials 72 | material=paper | whole_mount | | fluorescence | | | handmade paper of cattail fibres, laser confocal, pseudo-colour
+matter.materials 77 | material=paper | whole_mount | | sem_external | | | office paper, field of view 100 um
+matter.materials 78 | material=paper | whole_mount | | brightfield | | | paper at 75x
+matter.materials 80 | material=paper | whole_mount | | brightfield | | | Whatman lens tissue, 10x | pixel=1.559
+matter.materials 81 | material=paper | whole_mount | | polarised_xpl | | | Whatman lens tissue, crossed polars, 10x | pixel=1.559
+matter.materials 82 | material=paper | whole_mount | | darkfield | | | Whatman lens tissue, 10x | pixel=1.559
+matter.materials 84 | material=paper | whole_mount | | fluorescence | | | tissue paper, autofluorescence of the fibres under ultraviolet light
+matter.materials 85 | material=wood-pulp | whole_mount | | polarised_xpl | | | pulp from a paper bag, 200x with a polarising filter, field about 800 x 600 um
+matter.materials 86 | material=wood-pulp | whole_mount | | polarised_xpl | | | pulp from a paper tissue, 200x with a polarising filter
+matter.materials 87 | material=cardboard | whole_mount | | reflected | | | purple cardboard, printed dots, physics lesson on light filters

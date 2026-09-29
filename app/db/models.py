@@ -31,6 +31,8 @@ class Slide(Base):
     origin: Mapped[str] = mapped_column(String(16), nullable=False)
 
     format_code: Mapped[str] = mapped_column(String(16), nullable=False)
+    #: The source did not record the physical slide (most open photomicrographs); the format is assumed.
+    format_assumed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     width_mm: Mapped[float] = mapped_column(Float, nullable=False)
     height_mm: Mapped[float] = mapped_column(Float, nullable=False)
     coverslip_code: Mapped[str] = mapped_column(String(16), nullable=False, default="none")

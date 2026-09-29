@@ -232,6 +232,7 @@ Where a slide belongs (``POST /api/placement``): the suggestion, and every node 
 | `code` | string | yes |  |  |
 | `width_mm` | number | yes |  |  |
 | `height_mm` | number | yes |  |  |
+| `assumed` | boolean | no |  | `false` |
 
 ### CoverslipRecord
 

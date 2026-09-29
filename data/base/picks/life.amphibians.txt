@@ -1,0 +1,16 @@
+# Amphibians, reviewed on the life.amphibians harvest sheet (20 candidates) on 2026-09-29. Excluded: an electron
+# micrograph of frog skin (CSIRO), a book page, a stereo photograph of an axolotl larva, multi-panel figures, a
+# textbook fluorescence image with no stated organism, and two blood films whose illumination is not stated.
+[life.amphibians]
+life.amphibians 2 | taxon=Xenopus@genus | section | egg | brightfield | | | chromatin fibres of a mitosis in an egg, Josef Reischig archive
+life.amphibians 4 | taxon=Anura@order | section | | brightfield | | | columnar epithelium
+life.amphibians 5 | taxon=Anura@order | section | liver | brightfield | | | liver cells, Russian Science Photo Competition 2021
+life.amphibians 6 | taxon=Anura@order | section | skin | brightfield | | | skin, 100x
+life.amphibians 11 | taxon=Hyla arborea@species | section | skin | brightfield | | | mucous glands of the skin
+life.amphibians 12 | taxon=Anura@order | whole_mount | skin | brightfield | | | pigment cells of tadpole skin, 25x
+life.amphibians 13 | taxon=Amphibia@class | smear | blood | brightfield | | | blood film, Josef Reischig archive
+life.amphibians 15 | taxon=Ranidae@family | smear | blood | brightfield | | | 400x
+life.amphibians 16 | taxon=Ranidae@family | smear | blood | brightfield | | | red blood cells, 1000x
+life.amphibians 17 | taxon=Ranidae@family | smear | blood | brightfield | | | red blood cells
+life.amphibians 18 | taxon=Anura@order | smear | blood | brightfield | | | red blood cells
+life.amphibians 19 | taxon=Anura@order | smear | blood | brightfield | | | blood cells

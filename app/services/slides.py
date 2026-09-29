@@ -40,6 +40,7 @@ def slide_from_submission(sub: SlideCaseSubmission, *, new_id: str, contributor_
         status="draft",
         origin=sub.origin,
         format_code=sub.slide.format,
+        format_assumed=sub.slide.format_assumed,
         width_mm=width,
         height_mm=height,
         coverslip_code=sub.slide.coverslip,
