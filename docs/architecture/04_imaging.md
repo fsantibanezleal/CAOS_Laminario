@@ -231,7 +231,11 @@ loop exactly, grey and colour, for both methods and in the order of the progress
 
 If no window finishes within 20 minutes, the fusion stops its pool's processes and fails with that reason, instead of
 waiting for the job's timeout of hours: in a benchmark on Windows one pool process hung at start-up and the fusion
-waited on it without end (tested with a height map that sleeps past a short limit).
+waited on it without end (tested with a height map that sleeps past a short limit). The other way round, each pool
+process watches the job's process and ends when it does. A job's timeout kills the job's process without a word to
+its pool, and the pool's processes, which hold both ends of their own task queue, never see it close: on the host,
+two of them and the resource tracker were still waiting 118 s after the job's process received SIGTERM. With the watch
+they were gone within 2 s (tested by killing a process that holds a pool).
 
 ## 6. Derivatives
 
