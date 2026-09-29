@@ -141,14 +141,14 @@ def process_asset(ctx: Context, payload: dict) -> dict:
                       "codec": f"{codec}-q{quality}", "mpp": mpp, "id": asset.id})
     ctx.progress(step="stored", key=key, bytes=size, psnr_db=psnr)
     if asset.role == "z_plane" and asset.stack:
-        fusion = queue_fusion_when_complete(ctx.engine, asset.slide_id, asset.stack)
+        fusion = queue_fusion_when_complete(ctx.engine, asset.slide_id, asset.stack, ctx.settings.fuse_timeout_s)
         if fusion:
             ctx.progress(step="fusion queued", job=fusion)
     return {"asset_id": asset.id, "storage_key": key, "width": image.width, "height": image.height, "bytes": size,
             "sha256": sha, "psnr_db": psnr, "codec": codec, "quality": quality}
 
 
-def queue_fusion_when_complete(engine: Engine, slide_id: int, stack: str) -> str | None:
+def queue_fusion_when_complete(engine: Engine, slide_id: int, stack: str, timeout_s: int | None = None) -> str | None:
     """Queue the stack's fusion once its last plane is ready; returns the new job's public id, if one was queued."""
     from app.jobs import queue
 
@@ -161,7 +161,8 @@ def queue_fusion_when_complete(engine: Engine, slide_id: int, stack: str) -> str
                                     "AND json_extract(payload_json, '$.stack') = :st"), where).scalar()
     if pending or waiting:
         return None
-    _, public_id = queue.enqueue(engine, "fuse_stack", {"slide_id": slide_id, "stack": stack}, slide_id=slide_id)
+    _, public_id = queue.enqueue(engine, "fuse_stack", {"slide_id": slide_id, "stack": stack}, slide_id=slide_id,
+                                 timeout_s=timeout_s)
     return public_id
 
 

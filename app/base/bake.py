@@ -41,7 +41,8 @@ ASSET_COLUMNS = [c.name for c in Asset.__table__.columns if c.name not in ("id",
 
 def bake_settings(out: Path) -> Settings:
     here = get_settings()
-    return Settings(data_root=out, vips_bin=here.vips_bin, public_base_url=here.public_base_url)
+    # Fusions of the large NMNH stacks run for hours on a workstation; the bake allows six.
+    return Settings(data_root=out, vips_bin=here.vips_bin, public_base_url=here.public_base_url, fuse_timeout_s=21600)
 
 
 def _sha256(path: Path) -> str:
