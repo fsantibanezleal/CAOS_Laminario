@@ -9,3 +9,5 @@ pillow==12.3.0
 jsonschema==4.26.0
 # U6 tests: a local SMTP sink that requires STARTTLS
 aiosmtpd==1.4.6
+# U7: building the mineral vocabulary from the IMA list, checking rock names against the RCS volumes
+pypdf==6.19.0

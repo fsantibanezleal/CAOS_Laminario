@@ -12,5 +12,6 @@ How Laminario is put together. Each page covers one part in depth.
 | [06 The processing worker](architecture/06_worker.md) | The durable job queue and journal in SQLite, the worker process and its one-process pool with killing timeouts, crash recovery, the Server-Sent Events stream, the processing jobs and content-addressed storage keys. |
 | [07 Accounts and roles](architecture/07_accounts.md) | Invitation-only registration, sessions in a cookie, cross-site writes, password reset, roles and the capability table, contributing a slide case. |
 | [08 Uploads](architecture/08_uploads.md) | tus 1.0 through tusd, the pre-create policy (ownership, sizes, quotas, the disk rule), verification in the worker (checksum, sniffing, safe unpacking, a readable header), the source store, tusd in production. |
+| [09 The collection tree](architecture/09_collections.md) | Realms, collections, sub-collections and groups; anchors (GBIF backbone, the IMA list with Nickel-Strunz codes, the BGS rock scheme, crystals, materials, parts); the rule semantics; placement by priority; the guard and its overlap test; the taxon cache; the API and IIIF Collections; the 186 icons. |
 
-Pages for the collection tree and the interface are added by the units that build them.
+Pages for the interface are added by the units that build it.

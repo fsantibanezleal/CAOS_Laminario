@@ -115,8 +115,8 @@ Schema exported for the frontend.
 
 ## 5. Case taxonomy and coverage matrix
 
-The "cases" are slides placed in the collection tree (3 realms, 18 collections, 129 sub-collections
-and groups), documented with the reason each node exists in `docs/collections/`. The base-collection
+The "cases" are slides placed in the collection tree (3 realms, 18 collections, 130 sub-collections
+and groups; 129 when this was written, U7 added the scheme's exotic crystalline rocks, dossier 09), documented with the reason each node exists in `docs/collections/`. The base-collection
 coverage matrix is generated from the catalog and committed as `docs/collections/coverage.md`: per
 collection, slide count (>= 12), sub-collections covered, WSIs, z-stacks, PPL/XPL pairs, licences. The
 release fails if a floor is not met: >= 300 slides, >= 14 WSIs, >= 1 PPL/XPL pair per rock family,

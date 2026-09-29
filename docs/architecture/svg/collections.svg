@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario collection tree and placement</title>
+  <desc id="desc">A slide's anchor resolves to facts: a taxon through the GBIF backbone and the taxon cache, a rock, mineral, crystal or material through its vocabulary. The facts, with the part and preservation, enter the tree at the realms. At each level the children whose rule accepts the slide are candidates and the one of highest priority is taken, down to the suggestion. The guard checks the tree before it is served: names, icons, rules that resolve, reachable nodes and no overlapping siblings with the same priority.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --stop: #b23a3a; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; --stop: #e07a7a; }
+    }
+    .bg { fill: var(--bg); }
+    .lane { fill: var(--lane); }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .node { fill: var(--box); stroke: var(--line); stroke-width: 1.4; }
+    .hit { fill: var(--box); stroke: var(--good); stroke-width: 2.2; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .no { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--stop); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .walk { stroke: var(--good); stroke-width: 2.2; fill: none; marker-end: url(#hit); }
+    .dash { stroke: var(--line); stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    .head { fill: var(--line); }
+    .headhit { fill: var(--good); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+    <marker id="hit" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="headhit" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="600"/>
+
+  <text class="h" x="24" y="34">1 · THE ANCHOR RESOLVES TO FACTS</text>
+  <rect class="lane" x="16" y="46" width="300" height="538" rx="10"/>
+  <rect class="key" x="32" y="62" width="268" height="62" rx="8"/>
+  <text class="t" x="46" y="86">specimen.anchor</text>
+  <text class="m" x="46" y="108">kind, ref, name, classification</text>
+
+  <rect class="box" x="32" y="148" width="268" height="84" rx="8"/>
+  <text class="t" x="46" y="172">taxon: a GBIF usage key</text>
+  <text class="s" x="46" y="194">record and /parents, read once,</text>
+  <text class="s" x="46" y="212">kept in the taxon table (synonyms</text>
+  <text class="s" x="46" y="228">followed to the accepted taxon)</text>
+
+  <rect class="box" x="32" y="248" width="268" height="118" rx="8"/>
+  <text class="t" x="46" y="272">rock, mineral, crystal, material</text>
+  <text class="s" x="46" y="294">rocks: BGS RCS names (365)</text>
+  <text class="s" x="46" y="312">minerals: IMA list (6,200) with</text>
+  <text class="s" x="46" y="328">Nickel-Strunz codes from Wikidata</text>
+  <text class="s" x="46" y="346">crystals: origin/system, snow category</text>
+  <text class="s" x="46" y="362">materials: a controlled vocabulary</text>
+
+  <rect class="store" x="32" y="390" width="268" height="112" rx="8"/>
+  <text class="t" x="46" y="414">facts</text>
+  <text class="m" x="46" y="436">kind</text>
+  <text class="m" x="46" y="454">key and lineage, or a path</text>
+  <text class="m" x="46" y="472">(igneous.coarse, 9.A.F.15, ice.P)</text>
+  <text class="m" x="46" y="490">part · preservation</text>
+  <path class="arrow" d="M166 124 V148"/>
+  <path class="arrow" d="M166 232 V248"/>
+  <path class="arrow" d="M166 366 V390"/>
+  <text class="no" x="32" y="530">unresolved: refused, naming the field</text>
+  <text class="no" x="32" y="550">GBIF silent: 503, try again</text>
+  <text class="s" x="32" y="572">(R-701, R-705)</text>
+
+  <text class="h" x="340" y="34">2 · PLACEMENT WALKS DOWN BY PRIORITY</text>
+  <path class="arrow" d="M300 446 C330 446 330 110 360 110"/>
+
+  <rect class="hit" x="360" y="84" width="130" height="52" rx="26"/>
+  <text class="t" x="400" y="115">Life</text>
+  <rect class="node" x="506" y="84" width="130" height="52" rx="26"/>
+  <text class="t" x="545" y="115">Earth</text>
+  <rect class="node" x="652" y="84" width="130" height="52" rx="26"/>
+  <text class="t" x="688" y="115">Matter</text>
+  <text class="s" x="800" y="106">3 realms,</text>
+  <text class="s" x="800" y="122">each with a rule</text>
+
+  <rect class="hit" x="360" y="190" width="130" height="52" rx="26"/>
+  <text class="t" x="382" y="213">Pollen and</text>
+  <text class="t" x="397" y="231">spores</text>
+  <text class="ok" x="366" y="262">priority 1</text>
+  <rect class="node" x="506" y="190" width="130" height="52" rx="26"/>
+  <text class="t" x="545" y="221">Plants</text>
+  <text class="s" x="514" y="262">accepts too (priority 0)</text>
+  <rect class="node" x="652" y="190" width="130" height="52" rx="26"/>
+  <text class="t" x="678" y="221">11 more</text>
+  <text class="s" x="800" y="212">18 collections</text>
+  <text class="s" x="800" y="228">in all</text>
+
+  <rect class="hit" x="360" y="296" width="130" height="52" rx="26"/>
+  <text class="t" x="376" y="319">Gymnosperm</text>
+  <text class="t" x="397" y="337">pollen</text>
+  <rect class="node" x="506" y="296" width="130" height="52" rx="26"/>
+  <text class="t" x="521" y="319">Flowering-</text>
+  <text class="t" x="521" y="337">plant pollen</text>
+  <rect class="node" x="652" y="296" width="130" height="52" rx="26"/>
+  <text class="t" x="684" y="327">3 more</text>
+  <text class="s" x="800" y="318">130 sub-collections</text>
+  <text class="s" x="800" y="334">and groups</text>
+
+  <path class="walk" d="M425 136 V190"/>
+  <path class="walk" d="M425 242 V296"/>
+  <path class="dash" d="M448 131 C490 160 530 160 552 190"/>
+
+  <rect class="key" x="360" y="380" width="422" height="64" rx="8"/>
+  <text class="t" x="376" y="404">Pinus sylvestris, part pollen, recent</text>
+  <text class="m" x="376" y="426">suggestion: life.pollen.gymnosperm-pollen</text>
+  <text class="s" x="376" y="468">Also accepting: life.plants, life.plants.gymnosperms. A contributor may</text>
+  <text class="s" x="376" y="486">choose any accepting node; any other needs a curator's reason (R-702).</text>
+  <text class="s" x="376" y="504">The walk never meets a tie, so sibling order cannot change it (R-062).</text>
+
+  <text class="h" x="340" y="542">3 · THE GUARD, BEFORE THE TREE IS SERVED</text>
+  <text class="s" x="340" y="564">every node: EN and ES name and description, an icon, a rule that resolves, reachable (R-060)</text>
+  <text class="s" x="340" y="582">every pair of siblings: no slide both could take with the same priority (R-061)</text>
+</svg>

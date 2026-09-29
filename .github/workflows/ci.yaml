@@ -30,6 +30,8 @@ jobs:
         run: pip install pydantic==2.13.5 pydantic-settings==2.15.0 && python scripts/export_contracts.py --check
       - name: Data-contract pages match the schemas (stdlib only)
         run: python scripts/render_contract_docs.py --check
+      - name: The collection tree page matches the tree (PyYAML only)
+        run: pip install PyYAML==6.0.3 && python scripts/render_tree_docs.py --check
 
   web:
     runs-on: ubuntu-latest
