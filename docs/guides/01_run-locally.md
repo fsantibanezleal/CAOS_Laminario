@@ -6,7 +6,7 @@ repository root. PowerShell is shown first; every script has a bash twin with th
 ## 0. Prerequisites
 
 ```powershell
-.\scripts\local\00_install-prereqs.ps1          # checks Python 3.12, Node 22 to 24, git, Docker
+.\scripts\local\00_install-prereqs.ps1          # checks Python 3.12, Node 22 to 24, git, libvips, Docker
 .\scripts\local\00_install-prereqs.ps1 -Install # installs what is missing with winget
 ```
 
@@ -22,7 +22,7 @@ Creates `.venv` with Python 3.12, installs `requirements-dev.txt`, and writes a 
 the file named by `LAMINARIO_ENV_SOURCE` when that variable is set, otherwise from `.env.example`. Secrets never
 live in this repository.
 
-## 3. Run the API
+## 2. Run the API
 
 ```powershell
 .\scripts\local\03_dev.ps1              # http://127.0.0.1:8147
@@ -33,7 +33,7 @@ Open `http://127.0.0.1:8147/api/health`; it answers with the product name and th
 file. The interactive API documentation is at `/api/docs`. The script refuses to start on a port another
 program already holds.
 
-## 2. The database and the web app
+## 3. The database and the web app
 
 ```powershell
 .\.venv\Scripts\python.exe -m app.db.migrate      # creates or upgrades .data/laminario.sqlite3
@@ -44,6 +44,33 @@ npm run dev                                        # http://127.0.0.1:5909, prox
 
 The web dev server proxies `/api`, `/iiif` and `/media` to the API on port 8147, so the app is served from one
 origin as it is in production.
+
+## 4. The imaging engine
+
+The engine uses libvips with OpenSlide. On Windows, download `vips-dev-w64-all-<version>.zip` from the
+[libvips Windows builds](https://github.com/libvips/build-win64-mxe/releases) (it includes OpenSlide), unzip it
+anywhere, and point `.env` at its `bin` folder; on Ubuntu, `sudo apt install libvips42t64 libvips-tools` and leave
+the variable unset.
+
+```ini
+LAMINARIO_VIPS_BIN=E:/_Tools/libvips/vips-dev-8.18/bin
+LAMINARIO_FIXTURES=E:/_Datos/laminario
+LAMINARIO_TEST_TMP=E:/_Temp/laminario-pytest
+```
+
+`LAMINARIO_FIXTURES` is the local data vault the imaging tests read: `samples/` (the slide files: CMU-1, the
+Smithsonian ostracod NDPI, the NHM louse scan, the Commons thin section) and `edf-reference/` (the EPFL
+extended-depth-of-field plugin's three sample stacks, its outputs, and the runners that produced them). None of
+it is in git; without it those tests are skipped and say so. Put the test folder on a scratch drive: the
+pyramid tests write hundreds of megabytes.
+
+Every measurement table of the imaging page is reproduced by
+
+```powershell
+.\.venv\Scripts\python.exe scripts\bench_imaging.py --out E:/_Temp/laminario-bench
+```
+
+which prints each table and writes `bench-imaging.json` (about ten minutes).
 
 ## Tests and guards
 

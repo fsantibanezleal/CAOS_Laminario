@@ -26,6 +26,12 @@ class Settings(BaseSettings):
     public_base_url: str = "http://127.0.0.1:8147"
     #: Root of the slide store, the upload quarantine, the tile cache and the database.
     data_root: Path = ROOT / ".data"
+    #: Windows only: the bin folder of the libvips build that includes OpenSlide. Unset on Linux.
+    vips_bin: Path | None = None
+    #: The local data vault with the imaging fixtures (tests only).
+    fixtures: Path | None = None
+    #: Where tests write temporary files (tests only); default ``.tmp/pytest`` in the repository.
+    test_tmp: Path | None = None
 
 
 @lru_cache

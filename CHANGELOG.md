@@ -3,6 +3,36 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.02.000] - 2026-09-28
+
+### Added
+
+- The imaging engine (`app/imaging/`): a reader for scanner formats (through OpenSlide), TIFF, ImageJ stacks and
+  photographs that describes a file from its headers (levels, pixel size and its source, objective, label, macro
+  and thumbnail images, focal planes with depths, the slide's size and the scan's position on it); limits applied
+  before any decoding; one pyramidal BigTIFF per plane with its level-0 fidelity measured, a full-chroma fallback
+  when quality 85 falls short, WebP kept only when smaller, and resolution tags only from a trustworthy pixel
+  size; the z-plane policy; thumbnails and clean saving without EXIF; the scan placed on the macro photograph;
+  the true-scale mount.
+- Extended depth of field: variance selection and complex wavelet fusion ported from the EPFL plugin (Forster et
+  al. 2004) and proven exact against its own output (100 percent of height-map pixels on its three sample
+  stacks), fused in tiles for stacks of any size.
+- Synthetic focal stacks with known focus, used to measure the methods; `scripts/bench_imaging.py` reproduces
+  every measurement of the imaging wiki page.
+- Wiki page "The imaging engine" with the pipeline diagram; the U2 design, requirements and verdict.
+- The prerequisites check looks for libvips with OpenSlide; `LAMINARIO_VIPS_BIN`, `LAMINARIO_FIXTURES` and
+  `LAMINARIO_TEST_TMP` are read from `.env`.
+
+### Changed
+
+- R-012, R-013, R-016 and R-019 restated with the measurements that required it (see the U2 requirements).
+
+### Fixed
+
+- A defect of the EPFL plugin is not carried over: its consistency checks swap width and height, which on
+  non-square sizes makes its height maps three times less often right on stacks with known focus. The true
+  sub-band geometry is the default; the plugin's convention remains available for comparison.
+
 ## [0.01.000] - 2026-09-25
 
 ### Added
