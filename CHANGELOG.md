@@ -3,6 +3,59 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.13.000] - 2026-09-29
+
+### Added
+
+- Identifications on published slides by identifiers and above: one current identification per account,
+  withdrawn and restored, with a comment; naming an ancestor of the slide's anchor asks whether it disagrees.
+- The agreement rule (M8, R-088): iNaturalist's community taxon, read from its source, on lineages of node ids, so
+  it applies to taxa, minerals, rocks, crystals and materials alike; the categories leading, improving, supporting
+  and maverick.
+- The slide follows the community anchor it can name, and the tree places it again, keeping a drawer that still
+  accepts it and a curator's override; the first identification of every published slide (the contributor's, or
+  the source's for a base slide) and `python -m app.community backfill`.
+- The badge from the slide checks and the community (verified, needs ID, reference), with the vote on whether the
+  name can still be improved, cleared when the community anchor changes.
+- Flags from any signed-in account, the curators' queue and resolution; hiding and restoring slides,
+  identifications and annotations with a reason, restored only by the curator who hid or an admin, every action
+  kept.
+- The Identify place (the queue by collection, kind and badge, oldest first), the identifications on the slide
+  place, the moderation place; the Identify way in the masthead; 124 strings in EN and ES.
+- Migration 0011; the contract's IdentificationList, FlagRecord and ModerationActionRecord.
+- `frontend/gates/identify.mjs` and the shared gate sandbox `frontend/gates/lib/sandbox.mjs`; wiki page 15.
+
+### Changed
+
+- Rock suggestions carry a written name ("Carbonatite", not the key).
+- The base import never takes the community's or the curators' columns from a bake, and keeps a curator's hiding.
+
+### Fixed
+
+- The slide place reads its record again when an identification moves the badge or the anchor.
+
+## [0.12.000] - 2026-09-29
+
+### Added
+
+- The account places: sign in, join from an invitation link, ask for and complete a password reset; the masthead
+  names the account and offers Contribute to those who may.
+- The contribute places: a contributor's cases, and the case editor in six sections with the slide drawn to scale;
+  the anchor combobox, the parts vocabulary (`GET /api/vocab/parts`), the point map, geoprivacy, the drawer the
+  tree suggests, the calibration of a pixel size on a stage micrometer.
+- A code and parameters on every validation error and flag, worded in EN and ES by the interface.
+- The case lifecycle: draft, processing, published, back to draft with the reason; a contributor's drafts
+  listed, reopened, changed and deleted (migration 0010).
+- A photograph's position read and shown before upload, removed with its XMP in the browser for a private case
+  (JPEG, PNG, WebP, TIFF), and refused by the server if it stays.
+- Uploads with Uppy over tus; verification and processing followed by their events; each image keeps its
+  original's SHA-256, shown on its slide.
+- `frontend/gates/contribute.mjs`, end to end on CMU-1 and a real photograph with GPS; wiki page 14.
+
+### Fixed
+
+- The `/files` proxy keeps the page's host, so tusd's upload addresses are the page's own (F-044).
+
 ## [0.11.000] - 2026-09-29
 
 ### Added
