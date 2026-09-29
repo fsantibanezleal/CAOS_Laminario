@@ -22,6 +22,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -253,12 +254,126 @@ def fuse_stack(ctx: Context, payload: dict) -> dict:
             "keys": {role: key for role, (key, _) in written.items()} | {"height_map": hm_key}}
 
 
+# --- verifying an upload ---------------------------------------------------------------------------------------
+
+SCANNER_EXTENSIONS = {".svs", ".ndpi", ".scn", ".tif", ".tiff", ".btf", ".bif", ".dcm", ".vms"}
+EXTENSION_BY_KIND = {"jpeg": ".jpg", "png": ".png", "webp": ".webp", "tiff": ".tif", "bigtiff": ".tif", "dicom": ".dcm"}
+ARCHIVE_INFLATION = 4  # an archive may expand to at most four times the upload limit
+
+
+def _refuse(ctx: Context, upload_id: int, paths: list[Path], reason: str, sniffed: str | None = None,
+            sha256: str | None = None) -> dict:
+    for path in paths:
+        path.unlink(missing_ok=True)
+    with ctx.engine.begin() as conn:
+        conn.execute(text("UPDATE upload SET status = 'rejected', reason = :reason, sniffed = :sniffed, "
+                          "sha256 = COALESCE(:sha, sha256) WHERE id = :id"),
+                     {"reason": reason[:300], "sniffed": sniffed, "sha": sha256, "id": upload_id})
+    ctx.progress(step="rejected", reason=reason)
+    return {"upload_id": upload_id, "status": "rejected", "reason": reason, "sniffed": sniffed}
+
+
+def _extract(archive: Path, target: Path, limit: int) -> None:
+    """Unpack a ZIP safely: no absolute or parent paths, no more than ``limit`` bytes in total."""
+    import zipfile
+
+    with zipfile.ZipFile(archive) as zipped:
+        members = zipped.infolist()
+        total = sum(m.file_size for m in members)
+        if total > limit:
+            raise ValueError(f"the archive would expand to {total / 1e9:.1f} GB, over {limit / 1e9:.0f} GB")
+        root = target.resolve()
+        for member in members:
+            destination = (target / member.filename).resolve()
+            if not str(destination).startswith(str(root)) or member.filename.startswith(("/", "\\")):
+                raise ValueError(f"the archive holds an unsafe path: {member.filename}")
+        target.mkdir(parents=True, exist_ok=True)
+        zipped.extractall(target)
+
+
+def _slide_file(folder: Path, kind: str) -> Path | None:
+    """The file OpenSlide opens inside an unpacked multi-file slide."""
+    pattern = {"zip-mrxs": "*.mrxs", "zip-vsi": "*.vsi", "zip-dicom": "*.dcm"}[kind]
+    found = sorted(folder.rglob(pattern))
+    return found[0] if found else None
+
+
+def verify_upload(ctx: Context, payload: dict) -> dict:
+    """Check a finished upload and hand it to processing, or delete it and say why."""
+    from app.imaging import reader
+    from app.jobs import queue
+    from app.uploads import sniff as sniffing
+
+    upload_id = int(payload["upload_id"])
+    with ctx.engine.connect() as conn:
+        row = conn.execute(text("SELECT u.id, u.tus_id, u.size, u.filename, u.asset_id, s.short_id "
+                                "FROM upload u JOIN slide s ON s.id = u.slide_id WHERE u.id = :id"),
+                           {"id": upload_id}).one()
+    data = Path(payload.get("path") or ctx.settings.quarantine_root / row.tus_id)
+    info = data.with_name(data.name + ".info")
+    quarantined = [data, info]
+    if not data.is_file():
+        return _refuse(ctx, upload_id, quarantined, "the uploaded file is not in quarantine")
+    actual = data.stat().st_size
+    if actual != row.size:
+        return _refuse(ctx, upload_id, quarantined, f"{actual} bytes arrived of the {row.size} declared")
+    sha = file_sha256(data)
+    ctx.progress(step="checksum", sha256=sha)
+    found = sniffing.sniff(data)
+    ctx.progress(step="sniffed", kind=found.kind, detail=found.detail)
+    if not found.accepted:
+        reason = (f"the file is {found.detail}; accepted are JPEG, PNG, WebP, TIFF or BigTIFF (SVS, NDPI, SCN, "
+                  f"Philips), DICOM, and MRXS, VSI or DICOM slides in a ZIP archive")
+        return _refuse(ctx, upload_id, quarantined, reason, found.kind, sha)
+
+    folder = ctx.settings.sources_root / row.short_id
+    folder.mkdir(parents=True, exist_ok=True)
+    stem = f"{row.asset_id}-{sha[:12]}"
+    if found.kind.startswith("zip-"):
+        unpacked = folder / stem
+        try:
+            _extract(data, unpacked, ctx.settings.max_upload_bytes * ARCHIVE_INFLATION)
+        except ValueError as exc:
+            return _refuse(ctx, upload_id, quarantined, str(exc), found.kind, sha)
+        source = _slide_file(unpacked, found.kind)
+        if source is None:
+            shutil.rmtree(unpacked, ignore_errors=True)
+            return _refuse(ctx, upload_id, quarantined, f"{found.detail} without its slide file", found.kind, sha)
+        data.unlink(missing_ok=True)
+    else:
+        suffix = Path(row.filename or "").suffix.lower()
+        extension = suffix if suffix in SCANNER_EXTENSIONS else EXTENSION_BY_KIND[found.kind]
+        source = folder / f"{stem}{extension}"
+        shutil.move(str(data), source)
+    info.unlink(missing_ok=True)
+    try:
+        header = reader.read_info(source)
+    except Exception as exc:  # the reader's limits and libvips' own errors both mean the file cannot be used
+        leftover = [source] if source.is_file() and not found.kind.startswith("zip-") else []
+        if found.kind.startswith("zip-"):
+            shutil.rmtree(folder / stem, ignore_errors=True)
+        return _refuse(ctx, upload_id, leftover, f"the file cannot be read as an image: {exc}"[:300], found.kind, sha)
+    ctx.progress(step="readable", width=header.width, height=header.height, planes=len(header.planes))
+    with ctx.engine.begin() as conn:
+        conn.execute(text("UPDATE asset SET source_path = :path WHERE id = :id"),
+                     {"path": str(source), "id": row.asset_id})
+    _, job = queue.enqueue(ctx.engine, "process_asset", {"asset_id": row.asset_id, "source_sha256": sha})
+    with ctx.engine.begin() as conn:
+        conn.execute(text("UPDATE upload SET status = 'accepted', sha256 = :sha, sniffed = :kind, "
+                          "source_path = :path, job_id = :job WHERE id = :id"),
+                     {"sha": sha, "kind": found.kind, "path": str(source), "job": job, "id": upload_id})
+    ctx.progress(step="accepted", processing=job)
+    return {"upload_id": upload_id, "status": "accepted", "sha256": sha, "sniffed": found.kind,
+            "width": header.width, "height": header.height, "processing_job": job}
+
+
 # --- dispatch -----------------------------------------------------------------------------------------------
 
 KINDS: dict[str, Callable[[Context, dict], dict]] = {
     "probe": probe,
     "process_asset": process_asset,
     "fuse_stack": fuse_stack,
+    "verify_upload": verify_upload,
 }
 
 

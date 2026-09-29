@@ -3,6 +3,26 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.06.000] - 2026-09-29
+
+### Added
+
+- Resumable uploads (tus 1.0) through tusd v2.10.1: the pre-create hook, with the session cookie forwarded,
+  refuses before any byte is stored when the uploader does not own the draft or the image, the size is undeclared
+  or over 30 GB, the account's quota (40 GB, 20 whole-slide images) would be exceeded, or a whole-slide image
+  arrives while the data volume is over 90 percent full; each refusal carries its status and reason.
+- The verification job: size, SHA-256, the type sniffed from the bytes (JPEG, PNG, WebP, TIFF, BigTIFF, DICOM,
+  ZIP archives holding MRXS, VSI or DICOM slides), safe unpacking, a header the reader opens; accepted files go to
+  the source store and to processing, refused ones are deleted from quarantine with the reason.
+- `GET /api/uploads` and `GET /api/uploads/{id}`; the upload record in the catalog contract and TypeScript;
+  migration 0005.
+- `deploy/tusd/compose.yaml` (pinned image, loopback, read-only) and nginx's `/files/` location.
+- Wiki page "Uploads" with its diagram, the tusd framework card; the U5 design, requirements and verdict.
+
+### Changed
+
+- `Worker.run` accepts a deadline (tests use it; the service runs without one).
+
 ## [0.05.000] - 2026-09-29
 
 ### Added

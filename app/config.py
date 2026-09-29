@@ -46,10 +46,22 @@ class Settings(BaseSettings):
     smtp_starttls: bool = True
     #: A CA bundle to trust for the mail server's certificate (a private relay); unset: the system's roots.
     smtp_cafile: Path | None = None
+    #: The tus upload server (tusd), on loopback; nginx exposes it at /files/.
+    tusd_url: str = "http://127.0.0.1:8148"
+    #: Per-account upload quotas and limits (dossier 04: a whole-slide image is about 1.6 GB, so twenty fit in 40 GB).
+    quota_bytes: int = 40_000_000_000
+    quota_wsi: int = 20
+    max_upload_bytes: int = 30_000_000_000
+    #: An upload counts as a whole-slide image with a scanner extension or from this size up.
+    wsi_min_bytes: int = 1_000_000_000
+    #: Above this fraction of the data volume in use, whole-slide uploads are refused (the tier-A rule).
+    wsi_block_fraction: float = 0.9
     #: Windows only: the bin folder of the libvips build that includes OpenSlide. Unset on Linux.
     vips_bin: Path | None = None
     #: The local data vault with the imaging fixtures (tests only).
     fixtures: Path | None = None
+    #: The tusd binary the upload tests start (tests only; production runs deploy/tusd/compose.yaml).
+    tusd_bin: Path | None = None
     #: Where tests write temporary files (tests only); default ``.tmp/pytest`` in the repository.
     test_tmp: Path | None = None
 
@@ -57,6 +69,16 @@ class Settings(BaseSettings):
     @property
     def mail_configured(self) -> bool:
         return bool(self.smtp_host and self.smtp_sender)
+
+    @property
+    def quarantine_root(self) -> Path:
+        """Where tusd writes uploads until they are verified."""
+        return self.data_root / "quarantine"
+
+    @property
+    def sources_root(self) -> Path:
+        """Verified originals, read by processing: the files an asset's pyramid is made from."""
+        return self.data_root / "sources"
 
     @property
     def store_root(self) -> Path:

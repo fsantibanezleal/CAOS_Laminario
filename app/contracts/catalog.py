@@ -265,3 +265,24 @@ class CreatedSlideCase(_Record):
     id: str
     status: str
     flags: list[ValidationFlag] = []
+
+
+class UploadRecord(_Record):
+    """An upload as its contributor sees it (``GET /api/uploads``)."""
+
+    id: int
+    slide_id: str
+    asset_id: int
+    filename: str | None = None
+    size: int
+    wsi: bool
+    status: Literal["uploading", "received", "accepted", "rejected", "cancelled"]
+    #: What the bytes are, once verified (``jpeg``, ``tiff``, ``zip-mrxs``, ...).
+    sniffed: str | None = None
+    sha256: str | None = None
+    #: Why it was refused, naming what was found and what is accepted.
+    reason: str | None = None
+    #: The processing job, once the file was accepted (its event stream is ``/api/jobs/{id}/events``).
+    job_id: str | None = None
+    created_at: datetime
+    finished_at: datetime | None = None

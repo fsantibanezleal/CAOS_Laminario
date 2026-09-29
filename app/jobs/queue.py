@@ -21,7 +21,7 @@ from sqlalchemy.engine import Engine
 from app.db.base import utcstamp
 from app.jobs import journal
 
-DEFAULT_TIMEOUT_S = {"probe": 600, "process_asset": 3600, "fuse_stack": 7200}
+DEFAULT_TIMEOUT_S = {"probe": 600, "process_asset": 3600, "fuse_stack": 7200, "verify_upload": 3600}
 MAX_ATTEMPTS = 3
 
 

@@ -19,6 +19,7 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `account` | [AccountRecord](#accountrecord) | no |  |  |
 | `invitation` | [InvitationRecord](#invitationrecord) | no |  |  |
 | `createdSlideCase` | [CreatedSlideCase](#createdslidecase) | no |  |  |
+| `upload` | [UploadRecord](#uploadrecord) | no |  |  |
 
 ### SlideRecord
 
@@ -143,6 +144,26 @@ The answer of ``POST /api/slide-cases``: the new draft and the flags of its subm
 | `id` | string | yes |  |  |
 | `status` | string | yes |  |  |
 | `flags` | list of [ValidationFlag](#validationflag) | no |  | `[]` |
+
+### UploadRecord
+
+An upload as its contributor sees it (``GET /api/uploads``).
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | integer | yes |  |  |
+| `slide_id` | string | yes |  |  |
+| `asset_id` | integer | yes |  |  |
+| `filename` | string or null | no |  | null |
+| `size` | integer | yes |  |  |
+| `wsi` | boolean | yes |  |  |
+| `status` | string (enumerated) | yes | one of: `uploading`, `received`, `accepted`, `rejected`, `cancelled` |  |
+| `sniffed` | string or null | no |  | null |
+| `sha256` | string or null | no |  | null |
+| `reason` | string or null | no |  | null |
+| `job_id` | string or null | no |  | null |
+| `created_at` | string (date-time) | yes |  |  |
+| `finished_at` | string (date-time) or null | no |  | null |
 
 ### FormatRecord
 
