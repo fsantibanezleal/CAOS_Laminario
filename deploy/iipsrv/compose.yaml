@@ -28,7 +28,8 @@ services:
     read_only: true
     tmpfs:
       - /run
-      - /var/log/lighttpd
-      - /var/lib/lighttpd
+      # lighttpd (uid 102, gid 103 in the image) opens its log after dropping root; a root-owned tmpfs
+      # stops it with "Permission denied" (measured 2026-09-29).
+      - /var/log/lighttpd:uid=102,gid=103,mode=0750
     mem_limit: 768m
     cpus: 2.0
