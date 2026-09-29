@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario Explore</title>
+  <desc id="desc">An address names a place: the realms, a cabinet, a drawer, search or the map, with its filters in the query string. In the browser, the tree, the facet vocabularies and the country names are fetched once; the places read the Explore endpoints and move the focus to their heading after a navigation. The API narrows published slides by filters and FTS5 search, counts each facet without its own filter, and aggregates the map after geoprivacy. Behind it: the composed search text kept in step by triggers, the stated or implied country, the CLDR names, the Natural Earth shapes, and the Protomaps extract on the data volume. Gates walk the real build by pointer.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; }
+    }
+    .bg { fill: var(--bg); }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .head { fill: var(--line); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="640"/>
+
+  <rect class="lane" x="16" y="16" width="928" height="92" rx="10"/>
+  <text class="h" x="32" y="38">THE ADDRESS</text>
+  <rect class="key" x="32" y="48" width="170" height="48" rx="8"/>
+  <text class="m" x="44" y="68">/</text>
+  <text class="s" x="44" y="86">the realms</text>
+  <rect class="key" x="214" y="48" width="170" height="48" rx="8"/>
+  <text class="m" x="226" y="68">/c/insects</text>
+  <text class="s" x="226" y="86">a cabinet</text>
+  <rect class="key" x="396" y="48" width="170" height="48" rx="8"/>
+  <text class="m" x="408" y="68">/c/insects/lice?...</text>
+  <text class="s" x="408" y="86">a drawer, its filters</text>
+  <rect class="key" x="578" y="48" width="170" height="48" rx="8"/>
+  <text class="m" x="590" y="68">/search?q=...</text>
+  <text class="s" x="590" y="86">words and facets</text>
+  <rect class="key" x="760" y="48" width="168" height="48" rx="8"/>
+  <text class="m" x="772" y="68">/map?...&amp;at=CL</text>
+  <text class="s" x="772" y="86">countries, points</text>
+
+  <rect class="lane" x="16" y="120" width="928" height="130" rx="10"/>
+  <text class="h" x="32" y="142">THE BROWSER</text>
+  <rect class="box" x="32" y="154" width="286" height="80" rx="8"/>
+  <text class="t" x="44" y="176">TreeProvider, once per page</text>
+  <text class="s" x="44" y="194">191 nodes with names and counts,</text>
+  <text class="s" x="44" y="209">facet vocabularies, country names</text>
+  <text class="s" x="44" y="224">(CLDR, both languages)</text>
+  <rect class="box" x="342" y="154" width="286" height="80" rx="8"/>
+  <text class="t" x="354" y="176">places and the explorer</text>
+  <text class="s" x="354" y="194">tray at one scale per tray, facets,</text>
+  <text class="s" x="354" y="209">pages of 48 on request, quiet search</text>
+  <text class="s" x="354" y="224">(250 ms), filters in the address</text>
+  <rect class="box" x="652" y="154" width="276" height="80" rx="8"/>
+  <text class="t" x="664" y="176">the map (MapLibre 6.11)</text>
+  <text class="s" x="664" y="194">pmtiles protocol, worker as ES module,</text>
+  <text class="s" x="664" y="209">labels in Laminario Sans (font-faces),</text>
+  <text class="s" x="664" y="224">colours from the room's tokens</text>
+  <path class="arrow" d="M318 194 L338 194"/>
+  <path class="arrow" d="M628 194 L648 194"/>
+  <path class="arrow" d="M480 96 L480 150"/>
+
+  <rect class="lane" x="16" y="262" width="928" height="128" rx="10"/>
+  <text class="h" x="32" y="284">THE API</text>
+  <rect class="key" x="32" y="296" width="220" height="80" rx="8"/>
+  <text class="m" x="44" y="316">GET /api/slides</text>
+  <text class="s" x="44" y="334">filters, words, sort,</text>
+  <text class="s" x="44" y="349">offset and limit</text>
+  <text class="s" x="44" y="364">(R-1001, R-1002)</text>
+  <rect class="key" x="264" y="296" width="220" height="80" rx="8"/>
+  <text class="m" x="276" y="316">GET /api/explore/facets</text>
+  <text class="s" x="276" y="334">each facet counted without</text>
+  <text class="s" x="276" y="349">its own filter; the collection</text>
+  <text class="s" x="276" y="364">facet without the node</text>
+  <rect class="key" x="496" y="296" width="210" height="80" rx="8"/>
+  <text class="m" x="508" y="316">GET /api/explore/map</text>
+  <text class="s" x="508" y="334">countries with counts, points</text>
+  <text class="s" x="508" y="349">after geoprivacy: obscured in</text>
+  <text class="s" x="508" y="364">its cell, private never (R-1003)</text>
+  <rect class="key" x="718" y="296" width="210" height="80" rx="8"/>
+  <text class="m" x="730" y="316">countries, basemap</text>
+  <text class="s" x="730" y="334">the shapes with label points;</text>
+  <text class="s" x="730" y="349">the PMTiles file by byte</text>
+  <text class="s" x="730" y="364">ranges, HEAD (R-1008)</text>
+  <path class="arrow" d="M480 234 L480 292"/>
+  <path class="arrow" d="M790 234 L790 292"/>
+
+  <rect class="lane" x="16" y="402" width="928" height="110" rx="10"/>
+  <text class="h" x="32" y="424">THE DATA</text>
+  <rect class="store" x="32" y="436" width="286" height="62" rx="8"/>
+  <text class="t" x="44" y="458">slide.search_text and slide_search</text>
+  <text class="s" x="44" y="476">FTS5, unicode61 remove_diacritics 2,</text>
+  <text class="s" x="44" y="491">triggers; backfilled by 0008, by import</text>
+  <rect class="store" x="342" y="436" width="286" height="62" rx="8"/>
+  <text class="t" x="354" y="458">slide.country (ISO 3166-1)</text>
+  <text class="s" x="354" y="476">stated by the source, or the shape the</text>
+  <text class="s" x="354" y="491">point lies in, 0.25 degree from its edge</text>
+  <rect class="store" x="652" y="436" width="276" height="62" rx="8"/>
+  <text class="t" x="664" y="458">vault and data volume</text>
+  <text class="s" x="664" y="476">CLDR 48.2.2, Natural Earth 1:50m,</text>
+  <text class="s" x="664" y="491">Protomaps world to zoom 7 (188 MB)</text>
+  <path class="arrow" d="M142 376 L142 432"/>
+  <path class="arrow" d="M600 376 L500 432"/>
+  <path class="arrow" d="M823 376 L790 432"/>
+
+  <rect class="lane" x="16" y="524" width="928" height="100" rx="10"/>
+  <text class="h" x="32" y="546">GATES</text>
+  <rect class="box" x="32" y="556" width="440" height="56" rx="8"/>
+  <text class="t" x="44" y="576">pytest, and the country build's --check</text>
+  <text class="ok" x="44" y="596">R-1001 to R-1005, R-1008, R-1009</text>
+  <rect class="box" x="488" y="556" width="440" height="56" rx="8"/>
+  <text class="t" x="500" y="576">walk, fit, motion on the real build</text>
+  <text class="ok" x="500" y="596">R-080, R-084, R-085, R-1006, R-1007, R-1008</text>
+</svg>
