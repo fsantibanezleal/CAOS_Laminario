@@ -54,8 +54,10 @@ def stop(process: subprocess.Popen) -> None:
 
 def pid_alive(pid: int) -> bool:
     if os.name == "nt":
-        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True, timeout=30)
-        return str(pid) in out.stdout
+        # Bytes, not text: tasklist answers in the console's code page (a Spanish Windows writes "ó" as 0xa2), which
+        # does not decode as UTF-8 when Python runs in UTF-8 mode.
+        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, timeout=30)
+        return str(pid).encode("ascii") in out.stdout
     try:
         os.kill(pid, 0)
     except ProcessLookupError:
