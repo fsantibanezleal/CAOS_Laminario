@@ -563,6 +563,13 @@
       "additionalProperties": false,
       "description": "For each facet, its values under the current filters and how many slides each would match (the facet's own\nfilter left out, so a second value shows what it adds).",
       "properties": {
+        "collection": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {},
+          "type": "object"
+        },
         "kind": {
           "additionalProperties": {
             "type": "integer"

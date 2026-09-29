@@ -211,6 +211,7 @@ class FacetCounts(_Record):
     """For each facet, its values under the current filters and how many slides each would match (the facet's own
     filter left out, so a second value shows what it adds)."""
 
+    collection: dict[str, int] = {}
     kind: dict[str, int] = {}
     preparation: dict[str, int] = {}
     modality: dict[str, int] = {}

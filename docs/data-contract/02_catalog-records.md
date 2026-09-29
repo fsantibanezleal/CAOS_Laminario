@@ -234,6 +234,7 @@ For each facet, its values under the current filters and how many slides each wo
 
 | Field | Type | Required | Accepted | Default |
 |---|---|---|---|---|
+| `collection` | map of integer | no |  | `{}` |
 | `kind` | map of integer | no |  | `{}` |
 | `preparation` | map of integer | no |  | `{}` |
 | `modality` | map of integer | no |  | `{}` |

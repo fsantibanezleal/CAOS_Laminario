@@ -379,6 +379,9 @@ export interface PlacementResult {
  * filter left out, so a second value shows what it adds).
  */
 export interface FacetCounts {
+  collection?: {
+    [k: string]: number;
+  };
   kind?: {
     [k: string]: number;
   };

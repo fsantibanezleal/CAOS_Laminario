@@ -3,7 +3,8 @@
 A filter narrows by the slide's own fields (anchor kind, preparation, preservation, country, origin) or by its assets
 (modality, whole-slide, licence family). Text goes through the FTS5 index (``app/services/search.py``). The counts
 next to a facet's values are computed with every other active filter applied but not the facet's own, so choosing a
-second value of a facet shows how many it would add (the usual faceted-search behaviour). The map returns countries
+second value of a facet shows how many it would add (the usual faceted-search behaviour); the collection facet
+counts slides per collection with the node filter left out. The map returns countries
 with their slide counts and the points of slides with coordinates, after geoprivacy: an obscured slide appears at its
 public point in its 0.2 degree cell, a private one not at all.
 """
@@ -20,7 +21,7 @@ from app.services import search
 from app.services.catalog import obscure
 
 WHOLE_SLIDE_ROLES = ("pyramid", "z_plane")
-FACETS = ("kind", "preparation", "modality", "preservation", "country", "licence", "wsi", "origin")
+FACETS = ("collection", "kind", "preparation", "modality", "preservation", "country", "licence", "wsi", "origin")
 SORTS = ("newest", "name", "relevance")
 
 #: A licence URI's family, for the licence facet (the URIs are canonical: app/contracts/licences.py).
@@ -63,7 +64,7 @@ def _asset_exists(*conditions):
 
 def conditions(f: Filters) -> list:
     out = [Slide.status == "published"]
-    if f.node:
+    if f.node and "node" not in f.skip:
         out.append((Slide.placement_node == f.node) | Slide.placement_node.startswith(f.node + "."))
     if f.kind and "kind" not in f.skip:
         out.append(Slide.anchor_kind.in_(f.kind))
@@ -110,6 +111,17 @@ async def facet_counts(db: AsyncSession, f: Filters) -> dict[str, dict[str, int]
     """For every facet, its values and how many slides each would match, the facet's own filter left out."""
     out: dict[str, dict[str, int]] = {}
     for facet in FACETS:
+        if facet == "collection":
+            # The collection a slide is in (the first two segments of its node), counted without the node filter,
+            # so a search shows every cabinet its words reach.
+            rows = (await db.execute(select(Slide.placement_node, func.count()).where(*conditions(f.without("node")))
+                                     .group_by(Slide.placement_node))).all()
+            folded: dict[str, int] = {}
+            for node, count in rows:
+                key = ".".join(node.split(".")[:2])
+                folded[key] = folded.get(key, 0) + int(count)
+            out[facet] = folded
+            continue
         where = conditions(f.without(facet))
         if facet in ("kind", "preparation", "preservation", "country", "origin"):
             column = {"kind": Slide.anchor_kind, "preparation": Slide.preparation, "preservation": Slide.preservation,
