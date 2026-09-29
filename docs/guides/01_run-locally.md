@@ -93,6 +93,18 @@ Remote IIIF images are checked again, without changing anything, with
 .\.venv\Scripts\python.exe scripts\check_remote_iiif.py
 ```
 
+## 6. The worker
+
+Processing runs in its own process, next to the API:
+
+```powershell
+.\.venv\Scripts\python.exe -m app.worker                      # Ctrl+C puts a running job back in the queue
+.\.venv\Scripts\python.exe -m app.jobs enqueue probe '{"steps": 3, "seconds": 2}'
+.\.venv\Scripts\python.exe -m app.jobs wait <id>               # the job and its events; exit 0 when it succeeded
+```
+
+A job's progress is also at `http://127.0.0.1:8147/api/jobs/<id>/events`, as the browser receives it.
+
 ## Tests and guards
 
 The full test suite runs locally; continuous integration runs only the lint and the guards.

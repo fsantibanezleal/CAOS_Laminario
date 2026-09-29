@@ -26,4 +26,5 @@ def test_schema_declares_expected_text_on_constrained_fields():
     slide = schema["$defs"]["SlideSpec"]["properties"]
     assert slide["format"]["expected"].startswith("one of:")
     assert "20 to 100" in schema["$defs"]["SizeMm"]["properties"]["w_mm"]["expected"]
-    assert exporter.catalog_schema()["properties"].keys() == {"slide", "slidePage", "slideSummary", "validation"}
+    assert exporter.catalog_schema()["properties"].keys() == {"slide", "slidePage", "slideSummary", "validation",
+                                                            "job", "jobEvent"}

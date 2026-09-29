@@ -27,3 +27,8 @@ class Base(DeclarativeBase):
 def utcnow() -> datetime:
     """Timezone-aware UTC now; stored as naive UTC by SQLite."""
     return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
+def utcstamp() -> str:
+    """``utcnow()`` as the text SQLite stores, for raw SQL (Python 3.12 deprecates sqlite3's datetime adapter)."""
+    return utcnow().isoformat(sep=" ")

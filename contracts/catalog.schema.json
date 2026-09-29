@@ -14,6 +14,12 @@
     },
     "validation": {
       "$ref": "#/$defs/ValidationResult"
+    },
+    "job": {
+      "$ref": "#/$defs/JobRecord"
+    },
+    "jobEvent": {
+      "$ref": "#/$defs/JobEventRecord"
     }
   },
   "additionalProperties": false,
@@ -256,6 +262,133 @@
         "height_mm"
       ],
       "title": "FormatRecord",
+      "type": "object"
+    },
+    "JobEventRecord": {
+      "additionalProperties": false,
+      "description": "One Server-Sent Event of a job's stream: its ``id`` field is ``seq``, its ``event`` field ``event``.",
+      "properties": {
+        "seq": {
+          "type": "integer"
+        },
+        "event": {
+          "enum": [
+            "queued",
+            "started",
+            "progress",
+            "log",
+            "requeued",
+            "succeeded",
+            "failed",
+            "cancelled"
+          ],
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "at": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "event",
+        "data",
+        "at"
+      ],
+      "title": "JobEventRecord",
+      "type": "object"
+    },
+    "JobRecord": {
+      "additionalProperties": false,
+      "description": "A processing job as ``GET /api/jobs/{id}`` returns it.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "queued",
+            "running",
+            "succeeded",
+            "failed",
+            "cancelled"
+          ],
+          "type": "string"
+        },
+        "attempts": {
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "result": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "events_url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "status",
+        "attempts",
+        "created_at",
+        "events_url"
+      ],
+      "title": "JobRecord",
       "type": "object"
     },
     "LabelRecord": {

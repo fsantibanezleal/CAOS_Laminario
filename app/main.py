@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from app.config import Settings, get_settings
 from app.db.engine import async_sessions, database_path, make_async_engine
 from app.delivery.iiif import InfoCache
-from app.routers import iiif, slides
+from app.routers import iiif, jobs, slides
 from app.version import VERSION
 
 
@@ -48,6 +48,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app.include_router(slides.router)
     app.include_router(iiif.router)
+    app.include_router(jobs.router)
     return app
 
 

@@ -244,6 +244,8 @@ API instead of nginx as the writer of `rights` (the design explains why); the te
 
 #### U4 worker
 
+Moved to [`features/u04-worker/requirements.md`](features/u04-worker/requirements.md) on 2026-09-29, verbatim.
+
     R-030  WHEN the worker restarts while a job is running, THE worker SHALL re-queue the job and complete it with the same outputs.
            Gate: tests/worker/test_queue.py::test_restart_requeues_and_completes
 

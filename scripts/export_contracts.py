@@ -32,6 +32,8 @@ CATALOG_ROOTS = {
     "slidePage": c.SlidePage,
     "slideSummary": c.SlideSummary,
     "validation": c.ValidationResult,
+    "job": c.JobRecord,
+    "jobEvent": c.JobEventRecord,
 }
 
 

@@ -3,6 +3,30 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.04.000] - 2026-09-29
+
+### Added
+
+- The processing worker (`python -m app.worker`): claims jobs from a durable queue in the catalog's SQLite
+  database, runs each in a one-process `pebble` pool whose timeout kills the process, one job at a time,
+  re-queues jobs a crash interrupted (failing them after three interruptions), and puts a running job back
+  when asked to stop.
+- The job journal (`job_event`): every step numbered per job; `GET /api/jobs/{id}` and the Server-Sent Events
+  stream `GET /api/jobs/{id}/events`, which replays after `Last-Event-ID`, follows live and ends after the
+  terminal event. Jobs have random public ids.
+- The processing jobs: `process_asset` (source through the imaging engine to a measured pyramid, or a clean
+  JPEG for macro photographs, asset marked ready with dimensions, bytes, SHA-256, PSNR and codec) and
+  `fuse_stack` (both composites and the variance height map), queued once when a stack's last plane is ready;
+  `probe` for health checks. Storage keys are content addresses, so reruns write the same bytes and a new
+  source a new key.
+- Operator commands `python -m app.jobs enqueue / status / list / wait`.
+- `JobRecord` and `JobEventRecord` in the catalog contract and its TypeScript types; migration 0003.
+- Wiki page "The processing worker" with its diagram; the U4 design, requirements and verdict.
+
+### Changed
+
+- Manifests leave height maps out of the painted images.
+
 ## [0.03.000] - 2026-09-29
 
 ### Added
