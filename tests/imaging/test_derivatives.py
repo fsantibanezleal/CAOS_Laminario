@@ -55,6 +55,28 @@ def test_true_scale_mount(vips, specimen_mm, rendered_px):
     assert mount.height == round(700 * mount.width / 1000) or abs(mount.height - 700 * target / 1000) <= 1
 
 
+# R-209
+@pytest.mark.parametrize("portrait", [False, True])
+@pytest.mark.parametrize("coverslip, offset", [((22.0, 22.0), (0.0, 0.0)), ((50.0, 24.0), (4.0, -0.5))])
+def test_coverslip_crop(vips, portrait, coverslip, offset):
+    """A drawn slide photograph (76 x 26 mm at 20 px/mm) with a dark coverslip where the case says it is."""
+    width, height = 1520, 520
+    x0 = round((38 + offset[0] - coverslip[0] / 2) * 20)
+    y0 = round((13 + offset[1] - coverslip[1] / 2) * 20)
+    w, h = round(coverslip[0] * 20), round(coverslip[1] * 20)
+    photo = np.full((height, width), 230, dtype=np.uint8)
+    photo[y0:y0 + h, x0:x0 + w] = 40
+    if portrait:
+        photo = np.ascontiguousarray(photo.T)  # the long side becomes vertical, both axes keep their direction
+    image = vips.Image.new_from_array(photo.tolist()).cast("uchar")
+    crop = derivatives.coverslip_crop(image, (76.0, 26.0), coverslip, offset)
+    box = derivatives.coverslip_region(image.width, image.height, (76.0, 26.0), coverslip, offset)
+    expected = (h, w) if portrait else (w, h)
+    assert abs(crop.width - expected[0]) <= 1 and abs(crop.height - expected[1]) <= 1
+    assert crop.avg() == pytest.approx(40, abs=1)  # the crop is the coverslip and nothing else
+    assert box.width * box.height == pytest.approx(w * h, rel=0.01)
+
+
 # R-208
 def test_scan_region_on_macro(vips, samples):
     info = reader.read_info(samples / "si_ostracod_A.ndpi")

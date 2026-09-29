@@ -9,7 +9,7 @@
 | 5 | Z-plane policy | R-014 | done |
 | 6 | Complex wavelet transform ported from the plugin, checked against its Java on four configurations | R-204 | done |
 | 7 | EDF: variance selection and complex wavelet fusion with the plugin's conventions, then the true sub-band geometry; tiles; colour composite; depth map | R-015, R-016, R-204, R-205, R-206, R-207 | done |
-| 8 | Derivatives: thumbnails, clean saving (ICC only), scan on the macro photograph, true-scale mount | R-018, R-019, R-208 | done |
+| 8 | Derivatives: thumbnails, clean saving (ICC only), scan on the macro photograph, crop under the coverslip, true-scale mount | R-018, R-019, R-208, R-209 | done |
 | 9 | Synthetic focal stacks with known focus; `scripts/bench_imaging.py` reproducing every table of the wiki page | (measurement) | done |
 | 10 | Fixtures in the data vault (`samples/`, `edf-reference/` with the plugin runners), prerequisites check, guide section | (local run standard) | done |
 | 11 | Wiki page 04 with the pipeline diagram (checked in both themes); design; restatements; version 0.02.000 | (documentation and versioning standards) | done |
@@ -36,6 +36,7 @@
 | R-206 depth readout accuracy | `tests/imaging/test_edf.py::test_depth_readout_from_variance_is_accurate` | pass |
 | R-207 tiles | `tests/imaging/test_edf.py::test_tiled_matches_whole` | pass |
 | R-208 scan on the macro photograph | `tests/imaging/test_derivatives.py::test_scan_region_on_macro` | pass |
+| R-209 crop under the coverslip | `tests/imaging/test_derivatives.py::test_coverslip_crop` (2 sizes x 2 orientations) | pass |
 
 Also run: the full `pytest` suite with the fixtures (the count is in the pull request); `ruff` clean; the five
 guards pass; `export_contracts.py --check` OK; the bench reproduces the wiki's tables; the pipeline diagram

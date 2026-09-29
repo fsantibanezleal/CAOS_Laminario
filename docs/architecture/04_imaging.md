@@ -235,6 +235,9 @@ Measured times on this machine: dome (20 planes) 2.8 s, fly eye (32 planes) 8.6 
   On ostracod A the box (22 x 26 px of a 1896 x 647 px macro) holds the specimen: its darkest 5 percent of
   pixels reach grey 133 against 229 around it, darker than every one of 400 same-size boxes elsewhere on the
   glass (R-208).
+- **The crop under the coverslip.** On a contributor's photograph of the whole slide (cropped to the glass,
+  either orientation), the coverslip's box follows from the slide's and the coverslip's sizes in the slide case,
+  centred unless an offset is given; the crop is what the slide object shows under the glass (R-209).
 - **The true-scale mount.** A specimen $w_{mm}$ wide on a slide $W$ mm wide drawn $W_{px}$ px wide spans
   $\operatorname{round}(w_{mm} W_{px} / W)$ px: within 1 percent, or half a pixel for specimens too small for
   that (R-019).

@@ -2,7 +2,7 @@
 
 R-010 to R-019 moved here from the design document. Three were restated during the unit, each because a
 measurement showed the original text could not hold on real data; the original wording, the measurement
-and the new wording are recorded under "Restatements" below. R-201 to R-208 are this unit's own.
+and the new wording are recorded under "Restatements" below. R-201 to R-209 are this unit's own.
 
 ```
 R-010  WHEN a file of any format in the fixture matrix is read, THE reader SHALL return dimensions, level count, pixel size and associated images equal to the vendor metadata.
@@ -58,6 +58,9 @@ R-207  WHEN a stack is fused in tiles, THE variance height map SHALL equal the w
 
 R-208  WHEN a scanner file records the slide's size and the scan's position, THE engine SHALL place the scanned region on the macro photograph so that the specimen falls inside it.
        Gate: tests/imaging/test_derivatives.py::test_scan_region_on_macro
+
+R-209  WHEN a slide case has a coverslip, THE engine SHALL crop the contributor's photograph of the whole slide to the coverslip's box, from the slide's and the coverslip's sizes, within one pixel.
+       Gate: tests/imaging/test_derivatives.py::test_coverslip_crop
 ```
 
 ## Restatements (2026-09-28)

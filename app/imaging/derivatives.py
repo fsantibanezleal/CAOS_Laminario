@@ -5,6 +5,8 @@
   slide's size and the scan's centre as an offset from the slide centre (x to the right, y downwards, in
   nanometres); with the pixel size and the scan's pixel dimensions this places the scan on the macro
   photograph, so the slide object can show where on the real glass the specimen sits.
+- The crop under the coverslip: on a contributor's photograph of the whole slide, the box the coverslip
+  occupies, from the slide's and the coverslip's sizes in the slide case (centred unless an offset is given).
 - The true-scale mount: the specimen image scaled so that, drawn on a rendered slide, it spans its physical
   width divided by the slide's width.
 
@@ -71,6 +73,36 @@ def scan_region_on_macro(info: SlideInfo, macro_width: int, macro_height: int) -
     centre_y = (slide_h / 2 + info.scan_centre_offset_mm[1]) * px_per_mm_y
     return Box(centre_x - scan_w_mm * px_per_mm_x / 2, centre_y - scan_h_mm * px_per_mm_y / 2,
                scan_w_mm * px_per_mm_x, scan_h_mm * px_per_mm_y)
+
+
+def coverslip_region(photo_width: int, photo_height: int, slide_mm: tuple[float, float],
+                     coverslip_mm: tuple[float, float],
+                     centre_offset_mm: tuple[float, float] = (0.0, 0.0)) -> Box:
+    """The coverslip's box on a photograph of the whole slide, in photo pixels.
+
+    The photograph spans the slide (the contributor crops it to the glass); either orientation. Sizes are
+    (long side, short side) in millimetres, the coverslip's long side along the slide's; the coverslip is
+    centred unless an offset from the slide centre is given, in the photograph's own axes: along its long
+    side, then its short side, positive towards increasing pixel index.
+    """
+    long_px, short_px = max(photo_width, photo_height), min(photo_width, photo_height)
+    per_mm_long, per_mm_short = long_px / slide_mm[0], short_px / slide_mm[1]
+    box_long, box_short = coverslip_mm[0] * per_mm_long, coverslip_mm[1] * per_mm_short
+    centre_long = long_px / 2 + centre_offset_mm[0] * per_mm_long
+    centre_short = short_px / 2 + centre_offset_mm[1] * per_mm_short
+    if photo_width >= photo_height:
+        return Box(centre_long - box_long / 2, centre_short - box_short / 2, box_long, box_short)
+    return Box(centre_short - box_short / 2, centre_long - box_long / 2, box_short, box_long)
+
+
+def coverslip_crop(image, slide_mm: tuple[float, float], coverslip_mm: tuple[float, float],
+                   centre_offset_mm: tuple[float, float] = (0.0, 0.0)):
+    """The part of a slide photograph under the coverslip, clipped to the photograph."""
+    box = coverslip_region(image.width, image.height, slide_mm, coverslip_mm, centre_offset_mm)
+    x0, y0 = max(0, round(box.x)), max(0, round(box.y))
+    x1 = min(image.width, round(box.x + box.width))
+    y1 = min(image.height, round(box.y + box.height))
+    return image.crop(x0, y0, x1 - x0, y1 - y0)
 
 
 def mount_width_px(specimen_width_mm: float, rendered_slide_width_px: float,
