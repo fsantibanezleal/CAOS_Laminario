@@ -36,7 +36,7 @@ The backend suite on this branch: 314 passed, 4 skipped (the IIIF tile tests: th
 this machine), 3 failed. The three failures belong to U8 and are not U12's: `data/base/acquired.json` and
 `tests/base/test_base_collection.py` exist only on U8's branch until it merges, so two base tests and the SDD guard
 (which checks that every requirement's gate exists) fail on any branch cut from develop before then. The web
-typecheck, build and 60 unit tests pass.
+typecheck, build and 54 unit tests pass.
 
 Building it found what the design could not: Vite's proxy turned a string target into `changeOrigin: true`, so tusd
 gave the browser upload addresses on its own port (F-044); the editor's side column widened to the rail's width at
