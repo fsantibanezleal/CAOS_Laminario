@@ -146,8 +146,8 @@ in the database. After changing the tree or the icons:
 ```
 
 The mineral and rock vocabularies are rebuilt and checked from their sources in the data vault
-(`LAMINARIO_FIXTURES\vocab`): `scripts\build_minerals.py --vault E:\_Datos\laminario` and
-`scripts\check_rock_terms.py --vault E:\_Datos\laminario`; the two vault tests skip without it. The tests never call
+(`LAMINARIO_FIXTURES\vocab`): `scripts\build_minerals.py --vault $env:LAMINARIO_FIXTURES` and
+`scripts\check_rock_terms.py --vault $env:LAMINARIO_FIXTURES`; the two vault tests skip without it. The tests never call
 GBIF: a local server replays recorded answers (`tests\gbif_replay.py`).
 
 ## Tests and guards
