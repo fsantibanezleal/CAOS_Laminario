@@ -6,12 +6,14 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 import httpx2
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
+from app.accounts.users import build as build_accounts
 from app.config import Settings, get_settings
 from app.db.engine import async_sessions, database_path, make_async_engine
 from app.delivery.iiif import InfoCache
-from app.routers import iiif, jobs, slides
+from app.routers import accounts, iiif, jobs, slides
 from app.version import VERSION
 
 
@@ -46,10 +48,42 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         """Liveness plus identity: gates check they are talking to Laminario, at this version."""
         return {"status": "ok", "product": "laminario", "version": VERSION}
 
+    app.state.accounts = build_accounts(settings)
+    trusted = allowed_origins(settings)
+
+    @app.middleware("http")
+    async def same_origin_writes(request: Request, call_next):
+        """A browser always sends Origin on cross-site writes; refuse any that is not this site.
+
+        Session cookies are SameSite=Lax, which already keeps them off cross-site POSTs from pages; this closes the
+        rest (a request without cookies is anonymous anyway, and non-browser clients send no Origin).
+        """
+        origin = request.headers.get("origin")
+        if request.method in ("POST", "PUT", "PATCH", "DELETE") and origin and origin not in trusted:
+            return JSONResponse(status_code=403, content={"detail": "cross-site request refused"})
+        return await call_next(request)
+
+    for router in accounts.routers(app.state.accounts):
+        app.include_router(router)
     app.include_router(slides.router)
     app.include_router(iiif.router)
     app.include_router(jobs.router)
     return app
+
+
+
+DEV_ORIGINS = ("http://127.0.0.1:5909", "http://localhost:5909", "http://127.0.0.1:4909", "http://localhost:4909")
+
+
+def allowed_origins(settings: Settings) -> set[str]:
+    """This site's origin, plus the web dev and preview servers outside production."""
+    from urllib.parse import urlsplit
+
+    parts = urlsplit(settings.public_base_url)
+    origins = {f"{parts.scheme}://{parts.netloc}"}
+    if settings.env != "production":
+        origins |= set(DEV_ORIGINS)
+    return origins
 
 
 app = create_app()

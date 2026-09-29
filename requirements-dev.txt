@@ -7,3 +7,5 @@ scikit-image==0.26.0
 pillow==12.3.0
 # U3 tests: manifests validated against the pinned IIIF Presentation 3 schema
 jsonschema==4.26.0
+# U6 tests: a local SMTP sink that requires STARTTLS
+aiosmtpd==1.4.6

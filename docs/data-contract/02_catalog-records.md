@@ -16,6 +16,9 @@ Schema: [`contracts/catalog.schema.json`](../../contracts/catalog.schema.json) (
 | `validation` | [ValidationResult](#validationresult) | no |  |  |
 | `job` | [JobRecord](#jobrecord) | no |  |  |
 | `jobEvent` | [JobEventRecord](#jobeventrecord) | no |  |  |
+| `account` | [AccountRecord](#accountrecord) | no |  |  |
+| `invitation` | [InvitationRecord](#invitationrecord) | no |  |  |
+| `createdSlideCase` | [CreatedSlideCase](#createdslidecase) | no |  |  |
 
 ### SlideRecord
 
@@ -101,6 +104,45 @@ One Server-Sent Event of a job's stream: its ``id`` field is ``seq``, its ``even
 | `event` | string (enumerated) | yes | one of: `queued`, `started`, `progress`, `log`, `requeued`, `succeeded`, `failed`, `cancelled` |  |
 | `data` | object | yes |  |  |
 | `at` | string (date-time) | yes |  |  |
+
+### AccountRecord
+
+An account as ``GET /api/users/me`` returns it.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `email` | string | yes |  |  |
+| `display_name` | string | yes |  |  |
+| `role` | string (enumerated) | yes | one of: `contributor`, `identifier`, `curator`, `admin` |  |
+| `is_active` | boolean | yes |  |  |
+| `is_verified` | boolean | yes |  |  |
+
+### InvitationRecord
+
+An invitation as its issuer sees it. ``link`` is present only in the answer that created it, and only when it was not mailed: the token is never stored, so it cannot be shown again.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | integer | yes |  |  |
+| `email` | string or null | no |  | null |
+| `role` | string (enumerated) | yes | one of: `contributor`, `identifier`, `curator`, `admin` |  |
+| `note` | string or null | no |  | null |
+| `status` | string (enumerated) | yes | one of: `pending`, `used`, `expired`, `revoked` |  |
+| `created_at` | string (date-time) | yes |  |  |
+| `expires_at` | string (date-time) | yes |  |  |
+| `mailed` | boolean | yes |  |  |
+| `link` | string or null | no |  | null |
+
+### CreatedSlideCase
+
+The answer of ``POST /api/slide-cases``: the new draft and the flags of its submission.
+
+| Field | Type | Required | Accepted | Default |
+|---|---|---|---|---|
+| `id` | string | yes |  |  |
+| `status` | string | yes |  |  |
+| `flags` | list of [ValidationFlag](#validationflag) | no |  | `[]` |
 
 ### FormatRecord
 

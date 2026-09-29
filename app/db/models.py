@@ -1,4 +1,5 @@
-"""Tables for the slide case (``slide``, ``asset``) and for processing (``job``, ``job_event``).
+"""Tables for the slide case (``slide``, ``asset``), processing (``job``, ``job_event``) and accounts (``user``,
+``accesstoken``, ``invitation``).
 
 Other tables arrive with the units that need them (users and invitations, jobs, uploads, identifications),
 each with its own migration. Columns mirror the ingestion contract; the catalog record is assembled from them.
@@ -9,6 +10,9 @@ from __future__ import annotations
 from datetime import date, datetime
 
 from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Index, Integer, String, Text, UniqueConstraint
+from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTableUUID
+from fastapi_users_db_sqlalchemy.access_token import SQLAlchemyBaseAccessTokenTableUUID
+from fastapi_users_db_sqlalchemy.generics import GUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base, utcnow
@@ -170,3 +174,44 @@ class JobEvent(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
 
     __table_args__ = (UniqueConstraint("job_id", "seq"),)
+
+
+class User(SQLAlchemyBaseUserTableUUID, Base):
+    """An account. There is no open sign-up: every account comes from an invitation (``invitation``).
+
+    fastapi-users provides id, email, hashed_password, is_active, is_superuser and is_verified; ``role`` is the
+    source of authorisation (``is_superuser`` mirrors ``role == "admin"``).
+    """
+
+    #: contributor, identifier, curator or admin
+    role: Mapped[str] = mapped_column(String(12), nullable=False, default="contributor")
+    display_name: Mapped[str] = mapped_column(String(80), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+
+
+class AccessToken(SQLAlchemyBaseAccessTokenTableUUID, Base):
+    """A signed-in session: an opaque token in a cookie, its row here, deleted at sign-out."""
+
+
+class Invitation(Base):
+    """The only way to an account: a single-use link with an expiry, issued by a curator or an admin.
+
+    Only the SHA-256 of the token is stored, so a copy of the database cannot be used to register.
+    """
+
+    __tablename__ = "invitation"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    token_sha256: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    #: The address the invitation is for, when it names one; registration must then use it.
+    email: Mapped[str | None] = mapped_column(String(320))
+    role: Mapped[str] = mapped_column(String(12), nullable=False)
+    #: The issuing account; null when issued from the server's command line (the first admin).
+    issued_by_id: Mapped[object | None] = mapped_column(GUID, ForeignKey("user.id", ondelete="SET NULL"))
+    note: Mapped[str | None] = mapped_column(String(200))
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=utcnow)
+    expires_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    used_at: Mapped[datetime | None] = mapped_column(DateTime)
+    used_by_id: Mapped[object | None] = mapped_column(GUID, ForeignKey("user.id", ondelete="SET NULL"))
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime)
+    mailed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)

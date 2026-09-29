@@ -34,14 +34,15 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.04.000`: the repository base (U0), the data model with both contracts (U1), the imaging engine (U2),
-IIIF delivery (U3) and the processing worker (U4). The engine reads scanner, TIFF and photo formats, writes one
-measured pyramid per plane and fuses focal stacks exactly as the EPFL extended-depth-of-field plugin does
-([`04_imaging.md`](docs/architecture/04_imaging.md)); iipsrv serves the pyramids over the IIIF Image API behind a
-cached, access-checked nginx site, and every slide is a IIIF Presentation 3 manifest
-([`05_delivery.md`](docs/architecture/05_delivery.md)); a separate worker runs processing jobs from a durable
-queue, survives crashes, and streams each job's progress
-([`06_worker.md`](docs/architecture/06_worker.md)). The units that follow are listed in the design document.
+Version `0.05.000`: the repository base (U0), the data model with both contracts (U1), the imaging engine (U2),
+IIIF delivery (U3), the processing worker (U4) and accounts (U6). The engine reads scanner, TIFF and photo
+formats, writes one measured pyramid per plane and fuses focal stacks exactly as the EPFL
+extended-depth-of-field plugin does ([`04_imaging.md`](docs/architecture/04_imaging.md)); iipsrv serves the
+pyramids over the IIIF Image API behind a cached, access-checked nginx site, and every slide is a IIIF
+Presentation 3 manifest ([`05_delivery.md`](docs/architecture/05_delivery.md)); a separate worker runs processing
+jobs from a durable queue and streams their progress ([`06_worker.md`](docs/architecture/06_worker.md)); invited
+contributors have accounts with roles, and visitors need none ([`07_accounts.md`](docs/architecture/07_accounts.md)).
+The units that follow are listed in the design document.
 
 ## Architecture at a glance
 
