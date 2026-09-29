@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario processing worker</title>
+  <desc id="desc">Jobs and their events live in the SQLite database. The worker claims the oldest queued job, runs it in a one-process pebble pool with a killing timeout, and records the outcome. The job's process writes progress events to the journal. The API streams the journal to the browser as Server-Sent Events, replaying after the last event the browser saw. Processing jobs read sources, write content-addressed pyramids to the store and queue the stack's fusion when its last plane is ready.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --stop: #b23a3a; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; --stop: #e07a7a; }
+    }
+    .bg { fill: var(--bg); }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; stroke-dasharray: 4 4; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .no { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--stop); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .dash { stroke: var(--line); stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; marker-end: url(#head); }
+    .head { fill: var(--line); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="600"/>
+
+  <text class="h" x="24" y="34">WHO ENQUEUES</text>
+  <rect class="box" x="24" y="46" width="200" height="120" rx="8"/>
+  <text class="t" x="40" y="72">Upload hook (U5)</text>
+  <text class="t" x="40" y="94">Base import (U8)</text>
+  <text class="t" x="40" y="116">Operator CLI</text>
+  <text class="m" x="40" y="142">python -m app.jobs</text>
+  <text class="m" x="40" y="158">  enqueue / wait</text>
+
+  <rect class="store" x="276" y="46" width="300" height="160" rx="8"/>
+  <text class="t" x="292" y="72">laminario.sqlite3 (WAL)</text>
+  <text class="m" x="292" y="96">job        queued -&gt; running -&gt;</text>
+  <text class="m" x="292" y="114">           succeeded | failed</text>
+  <text class="m" x="292" y="138">job_event  (job_id, seq) unique</text>
+  <text class="m" x="292" y="156">           INSERT..SELECT MAX(seq)+1</text>
+  <text class="s" x="292" y="184">claim: BEGIN IMMEDIATE, oldest queued</text>
+
+  <path class="arrow" d="M224 106 H274"/>
+
+  <rect class="lane" x="24" y="236" width="552" height="236" rx="10"/>
+  <text class="h" x="40" y="260">WORKER PROCESS (python -m app.worker)</text>
+  <rect class="key" x="40" y="274" width="250" height="182" rx="8"/>
+  <text class="t" x="56" y="300">loop</text>
+  <text class="s" x="56" y="322">1. start: re-queue jobs left running</text>
+  <text class="s" x="56" y="342">   (fail after 3 interruptions)</text>
+  <text class="s" x="56" y="362">2. claim the oldest queued job</text>
+  <text class="s" x="56" y="382">3. run it in the pool, with its timeout</text>
+  <text class="s" x="56" y="402">4. record the outcome</text>
+  <text class="ok" x="56" y="428">succeeded: result</text>
+  <text class="no" x="56" y="446">failed: error, timeout, died</text>
+
+  <rect class="box" x="310" y="274" width="250" height="182" rx="8"/>
+  <text class="t" x="326" y="300">pebble pool, one process</text>
+  <text class="s" x="326" y="322">spawn context, recycled after 25</text>
+  <text class="s" x="326" y="342">timeout kills the process</text>
+  <text class="m" x="326" y="370">probe</text>
+  <text class="m" x="326" y="390">process_asset  -&gt; pyramid</text>
+  <text class="m" x="326" y="410">fuse_stack     -&gt; composites,</text>
+  <text class="m" x="326" y="430">                  height map</text>
+  <text class="s" x="326" y="448">writes progress to the journal</text>
+
+  <path class="arrow" d="M290 364 H308"/>
+  <path class="arrow" d="M426 208 V272"/>
+  <path class="dash" d="M470 272 V210"/>
+  <text class="s" x="478" y="246">events</text>
+
+  <rect class="box" x="628" y="46" width="308" height="160" rx="8"/>
+  <text class="t" x="644" y="72">API</text>
+  <text class="m" x="644" y="96">GET /api/jobs/{id}</text>
+  <text class="m" x="644" y="116">GET /api/jobs/{id}/events</text>
+  <text class="s" x="644" y="142">Server-Sent Events: id = seq,</text>
+  <text class="s" x="644" y="160">replay after Last-Event-ID, then</text>
+  <text class="s" x="644" y="178">follow; ends after the terminal event</text>
+  <text class="s" x="644" y="196">random public ids</text>
+  <path class="arrow" d="M576 126 H626"/>
+
+  <rect class="box" x="628" y="236" width="308" height="100" rx="8"/>
+  <text class="t" x="644" y="262">Browser (U12)</text>
+  <text class="s" x="644" y="284">EventSource: progress bars; a lost</text>
+  <text class="s" x="644" y="302">connection resumes where it stopped</text>
+  <text class="m" x="644" y="324">retry: 2000, ping every 15 s</text>
+  <path class="arrow" d="M782 206 V234"/>
+
+  <rect class="store" x="628" y="366" width="308" height="106" rx="8"/>
+  <text class="t" x="644" y="392">/srv/laminario/store</text>
+  <text class="m" x="644" y="416">{short}/{asset}-{digest}.tif</text>
+  <text class="s" x="644" y="438">digest of the source SHA-256 and the</text>
+  <text class="s" x="644" y="456">pipeline version: rerun, same bytes</text>
+  <path class="arrow" d="M560 420 H626"/>
+
+  <text class="h" x="24" y="512">A CRASH, MEASURED BY THE GATE (R-030)</text>
+  <rect class="box" x="24" y="524" width="912" height="60" rx="8"/>
+  <text class="s" x="40" y="548">worker and job process killed at step 2 of 8  -&gt;  job left running  -&gt;  worker restarts  -&gt;  requeued  -&gt;</text>
+  <text class="s" x="40" y="568">started again (attempt 2)  -&gt;  succeeded, with exactly the output of an uninterrupted run</text>
+</svg>
