@@ -3,6 +3,37 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.13.000] - 2026-09-29
+
+### Added
+
+- Identifications on published slides by identifiers and above: one current identification per account,
+  withdrawn and restored, with a comment; naming an ancestor of the slide's anchor asks whether it disagrees.
+- The agreement rule (M8, R-088): iNaturalist's community taxon, read from its source, on lineages of node ids, so
+  it applies to taxa, minerals, rocks, crystals and materials alike; the categories leading, improving, supporting
+  and maverick.
+- The slide follows the community anchor it can name, and the tree places it again, keeping a drawer that still
+  accepts it and a curator's override; the first identification of every published slide (the contributor's, or
+  the source's for a base slide) and `python -m app.community backfill`.
+- The badge from the slide checks and the community (verified, needs ID, reference), with the vote on whether the
+  name can still be improved, cleared when the community anchor changes.
+- Flags from any signed-in account, the curators' queue and resolution; hiding and restoring slides,
+  identifications and annotations with a reason, restored only by the curator who hid or an admin, every action
+  kept.
+- The Identify place (the queue by collection, kind and badge, oldest first), the identifications on the slide
+  place, the moderation place; the Identify way in the masthead; 124 strings in EN and ES.
+- Migration 0011; the contract's IdentificationList, FlagRecord and ModerationActionRecord.
+- `frontend/gates/identify.mjs` and the shared gate sandbox `frontend/gates/lib/sandbox.mjs`; wiki page 15.
+
+### Changed
+
+- Rock suggestions carry a written name ("Carbonatite", not the key).
+- The base import never takes the community's or the curators' columns from a bake, and keeps a curator's hiding.
+
+### Fixed
+
+- The slide place reads its record again when an identification moves the badge or the anchor.
+
 ## [0.12.000] - 2026-09-29
 
 ### Added
