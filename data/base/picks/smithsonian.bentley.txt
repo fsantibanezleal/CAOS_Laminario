@@ -1,0 +1,19 @@
+# Wilson A. Bentley photomicrographs in the Smithsonian Institution Archives (CC0), reviewed on the
+# smithsonian.bentley sheet (58 records with an image) on 2026-09-29. The Kikuchi et al. (2013) category follows
+# Bentley's own type in the record title: tabular, lamellar and stellar are plane crystals (P); granular are rimed
+# crystals and graupel (R); the lamellar/columnar plate shows columns beside plates (C, with the plates noted).
+# The records chosen spread over his types; the others repeat them.
+[matter.crystals]
+smithsonian.bentley 1 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 349, tabular: plates radiating from a centre | name=snow crystal
+smithsonian.bentley 2 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 1205, stellar | name=snow crystal
+smithsonian.bentley 4 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 990, stellar dendrite | name=snow crystal
+smithsonian.bentley 7 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 234, lamellar hexagonal plate | name=snow crystal
+smithsonian.bentley 10 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 951, lamellar plate | name=snow crystal
+smithsonian.bentley 12 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 920, fernlike stellar | name=snow crystal
+smithsonian.bentley 15 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 482, tabular | name=snow crystal
+smithsonian.bentley 19 | crystal=ice/hexagonal:R | whole_mount | | brightfield | | | Bentley No. 807, granular | name=snow crystal
+smithsonian.bentley 28 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 181, lamellar triangular plate | name=snow crystal
+smithsonian.bentley 41 | crystal=ice/hexagonal:R | whole_mount | | brightfield | | | Bentley No. 1232, granular: graupel pellets | name=snow crystal
+smithsonian.bentley 47 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 350, lamellar | name=snow crystal
+smithsonian.bentley 54 | crystal=ice/hexagonal:P | whole_mount | | brightfield | | | Bentley No. 591, dendrite star | name=snow crystal
+smithsonian.bentley 58 | crystal=ice/hexagonal:C | whole_mount | | brightfield | | | Bentley No. 777, lamellar/columnar: two columns beside hexagonal plates | name=snow crystal

@@ -1,0 +1,23 @@
+# Fungi, reviewed on the life.fungi harvest sheet (80 candidates) on 2026-09-29. Excluded: diagrams, SEM
+# micrographs (the only chytrid images were SEM, so Chytrids stays open for contribution), labelled duplicates,
+# unidentified moulds (no anchor below the kingdom), culture-plate photographs.
+[life.fungi]
+life.fungi 2 | taxon=Ascobolus immersus@species | squash | | brightfield | | | asci with ascospores
+life.fungi 6 | taxon=Hysterobrevium smilacis@species | squash | | brightfield | cotton blue | | ascus among paraphyses
+life.fungi 7 | taxon=Scutellinia umbrorum@species | squash | | brightfield | cotton blue | | ascus with a scale in the eyepiece
+life.fungi 9 | taxon=#8766080 | section | | brightfield | safranin and fast green | | hymenium with asci
+life.fungi 15 | taxon=Morchella@genus | section | | brightfield | safranin and fast green | | ascocarp in section
+life.fungi 13 | taxon=Schizosaccharomyces@genus | smear | | brightfield | safranin and fast green | | fission yeast asci
+life.fungi 57 | taxon=Saccharomyces cerevisiae@species | fluid_mount | | brightfield | | | baking yeast, 40x objective
+life.fungi 76 | taxon=Paecilomyces@genus | whole_mount | | brightfield | lactophenol cotton blue | | conidia and conidiophore
+life.fungi 77 | taxon=Aspergillus@genus@Fungi | whole_mount | | brightfield | lactophenol cotton blue | | conidiophores in a tease mount
+life.fungi 74 | taxon=Aspergillus niger@species | whole_mount | | brightfield | | | hyphae, 100 um bar
+life.fungi 25 | taxon=Coprinus@genus | section | | brightfield | safranin and fast green | | gill with basidia
+life.fungi 19 | taxon=Entoloma corneum@species | squash | | brightfield | | | basidium with sterigmata
+life.fungi 24 | taxon=Amanita rubescens@species | squash | | brightfield | Congo red | | basidia
+life.fungi 64 | taxon=Galerina clavata@species | squash | | brightfield | Congo red | | cheilocystidia with a scale
+life.fungi 63 | taxon=Pluteus salicinus@species | squash | | brightfield | Congo red | | cystidia, four views
+life.fungi 49 | taxon=Backusella@genus | whole_mount | | brightfield | | | sporangium
+life.fungi 51 | taxon=Cunninghamella echinulata@species | whole_mount | | phase_contrast | | | sporangiola on vesicles
+life.fungi 53 | taxon=Dicranophora fulva@species | whole_mount | | darkfield | | | sporangia
+

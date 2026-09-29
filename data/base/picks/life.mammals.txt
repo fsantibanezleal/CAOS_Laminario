@@ -1,0 +1,30 @@
+# Mammals, reviewed on the life.mammals harvest sheet (69 candidates) on 2026-09-29. Excluded: tissue blocks,
+# gross photographs, book plates and drawings, a gene-expression chart, multi-panel figures, images with numbered
+# or text labels, rendered 3D views, a thin-film image misfiled as mammal, blood films that do not name the species,
+# and two wool images whose source records no author.
+[life.mammals]
+life.mammals 1 | taxon=Capra hircus@species | whole_mount | hair | brightfield | | | impression of a mohair fibre in transmitted light
+life.mammals 8 | taxon=Panthera tigris@species | whole_mount | hair | polarised_xpl | | | tiger hair in polarised light, 20 um bar
+life.mammals 10 | taxon=Homo sapiens@species | whole_mount | hair | dic | | | hair surface, 50x objective
+life.mammals 11 | taxon=Felis catus@species | whole_mount | hair | sem_external | | | uncoated cat hair, environmental SEM (backscattered electrons), 1000x
+life.mammals 15 | taxon=Homo sapiens@species | section | hair | brightfield | | | oblique section of the scalp through hair follicles at several levels
+life.mammals 16 | taxon=Homo sapiens@species | whole_mount | hair | brightfield | | | hair follicle, 200x
+life.mammals 20 | taxon=Sus scrofa@species | section | eye | brightfield | haematoxylin and eosin | | corneal limbus, sclera and cornea of a pig eye
+life.mammals 23 | taxon=Canis lupus@species | section | heart | brightfield | | | dog cardiac muscle, 400x
+life.mammals 24 | taxon=Canis lupus@species | section | | brightfield | | | dog ciliated columnar epithelium, 400x
+life.mammals 25 | taxon=Canis lupus@species | section | | brightfield | | | dog columnar epithelium, 400x
+life.mammals 26 | taxon=Canis lupus@species | section | | brightfield | | | dog columnar epithelium, 400x
+life.mammals 30 | taxon=Canis lupus@species | section | | brightfield | | | dog squamous epithelium, 100x
+life.mammals 36 | taxon=Homo sapiens@species | section | pancreas | brightfield | | | acinar cells
+life.mammals 39 | taxon=Homo sapiens@species | smear | blood | brightfield | | | blood smear
+life.mammals 46 | taxon=Homo sapiens@species | smear | blood | brightfield | May-Grünwald Giemsa | | peripheral blood in erythroid acute myeloid leukaemia (FAB M6), overview
+life.mammals 47 | taxon=Homo sapiens@species | smear | blood | brightfield | Wright | | band neutrophil
+life.mammals 50 | taxon=Homo sapiens@species | section | skin | brightfield | haematoxylin and eosin | | normal epidermis and dermis with a benign intradermal naevus, 10x
+life.mammals 53 | taxon=Homo sapiens@species | section | skin | brightfield | | | thin skin, epidermis and dermis
+life.mammals 55 | taxon=Homo sapiens@species | section | skin | brightfield | | | finger-pad skin, high magnification
+life.mammals 62 | taxon=Mus musculus@species | whole_mount | eye | fluorescence | | | retinal explant in culture with growing axons
+life.mammals 63 | taxon=Mus musculus@species | fluid_mount | egg | brightfield | | | mouse ova
+life.mammals 64 | taxon=Mus musculus@species | section | brain | fluorescence | | | retinal axons arborising in the visual thalamus
+life.mammals 66 | taxon=Mus musculus@species | section | embryo | brightfield | haematoxylin and eosin | | sagittal section of a 10-day embryo
+life.mammals 67 | taxon=Mus musculus@species | section | embryo | brightfield | | | transverse section of an embryo, University of Jaén practical class
+life.mammals 69 | taxon=Mus musculus@species | section | testis | fluorescence | | | E15.5 embryonic testis, paraffin section, antibody staining

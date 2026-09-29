@@ -58,6 +58,9 @@ class Settings(BaseSettings):
     wsi_min_bytes: int = 1_000_000_000
     #: Above this fraction of the data volume in use, whole-slide uploads are refused (the tier-A rule).
     wsi_block_fraction: float = 0.9
+    #: Seconds a focal-stack fusion may run before its process is killed. The base bake, offline on a workstation,
+    #: raises it: 71 planes of 53 megapixels fuse in hours.
+    fuse_timeout_s: int = 7200
     #: Windows only: the bin folder of the libvips build that includes OpenSlide. Unset on Linux.
     vips_bin: Path | None = None
     #: The local data vault with the imaging fixtures (tests only).

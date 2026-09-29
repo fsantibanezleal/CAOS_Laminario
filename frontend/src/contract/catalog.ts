@@ -43,6 +43,7 @@ export interface FormatRecord {
   code: string;
   width_mm: number;
   height_mm: number;
+  assumed?: boolean;
 }
 export interface CoverslipRecord {
   code: string;

@@ -1,0 +1,17 @@
+# The supplementary sheet search.additions (11 files found by full-text search on Commons on 2026-09-29 for the
+# nodes the coverage matrix showed open: Actinomycetota and the chromist microalgae; the CDC PHIL item is the
+# Commons public-domain mirror). Stained bacterial smears are brightfield preparations. Excluded: a Streptomyces
+# mycelium photographed on a dark ground with no stated illumination.
+[life.microbes]
+search.additions 1 | taxon=Mycobacterium tuberculosis@species | smear | | brightfield | Ziehl-Neelsen | | acid-fast bacilli in bronchoalveolar lavage fluid
+search.additions 8 | taxon=Mycobacterium tuberculosis@species | smear | | brightfield | Ziehl-Neelsen | | 1000x, CDC PHIL (Dr. George P. Kubica)
+search.additions 7 | taxon=Mycobacterium leprae@species | smear | skin | brightfield | Ziehl-Neelsen | | heavy load (6+) in a slit-skin smear, 1000x
+search.additions 3 | taxon=Corynebacterium diphtheriae@species | smear | | brightfield | Albert | | metachromatic granules
+search.additions 4 | taxon=Corynebacterium pseudodiphtheriticum@species | smear | | brightfield | | | Josef Reischig archive | name=Corynebacterium pseudodiphteriae
+search.additions 9 | taxon=Nocardia@genus | smear | | brightfield | Gram | | branching filaments from a culture
+search.additions 5 | taxon=Mallomonas@genus | fluid_mount | | brightfield | | | scaled flagellate with bristles | locality=Tanabe, Wakayama, Japan; collected=2015-01-30
+search.additions 6 | taxon=Mallomonas@genus | fluid_mount | | brightfield | | | | locality=Tanabe, Wakayama, Japan; collected=2015-01-30
+search.additions 10 | taxon=Synura@genus | fluid_mount | | dic | | | colonies of Synura spinosa (left) and S. petersenii (right), a Mallomonas below, Leica DMRD | locality=Shishitsuka Pond, Tsuchiura, Ibaraki, Japan
+
+[earth.fossils]
+search.additions 2 | taxon=Ammonia tepida@species | whole_mount | | reflected | | | benthic foraminifer from the Pinecrest Beds

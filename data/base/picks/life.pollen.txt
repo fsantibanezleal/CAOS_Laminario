@@ -1,0 +1,38 @@
+# Pollen and spores, reviewed on the life.pollen harvest sheet (97 candidates) on 2026-09-29. The fungal spore
+# images come from Mushroom Observer observations, the bryophyte spores from Hermann Schachner (CC0). Excluded:
+# most SEM images (the species is not named), renderings and colourised composites, grids of many species, images
+# with embedded captions or arrows, stereo photographs of sporangia, TEM of fossil megaspores, blurred phone shots,
+# and pollen whose plant is not named.
+[life.pollen]
+life.pollen 2 | taxon=Asarum europaeum@species | whole_mount | pollen | brightfield | | | 400x
+life.pollen 3 | taxon=Buxus sempervirens@species | whole_mount | pollen | brightfield | | | 400x
+life.pollen 4 | taxon=Cornus mas@species | whole_mount | pollen | brightfield | | | 400x
+life.pollen 5 | taxon=Hamamelis@genus | whole_mount | pollen | brightfield | | | 400x
+life.pollen 7 | taxon=Liriodendron tulipifera@species | whole_mount | pollen | brightfield | | | tulip tree, 40x objective
+life.pollen 9 | taxon=Magnolia@genus | whole_mount | pollen | brightfield | | | 400x
+life.pollen 11 | taxon=Philadelphus@genus | whole_mount | pollen | brightfield | | | mock-orange
+life.pollen 12 | taxon=Pelargonium@genus | whole_mount | pollen | brightfield
+life.pollen 14 | taxon=Annona reticulata@species | whole_mount | pollen | brightfield | | | tetrads
+life.pollen 16 | taxon=#3156422 | whole_mount | pollen | brightfield | | | accepted as Polyalthia longifolia | name=Monoon longifolium
+life.pollen 18 | taxon=Scilla@genus | whole_mount | pollen | brightfield | | | 400x, in glycerine
+life.pollen 41 | taxon=Tecoma stans@species | whole_mount | pollen | brightfield | | | yellow elder
+life.pollen 73 | taxon=Clitopilus prunulus@species | whole_mount | spore | brightfield | | | Mushroom Observer 27673
+life.pollen 74 | taxon=Scleroderma citrinum@species | whole_mount | spore | brightfield | | | Mushroom Observer 108904, with an eyepiece scale
+life.pollen 76 | taxon=Ascobolus immersus@species | whole_mount | spore | brightfield | | | Mushroom Observer 124058
+life.pollen 77 | taxon=Hygrocybe flavescens@species | whole_mount | spore | brightfield | | | Mushroom Observer 64217, with an eyepiece scale
+life.pollen 78 | taxon=Gyromitra esculenta@species | whole_mount | spore | brightfield | | | Mushroom Observer 66581, with an eyepiece scale
+life.pollen 80 | taxon=Ustilago maydis@species | whole_mount | spore | brightfield | | | teliospores, Mushroom Observer 183839, with an eyepiece scale
+life.pollen 81 | taxon=Conocybe siliginea@species | whole_mount | spore | brightfield | | | Mushroom Observer 173108, with an eyepiece scale
+life.pollen 82 | taxon=#9439058 | whole_mount | spore | brightfield | | | Mushroom Observer 185780, with an eyepiece scale; accepted as Picipes badius | name=Royoporus badius
+life.pollen 83 | taxon=Leucogaster citrinus@species | whole_mount | spore | brightfield | | | Mushroom Observer 186473
+life.pollen 84 | taxon=Lentinellus ursinus@species | whole_mount | spore | brightfield | | | Mushroom Observer 196906, with an eyepiece scale
+life.pollen 85 | taxon=Botryobasidium aureum@species | whole_mount | spore | brightfield | | | Mushroom Observer 197214
+life.pollen 86 | taxon=Hygrophoropsis aurantiaca@species | whole_mount | spore | brightfield | | | Mushroom Observer 197652, with an eyepiece scale
+life.pollen 91 | taxon=Polypodium glycyrrhiza@species | whole_mount | spore | brightfield | | | licorice fern, 40x objective
+life.pollen 92 | taxon=Andreaea rupestris@species | whole_mount | spore | brightfield | | | 50 um bar
+life.pollen 94 | taxon=Campylostelium saxicola@species | whole_mount | spore | brightfield | | | 50 um bar
+life.pollen 95 | taxon=Diphyscium foliosum@species | whole_mount | spore | brightfield | | | 50 um bar
+life.pollen 96 | taxon=Diphyscium foliosum@species | whole_mount | spore | brightfield | | | 50 um bar
+
+[earth.fossils]
+life.pollen 10 | taxon=Osculapollis@genus | strew | pollen | brightfield | | | Osculapollis sp. F, middle Late Cretaceous (Coniacian), Magothy Formation
