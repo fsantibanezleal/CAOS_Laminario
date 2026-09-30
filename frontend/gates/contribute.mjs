@@ -36,7 +36,7 @@ let browser = null;
 
 try {
   const token = sb.invite("contributor", EMAIL);
-  browser = await chromium.launch();
+  browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: "en-GB" });
   await context.addInitScript(() => {
     try { localStorage.setItem("laminario.lang", "en"); } catch { /* ignore */ }

@@ -14,7 +14,7 @@ const slides = [...new Map([examples.label, examples.stack, examples.pair, examp
   .filter(Boolean).map((r) => [r.id, r])).values()];
 const out = outDir("qr");
 const stop = await serve();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 const failures = [];
 let decoded = 0;
 try {
@@ -22,9 +22,11 @@ try {
     for (const room of ROOMS) {
       for (const width of [1280, 768]) {
         const { context, page } = await openPlace(browser, `/s/${record.id}`, { width, room, lang: "en" });
-        await page.waitForSelector("[data-testid=slide-object] .lam-qr");
+        // The label read at size (U17: the slide object is glass in 3D; the label reading is the server's drawing).
+        await page.getByRole("button", { name: "Read the label" }).click();
+        await page.waitForSelector("[role=dialog] .lam-qr");
         const clip = await page.evaluate(() => {
-          const qr = document.querySelector("[data-testid=slide-object] .lam-qr").getBoundingClientRect();
+          const qr = document.querySelector("[role=dialog] .lam-qr").getBoundingClientRect();
           const pad = (qr.width / 25) * 4; // four modules of a symbol of 25 to 29
           return { x: qr.left - pad, y: qr.top + window.scrollY - pad, width: qr.width + 2 * pad, height: qr.height + 2 * pad };
         });

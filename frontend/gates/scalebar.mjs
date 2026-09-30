@@ -15,7 +15,7 @@ const failures = [];
 let measured = 0;
 if (!scaled.length) failures.push("no slide the API serves has a micro image with a pixel size");
 const stop = await serve();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 try {
   for (const { record, asset } of scaled) {
     const { context, page } = await openPlace(browser, `/s/${record.id}/stage/${asset.id}`,

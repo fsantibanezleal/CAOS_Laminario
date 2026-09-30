@@ -23,13 +23,16 @@
 }
 
 .dialog {
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   width: min(520px, calc(100vw - 32px));
   padding: 0;
-  border: 1px solid var(--c-edge);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
   color: var(--c-ink);
-  box-shadow: var(--float);
 }
 
 .dialog::backdrop {
@@ -73,16 +76,19 @@
 }
 
 .toast {
+  --tag-hue: var(--tone);
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   display: flex;
   align-items: center;
   gap: var(--s-3);
   width: min(420px, 100%);
   padding: var(--s-3) var(--s-3) var(--s-3) var(--s-5);
-  border: 1px solid var(--c-edge);
-  border-left: 4px solid var(--tone);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
-  box-shadow: var(--float);
   pointer-events: auto;
 }
 

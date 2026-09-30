@@ -102,14 +102,17 @@ export async function serve() {
 export async function openPlace(browser, path, { width, room, lang, reducedMotion = "no-preference" }) {
   const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion,
     colorScheme: room === "lamplit" ? "dark" : "light" });
-  await context.addInitScript(([r, l]) => {
+  // GLASS_FLAT=1 draws the sets flat (no WebGL): the gates that do not judge the scene run light beside a long job.
+  const flat = process.env.GLASS_FLAT === "1";
+  await context.addInitScript(([r, l, f]) => {
     try {
       localStorage.setItem("laminario.theme", r);
       localStorage.setItem("laminario.lang", l);
+      if (f) localStorage.setItem("laminario.glass", "flat");
     } catch {
       // ignore
     }
-  }, [room, lang]);
+  }, [room, lang, flat]);
   const page = await context.newPage();
   await page.goto(`${ORIGIN}${path}`, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);

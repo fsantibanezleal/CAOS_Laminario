@@ -1,5 +1,12 @@
 /* The slide drawn by the server (app/labels/svg.py): its parts carry lam-* classes, coloured here from the tokens. The
    labels are paper in both rooms (daylight paper, or paper under the lamp), so the QR stays dark on light. */
+/* The slide in 3D on its own place: a stage as wide as the column, tall enough for the slide seen close. */
+.glass {
+  width: 100%;
+  height: clamp(220px, 30vw, 360px);
+  margin: var(--s-4) 0 var(--s-5);
+}
+
 .frame {
   perspective: 1200px;
   padding: var(--s-5) 0 var(--s-6);

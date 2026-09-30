@@ -11,8 +11,9 @@ import { FACETS, activeCount, apiQuery, cleared, readFilters, toggle, writeFilte
 import { useI18n } from "../../i18n";
 import { shadeOpacity, SHADE_STEPS } from "../../map/style";
 import { Place } from "../../router/Place";
-import { trayReference } from "../../slide/names";
-import { TraySlide } from "../../slide/TraySlide";
+import { useRoom } from "../../design/theme";
+import { FlatGlassSlide } from "../../glass/FlatGlassSlide";
+import { slideItem } from "../../glass/items";
 import { localised, useTree, type TreeIndex } from "../../tree/TreeProvider";
 import { Button } from "../../ui/Button";
 import { RemovableChip } from "../../ui/Chip";
@@ -40,6 +41,7 @@ export function MapPlace() {
 
 function MapView({ tree, onReady }: { tree: TreeIndex; onReady: (ready: boolean) => void }) {
   const i18n = useI18n();
+  const { room } = useRoom();
   const { t, plural, lang, number } = i18n;
   const [params, setParams] = useSearchParams();
   const [, navigate] = useLocation();
@@ -154,9 +156,8 @@ function MapView({ tree, onReady }: { tree: TreeIndex; onReady: (ready: boolean)
             </div>
             <p>{plural("count.slides", map?.countries[selected] ?? 0)}</p>
             {preview.value?.items.length ? (
-              <ul className={styles.preview}
-                style={{ "--ref": trayReference(preview.value.items.map((s) => s.format)) } as CSSProperties}>
-                {preview.value.items.map((s) => <li key={s.id}><TraySlide slide={s} tree={tree} /></li>)}
+              <ul className={styles.preview} data-room={room}>
+                {preview.value.items.map((s) => <li key={s.id}><FlatGlassSlide item={slideItem(s, tree, i18n)} /></li>)}
               </ul>
             ) : preview.state === "loading" ? <Skeleton lines={2} /> : null}
             {(map?.countries[selected] ?? 0) > 0 ? (

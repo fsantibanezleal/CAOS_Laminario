@@ -3,6 +3,35 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.17.000] - 2026-09-30
+
+### Added
+
+- The glass-slide interface: every set of the collection (a realm's collections, a collection's drawers, a drawer's
+  groups and slides, a search's results, the Identify queue) is a set of realistic glass slides in 3D: physically
+  based soda-lime glass 76 x 26 x 1 mm at each slide's own format, frosted ends with the name typed on the left and
+  the facts on the right, a coverslip over the node's icon or the specimen's image.
+- Four arrangements the visitor chooses, kept on the device and shown by every set of the page: a carousel, the drawer
+  of a steel filing cabinet, a 100-place slide box with its lid open, a 20-place cardboard folder.
+- Real glass: a slide whose glass was photographed is shown as that photograph. A job keeps the macro photograph a
+  whole-slide scanner stores in its file as the slide's overview, without processing the scan again (13 of the base
+  collection's 14 scans); the slide summary names it (`glass_photo_url`).
+- An accessible layer over every set, after the W3C carousel pattern: a labelled group, previous and next buttons that
+  keep the focus, the arrow keys, Home, End, Page Up and Down, Enter to open, a ring around the focused slide; the
+  chosen slide's name, facts and a way in under the stage. Nothing turns by itself; under reduced motion the scene
+  cuts.
+- Without WebGL (or set to draw flat) the same slides are drawn flat, as glass slides at one scale.
+- The glass gate (R-1701 to R-1708), screenshots of every arrangement, the walk through the scene; wiki page 19 with
+  its diagram.
+
+### Changed
+
+- Every box of the interface is a glass plate with a frosted band in its hue: panels, cards, dialogs, menus, forms,
+  the empty state; a panel that names what it holds carries its title on its frosted end.
+- The cabinet fronts and oak drawer fronts of 0.10.000 are gone; the profile's and the map's slides are flat glass
+  slides.
+- A set of hundreds is drawn around the chosen slide, 81 slides at a time.
+
 ## [0.16.000] - 2026-09-30
 
 ### Added

@@ -1,10 +1,16 @@
-// /c/<collection>[/<drawer>[/<group>]]: a cabinet (a collection) shows its drawers; a drawer (a sub-collection or a
-// group) shows its slides on a tray, with its filters. Both say what goes in them: the node's rule, with each taxon
-// linked to its GBIF page.
-import { useState, type CSSProperties } from "react";
+// /c/<collection>[/<drawer>[/<group>]] (U17): a collection shows its drawers, and a drawer (a sub-collection or a
+// group) its slides, all as glass slides in the arrangement the visitor chose. What goes in a node (its description and
+// its rule, each taxon linked to its GBIF page) lies on a glass panel; a drawer's neighbouring groups are glass slides
+// too, the current one chosen.
+import { useMemo, useState, type CSSProperties } from "react";
 import { Link, useParams } from "wouter";
 import type { CollectionNodeRecord } from "../../contract/catalog";
+import { useRoom } from "../../design/theme";
 import { Explorer } from "../../explore/Explorer";
+import { GlassPanel } from "../../glass/GlassPanel";
+import { GlassSet } from "../../glass/GlassSet";
+import { hueToken, nodeItem } from "../../glass/items";
+import type { GlassItem } from "../../glass/model";
 import { useI18n } from "../../i18n";
 import { Place } from "../../router/Place";
 import { localised, nodeFromPath, nodeHref, pathTo, useTree, type TreeIndex } from "../../tree/TreeProvider";
@@ -36,7 +42,7 @@ function trailOf(tree: TreeIndex, node: CollectionNodeRecord, lang: "en" | "es",
 
 function Heading({ node }: { node: CollectionNodeRecord }) {
   const { lang } = useI18n();
-  const hue = { "--tag-hue": `var(--h-${node.id.split(".")[1]})` } as CSSProperties;
+  const hue = { "--tag-hue": `var(${hueToken(node.id)})` } as CSSProperties;
   return (
     <span className={styles.heading} style={hue}>
       <Icon name={node.icon || node.id} size={48} className={styles.headingIcon} />
@@ -69,13 +75,26 @@ function Rule({ node, summary }: { node: CollectionNodeRecord; summary: string }
   );
 }
 
+/** The items of a set of nodes, remade when the language or the room changes. */
+function useNodeItems(nodes: CollectionNodeRecord[],
+  extra?: (items: GlassItem[], i18n: ReturnType<typeof useI18n>) => GlassItem[]): GlassItem[] {
+  const i18n = useI18n();
+  const { room } = useRoom();
+  return useMemo(() => {
+    const items = nodes.map((n) => nodeItem(n, i18n));
+    return extra ? extra(items, i18n) : items;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodes, i18n.lang, room]);
+}
+
 function CabinetPlace({ tree, node }: { tree: TreeIndex; node: CollectionNodeRecord }) {
   const { t, plural, lang } = useI18n();
   const drawers = node.children ?? [];
+  const items = useNodeItems(drawers);
+  const name = localised(node.name, lang);
   return (
-    <Place title={localised(node.name, lang)} heading={<Heading node={node} />}
-      trail={trailOf(tree, node, lang, t("nav.collections"))}>
-      <div className={styles.lead}>
+    <Place title={name} heading={<Heading node={node} />} trail={trailOf(tree, node, lang, t("nav.collections"))}>
+      <GlassPanel title={name} icon={node.icon || node.id} hue={hueToken(node.id)} className={styles.lead}>
         <Rule node={node} summary={t("cabinet.rules")} />
         <p className={styles.facts}>
           <span>{plural("count.slides", node.slide_count ?? 0)}</span>
@@ -89,28 +108,11 @@ function CabinetPlace({ tree, node }: { tree: TreeIndex; node: CollectionNodeRec
             <Glyph name="map" size={20} />{t("cabinet.map")}
           </Link>
         </p>
-      </div>
+      </GlassPanel>
       <h2 className={styles.sectionTitle}>{t("cabinet.drawers")}</h2>
-      <ul className={styles.drawers}>
-        {drawers.map((d) => <li key={d.id}><DrawerFront node={d} /></li>)}
-      </ul>
+      <GlassSet items={items} name="drawers" title={name} hue={hueToken(node.id)}
+        label={t("cabinet.set", { name })} />
     </Place>
-  );
-}
-
-/** A drawer front: oak, a brass label holder with the drawer's name and count, and a pull. */
-function DrawerFront({ node }: { node: CollectionNodeRecord }) {
-  const { t, plural, lang } = useI18n();
-  const count = node.slide_count ?? 0;
-  return (
-    <Link href={nodeHref(node.id)} className={[styles.front, count ? "" : styles.emptyFront].join(" ")}>
-      <Icon name={node.icon || node.id} size={32} className={styles.frontIcon} />
-      <span className={styles.holder}>
-        <span className={styles.frontName}>{localised(node.name, lang)}</span>
-        <span className={styles.frontCount}>{count ? plural("count.slides", count) : t("cabinet.empty")}</span>
-      </span>
-      <span className={styles.pull} aria-hidden="true" />
-    </Link>
   );
 }
 
@@ -120,39 +122,29 @@ function DrawerPlace({ tree, node }: { tree: TreeIndex; node: CollectionNodeReco
   const parent = tree.parentOf.get(node.id);
   const parentNode = parent ? tree.byId.get(parent) : undefined;
   const dividers = node.level === "group" && parentNode ? parentNode.children ?? [] : node.children ?? [];
+  const whole = node.level === "group" && parentNode ? parentNode : undefined;
+  const items = useNodeItems(dividers, (list, i18n) => whole ? [{ ...nodeItem(whole, i18n),
+    name: i18n.t("drawer.whole", { name: localised(whole.name, i18n.lang) }) }, ...list] : list);
+  const current = items.findIndex((i) => i.id === node.id);
+  const name = localised(node.name, lang);
   return (
-    <Place title={localised(node.name, lang)} heading={<Heading node={node} />} ready={ready}
+    <Place title={name} heading={<Heading node={node} />} ready={ready}
       trail={trailOf(tree, node, lang, t("nav.collections"))}>
-      <div className={styles.lead}>
+      <GlassPanel title={name} icon={node.icon || node.id} hue={hueToken(node.id)} className={styles.lead}>
         <Rule node={node} summary={t("drawer.rules")} />
+        <p className={styles.facts}><span>{plural("count.slides", node.slide_count ?? 0)}</span></p>
         {node.view ? <p className={styles.view}><Glyph name="info" size={20} />{t("drawer.view")}</p> : null}
-      </div>
-      {dividers.length ? (
+      </GlassPanel>
+      {items.length ? (
         <nav aria-label={t("drawer.dividers")} className={styles.dividers}>
-          <h2 className={styles.dividersTitle}>{t("drawer.dividers")}</h2>
-          <ul>
-            {node.level === "group" && parentNode ? (
-              <li>
-                <Link href={nodeHref(parentNode.id)} className={styles.divider}>
-                  {t("drawer.whole", { name: localised(parentNode.name, lang) })}
-                  <span className={styles.dividerCount}>{plural("count.slides", parentNode.slide_count ?? 0)}</span>
-                </Link>
-              </li>
-            ) : null}
-            {dividers.map((d) => (
-              <li key={d.id}>
-                <Link href={nodeHref(d.id)} className={styles.divider} aria-current={d.id === node.id ? "page" : undefined}>
-                  <Icon name={d.icon || d.id} size={20} />
-                  {localised(d.name, lang)}
-                  <span className={styles.dividerCount}>{plural("count.slides", d.slide_count ?? 0)}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <h2 className={styles.sectionTitle}>{t("drawer.dividers")}</h2>
+          <GlassSet items={items} name="dividers" title={name} hue={hueToken(node.id)} initial={Math.max(0, current)}
+            label={t("drawer.dividers")} />
         </nav>
       ) : null}
+      <h2 className={styles.sectionTitle}>{t("drawer.slides")}</h2>
       <Explorer tree={tree} node={node.id} only={node.view ? ["kind"] : undefined} onReady={setReady}
-        emptyTitle={t("drawer.empty.title")} emptyBody={t("drawer.empty.body")} />
+        setTitle={name} emptyTitle={t("drawer.empty.title")} emptyBody={t("drawer.empty.body")} />
     </Place>
   );
 }

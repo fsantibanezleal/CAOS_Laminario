@@ -12,7 +12,7 @@ const out = outDir("stage");
 const failures = [];
 const passed = [];
 const stop = await serve();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 
 async function openStage(record, asset) {
   const { context, page } = await openPlace(browser, `/s/${record.id}/stage/${asset.id}`,

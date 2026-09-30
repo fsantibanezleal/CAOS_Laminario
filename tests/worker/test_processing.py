@@ -176,3 +176,37 @@ def test_an_image_of_one_colour_fails_its_job_with_the_reason(tmp_path, monkeypa
         assert asset_row(engine, asset_id).storage_key is None
     folder = settings.store_root / short
     assert not folder.exists() or not any(p.is_file() for p in folder.rglob("*"))
+
+
+def test_a_scanners_macro_photograph_becomes_the_slides_glass(tmp_path, monkeypatch, vips):
+    """U17: the macro photograph a scanner keeps in its file (the whole glass slide) is stored as the slide's overview,
+    credited as the scan, without processing the scan again; the slide's summary then offers it as its glass."""
+    import os
+    from pathlib import Path
+
+    root = os.environ.get("LAMINARIO_FIXTURES")
+    svs = Path(root) / "samples" / "cmu1.svs" if root else None
+    if svs is None or not svs.is_file():
+        pytest.skip("the CMU-1 scan is not in LAMINARIO_FIXTURES")
+    settings, engine = sandbox(tmp_path, monkeypatch)
+    short = seed_slide(settings, [{"family": "micro", "role": "pyramid", "media_kind": "pyramid", "status": "ready",
+                                   "licence_uri": "https://creativecommons.org/publicdomain/zero/1.0/",
+                                   "creator": "Carnegie Mellon University", "source_path": str(svs),
+                                   "source_url": "https://openslide.cs.cmu.edu/download/openslide-testdata/Aperio/CMU-1.svs",
+                                   "source_record_id": "openslide:Aperio/CMU-1.svs", "source_sha256": "0" * 64}])
+    scan = asset_ids(engine, short)[0]
+    assert kinds.queue_overview(engine, asset_row(engine, scan).slide_id, scan)
+    added = run(engine, "extract_overview", {"asset_id": scan})
+    assert added["added"] and added["width"] > 100
+    overview = asset_row(engine, added["asset_id"])
+    assert (overview.family, overview.role, overview.media_kind, overview.status) == (
+        "macro", "slide_overview", "image", "ready")
+    assert overview.caption == kinds.SCANNER_OVERVIEW and overview.creator == "Carnegie Mellon University"
+    assert overview.source_url.endswith("CMU-1.svs") and (settings.store_root / overview.storage_key).is_file()
+    assert run(engine, "extract_overview", {"asset_id": scan})["added"] is False  # once per slide
+    assert kinds.queue_overview(engine, overview.slide_id, scan) is None
+
+    with TestClient(create_app(settings)) as client:
+        items = client.get("/api/slides", params={"limit": 10}).json()["items"]
+    summary = next(s for s in items if s["id"] == short)
+    assert summary["glass_photo_url"] and summary["glass_photo_url"].endswith(overview.storage_key.split("/")[-1])

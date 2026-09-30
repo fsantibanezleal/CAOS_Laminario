@@ -38,15 +38,19 @@
 }
 
 .swatch {
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   display: grid;
   grid-template-columns: 40px 1fr;
   grid-template-rows: auto auto;
   column-gap: var(--s-3);
   align-items: center;
   padding: var(--s-3);
-  border: 1px solid var(--c-rule);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
 }
 
 .chipColour {
@@ -75,14 +79,18 @@
 }
 
 .faces figure {
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   display: grid;
   align-content: start;
   gap: var(--s-3);
   margin: 0;
   padding: var(--s-5);
-  border: 1px solid var(--c-rule);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
 }
 
 .faces figcaption {

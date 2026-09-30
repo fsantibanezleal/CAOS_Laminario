@@ -15,7 +15,7 @@ import { API, LANGS, ORIGIN, ROOMS, openPlace, outDir, requireApi, serve } from 
 await requireApi();
 const out = outDir("about");
 const stop = await serve();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 const failures = [];
 const passed = [];
 const check = (ok, what) => (ok ? passed : failures).push(what);

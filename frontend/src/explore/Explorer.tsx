@@ -1,14 +1,17 @@
 // The slides of a place with its filters: a drawer (scoped to its node) or a search (over the whole collection, or
 // one cabinet). The filters live in the address and change it in place (replace, not a new history entry per chip),
-// the results count is announced politely, and pages of 48 grow on request, never by themselves.
+// the results count is announced politely, and pages of 48 grow on request, never by themselves. The slides are glass
+// slides in the arrangement the visitor chose; the filters lie on a glass panel (U17).
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "wouter";
 import { api } from "../api/client";
 import { useResource } from "../api/useResource";
 import { useI18n } from "../i18n";
 import type { MessageKey } from "../i18n/en";
-import { trayReference } from "../slide/names";
-import { TraySlide } from "../slide/TraySlide";
+import { useRoom } from "../design/theme";
+import { GlassPanel } from "../glass/GlassPanel";
+import { GlassSet } from "../glass/GlassSet";
+import { hueToken, slideItem } from "../glass/items";
 import { localised, type TreeIndex } from "../tree/TreeProvider";
 import { Button } from "../ui/Button";
 import { RemovableChip } from "../ui/Chip";
@@ -37,6 +40,8 @@ export interface ExplorerProps {
   emptyTitle: string;
   emptyBody: string;
   onReady?: (ready: boolean) => void;
+  /** The words on the set's label holder (a drawer's name; a search's own title by default). */
+  setTitle?: string;
 }
 
 /** Typing waits this long after the last keystroke before it searches. */
@@ -49,9 +54,10 @@ export function useFilters(): [Filters, (next: Filters) => void] {
 }
 
 export function Explorer({ tree, node, collections = false, searchField = true, searchLabel, only, emptyTitle,
-  emptyBody, onReady }: ExplorerProps) {
+  emptyBody, onReady, setTitle }: ExplorerProps) {
   const i18n = useI18n();
   const { t, plural, lang } = i18n;
+  const { room } = useRoom();
   const [filters, setFilters] = useFilters();
   const [draft, setDraft] = useState(filters.q);
   const [dialog, setDialog] = useState(false);
@@ -74,6 +80,11 @@ export function Explorer({ tree, node, collections = false, searchField = true, 
   const counts = useResource(`facets?${facetQuery}`, (signal) => api.facets(facetQuery, signal));
   const universeQuery = apiQuery(cleared(filters), {}, scope);
   const universe = useResource(`facets?${universeQuery}`, (signal) => api.facets(universeQuery, signal));
+
+  const items = useMemo(() => pages.items.map((s) => slideItem(s, tree, i18n)),
+    // The items follow the slides, the language and the room's colours.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pages.items, tree, lang, room]);
 
   const ready = !pages.loading;
   useEffect(() => onReady?.(ready), [ready, onReady]);
@@ -102,7 +113,7 @@ export function Explorer({ tree, node, collections = false, searchField = true, 
 
   return (
     <div className={styles.explorer}>
-      <aside className={styles.rail} aria-label={t("explore.filters")}>{panel}</aside>
+      <GlassPanel as="aside" title={t("explore.filters")} level={2} stacked className={styles.rail}>{panel}</GlassPanel>
 
       <section className={styles.results} aria-busy={pages.loading || undefined}>
         <div className={styles.toolbar}>
@@ -162,13 +173,11 @@ export function Explorer({ tree, node, collections = false, searchField = true, 
           </EmptyState>
         ) : null}
 
-        {pages.items.length ? (
-          <ul className={[styles.tray, pages.loading ? styles.stale : ""].join(" ")}
-            style={{ "--ref": trayReference(pages.items.map((s) => s.format)) } as React.CSSProperties}>
-            {pages.items.map((slide) => (
-              <li key={slide.id}><TraySlide slide={slide} tree={tree} /></li>
-            ))}
-          </ul>
+        {items.length ? (
+          <div className={pages.loading ? styles.stale : undefined}>
+            <GlassSet items={items} name="slides" title={setTitle ?? t("drawer.slides")}
+              hue={scope ? hueToken(scope) : "--c-accent"} label={t("drawer.slides")} />
+          </div>
         ) : null}
 
         {total !== null && total > 0 ? (
