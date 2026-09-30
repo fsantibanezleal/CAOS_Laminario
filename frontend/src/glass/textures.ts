@@ -191,12 +191,27 @@ export function labelTextures(item: GlassItem, format: SlideFormat): LabelSides 
     r.fillStyle = INK;
     const size = 2.2 * mm;
     r.font = `400 ${size}px "Courier Prime", "Courier New", monospace`;
-    for (const fact of item.facts.slice(0, 5)) {
+    const lines = item.qr ? 3 : 5;
+    for (const fact of item.facts.slice(0, lines)) {
       for (const line of wrap((s) => r.measureText(s).width, fact, w - 2 * pad, 2)) {
         r.fillText(line, pad, y);
         y += size * 1.18;
       }
       y += 0.6 * mm;
+    }
+    if (item.qr) {
+      // The slide's own QR, as the server draws it on the label, at the foot of the right end with its quiet zone.
+      const side = Math.min(w - 2 * pad, h - y - pad);
+      const scale = side / item.qr.size;
+      r.save();
+      r.fillStyle = "#ffffff";
+      r.fillRect(w - pad - side - 0.4 * mm, h - pad - side - 0.4 * mm, side + 0.8 * mm, side + 0.8 * mm);
+      r.translate(w - pad - side, h - pad - side);
+      r.scale(scale, scale);
+      r.translate(-item.qr.x, -item.qr.y);
+      r.fillStyle = INK;
+      r.fill(new Path2D(item.qr.d));
+      r.restore();
     }
   }
 

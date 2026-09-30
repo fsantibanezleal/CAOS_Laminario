@@ -32,6 +32,29 @@ export interface GlassItem {
   empty?: boolean;
   /** The words a screen reader says for the slide, when they differ from its name and facts. */
   description?: string;
+  /** The slide's QR as the server draws it: one path in the drawing's millimetres, and its box. */
+  qr?: QrSymbol;
+}
+
+/** A QR symbol taken from the server's slide drawing: its path and the square it fills, in millimetres. */
+export interface QrSymbol {
+  d: string;
+  x: number;
+  y: number;
+  size: number;
+}
+
+/** The QR of a server slide drawing (a ``path`` of class ``lam-qr`` made of unit rectangles), or null. */
+export function qrOf(svg: string): QrSymbol | null {
+  const d = /class="lam-qr"[^>]*\sd="([^"]+)"/.exec(svg)?.[1] ?? /\sd="([^"]+)"[^>]*class="lam-qr"/.exec(svg)?.[1];
+  if (!d) return null;
+  let minX = Infinity; let minY = Infinity; let maxX = -Infinity; let maxY = -Infinity;
+  for (const m of d.matchAll(/M([\d.]+)[ ,]([\d.]+)h([\d.]+)v([\d.]+)/g)) {
+    const [x, y, w, h] = [Number(m[1]), Number(m[2]), Number(m[3]), Number(m[4])];
+    minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x + w); maxY = Math.max(maxY, y + h);
+  }
+  if (!Number.isFinite(minX)) return null;
+  return { d, x: minX, y: minY, size: Math.max(maxX - minX, maxY - minY) };
 }
 
 export interface SlideFormat {

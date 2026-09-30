@@ -1,11 +1,11 @@
 // Glass slides from what the page already has: a node of the collection tree (a realm, a collection, a drawer, a group)
 // or a slide's summary. Colours are the room's, resolved when the items are made (the scene paints with them).
-import type { CollectionNodeRecord, SlideSummary } from "../contract/catalog";
+import type { CollectionNodeRecord, SlideRecord, SlideSummary } from "../contract/catalog";
 import type { useI18n } from "../i18n";
 import { geometry, isItalicName } from "../slide/names";
 import { collectionOf, localised, nodeHref, type TreeIndex } from "../tree/TreeProvider";
 import { roomColour } from "./GlassSet";
-import { STANDARD, type GlassItem } from "./model";
+import { STANDARD, qrOf, type GlassItem } from "./model";
 
 type I18n = ReturnType<typeof useI18n>;
 
@@ -62,5 +62,40 @@ export function slideItem(slide: SlideSummary, tree: TreeIndex, i18n: I18n): Gla
     photo: slide.glass_photo_url ?? null,
     hue: roomColour(hueToken(collection)),
     format: geometry(slide.format),
+  };
+}
+
+/** A slide's full record as its glass slide, for its own place: its photograph when the glass was photographed, else
+ * its first micro image under the coverslip; the label's name and catalogue number on the left end; its preparation,
+ * place and date on the right, with the QR the server draws for it. */
+export function recordItem(record: SlideRecord, tree: TreeIndex, i18n: I18n, drawing?: string | null): GlassItem {
+  const { lang, date } = i18n;
+  const collection = collectionOf(record.placement.node) ?? "life.plants";
+  const preparation = tree.facets.get("preparation")?.values.find((v) => v.id === record.label.preparation);
+  const ready = record.assets.filter((a) => a.status === "ready");
+  const overview = ready.find((a) => a.role === "slide_overview");
+  const micro = ready.find((a) => a.family === "micro");
+  const picture = (a?: (typeof ready)[number]) => {
+    if (!a) return null;
+    const info = a.media.iiif_info_url;
+    return info ? `${info.replace(/\/info\.json$/, "")}/full/!1024,1024/0/default.jpg` : a.media.image_url ?? null;
+  };
+  const collected = record.label.collected_on;
+  const facts = [preparation ? localised(preparation.name, lang) : record.label.preparation, record.label.locality_text ?? "",
+    collected ? date(collected, { year: "numeric", month: "short", day: "numeric" }) : ""].filter(Boolean);
+  const node = tree.byId.get(record.placement.node);
+  return {
+    id: record.id,
+    href: `/s/${record.id}`,
+    name: record.label.name,
+    italic: isItalicName(record.anchor),
+    reference: record.label.catalogue_number || record.id,
+    facts,
+    icon: node?.icon ?? collection,
+    image: picture(micro),
+    photo: picture(overview),
+    hue: roomColour(hueToken(collection)),
+    format: geometry(record.format),
+    qr: drawing ? qrOf(drawing) ?? undefined : undefined,
   };
 }

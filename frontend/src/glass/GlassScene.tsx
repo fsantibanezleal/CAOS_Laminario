@@ -4,7 +4,7 @@
 // open, a cardboard folder. It renders only when something changes (a hidden tab renders nothing), moves only when
 // asked (no motion at all under reduced motion), and reports where each slide lies on the screen so the page's
 // accessible layer and the gates can reach it.
-import { Edges, Environment, Lightformer } from "@react-three/drei";
+import { Edges, Environment, Lightformer, PresentationControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
 import * as THREE from "three";
@@ -40,6 +40,8 @@ export interface GlassSceneProps {
   accent: string;
   /** The room's colour of the surface the slides lie on and of the backdrop: glass shows what is behind it. */
   ground: string;
+  /** One slide seen close, on its own place: the camera near, the slide tilted by the visitor's hand. */
+  closeUp?: boolean;
   onSpots: (spots: (ScreenSpot | null)[]) => void;
 }
 
@@ -388,9 +390,12 @@ function Folder({ n, page, title, hue }: { n: number; page: number; title: strin
 }
 
 /** The camera goes where the arrangement is seen best, gliding there (or cutting under reduced motion). */
-function CameraRig({ arrangement, n, still }: { arrangement: Arrangement; n: number; still: boolean }) {
+function CameraRig({ arrangement, n, still, closeUp = false }: { arrangement: Arrangement; n: number; still: boolean;
+  closeUp?: boolean }) {
   const { camera, invalidate } = useThree();
-  const aim = useMemo(() => cameraFor(arrangement, n), [arrangement, n]);
+  const aim = useMemo(() => (closeUp
+    ? { position: [0, 4, 74] as [number, number, number], target: [0, 0, 0] as [number, number, number], fov: 40 }
+    : cameraFor(arrangement, n)), [arrangement, n, closeUp]);
   const look = useRef(new THREE.Vector3(...aim.target));
   useFrame((_, delta) => {
     const cam = camera as THREE.PerspectiveCamera;
@@ -452,7 +457,7 @@ function Spots({ groups, items, arrangement, onSpots }: {
 }
 
 function SceneContents(props: GlassSceneProps) {
-  const { items, arrangement, selected, onSelect, onOpen, still, title, hue, accent, ground, onSpots } = props;
+  const { items, arrangement, selected, onSelect, onOpen, still, title, hue, accent, ground, onSpots, closeUp } = props;
   const table = useMemo(() => new THREE.Color(ground), [ground]);
   const glass = useGlass();
   const shadowMap = useShadowTexture();
@@ -479,7 +484,7 @@ function SceneContents(props: GlassSceneProps) {
 
   return (
     <>
-      <CameraRig arrangement={arrangement} n={count} still={still} />
+      <CameraRig arrangement={arrangement} n={count} still={still} closeUp={closeUp} />
       <color attach="background" args={[ground]} />
       {/* The surface the set stands or lies on, the page's own: the glass refracts it and it takes their shadows. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, arrangement === "folder" ? -2.6 : -15.4, 0]}>
@@ -503,7 +508,15 @@ function SceneContents(props: GlassSceneProps) {
       {arrangement === "folder" ? (
         <Folder n={items.length} page={Math.floor(selected / FOLDER_PLACES)} title={title} hue={hue} />
       ) : null}
-      {items.slice(...drawn).map((item, k) => ({ item, i: drawn[0] + k })).map(({ item, i }) => (
+      {closeUp ? (
+        // The slide in the hand: tilted by a drag within a few degrees, and back when let go (none under reduced
+        // motion).
+        <PresentationControls enabled={!still} global={false} cursor snap polar={[-0.3, 0.3]} azimuth={[-0.45, 0.45]}>
+          <Slide item={items[0]} index={0} placement={{ position: [0, 0, 0], rotation: [0, 0, 0], visible: true }}
+            glass={glass} still={still} chosen={false} accent={accent} onHover={setHover} onSelect={onSelect}
+            onOpen={onOpen} register={register} arrangement="carousel" shadowMap={shadowMap} />
+        </PresentationControls>
+      ) : items.slice(...drawn).map((item, k) => ({ item, i: drawn[0] + k })).map(({ item, i }) => (
         <Slide key={item.id} item={item} index={i} placement={placements[i]} glass={glass} still={still}
           chosen={i === selected} accent={accent} onHover={setHover} onSelect={onSelect} onOpen={onOpen}
           register={register} arrangement={arrangement} shadowMap={shadowMap} />

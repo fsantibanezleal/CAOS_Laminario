@@ -122,7 +122,7 @@ try {
   await openGlass(page, "slides", picked);
   await arrived(page, `**/s/${picked}`, "slide");
   const record = await (await fetch(`${API}/api/slides/${picked}`)).json();
-  await page.waitForSelector("[data-testid=slide-object] svg");
+  await page.waitForSelector("[data-testid=slide-object]");
   const rows = await page.evaluate(() => [...document.querySelectorAll("[data-testid=provenance] tbody tr")].map((tr) => ({
     asset: Number(tr.dataset.asset), cells: [...tr.children].map((c) => c.textContent.trim()),
     licence: tr.querySelector("a[href*='creativecommons'], a[href*='publicdomain']")?.getAttribute("href") ?? null,

@@ -84,3 +84,14 @@ describe("a large set", () => {
   });
 });
 
+describe("the QR taken from the server's drawing", () => {
+  it("keeps the path and finds the square it fills", async () => {
+    const { qrOf } = await import("./model");
+    const svg = '<svg><path class="lam-qr" d="M4.697 13.297h2.97v0.424h-2.97zM14.879 23.479h0.424v0.424h-0.424z"/></svg>';
+    const qr = qrOf(svg);
+    expect(qr?.x).toBeCloseTo(4.697);
+    expect(qr?.y).toBeCloseTo(13.297);
+    expect(qr?.size).toBeCloseTo(15.303 - 4.697);
+    expect(qrOf("<svg></svg>")).toBeNull();
+  });
+});
