@@ -3,6 +3,15 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.17.001] - 2026-09-30
+
+### Fixed
+
+- Images that answered 502 on the live site: nginx kept idle connections to iipsrv and to the API for 60 s while
+  both close them sooner (uvicorn 5.0 s, iipsrv's lighttpd 6.0 s, measured on the host), so a request sent on a
+  closing connection failed. Both kept upstreams now drop idle connections after 4 s; a gate checks every kept
+  upstream against uvicorn's idle close and measures the pinned iipsrv's.
+
 ## [0.17.000] - 2026-09-30
 
 ### Added

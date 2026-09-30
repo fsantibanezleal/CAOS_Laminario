@@ -10,13 +10,17 @@ from __future__ import annotations
 import io
 import math
 import os
+import re
+import socket
 import subprocess
 import sys
 import threading
+import time
 from pathlib import Path
 
 import numpy as np
 import pytest
+import uvicorn
 from fastapi.testclient import TestClient
 from PIL import Image
 
@@ -192,6 +196,58 @@ def test_tile_server_is_read_only_on_loopback(tile_server):
     assert '"HostIp":"127.0.0.1"' in ports and '"HostIp":"0.0.0.0"' not in ports
     assert int(memory) == 768 * 1024 * 1024 and int(cpus) == 2_000_000_000
     assert '"Destination":"/images"' in mounts and '"RW":false' in mounts
+
+
+def upstream_keepalive(conf: str) -> dict[str, float | None]:
+    """Each upstream of the site that keeps idle connections, with its keepalive_timeout in seconds (None unset)."""
+    blocks = re.findall(r"upstream\s+(\w+)\s*\{([^}]*)\}", conf)
+    found = {}
+    for name, body in blocks:
+        if re.search(r"^\s*keepalive\s+\d+;", body, re.M):
+            timeout = re.search(r"^\s*keepalive_timeout\s+(\d+)s;", body, re.M)
+            found[name] = float(timeout.group(1)) if timeout else None
+    return found
+
+
+def idle_close_seconds(port: int, path: str, limit: float = 30.0) -> float:
+    """Seconds a backend keeps an idle HTTP/1.1 keep-alive connection open after answering one request."""
+    with socket.create_connection(("127.0.0.1", port), timeout=limit) as sock:
+        sock.sendall(f"GET {path} HTTP/1.1\r\nHost: localhost\r\nConnection: keep-alive\r\n\r\n".encode())
+        data = b""
+        while b"\r\n\r\n" not in data:
+            data += sock.recv(65536)
+        head, _, body = data.partition(b"\r\n\r\n")
+        length = int(re.search(rb"(?im)^content-length:\s*(\d+)", head).group(1))
+        while len(body) < length:
+            body += sock.recv(65536)
+        start = time.monotonic()
+        assert sock.recv(1) == b"", "the backend sent bytes on an idle connection"
+        return time.monotonic() - start
+
+
+# R-301
+def test_upstream_keepalive_ends_before_the_backend_closes():
+    """nginx drops an idle upstream connection before uvicorn does (5 s), so no request is sent on one it closes.
+
+    At nginx's 60 s default, a request written as the backend closed an idle connection came back as "upstream
+    prematurely closed connection" and a 502 image on the live site (2026-09-30).
+    """
+    conf = (ROOT / "deploy" / "nginx" / "laminario.conf").read_text(encoding="utf-8")
+    kept = upstream_keepalive(conf)
+    assert set(kept) == {"laminario_api", "laminario_iipsrv"}
+    uvicorn_idle = uvicorn.Config("app.main:app").timeout_keep_alive
+    for name, seconds in kept.items():
+        assert seconds is not None and seconds < uvicorn_idle, f"{name} keeps idle connections {seconds} s"
+
+
+# R-301
+def test_tile_server_keeps_idle_connections_longer_than_nginx(tile_server):
+    """The pinned iipsrv's lighttpd closes an idle connection later than nginx stops reusing it."""
+    conf = (ROOT / "deploy" / "nginx" / "laminario.conf").read_text(encoding="utf-8")
+    nginx_idle = upstream_keepalive(conf)["laminario_iipsrv"]
+    port = int(tile_server["url"].rsplit(":", 1)[1])
+    measured = idle_close_seconds(port, f"/iiif/{tile_server['key']}/full/64,/0/default.jpg")
+    assert measured > nginx_idle, f"lighttpd closes idle connections after {measured:.2f} s"
 
 
 # R-301

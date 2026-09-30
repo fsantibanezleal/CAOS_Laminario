@@ -57,6 +57,12 @@ Measured by the gate (R-301) with the pinned nginx 1.24 and iipsrv images: the f
 `MISS`, the second a `HIT` with identical bytes, equal to what iipsrv returns directly; a tile of an unpublished
 image answers 403 without reaching the cache.
 
+nginx keeps up to 16 idle connections to iipsrv and to the API, and drops each after 4 seconds idle. Both backends
+close an idle connection themselves (uvicorn after 5.0 s, iipsrv's lighttpd after 6.0 s, measured on the host on
+2026-09-30); at nginx's default of 60 s a request written on a connection the backend was closing came back as
+"upstream prematurely closed connection", and the page showed a 502 in place of a thumbnail. The gate checks that
+every kept upstream stops reusing a connection before its backend closes it, and measures the pinned iipsrv's close.
+
 **Tiles equal the pyramid** (R-020): tiles requested as PNG through the API at every scale factor (corner, edge
 and middle tiles of each level) equal the same region cropped by libvips from the matching level of the pyramid,
 within 2 grey levels per channel. PNG keeps the comparison free of a second JPEG encoding.
@@ -97,7 +103,7 @@ meets the contract or whose licence changed, and changes nothing.
 
 | Gate | Checks |
 |---|---|
-| `tests/delivery/test_iiif_tiles.py` | rights and id per asset, drafts and traversal refused, the redirect, the access check; tiles equal to the pyramid through the pinned iipsrv; nginx cache and access check through the pinned nginx |
+| `tests/delivery/test_iiif_tiles.py` | rights and id per asset, drafts and traversal refused, the redirect, the access check; tiles equal to the pyramid through the pinned iipsrv; nginx cache and access check through the pinned nginx; upstream idle connections dropped before the backends close them |
 | `tests/delivery/test_manifest.py` | schema validity, canvases, rights per canvas, services, places by geoprivacy, drafts |
 | `tests/delivery/test_remote_iiif.py` | every clause of the remote-asset contract, both API versions, unreachable hosts |
 
