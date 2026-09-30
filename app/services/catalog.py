@@ -203,12 +203,14 @@ def slide_record(slide: Slide, settings: Settings, contributor: c.PersonRef | No
 def slide_summary(slide: Slide, settings: Settings) -> c.SlideSummary:
     first_micro = next((a for a in slide.assets if a.family == "micro" and a.status == "ready"), None)
     first_any = first_micro or next((a for a in slide.assets if a.status == "ready"), None)
+    overview = next((a for a in slide.assets if a.role == "slide_overview" and a.status == "ready"), None)
     return c.SlideSummary(
         id=slide.short_id, permalink=permalink(slide, settings), anchor=anchor_record(slide),
         format=format_record(slide),
         placement=c.PlacementRecord(node=slide.placement_node, overridden=bool(slide.placement_override_reason)),
         preparation=slide.preparation,
         thumbnail_url=thumbnail_url(first_any, settings) if first_any else None,
+        glass_photo_url=thumbnail_url(overview, settings, box=1024) if overview else None,
         origin=slide.origin,
         label=summary_label(slide),
     )

@@ -2813,6 +2813,17 @@
           ],
           "default": null
         },
+        "glass_photo_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "origin": {
           "enum": [
             "base",

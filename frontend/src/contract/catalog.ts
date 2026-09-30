@@ -193,6 +193,7 @@ export interface SlideSummary {
   placement: PlacementRecord;
   preparation: string;
   thumbnail_url?: string | null;
+  glass_photo_url?: string | null;
   origin: "base" | "contribution";
   label?: SummaryLabel;
 }

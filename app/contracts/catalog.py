@@ -212,6 +212,9 @@ class SlideSummary(_Record):
     placement: PlacementRecord
     preparation: str
     thumbnail_url: str | None = None
+    #: A photograph of the whole glass slide (a slide overview, taken or kept by a scanner), when one exists: the
+    #: interface then shows the slide as that photograph, its real glass, instead of drawing it (U17).
+    glass_photo_url: str | None = None
     origin: Literal["base", "contribution"]
     label: SummaryLabel = SummaryLabel()
 

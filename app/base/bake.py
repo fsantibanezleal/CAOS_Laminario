@@ -216,12 +216,20 @@ async def _refresh_records(out: Path, index: dict, slide_ids: list[str], slides:
                         setattr(row, column.name, getattr(fresh, column.name))
                 row.updated_at = utcnow()
                 wanted = {(a.source_url, a.plane_index): a for a in fresh.assets}
+                by_url = {a.source_url: a for a in fresh.assets}
                 stored = (await db.execute(select(Asset).where(Asset.slide_id == row.id))).scalars().all()
                 first_plane: dict[str, Asset] = {}
                 for asset in stored:
                     if asset.role in DERIVED_ROLES:
                         continue
                     new = wanted.get((asset.source_url, asset.plane_index))
+                    if new is None and asset.role == "slide_overview" and asset.source_url in by_url:
+                        # A scanner's photograph kept from the scan's file (U17): credited as the scan, its own
+                        # caption kept.
+                        scan = by_url[asset.source_url]
+                        asset.licence_uri, asset.rights_holder, asset.creator, asset.source_record_id = (
+                            scan.licence_uri, scan.rights_holder, scan.creator, scan.source_record_id)
+                        continue
                     if new is None:
                         raise ValueError(f"{slide_id}: its stored image from {asset.source_url} (plane "
                                          f"{asset.plane_index}) is not in its lock entry; bake it again")
@@ -279,6 +287,25 @@ def _queue_processing(out: Path, slide_ids: list[int]) -> int:
                 payload["plane"] = plane_index
             queue.enqueue(engine, "process_asset", payload, slide_id=slide_id)
             queued += 1
+    finally:
+        engine.dispose()
+    return queued
+
+
+def _queue_overviews(out: Path) -> int:
+    """Queue the extraction of the scanner's photograph for every baked scan that has none yet (U17): the slide's
+    overview is added beside the scan, which is not processed again."""
+    from app.jobs.kinds import queue_overview
+
+    engine = make_sync_engine(out / "laminario.sqlite3")
+    queued = 0
+    try:
+        with engine.connect() as conn:
+            rows = conn.execute(text(
+                "SELECT slide_id, MIN(id) FROM asset WHERE family = 'micro' AND media_kind = 'pyramid' "
+                "AND role IN ('pyramid', 'z_plane') AND status = 'ready' GROUP BY slide_id")).all()
+        for slide_id, asset_id in rows:
+            queued += bool(queue_overview(engine, slide_id, asset_id))
     finally:
         engine.dispose()
     return queued
@@ -360,4 +387,6 @@ def bake(out: Path, vault: Path, only: set[str] | None = None, refresh: set[str]
     index_path.write_text(json.dumps(index, indent=1) + "\n", encoding="utf-8")
     _queue_processing(out, created)
     _run_worker(out)
+    if _queue_overviews(out):
+        _run_worker(out)
     return write_manifest(out)

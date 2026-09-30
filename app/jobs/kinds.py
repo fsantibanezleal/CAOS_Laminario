@@ -186,8 +186,78 @@ def process_asset(ctx: Context, payload: dict) -> dict:
         fusion = queue_fusion_when_complete(ctx.engine, asset.slide_id, asset.stack, ctx.settings.fuse_timeout_s)
         if fusion:
             ctx.progress(step="fusion queued", job=fusion)
+    if asset.family == "micro" and "macro" in info.associated:
+        overview = queue_overview(ctx.engine, asset.slide_id, asset.id)
+        if overview:
+            ctx.progress(step="overview queued", job=overview)
     return {"asset_id": asset.id, "storage_key": key, "width": image.width, "height": image.height, "bytes": size,
             "sha256": sha, "psnr_db": psnr, "codec": codec, "quality": quality}
+
+
+# --- the scanner's photograph of the whole slide --------------------------------------------------------------
+
+#: The caption of a slide overview a scanner kept in its file.
+SCANNER_OVERVIEW = "the scanner's photograph of the whole slide"
+
+
+def queue_overview(engine: Engine, slide_id: int, scan_asset_id: int) -> str | None:
+    """Queue the extraction of a scan's macro photograph once per slide: none when the slide has an overview or an
+    extraction queued, running or done."""
+    from app.jobs import queue
+
+    with engine.connect() as conn:
+        if conn.execute(text("SELECT 1 FROM asset WHERE slide_id = :s AND role = 'slide_overview'"),
+                        {"s": slide_id}).first():
+            return None
+        if conn.execute(text("SELECT 1 FROM job WHERE kind = 'extract_overview' AND slide_id = :s "
+                             "AND status IN ('queued', 'running', 'succeeded')"), {"s": slide_id}).first():
+            return None
+    _, public_id = queue.enqueue(engine, "extract_overview", {"asset_id": scan_asset_id}, slide_id=slide_id)
+    return public_id
+
+
+def extract_overview(ctx: Context, payload: dict) -> dict:
+    """Store the macro photograph a whole-slide scanner keeps in its file (the whole glass slide, label end included)
+    as the slide's overview, beside the scan and credited as it is: the interface then shows the slide as its real
+    glass (U17). Nothing of the scan is processed again. A file without one, or a slide with an overview, adds none."""
+    from app.imaging import derivatives, reader
+
+    scan = _asset(ctx.engine, int(payload["asset_id"]))
+    with ctx.engine.connect() as conn:
+        existing = conn.execute(text("SELECT id FROM asset WHERE slide_id = :s AND role = 'slide_overview'"),
+                                {"s": scan.slide_id}).scalar()
+        origin = conn.execute(text("SELECT source_url, source_record_id, source_retrieved_on, source_sha256 "
+                                   "FROM asset WHERE id = :id"), {"id": scan.id}).one()
+    if existing:
+        return {"asset_id": existing, "added": False}
+    path = Path(scan.source_path or "")
+    if not path.is_file():
+        raise FileNotFoundError(f"the source of asset {scan.id} is not on disk: {path}")
+    info = reader.read_info(path)
+    if "macro" not in info.associated:
+        return {"added": False, "reason": "the file holds no macro photograph"}
+    image = reader.associated_image(info, "macro")
+    with ctx.engine.begin() as conn:
+        asset_id = conn.execute(text(
+            "INSERT INTO asset (slide_id, family, role, sort_order, media_kind, status, licence_uri, creator, "
+            "rights_holder, source_url, source_record_id, source_retrieved_on, source_sha256, source_path, caption, "
+            "created_at) VALUES (:s, 'macro', 'slide_overview', -1, 'image', 'pending', :licence, :creator, :holder, "
+            ":url, :record, :retrieved, :sha, :path, :caption, CURRENT_TIMESTAMP) RETURNING id"),
+            {"s": scan.slide_id, "licence": scan.licence_uri, "creator": scan.creator, "holder": scan.rights_holder,
+             "url": origin.source_url, "record": origin.source_record_id, "retrieved": origin.source_retrieved_on,
+             "sha": origin.source_sha256, "path": str(path), "caption": SCANNER_OVERVIEW}).scalar_one()
+    key = content_key(scan.short_id, asset_id, [origin.source_sha256 or file_sha256(path), "macro", "overview"],
+                      "jpg")
+    target = ctx.settings.store_root / key
+    derivatives.save_clean(image, target, quality=90)
+    _refuse_single_colour(target, asset_id, pyramid_file=False)
+    size, sha = target.stat().st_size, file_sha256(target)
+    with ctx.engine.begin() as conn:
+        conn.execute(text("UPDATE asset SET storage_key = :key, width_px = :w, height_px = :h, bytes = :b, "
+                          "sha256 = :sha, codec = 'jpeg-q90', status = 'ready' WHERE id = :id"),
+                     {"key": key, "w": image.width, "h": image.height, "b": size, "sha": sha, "id": asset_id})
+    ctx.progress(step="stored", key=key, bytes=size)
+    return {"asset_id": asset_id, "added": True, "storage_key": key, "width": image.width, "height": image.height}
 
 
 def queue_fusion_when_complete(engine: Engine, slide_id: int, stack: str, timeout_s: int | None = None) -> str | None:
@@ -441,6 +511,7 @@ KINDS: dict[str, Callable[[Context, dict], dict]] = {
     "process_asset": process_asset,
     "fuse_stack": fuse_stack,
     "verify_upload": verify_upload,
+    "extract_overview": extract_overview,
 }
 
 

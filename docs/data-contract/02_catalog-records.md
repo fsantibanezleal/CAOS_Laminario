@@ -87,6 +87,7 @@ A slide in a list: enough to draw it in a drawer.
 | `placement` | [PlacementRecord](#placementrecord) | yes |  |  |
 | `preparation` | string | yes |  |  |
 | `thumbnail_url` | string or null | no |  | null |
+| `glass_photo_url` | string or null | no |  | null |
 | `origin` | string (enumerated) | yes | one of: `base`, `contribution` |  |
 | `label` | [SummaryLabel](#summarylabel) | no |  | `{"catalogue_number": null, "collected_on": null, "locality_text": null, "country": null}` |
 
