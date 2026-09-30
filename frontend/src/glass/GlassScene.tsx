@@ -487,6 +487,9 @@ function SceneContents(props: GlassSceneProps) {
         <Lightformer form="rect" intensity={1.2} position={[-200, 40, 0]} rotation={[0, Math.PI / 2, 0]} scale={[200, 120, 1]} />
         <Lightformer form="rect" intensity={1.2} position={[200, 40, 0]} rotation={[0, -Math.PI / 2, 0]} scale={[200, 120, 1]} />
         <Lightformer form="ring" intensity={0.8} position={[0, 60, -220]} scale={80} />
+        {/* A broad soft light behind the visitor: the front of the glass reflects it as a bright band, as a slide held
+            under a window does. */}
+        <Lightformer form="rect" intensity={1.6} position={[0, 70, 280]} rotation={[0, Math.PI, 0]} scale={[280, 36, 1]} />
       </Environment>
       {arrangement === "drawer" ? <CabinetDrawer n={items.length} title={title} hue={hue} /> : null}
       {arrangement === "box" ? <SlideBox n={items.length} title={title} hue={hue} /> : null}
