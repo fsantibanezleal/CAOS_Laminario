@@ -34,7 +34,7 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.17.001`. Released, each with its wiki page:
+Version `0.17.002`. Released, each with its wiki page:
 
 - U0, the repository base: versioning, guards, the design document with a gate per requirement.
 - U1, the data model and both contracts (ingestion and catalog), exported as JSON Schema and TypeScript ([`02_data-contracts.md`](docs/architecture/02_data-contracts.md)).

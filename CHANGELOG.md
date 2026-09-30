@@ -3,6 +3,15 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.17.002] - 2026-09-30
+
+### Added
+
+- The collection on the first screen: under the introduction, the landing shows one real slide from each collection
+  that holds any (18 in the base collection), its newest published slide, as a set of glass slides with the
+  specimen's image or the photograph of its glass, each opening its slide. The realms' collections stay drawn with
+  their icons, so before this the landing showed no specimen and read as empty.
+
 ## [0.17.001] - 2026-09-30
 
 ### Fixed
