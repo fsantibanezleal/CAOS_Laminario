@@ -121,6 +121,29 @@ def _remove_stale(store: Path, short_id: str, asset_id: int, keep: str) -> None:
                 path.unlink(missing_ok=True)
 
 
+def _refuse_single_colour(target: Path, asset_id: int, pyramid_file: bool) -> None:
+    """Refuse a stored image of one colour: its decoder failed without an error, or it holds no image. Read on the
+    pyramid's smallest level, or on a photograph's thumbnail. The file is removed and the job fails with the reason, so
+    the slide is never shown black (a Hamamatsu plane beyond libjpeg's size was read black, 2026-09-29)."""
+    from app.imaging import reader
+    from app.imaging.library import vips
+
+    module = vips()
+    if pyramid_file:
+        pages = int(module.Image.new_from_file(str(target)).get("n-pages"))
+        smallest = module.Image.tiffload(str(target), page=pages - 1).copy_memory()
+    else:
+        smallest = module.Image.thumbnail(str(target), 256).copy_memory()
+    if reader.single_colour(smallest):
+        # libvips' operation cache keeps the file open (Windows refuses to remove an open file): empty it first.
+        kept = module.cache_get_max()
+        module.cache_set_max(0)
+        module.cache_set_max(kept)
+        target.unlink(missing_ok=True)
+        raise ValueError(f"asset {asset_id}: the image decodes to a single colour; its decoder failed without an "
+                         "error, or the file holds no image")
+
+
 def process_asset(ctx: Context, payload: dict) -> dict:
     from app.imaging import derivatives, pyramid, reader
 
@@ -147,6 +170,7 @@ def process_asset(ctx: Context, payload: dict) -> dict:
         ctx.progress(step="pyramid", key=key)
         written = pyramid.write_pyramid(image, target, mpp, codec=codec_wanted)
         codec, quality, psnr = written.codec, written.quality, round(written.psnr_db, 2)
+    _refuse_single_colour(target, asset.id, pyramid_file=asset.media_kind != "image")
     _remove_stale(store, asset.short_id, asset.id, key)
     size = target.stat().st_size
     sha = file_sha256(target)
@@ -225,7 +249,7 @@ def fuse_stack(ctx: Context, payload: dict) -> dict:
     ctx.progress(step="fuse", planes=len(planes), width=width, height=height)
     results = {}
     for method, role in ((edf.METHOD_WAVELET, "edf_wavelet"), (edf.METHOD_VARIANCE, "edf_variance")):
-        fused = edf.fuse(read, len(planes), width, height, method,
+        fused = edf.fuse(read, len(planes), width, height, method, workers=ctx.settings.fuse_workers,
                          progress=lambda done, total, m=method: ctx.progress(step=m, tile=done, of=total))
         results[role] = fused
     template = planes[0]

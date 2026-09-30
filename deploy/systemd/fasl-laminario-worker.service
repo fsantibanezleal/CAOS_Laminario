@@ -1,0 +1,36 @@
+# The Laminario processing worker on the production host (U16): claims jobs from the durable queue in the database
+# and runs each in a killable process (verification, pyramids, focal-stack fusion). A job left running by a stop is
+# queued again when the worker starts.
+#
+# Installed as /etc/systemd/system/fasl-laminario-worker.service by deploy/register-services.sh, which the host's
+# owner runs. Settings from /etc/fasl-laminario.env.
+[Unit]
+Description=Laminario processing worker
+After=network-online.target srv-laminario.mount fasl-laminario.service
+RequiresMountsFor=/srv/laminario
+
+[Service]
+Type=simple
+User=laminario
+Group=laminario
+WorkingDirectory=/opt/fasl-apps/CAOS_Laminario
+EnvironmentFile=/etc/fasl-laminario.env
+ExecStart=/opt/fasl-apps/CAOS_Laminario/.venv/bin/python -m app.worker
+Restart=on-failure
+RestartSec=10
+# SIGTERM lets the worker return its running job to the queue before it exits.
+KillSignal=SIGTERM
+TimeoutStopSec=60
+# Imaging runs at a lower priority than the API on a shared four-core host.
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/srv/laminario
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target

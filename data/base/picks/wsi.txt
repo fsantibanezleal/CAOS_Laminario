@@ -19,8 +19,10 @@ zenodo 18461326 14_Ptiliidae_FM_66-245_2025_09_08_12_38_40.ndpi | taxon=Ptiliida
 # DICOM/3DHISTECH-2.zip (mouse spleen and liver) was dropped on 2026-09-29: its level 0 is 267,776 x 370,688 px,
 # over the imaging engine's limit of 200,000 px a side, so the product refuses it (finding F-043). The Leica
 # samples are licensed 'distributable', outside the base policy, and the other CC0 samples do not state their
-# species; Philips-2 takes its place: CC0, from CAMELYON16 (sentinel lymph nodes of patients), with a macro image.
-openslide Philips-TIFF/Philips-2.tiff | taxon=Homo sapiens@species | section | lymph-node | brightfield | haematoxylin and eosin | | lymph node section from the CAMELYON16 data set, with the slide's macro image
+# species; Philips-2 took its place and was dropped in turn on 2026-09-30: its level 0 is 97,280 x 217,600 px
+# (21.2 gigapixels), over the same limits, which the bake found (finding F-053). Philips-4 takes its place: CC0,
+# CAMELYON16, 91,136 x 68,096 px, with a macro image.
+openslide Philips-TIFF/Philips-4.tiff | taxon=Homo sapiens@species | section | lymph-node | brightfield | haematoxylin and eosin | | lymph node section from the CAMELYON16 data set, with the slide's macro image
 openslide Philips-TIFF/Philips-1.tiff | taxon=Homo sapiens@species | section | lymph-node | brightfield | haematoxylin and eosin | | lymph node section from the CAMELYON16 data set
 # Ventana/Ventana-1.bif (human liver, CC0) was dropped on 2026-09-29: its tiles are joined in the LEFT direction,
 # which no OpenSlide release reads (4.0.1 knows RIGHT and UP; openslide issues 234 and 303), so the product cannot

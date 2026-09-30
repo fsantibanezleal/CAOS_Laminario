@@ -72,3 +72,61 @@ def test_votes_decide_and_are_cleared_when_the_anchor_changes(tmp_path):
         client.put(f"/api/slides/{coarse}/vote", json={"as_good_as_it_can_be": None}, headers=p["one"])
         assert community(client, coarse)["community"]["badge"] == "needs_id"
         assert POLYPLAX["rank"] == "genus"
+
+
+def test_a_fused_composite_is_not_a_missing_source():
+    """A base focal stack's composites and height map carry the licence and no source of their own: the slide's
+    licence-and-provenance check reads its originals (found on the NMNH stacks of the base collection)."""
+    from types import SimpleNamespace as Row
+
+    from app.services.catalog import quality_checks
+
+    by = "https://creativecommons.org/licenses/by/4.0/"
+    plane = Row(family="micro", role="z_plane", licence_uri=by, source_url="https://zenodo.org/r/1/f.ndpi",
+                pixel_size_um=0.23, modality="brightfield")
+    fused = [Row(family="micro", role=r, licence_uri=by, source_url=None, pixel_size_um=0.23, modality="brightfield")
+             for r in ("edf_wavelet", "edf_variance", "height_map")]
+    photo = Row(family="macro", role="slide_overview", licence_uri=by, source_url="https://zenodo.org/r/1/m.jpg",
+                pixel_size_um=None, modality=None)
+    checks = {c.code: c for c in quality_checks("base", [plane, *fused, photo])}
+    assert checks["licence_and_provenance"].passed
+    unsourced = Row(family="micro", role="single", licence_uri=by, source_url=None, pixel_size_um=0.5,
+                    modality="brightfield")
+    checks = {c.code: c for c in quality_checks("base", [plane, unsourced, photo])}
+    assert not checks["licence_and_provenance"].passed
+
+
+def test_the_stored_checks_read_a_fused_composite_as_the_catalog_does(tmp_path):
+    """The community store runs the checks on stand-ins of the stored rows (the badge, and the backfill an import
+    runs): they carry every column the checks read, so a base slide with a fused composite passes there as in the
+    catalog (a stand-in without the role broke the backfill, 2026-09-29)."""
+    from sqlalchemy import select
+    from sqlalchemy.orm import Session
+
+    from app.community import store
+    from app.db.engine import database_path, make_sync_engine
+    from app.db.models import Asset
+    from app.services.catalog import quality_checks
+
+    settings = settings_for(tmp_path)
+    with app_client(settings) as client:
+        sid = published(client, settings, people(client, settings)["maker"])
+    (slide_id,) = sql(settings, "SELECT id FROM slide WHERE short_id = :s", s=sid)[0]
+    sql(settings, "UPDATE slide SET origin = 'base' WHERE id = :s", s=slide_id)
+    sql(settings, "UPDATE asset SET source_url = 'https://zenodo.org/r/1/f.jpg', pixel_size_um = 0.5, "
+                  "modality = 'brightfield' WHERE slide_id = :s", s=slide_id)
+    sql(settings, "INSERT INTO asset (slide_id, family, role, sort_order, media_kind, status, stack, licence_uri, "
+                  "pixel_size_um, modality, created_at) VALUES (:s, 'micro', 'edf_wavelet', 1000, 'pyramid', 'ready', "
+                  "'focus', 'https://creativecommons.org/licenses/by/4.0/', 0.5, 'brightfield', CURRENT_TIMESTAMP)",
+        s=slide_id)
+    engine = make_sync_engine(database_path(settings))
+    try:
+        with Session(engine) as session:
+            rows = session.execute(select(Asset).where(Asset.slide_id == slide_id)).scalars().all()
+            expected = quality_checks("base", rows)
+        with engine.connect() as conn:
+            stored = store.checks_pass(conn, slide_id, "base")
+    finally:
+        engine.dispose()
+    assert {c.code: c.passed for c in expected}["licence_and_provenance"]
+    assert stored == all(c.passed for c in expected)

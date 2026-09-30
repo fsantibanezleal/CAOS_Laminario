@@ -157,17 +157,23 @@ is empty. It writes nothing outside `ROOT` (R-073). `manifest.json` lists every 
 behind every storage key with its SHA-256 and size.
 
 `bake-index.json` keeps, for each baked slide, its short id and two fingerprints (SHA-256 of canonical JSON): of the
-lock entry's assets, which is what its images are made from, and of the whole entry. When the lock changes, a slide
-whose assets changed is removed and baked again; a slide whose record alone changed is rewritten in place from its
-submission (every slide column, none of the assets) with no job queued. An entry made before the assets fingerprint
-existed cannot tell what changed and is baked again, unless `--digests-from` names the lock it was baked from, which
-records the fingerprint for the entries that match it.
+lock entry's pixels, its assets without the fields that credit an image (licence, rights holder, creator, caption,
+record id and address), which is what its images are made from; and of the whole entry. When the lock changes, a slide
+whose pixels changed is removed and baked again; a slide whose record alone changed is rewritten in place from its
+submission with no job queued: every slide column, and the credit columns of every stored image, matched to its lock
+asset by source address and plane (a fused image takes the credits of its stack's first plane, as the fusion does). An
+entry made before the pixels fingerprint is judged by the bake's own rows: if the source files of its stored images,
+address and SHA-256, are exactly the files its lock entry now names, it gains the fingerprint and its record is
+rewritten; otherwise it is baked again. No entry is trusted without a judgement.
 
 The server never bakes. `import --bake ROOT` verifies every stored file against the manifest, refuses a bake with a
-failed job or a changed file, copies the files under their storage keys (content addresses, so an identical file is
-left in place), and inserts the rows as baked. The search text of every slide it writes is composed again with the
-server's tree. An import can be repeated: a base slide already imported is brought to the bake's rows when its record
-or its assets changed since, and skipped otherwise; a short id held by another slide is refused.
+failed job or a changed file, places the files under their storage keys (content addresses, so an identical file is left
+in place: a file already there is kept only if its SHA-256 and size are the manifest's) by a hard link when the bake
+sits on the store's volume, which takes no second copy of the images, and by a copy otherwise, and inserts the rows as
+baked. `verify --bake ROOT` checks the served store against the manifest afterwards, file by file. The search text of
+every slide it writes is composed again with the server's tree. An import can be repeated: a base slide already imported
+is brought to the bake's rows when its record or its assets changed since, and skipped otherwise; a short id held by
+another slide is refused.
 
 ## 4. Tests
 

@@ -1,17 +1,20 @@
 """The import: a verified bake loaded into a Laminario database and slide store, without re-baking.
 
 ``import_bake(bake_root, settings)`` reads ``manifest.json``, checks every stored file of the bake against its SHA-256
-and size, copies the files into the target store under the same storage keys (content addresses, so an identical file
-is left in place), inserts the taxon rows the slides use, and inserts every slide and asset row as baked. A slide
-whose short id is already in the target is refused when it is another slide; when it is the same base slide, its rows
-are brought to the bake's if its record or its assets changed since (a country corrected, a slide baked again), and it
-is skipped otherwise, so an import can be repeated. Nothing is processed: the bake did that.
+and size, places the files in the target store under the same storage keys (content addresses, so an identical file is
+left in place): by a hard link when the bake sits on the store's volume, which costs no space (a stored file is never
+changed in place, a new content has a new key), and by a copy otherwise. It inserts the taxon rows the slides use, and
+inserts every slide and asset row as baked. A slide whose short id is already in the target is refused when it is
+another slide; when it is the same base slide, its rows are brought to the bake's if its record or its assets changed
+since (a country corrected, a slide baked again), and it is skipped otherwise, so an import can be repeated. Nothing is
+processed: the bake did that.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import os
 import shutil
 from pathlib import Path
 
@@ -39,9 +42,22 @@ def _sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def verify(bake_root: Path, manifest: dict) -> list[str]:
-    """Every stored file of the bake, checked against the manifest; the problems found."""
-    store = bake_root / "store"
+def place(source: Path, target: Path) -> str:
+    """Put ``source`` at ``target``: a hard link when both are on one volume, else a copy. Returns how."""
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.unlink(missing_ok=True)
+    try:
+        os.link(source, target)
+        return "linked"
+    except OSError:  # another volume, or a file system without hard links
+        shutil.copy2(source, target)
+        return "copied"
+
+
+def verify(bake_root: Path, manifest: dict, store: Path | None = None) -> list[str]:
+    """Every stored file the manifest lists, checked against its SHA-256 and size in the bake's own store, or in
+    ``store`` (the served store after an import); the problems found."""
+    store = store if store is not None else bake_root / "store"
     problems = []
     for entry in manifest["slides"]:
         for asset in entry["assets"]:
@@ -54,6 +70,11 @@ def verify(bake_root: Path, manifest: dict) -> list[str]:
             elif path.stat().st_size != f["bytes"] or _sha256(path) != f["sha256"]:
                 problems.append(f"{f['key']}: differs from the manifest")
     return problems
+
+
+def manifest_files(manifest: dict) -> int:
+    """How many stored files the manifest lists."""
+    return sum(1 for entry in manifest["slides"] for asset in entry["assets"] if asset.get("file"))
 
 
 #: Slide columns the import never takes from a bake: the community's (U13) and the curators'.
@@ -110,7 +131,8 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
     # The community's and the curators' columns belong to the target, not to the bake (U13).
     slide_cols = {c.name for c in Slide.__table__.columns} - {"id", *TARGET_ONLY}
     asset_cols = {c.name for c in Asset.__table__.columns} - {"id", "slide_id"}
-    copied = imported = updated = skipped = 0
+    placed = {"linked": 0, "copied": 0}
+    imported = updated = skipped = 0
     loaded: list[str] = []
     try:
         with engine.begin() as conn:
@@ -133,9 +155,7 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
                         target = settings.store_root / f["key"]
                         if not (target.is_file() and target.stat().st_size == f["bytes"]
                                 and _sha256(target) == f["sha256"]):
-                            target.parent.mkdir(parents=True, exist_ok=True)
-                            shutil.copy2(bake_root / "store" / f["key"], target)
-                            copied += 1
+                            placed[place(bake_root / "store" / f["key"], target)] += 1
                 if existing is not None:
                     # A base slide is the bake's: a changed record or changed assets are brought over, the rest skipped.
                     if _refresh(conn, existing.id, slide, entry["assets"], slide_cols, asset_cols):
@@ -161,4 +181,5 @@ def import_bake(bake_root: Path, settings: Settings) -> dict:
                 community_store.refresh(conn, row.id)
     finally:
         engine.dispose()
-    return {"imported": imported, "updated": updated, "skipped": skipped, "files_copied": copied}
+    return {"imported": imported, "updated": updated, "skipped": skipped, "files_linked": placed["linked"],
+            "files_copied": placed["copied"]}

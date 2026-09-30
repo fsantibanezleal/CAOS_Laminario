@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-labelledby="title desc">
+  <title id="title">Laminario deployment</title>
+  <desc id="desc">One Hetzner host, hetzner-ml-fasl-work, serves laminario.ml.fasl-work.com. nginx terminates TLS, serves the web build, caches tiles after an access check and passes uploads and API requests on loopback. The API and the worker run as systemd services of the laminario account; tusd and iipsrv run from their pinned images. The data root is a 100 GB volume at /srv/laminario with the database, the store, the originals, the quarantine, the caches and the basemap. The base collection is baked on a workstation, refreshed for record-only changes, copied to the volume and imported after every file is checked against the manifest. install.sh installs or updates; register-services.sh registers the services, once. The browser gates and the production gate run against the live site.</desc>
+  <style>
+    :root { --bg: #fbfaf7; --ink: #1d232b; --muted: #5b6573; --line: #8a94a3; --box: #ffffff; --edge: #c9ced6;
+            --accent: #1f6f8b; --warm: #b5651d; --store: #efe9dc; --lane: #f3f5f8; --good: #2f7d4f; --bad: #b3261e; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1419; --ink: #e6e9ee; --muted: #9aa5b4; --line: #6b7686; --box: #18202a; --edge: #2c3744;
+              --accent: #5bb4d4; --warm: #e0a15c; --store: #231f18; --lane: #141b23; --good: #6fc08f; --bad: #f08a80; }
+    }
+    .bg { fill: var(--bg); }
+    .lane { fill: var(--lane); stroke: var(--edge); stroke-width: 1; }
+    .box { fill: var(--box); stroke: var(--edge); stroke-width: 1.5; }
+    .key { fill: var(--box); stroke: var(--accent); stroke-width: 1.8; }
+    .store { fill: var(--store); stroke: var(--warm); stroke-width: 1.5; }
+    .t { font: 600 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .s { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+    .m { font: 11.5px ui-monospace, "Cascadia Mono", Consolas, monospace; fill: var(--muted); }
+    .h { font: 700 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--accent); letter-spacing: .06em; }
+    .ok { font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--good); }
+    .arrow { stroke: var(--line); stroke-width: 1.6; fill: none; marker-end: url(#head); }
+    .head { fill: var(--line); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="960" height="560"/>
+
+  <!-- the host -->
+  <rect class="lane" x="16" y="16" width="620" height="528" rx="10"/>
+  <text class="h" x="32" y="38">HETZNER-ML-FASL-WORK: LAMINARIO.ML.FASL-WORK.COM</text>
+  <rect class="key" x="32" y="52" width="588" height="74" rx="8"/>
+  <text class="t" x="48" y="74">nginx: TLS, the redirect, HSTS</text>
+  <text class="s" x="48" y="94">the web build (/assets a year, index never) · /iiif tiles after auth_request, cached 30 days</text>
+  <text class="s" x="48" y="112">/files to tusd unbuffered · /api to the API · the basemap by byte ranges · /api/_internal 404</text>
+  <path class="arrow" d="M110 128 L 110 150"/>
+  <path class="arrow" d="M250 128 L 250 150"/>
+  <path class="arrow" d="M400 128 L 400 150"/>
+  <rect class="box" x="32" y="152" width="140" height="92" rx="8"/>
+  <text class="t" x="46" y="174">API</text>
+  <text class="m" x="46" y="194">127.0.0.1:8147</text>
+  <text class="s" x="46" y="212">fasl-laminario</text>
+  <text class="s" x="46" y="228">uvicorn, laminario</text>
+  <rect class="box" x="184" y="152" width="140" height="92" rx="8"/>
+  <text class="t" x="198" y="174">tusd v2.10.1</text>
+  <text class="m" x="198" y="194">127.0.0.1:8148</text>
+  <text class="s" x="198" y="212">pinned image,</text>
+  <text class="s" x="198" y="228">hooks to the API</text>
+  <rect class="box" x="336" y="152" width="140" height="92" rx="8"/>
+  <text class="t" x="350" y="174">iipsrv 1.3</text>
+  <text class="m" x="350" y="194">127.0.0.1:8149</text>
+  <text class="s" x="350" y="212">pinned image,</text>
+  <text class="s" x="350" y="228">the store read-only</text>
+  <rect class="box" x="488" y="152" width="132" height="92" rx="8"/>
+  <text class="t" x="502" y="174">worker</text>
+  <text class="s" x="502" y="194">fasl-laminario-</text>
+  <text class="s" x="502" y="210">worker, nice 10,</text>
+  <text class="s" x="502" y="226">the job queue</text>
+  <path class="arrow" d="M102 246 L 102 272"/>
+  <path class="arrow" d="M254 246 L 254 272"/>
+  <path class="arrow" d="M406 246 L 406 272"/>
+  <path class="arrow" d="M554 246 L 554 272"/>
+  <rect class="store" x="32" y="274" width="588" height="112" rx="8"/>
+  <text class="t" x="48" y="296">/srv/laminario: the 100 GB volume laminario-data</text>
+  <text class="m" x="48" y="318">laminario.sqlite3   store/   sources/   quarantine/</text>
+  <text class="m" x="48" y="338">cache/ (www-data)   basemap/   bake/</text>
+  <text class="s" x="48" y="362">the only writable path of the API and the worker; whole-slide uploads refused above</text>
+  <text class="s" x="48" y="378">90 percent in use; the volume grows in place</text>
+  <rect class="box" x="32" y="402" width="288" height="126" rx="8"/>
+  <text class="t" x="48" y="424">deploy/install.sh &lt;tag&gt;</text>
+  <text class="s" x="48" y="444">account and folders, the code at the tag,</text>
+  <text class="s" x="48" y="460">its environment and web build, migrations,</text>
+  <text class="s" x="48" y="476">the certificate, the site; restarts the</text>
+  <text class="s" x="48" y="492">registered services. Idempotent.</text>
+  <rect class="box" x="332" y="402" width="288" height="126" rx="8"/>
+  <text class="t" x="348" y="424">deploy/register-services.sh</text>
+  <text class="s" x="348" y="444">once: the two units and the two</text>
+  <text class="s" x="348" y="460">containers registered, started and</text>
+  <text class="s" x="348" y="476">checked. Later updates are the install</text>
+  <text class="s" x="348" y="492">alone, which restarts them.</text>
+
+  <!-- the workstation and the gates -->
+  <rect class="lane" x="652" y="16" width="292" height="300" rx="10"/>
+  <text class="h" x="668" y="38">THE BASE COLLECTION</text>
+  <rect class="box" x="668" y="52" width="260" height="92" rx="8"/>
+  <text class="t" x="682" y="74">The bake (workstation)</text>
+  <text class="s" x="682" y="94">505 slides through the product's</text>
+  <text class="s" x="682" y="110">own pipeline; record-only changes</text>
+  <text class="s" x="682" y="126">refreshed without reprocessing</text>
+  <path class="arrow" d="M798 146 L 798 168"/>
+  <rect class="store" x="668" y="170" width="260" height="130" rx="8"/>
+  <text class="t" x="682" y="192">Copied, then imported</text>
+  <text class="s" x="682" y="212">every stored file checked against</text>
+  <text class="s" x="682" y="228">the manifest's SHA-256 and size</text>
+  <text class="s" x="682" y="244">before a row is written; a failed</text>
+  <text class="s" x="682" y="260">bake refused; a second import adds</text>
+  <text class="s" x="682" y="276">nothing</text>
+  <path class="arrow" d="M666 300 L 624 330"/>
+
+  <rect class="lane" x="652" y="332" width="292" height="212" rx="10"/>
+  <text class="h" x="668" y="354">THE GATES, AGAINST THE LIVE SITE</text>
+  <text class="m" x="668" y="378">LAMINARIO_GATE_ORIGIN=https://...</text>
+  <text class="s" x="668" y="402">fit, walk, motion, states, the QR,</text>
+  <text class="s" x="668" y="418">the scale bar, the stage, About,</text>
+  <text class="s" x="668" y="434">the links</text>
+  <text class="ok" x="668" y="460">production.mjs: HTTPS and the redirect,</text>
+  <text class="ok" x="668" y="476">loopback-only services, the imported</text>
+  <text class="ok" x="668" y="492">collection, the tile cache, caching,</text>
+  <text class="ok" x="668" y="508">the version served</text>
+</svg>

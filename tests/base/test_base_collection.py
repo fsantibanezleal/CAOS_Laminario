@@ -98,3 +98,26 @@ def test_a_sample_passes_the_offline_checks(lock: dict, acquired: dict, tmp_path
     results = check(sample, acquired, vault=None, workdir=tmp_path)
     failures = {r.slide_id: r.errors for r in results if r.errors}
     assert not failures
+
+
+def test_a_source_the_imaging_engine_refuses_fails_validation(lock: dict, tmp_path):
+    """A lock source whose header breaks the engine's limits fails validation, before a bake meets it (Philips-2: a
+    level 0 of 97,280 x 217,600 px failed its processing job hours into the bake, 2026-09-30)."""
+    try:
+        from app.imaging.library import vips
+
+        vips().version(0)
+    except Exception as exc:  # the library is absent or cannot be loaded on this machine
+        pytest.skip(f"libvips is not available: {exc}")
+    from tests.imaging.test_guards import tiff_header
+
+    slide = next(s for s in lock["slides"] if len(s["assets"]) == 1 and not s["assets"][0].get("stack"))
+    url = slide["assets"][0]["url"]
+    (tmp_path / "sources").mkdir()
+    tiff_header(tmp_path / "sources" / "bomb.tif", 97_280, 217_600)
+    acquired = {url: {"file": "bomb.tif", "sha256": "0" * 64, "retrieved_on": "2026-09-30"}}
+    results = check([slide], acquired, vault=tmp_path, workdir=tmp_path / "work")
+    assert any("refused by the imaging engine" in e and "side limit" in e for e in results[0].errors), results[0].errors
+    (tmp_path / "sources" / "bomb.tif").unlink()
+    results = check([slide], acquired, vault=tmp_path, workdir=tmp_path / "work")
+    assert results[0].errors == [f"not in the vault: {url}"]

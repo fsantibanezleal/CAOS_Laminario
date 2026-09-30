@@ -21,7 +21,7 @@ import yaml
 from app.base import coverage
 from app.base.acquire import load as load_acquired
 from app.base.lock import LOCK, TAXA
-from app.base.submission import submission
+from app.base.submission import source_path, submission
 from app.collections import taxa as taxa_cache
 from app.collections.service import check_submission
 from app.collections.tree import load_tree
@@ -29,6 +29,8 @@ from app.contracts.ingest import validate_submission
 from app.db.engine import async_sessions, make_async_engine
 from app.db.migrate import upgrade_to_head
 from app.db.models import Taxon
+from app.imaging import reader
+from app.imaging.guards import ImageRefused
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 REPORT = ROOT / "docs" / "collections" / "base-report.md"
@@ -103,6 +105,20 @@ async def _one(db, client, slide, acquired, vault, tree) -> Result:
     if missing:
         result.errors.append(f"not acquired: {', '.join(missing)}")
         return result
+    if vault is not None:
+        # Every source file through the imaging engine's header checks, as its processing will read it: a source the
+        # product refuses is found here, not by a failed job hours into a bake (Philips-2, 2026-09-30).
+        for asset in slide["assets"]:
+            path = source_path(asset, acquired, vault)
+            if not path.is_file():
+                result.errors.append(f"not in the vault: {asset['url']}")
+                continue
+            try:
+                reader.read_info(path)
+            except ImageRefused as exc:
+                result.errors.append(f"refused by the imaging engine: {exc} ({asset['url']})")
+        if result.errors:
+            return result
     try:
         payload = submission(slide, acquired, vault)
     except (OSError, ValueError) as exc:
