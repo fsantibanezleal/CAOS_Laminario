@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from app.base.importer import MANIFEST, ImportRefused, import_bake, manifest_files, verify
+from app.base.importer import MANIFEST, ImportRefused, import_bake, manifest_files, place, verify
 from app.config import Settings
 
 
@@ -61,3 +61,30 @@ def test_the_served_store_is_checked_against_the_manifest_after_an_import(tmp_pa
     (target.store_root / key).write_bytes(b"a served file changed")
     assert verify(bake, manifest, target.store_root) == [f"{key}: differs from the manifest"]
     assert verify(bake, manifest) == []  # the bake's own store is untouched
+
+
+def test_a_file_is_linked_on_one_volume_and_copied_across(tmp_path: Path, monkeypatch):
+    """On the host the bake and the store share the data volume: a hard link places a file with no second copy (an
+    import of 44 GB would otherwise need 44 GB more). Across volumes the file is copied. Either way the target is the
+    source's bytes, and a different file already at the target is replaced."""
+    import os
+
+    source = tmp_path / "bake" / "a.tif"
+    source.parent.mkdir()
+    source.write_bytes(b"pyramid bytes")
+    target = tmp_path / "store" / "ab" / "a.tif"
+    target.parent.mkdir(parents=True)
+    target.write_bytes(b"a stale file")
+    assert place(source, target) == "linked"
+    assert target.read_bytes() == b"pyramid bytes" and os.stat(target).st_nlink == 2
+    source.unlink()  # the staged bake is removed after the import: the stored file stays
+    assert target.read_bytes() == b"pyramid bytes"
+
+    source.write_bytes(b"other bytes")
+
+    def no_links(*_):
+        raise OSError(18, "Invalid cross-device link")
+
+    monkeypatch.setattr(os, "link", no_links)
+    assert place(source, target) == "copied"
+    assert target.read_bytes() == b"other bytes" and os.stat(target).st_nlink == 1

@@ -102,14 +102,20 @@ how many old entries it found and how many of each.
 
 ## 5. Import on the server
 
-Copy the bake root to the server's staging folder, then import (on the server):
+Copy the bake root to the server's `/srv/laminario/bake/` (the guide Operate the host has the commands), then
+import and check it, as the service account with the service's settings:
 
 ```bash
-cd /opt/laminario && sudo -u laminario .venv/bin/python -m app.base import --bake /srv/laminario/staging/bake-2026-09-30
+set -a; . /etc/fasl-laminario.env; set +a
+cd /opt/fasl-apps/CAOS_Laminario
+runuser -u laminario --preserve-environment -- .venv/bin/python -m app.base import --bake /srv/laminario/bake/<bake>
+runuser -u laminario --preserve-environment -- .venv/bin/python -m app.base verify --bake /srv/laminario/bake/<bake>
 ```
 
-The import verifies every stored file against the manifest before it writes anything, copies the files into the
-store, inserts the slides and assets as baked, composes their search text with the server's tree, and prints what it
-imported, updated, skipped and copied. A base slide already on the server is brought to the bake's rows when its
-record or its assets changed since, and skipped otherwise, so running the import again changes nothing. Remove the
-staging copy afterwards.
+The import verifies every stored file against the manifest before it writes anything, places the files in the store
+(a hard link, since the bake and the store share the data volume, so the import takes no second copy of the
+images), inserts the slides and assets as baked, composes their search text with the server's tree, and prints what
+it imported, updated and skipped, and the files it linked or copied. A base slide already on the server is brought
+to the bake's rows when its record or its assets changed since, and skipped otherwise, so running the import again
+changes nothing. `verify` then checks the served store against the manifest. Remove the bake root afterwards: the
+store's links keep the files.
