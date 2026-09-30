@@ -32,6 +32,8 @@ manifests and the rest of the API behind it; the access check's own path refused
 - nginx matches locations on the decoded URI, where an identifier's `%2F` are slashes again; the storage key is
   therefore everything before the last four segments.
 - `auth_request` reads only 401 and 403 as a refusal; any other status is an error (500), so the API answers 403.
+- An upstream's `keepalive_timeout` defaults to 60 s; it must stay under the backend's own idle close (uvicorn
+  5 s, lighttpd 5 to 6 s), or a request sent as the backend closes the connection answers 502. The site sets 4 s.
 - Containers on a user-defined bridge network could not reach services bound to the gateway on the production host;
   the gate runs nginx with host networking, which is also the production topology.
 - BSD-2-Clause.
