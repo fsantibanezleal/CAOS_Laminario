@@ -64,3 +64,19 @@
   font-family: var(--f-label);
   font-size: var(--fs-2);
 }
+
+/* One real slide from each collection, under the introduction. */
+.sample {
+  margin-bottom: var(--s-9);
+}
+
+.sampleTitle {
+  margin: 0 0 var(--s-2);
+  font-size: var(--fs-6);
+}
+
+.sampleAbout {
+  max-width: 64ch;
+  margin: 0 0 var(--s-4);
+  color: var(--c-ink-muted);
+}
