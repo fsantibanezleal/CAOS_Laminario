@@ -36,6 +36,12 @@ queued after a scan's processing, and the bake queues it for the scans already b
 names it (`glass_photo_url`), and the slide is then drawn as its photograph. The other 477 base slides are drawn glass
 with their micro image under the coverslip.
 
+**The collection on the first screen.** A realm's collections are drawn with their icons (a collection is general
+content, not one specimen), so the landing showed no specimen until a drawer was opened, and read as empty. Under the
+introduction, the landing now shows one real slide from each collection that holds any (18 in the base collection):
+its newest published slide, one request per collection (`/api/slides?node=<collection>&sort=newest&limit=1`), in the
+tree's order, as a set of glass slides like any other, each opening its slide.
+
 **The slide's own place** shows the slide as the same glass slide, seen close: its photograph when its glass was
 photographed, else its first micro image under the coverslip, its label's name and catalogue number on the left end,
 and on the right its preparation, place and date with the QR the server draws for it (the one path of the drawing's
