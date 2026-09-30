@@ -87,9 +87,9 @@ const api = async (path, requirement) => {
   let tile = null;
   for (const summary of page?.items ?? []) {
     const record = await api(`/api/slides/${summary.id}`, "R-1604");
-    const asset = record?.assets.find((a) => a.family === "micro" && a.status === "ready" && a.iiif_info_url);
+    const asset = record?.assets.find((a) => a.family === "micro" && a.status === "ready" && a.media?.iiif_info_url);
     if (!asset) continue;
-    const info = await api(new URL(asset.iiif_info_url).pathname, "R-1604");
+    const info = await api(new URL(asset.media.iiif_info_url).pathname, "R-1604");
     if (!info) continue;
     tile = `${new URL(info.id).pathname}/0,0,512,512/512,/0/default.jpg`;
     break;

@@ -10,16 +10,28 @@
 | 6 | The gates against the live site (`LAMINARIO_GATE_ORIGIN`) and `gates/production.mjs`, which reports every requirement even when a service does not answer | R-080, R-084, R-085, R-086, R-1601 to R-1606 | done; the full run waits for the imported collection |
 | 7 | Wiki page 18 with its diagram, the guide Operate the host, the U16 design and requirements | (documentation standards) | done |
 
-## Measured on the live site (2026-09-29, before the services are registered)
+## Convergence verdict (2026-09-30, against the live site)
 
-`LAMINARIO_GATE_ORIGIN=https://laminario.ml.fasl-work.com node gates/production.mjs`: 13 checks pass, 5 fail, all 5
-because the API is not running yet (nginx answers 502 for `/api/`).
+The services were registered on 2026-09-29 at 21:30 UTC; the final bake (505 slides, 767 jobs, 0 failed; 69 countries;
+no credit with page furniture; 10 stacks fused; no image of one colour) was copied to the volume and imported: 505
+slides, 770 files hard-linked into the store and 13 copied, and `python -m app.base verify` found the 783 files of the
+manifest in the served store with their SHA-256 and size. Three images of one slide (the re-baked Colorados stack's
+two composites and height map) were still uploading and were imported after, with the full manifest.
 
-| Requirement | Result |
-|---|---|
-| R-1601 HTTPS only | pass: plain HTTP answers 301 to the same path over HTTPS; the certificate is trusted, names the host and has 90 days left; HSTS `max-age=31536000` |
-| R-1602 loopback only | pass: 8147, 8148 and 8149 are closed from outside; `/api/_internal/iiif-access/x` and `/api/_internal/tus-hook` answer 404 |
-| R-1603 the base collection | waits for the services and the import |
-| R-1604 the tile cache | waits for the services (a tile of an unknown image answers 500 while the API that authorises it is down; 403 is required) |
-| R-1605 the web app's caching | pass: the index `no-cache`; a hashed asset `max-age=31536000`; `/c/insects`, `/about` and `/s/ZZZZZZZZ` answer 200 with the app |
-| R-1606 reproducible | the install ran to the end on the host at the branch's head; the version check waits for the API |
+| Requirement | Gate | Result |
+|---|---|---|
+| R-1601 HTTPS only | `frontend/gates/production.mjs` | pass: plain HTTP answers 301 to the same path over HTTPS; the certificate is trusted, names the host and has 89 days left; HSTS `max-age=31536000` |
+| R-1602 loopback only | `frontend/gates/production.mjs` | pass: 8147, 8148 and 8149 closed from outside; the internal routes answer 404 |
+| R-1603 the base collection | `frontend/gates/production.mjs`; `python -m app.base verify` | pass: the lock's 505 slides published, from five known sources, 14 whole-slide scans, 29 countries; every stored file equal to the manifest |
+| R-1604 the tile cache | `frontend/gates/production.mjs` | pass: a tile's first request a miss, its second a hit with the same 17,653 bytes; a tile of an image no published slide holds refused (403) |
+| R-1605 the web app's caching | `frontend/gates/production.mjs` | pass: the index `no-cache`, a hashed asset for a year, the app's addresses answer with the app |
+| R-1606 reproducible | `frontend/gates/production.mjs` | pass: the install and the registration ran to the end; the site serves the repository's version |
+
+The production gate passes 22 of 22. Its first run found its own defect (it read a tile service's address from the asset
+instead of its media record) and it was fixed. The browser gates against the live site were not run for this release,
+on Felipe's instruction; the interface they judge is replaced by U17.
+
+Building it found what the design could not: the bake's record refresh that trusted old index entries (F-050), the
+community store's checks without the asset role (F-051), a Hamamatsu plane beyond the JPEG limit read black (F-052),
+a replacement pick over the engine's limits (F-053), a fusion broken by the workstation's own load (F-054), fusion
+processes that outlived a killed job, and an import that would have held the images twice on the volume.

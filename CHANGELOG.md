@@ -3,6 +3,48 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.16.000] - 2026-09-30
+
+### Added
+
+- The deployment at `https://laminario.ml.fasl-work.com` on `hetzner-ml-fasl-work`: `deploy/install.sh <ref>`
+  (idempotent: the account, the data root's folders on the volume, the code with its environment and web build, the
+  migrations as the service account, the certificate, the nginx site, a restart of registered services) and
+  `deploy/register-services.sh` (the API and worker units, tusd and iipsrv on loopback), a person's step.
+- The nginx site: HTTPS only with HSTS, the IIIF tile cache behind the API's access check, the basemap read by byte
+  ranges, the internal routes closed from outside, hashed assets cached for a year and the index never.
+- `frontend/gates/production.mjs` (R-1601 to R-1606) and the gates' production mode (`LAMINARIO_GATE_ORIGIN`): the
+  browser gates read the live site as a visitor does. The production gate reports every requirement even when a
+  service does not answer.
+- A focal stack's windows fuse in parallel processes (`fuse_workers`: 2 on the host, up to 12 in the base bake), with
+  the same arrays as one window at a time; a stall watchdog fails a fusion whose processes stop answering, and the
+  pool's processes end with the job's process when a timeout kills it.
+- Wiki page 18 (the deployment) with its diagram, the guide Operate the host, the U16 design, requirements and tasks.
+- `python -m app.base verify --bake ROOT` checks the served store against a bake's manifest, file by file.
+- A stored image of one colour fails its job with the reason: a decoder that fails without an error is never shown as
+  a black slide.
+
+### Changed
+
+- The base bake keeps a pixels fingerprint (the assets without their credits): a licence or credit change rewrites
+  the stored images' credits, as a country or a locality rewrites the slide's record, with nothing processed again.
+  Index entries made before it are judged by the bake's own rows (the source address and SHA-256 of every stored
+  image against the files the lock names). `--digests-from` is retired.
+- The base collection: Philips-4 (CAMELYON16, CC0) replaces Philips-2, whose 97,280 x 217,600 px level 0 the imaging
+  engine refuses. Validation reads every acquired source's header through the engine's limits, so a refused source
+  fails validation instead of a bake.
+
+### Fixed
+
+- A Hamamatsu plane beyond libjpeg's 65,500 px is decoded by its restart intervals: libtiff had returned it black
+  without an error, and a base slide of 53,760 x 73,728 px was fused black. It now equals OpenSlide's default plane
+  exactly.
+- A fused composite no longer counts as an image without a source in a slide's quality check, in the catalog and in
+  the community store, whose stand-ins of the stored rows now carry the asset role (without it the badge and the
+  import's backfill failed on a base slide).
+- The countries of the base collection (69 slides) and the credit fixes of 0.08.000 reach the bake: the record refresh
+  had trusted the 493 index entries made before the fingerprints and rewrote 7.
+
 ## [0.15.000] - 2026-09-29
 
 ### Added
