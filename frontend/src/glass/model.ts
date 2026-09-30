@@ -161,3 +161,18 @@ export function stepFromKey(key: string, current: number, n: number): number | n
   if (key === "PageUp") return Math.max(0, current - FOLDER_PLACES);
   return null;
 }
+
+/** How many slides on each side of the chosen one the scene draws: a set of hundreds (a search grown page by page)
+ * is drawn around where the visitor is; the page's accessible layer still lists every slide. */
+export const DRAWN_SPAN = 40;
+
+/** The indexes the scene draws for a set of ``n`` with ``selected`` chosen: a window around it, or the folder's page. */
+export function drawnRange(arrangement: Arrangement, n: number, selected: number): [number, number] {
+  if (arrangement === "folder") {
+    const page = Math.floor(Math.max(0, selected) / FOLDER_PLACES);
+    return [page * FOLDER_PLACES, Math.min(n, (page + 1) * FOLDER_PLACES)];
+  }
+  const from = Math.max(0, Math.min(selected - DRAWN_SPAN, n - 2 * DRAWN_SPAN - 1));
+  return [from, Math.min(n, from + 2 * DRAWN_SPAN + 1)];
+}
+

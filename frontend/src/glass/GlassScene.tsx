@@ -9,7 +9,7 @@ import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber"
 import { useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
 import * as THREE from "three";
 import {
-  COVERSLIP_MM, GLASS_MM, SLOT_MM, BOX_ROWS, cameraFor, coverslipSide, folderPages, layout, FOLDER_PLACES,
+  COVERSLIP_MM, GLASS_MM, SLOT_MM, BOX_ROWS, cameraFor, coverslipSide, drawnRange, folderPages, layout, FOLDER_PLACES,
   type Arrangement, type GlassItem, type Placement,
 } from "./model";
 import { iconTexture, labelFacesReady, labelTextures, pictureTexture, type LabelSides } from "./textures";
@@ -459,8 +459,15 @@ function SceneContents(props: GlassSceneProps) {
   const [hover, setHover] = useState<number | null>(null);
   const invalidate = useThree((s) => s.invalidate);
   const lifted = arrangement === "drawer" || arrangement === "box" || arrangement === "folder" ? hover ?? selected : null;
-  const placements = useMemo(() => layout(arrangement, items.length, selected, lifted),
-    [arrangement, items.length, selected, lifted]);
+  const drawn = useMemo(() => drawnRange(arrangement, items.length, selected), [arrangement, items.length, selected]);
+  // The drawn window is laid out as a set of its own, so a drawer of hundreds is a drawer of those drawn.
+  const count = drawn[1] - drawn[0];
+  const placements = useMemo(() => {
+    const local = layout(arrangement, count, selected - drawn[0], lifted === null ? null : lifted - drawn[0]);
+    const all: Placement[] = [];
+    local.forEach((placement, k) => { all[drawn[0] + k] = placement; });
+    return all;
+  }, [arrangement, count, selected, lifted, drawn]);
   const groups = useRef<(THREE.Group | null)[]>([]);
   const register = useMemo(() => (index: number, group: THREE.Group | null) => { groups.current[index] = group; },
     []);
@@ -472,7 +479,7 @@ function SceneContents(props: GlassSceneProps) {
 
   return (
     <>
-      <CameraRig arrangement={arrangement} n={items.length} still={still} />
+      <CameraRig arrangement={arrangement} n={count} still={still} />
       <color attach="background" args={[ground]} />
       {/* The surface the set stands or lies on, the page's own: the glass refracts it and it takes their shadows. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, arrangement === "folder" ? -2.6 : -15.4, 0]}>
@@ -491,12 +498,12 @@ function SceneContents(props: GlassSceneProps) {
             under a window does. */}
         <Lightformer form="rect" intensity={1.6} position={[0, 70, 280]} rotation={[0, Math.PI, 0]} scale={[280, 36, 1]} />
       </Environment>
-      {arrangement === "drawer" ? <CabinetDrawer n={items.length} title={title} hue={hue} /> : null}
-      {arrangement === "box" ? <SlideBox n={items.length} title={title} hue={hue} /> : null}
+      {arrangement === "drawer" ? <CabinetDrawer n={count} title={title} hue={hue} /> : null}
+      {arrangement === "box" ? <SlideBox n={count} title={title} hue={hue} /> : null}
       {arrangement === "folder" ? (
         <Folder n={items.length} page={Math.floor(selected / FOLDER_PLACES)} title={title} hue={hue} />
       ) : null}
-      {items.map((item, i) => (
+      {items.slice(...drawn).map((item, k) => ({ item, i: drawn[0] + k })).map(({ item, i }) => (
         <Slide key={item.id} item={item} index={i} placement={placements[i]} glass={glass} still={still}
           chosen={i === selected} accent={accent} onHover={setHover} onSelect={onSelect} onOpen={onOpen}
           register={register} arrangement={arrangement} shadowMap={shadowMap} />
@@ -507,7 +514,8 @@ function SceneContents(props: GlassSceneProps) {
 }
 
 export default function GlassScene(props: GlassSceneProps) {
-  const start = cameraFor(props.arrangement, props.items.length);
+  const [from, to] = drawnRange(props.arrangement, props.items.length, props.selected);
+  const start = cameraFor(props.arrangement, to - from);
   return (
     <Canvas frameloop="demand" dpr={[1, 1.75]} camera={{ fov: start.fov, position: start.position, near: 1, far: 4000 }}
       gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  ARRANGEMENTS, BOX_ROWS, FOLDER_PLACES, LIFT_MM, STANDARD, carouselRing, coverslipSide, folderPages, layout,
-  stepFromKey,
+  ARRANGEMENTS, BOX_ROWS, DRAWN_SPAN, FOLDER_PLACES, LIFT_MM, STANDARD, carouselRing, coverslipSide, drawnRange,
+  folderPages, layout, stepFromKey,
 } from "./model";
 
 describe("the glass slide's anatomy", () => {
@@ -72,3 +72,15 @@ describe("every arrangement", () => {
     expect(stepFromKey("a", 0, 5)).toBeNull();
   });
 });
+
+describe("a large set", () => {
+  it("draws a window around the chosen slide, and a folder's page", () => {
+    expect(drawnRange("carousel", 30, 3)).toEqual([0, 30]);
+    const [from, to] = drawnRange("carousel", 505, 200);
+    expect(to - from).toBe(2 * DRAWN_SPAN + 1);
+    expect(from <= 200 && 200 < to).toBe(true);
+    expect(drawnRange("drawer", 505, 504)).toEqual([505 - 2 * DRAWN_SPAN - 1, 505]);
+    expect(drawnRange("folder", 505, 45)).toEqual([40, 60]);
+  });
+});
+
