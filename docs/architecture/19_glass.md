@@ -36,6 +36,13 @@ queued after a scan's processing, and the bake queues it for the scans already b
 names it (`glass_photo_url`), and the slide is then drawn as its photograph. The other 477 base slides are drawn glass
 with their micro image under the coverslip.
 
+**The slide's own place** shows the slide as the same glass slide, seen close: its photograph when its glass was
+photographed, else its first micro image under the coverslip, its label's name and catalogue number on the left end,
+and on the right its preparation, place and date with the QR the server draws for it (the one path of the drawing's
+`lam-qr`, typed in with the ink of the label, on its quiet zone). A drag tilts it within a few degrees, as a slide is
+turned in the hand, and it springs back; under reduced motion it stays still. The server's drawing stays where it
+reads best: without WebGL, while the 3D code loads, and in "Read the label", where the QR is read at size.
+
 ## 2. The arrangements
 
 The visitor chooses how every set of the page is laid out; the choice is kept on the device (R-1704). Each is a real
