@@ -34,7 +34,7 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.16.000`. Released, each with its wiki page:
+Version `0.17.000`. Released, each with its wiki page:
 
 - U0, the repository base: versioning, guards, the design document with a gate per requirement.
 - U1, the data model and both contracts (ingestion and catalog), exported as JSON Schema and TypeScript ([`02_data-contracts.md`](docs/architecture/02_data-contracts.md)).
@@ -53,8 +53,7 @@ Version `0.16.000`. Released, each with its wiki page:
 - U14, the profile cabinet and printable label sheets on real label stocks ([`16_cabinet.md`](docs/architecture/16_cabinet.md)).
 - U15, About the collection: sources, licences, citing, how the imaging works ([`17_about.md`](docs/architecture/17_about.md)).
 - U16, the deployment at laminario.ml.fasl-work.com with the base collection and production gates ([`18_deployment.md`](docs/architecture/18_deployment.md)).
-
-The units that follow are listed in the design document.
+- U17, the glass-slide interface: every set of the collection as realistic glass slides in 3D, in the arrangement the visitor chooses, and every box a glass plate ([`19_glass.md`](docs/architecture/19_glass.md)).
 
 ## Architecture at a glance
 
