@@ -14,7 +14,7 @@ shared R-080, R-084, R-085 and R-089 ([U10 requirements](../design/features/u10-
 |---|---|---|
 | `/` | the realms, with their collections as cabinets | the tree |
 | `/c/<collection>` | a cabinet: its drawers | the tree |
-| `/c/<collection>/<drawer>[/<group>]` | a drawer: its slides on a tray, its dividers, its filters | the tree, `/api/slides`, `/api/explore/facets` |
+| `/c/<collection>/<drawer>[/<group>]` | a drawer: its slides as glass slides, its dividers, its filters | the tree, `/api/slides`, `/api/explore/facets` |
 | `/search?q=&node=&...` | search over the whole collection or one cabinet or drawer | `/api/slides`, `/api/explore/facets` |
 | `/map?...&at=<country>` | where the specimens came from | `/api/explore/map`, `/api/explore/countries`, the basemap |
 | `/s/<short id>` | the slide (U11) | |
@@ -36,20 +36,26 @@ Every other answer is kept by its address for the life of the page, so going bac
 
 ## 2. The places
 
-**The realms** show Life, Earth and Matter with their collections as cabinet fronts: oak with the collection's hue on
-its cornice, the collection's icon in that hue, its name, its slide and drawer counts. A search field and the way to
-the map lead elsewhere.
+Since U17 every set these places show is a set of glass slides in 3D, in the arrangement the visitor chooses, and
+every panel is a glass plate ([19 The glass-slide interface](19_glass.md)); the cabinet fronts and oak drawer fronts
+of U10 are gone.
 
-**A cabinet** shows what goes in it (the node's description and its rule, each taxon linked to its GBIF page) and its
-drawers as oak fronts with a brass label holder and a pull. An empty drawer is shown with a dashed holder: it is
-open for contributions. The whole of a cabinet is a search scoped to it (`/search?node=life.insects`), not a
-reserved drawer name.
+**The realms** show Life, Earth and Matter, each a glass panel with its icon and description, with their collections
+as glass slides: the collection's icon under the coverslip, its name on the left end, its slide and drawer counts on
+the right. A search field and the way to the map lead elsewhere.
 
-**A drawer** shows its dividers (its groups, or its siblings when it is a group), its filters and its tray. A view
-(Parasites and hosts) lists the slides whose host lies in its collection and offers only the anchor-kind filter.
+**A collection** shows what goes in it (the node's description and its rule, each taxon linked to its GBIF page) on a
+glass panel, and its drawers as glass slides; an empty drawer is drawn fainter and says it is empty: it is open for
+contributions. The whole of a collection is a search scoped to it (`/search?node=life.insects`), not a reserved
+drawer name.
 
-**The tray** lays every slide long side across, label end first, at one scale for the whole tray (R-1007). The tray
-is a grid of columns at least 250 px wide; each column is a size container, and the tray's longest slide fills it:
+**A drawer** shows its dividers (its groups, or its siblings when it is a group) as glass slides, the current one
+chosen, its filters on a glass panel, and its slides. A view (Parasites and hosts) lists the slides whose host lies in
+its collection and offers only the anchor-kind filter.
+
+**The slides of a drawer** are glass slides of their own formats, in millimetres, so each is drawn at its format's
+proportion and at one scale for the whole set (R-1007). Drawn flat (a device without WebGL), a set lays every slide
+long side across, label end first, each as long as its format against the set's longest:
 
 $$L_{\mathrm{ref}} = \max\left(76.2,\ \max_i L_i\right) \ \mathrm{mm}, \qquad s = \dfrac{W_{\mathrm{col}}}{L_{\mathrm{ref}}}, \qquad w_i = s \cdot L_i, \qquad h_i = s \cdot S_i,$$
 
@@ -57,9 +63,9 @@ where $L_i$ and $S_i$ are slide $i$'s long and short sides and 76.2 mm is the lo
 The label end is 20 mm (ISO 8037-1's marking end), or 0.3 of the long side on a shorter slide, so a 46 mm thin
 section keeps a 13.8 mm label. On it: the collection's hue band, the catalogue number in the label face (broken
 between its letters and its digits, never inside the digits), the name with its epithets in italic and its authorship
-roman, and the node's icon. The specimen's thumbnail sits in the coverslip area. Below the glass: the preparation,
-the locality with the country, and the collection date. Pages of 48 grow only when the visitor asks ("show 48 more");
-the number shown is kept in the address (`n=`), so going back returns to the same tray.
+roman. The specimen's thumbnail sits under the coverslip. On the right end: the preparation, the locality with the
+country, and the collection date. Pages of 48 grow only when the visitor asks ("show 48 more"); the number shown is
+kept in the address (`n=`), so going back returns to the same slides.
 
 **Search** reads the words as the visitor types (after 250 ms without a keystroke), sorts by relevance while there
 are words and by newest otherwise, and adds a collection facet: the cabinets its words reach, with their counts.
