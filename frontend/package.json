@@ -29,7 +29,8 @@
     "gate:identify": "node gates/identify.mjs",
     "gate:cabinet": "node gates/cabinet.mjs",
     "gate:about": "node gates/about.mjs",
-    "gate:links": "node gates/links.mjs"
+    "gate:links": "node gates/links.mjs",
+    "gate:production": "node gates/production.mjs"
   },
   "dependencies": {
     "@annotorious/openseadragon": "3.9.3",

@@ -38,6 +38,10 @@ NDPI_Y_OFFSET = 65423
 NDPI_Z_OFFSET = 65424
 NDPI_SLIDE_WIDTH = 65496
 NDPI_SLIDE_HEIGHT = 65497
+#: The largest side libjpeg decodes (its JPEG_MAX_DIMENSION). A Hamamatsu plane beyond it is one JPEG that no decoder
+#: takes whole: libtiff returned such a plane black, without an error (a Zenodo NDPI of 53,760 x 73,728 px,
+#: 2026-09-29), so it is read by its restart intervals (``_ndpi_intervals``).
+JPEG_MAX_SIDE = 65500
 
 
 @dataclass(frozen=True)
@@ -247,6 +251,100 @@ def _ndpi_stream(path: str, page: int):
     return vips().Image.jpegload_buffer(stream)
 
 
+def _frame_sized(header: bytes, height: int, width: int) -> bytes:
+    """A JPEG header (SOI to SOS) with its frame's height and width set."""
+    out = bytearray(header)
+    i = 2
+    while i + 4 <= len(out):
+        if out[i] != 0xFF:
+            raise ValueError("not a JPEG header: a marker was expected")
+        marker, length = out[i + 1], int.from_bytes(out[i + 2:i + 4], "big")
+        if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):
+            out[i + 5:i + 7] = height.to_bytes(2, "big")
+            out[i + 7:i + 9] = width.to_bytes(2, "big")
+            return bytes(out)
+        i += 2 + length
+    raise ValueError("the JPEG header has no frame")
+
+
+def intervals_mosaic(header: bytes, chunks, chunk_shape: tuple[int, int], grid: tuple[int, int],
+                     band: int = 1024, across: int = JPEG_MAX_SIDE):
+    """One JPEG image, given as its restart intervals, decoded as a mosaic of JPEGs small enough for libjpeg.
+
+    ``chunks`` are the intervals' bytes in raster order, each ending with its restart marker (the last with the end
+    marker); every interval covers ``chunk_shape`` (rows, columns) pixels and ``grid`` (rows, columns) of them make the
+    image; ``header`` is the image's JPEG header up to its scan header. Each tile of the mosaic, whole intervals at most
+    ``band`` rows and ``across`` columns (never fewer than one interval), is a JPEG of its own: the header with the
+    tile's size, the tile's intervals with their restart markers numbered again from RST0 (a decoder checks their
+    order), and an end marker. The tiles are decoded by libvips and joined in place. Every block is decoded from the
+    same coefficients as in the whole JPEG, so with full-resolution chroma (4:4:4, as the Hamamatsu planes seen here)
+    the pixels are the whole JPEG's exactly; with subsampled chroma the pixels at a tile's edge can differ by the
+    decoder's chroma upsampling, which reads the neighbouring block.
+    """
+    module = vips()
+    (ch, cw), (rows, cols) = chunk_shape, grid
+    tile_rows = max(1, band // ch)
+    tile_cols = max(1, min(cols, across // cw))
+    tiles = []
+    for r0 in range(0, rows, tile_rows):
+        r1 = min(rows, r0 + tile_rows)
+        for c0 in range(0, cols, tile_cols):
+            c1 = min(cols, c0 + tile_cols)
+            parts = [_frame_sized(header, (r1 - r0) * ch, (c1 - c0) * cw)]
+            n = 0
+            for r in range(r0, r1):
+                for c in range(c0, c1):
+                    data = chunks[r * cols + c]
+                    if len(data) >= 2 and data[-2] == 0xFF and 0xD0 <= data[-1] <= 0xD9:
+                        data = data[:-2]
+                    parts.append(data)
+                    if (r, c) != (r1 - 1, c1 - 1):
+                        parts.append(bytes((0xFF, 0xD0 + n % 8)))
+                    n += 1
+            parts.append(b"\xff\xd9")
+            tiles.append(module.Image.jpegload_buffer(b"".join(parts)))
+    ncols = -(-cols // tile_cols)
+    joined = module.Image.arrayjoin(tiles, across=ncols)
+    return joined.crop(0, 0, cols * cw, rows * ch)
+
+
+class _Intervals:
+    """The restart intervals of a Hamamatsu page, read from the file a row of intervals at a time as the mosaic asks
+    for them in raster order (the whole plane's bytes are never held twice)."""
+
+    def __init__(self, path: str, offsets, counts, cols: int):
+        self.path, self.offsets, self.counts, self.cols = path, offsets, counts, cols
+        self.row, self.cache = -1, []
+
+    def __getitem__(self, index: int) -> bytes:
+        row = index // self.cols
+        if row != self.row:
+            first, last = row * self.cols, (row + 1) * self.cols - 1
+            with open(self.path, "rb") as f:
+                self.cache = []
+                for k in range(first, last + 1):
+                    f.seek(self.offsets[k])
+                    self.cache.append(f.read(self.counts[k]))
+            self.row = row
+        return self.cache[index - row * self.cols]
+
+
+def _ndpi_intervals(path: str, page: int):
+    """A Hamamatsu plane beyond libjpeg's size, decoded by its restart intervals (``intervals_mosaic``). tifffile
+    locates the intervals (the file's MCU starts) and gives the page's JPEG header sized to one interval."""
+    import tifffile
+
+    with tifffile.TiffFile(path) as tif:
+        tiff_page = tif.pages[page]
+        if not tif.is_ndpi or tiff_page.jpegheader is None:
+            raise ValueError(f"page {page} of {Path(path).name} is not a Hamamatsu JPEG plane")
+        header = bytes(tiff_page.jpegheader)
+        ch, cw = tiff_page.chunks[:2]
+        rows, cols = tiff_page.chunked[:2]
+        offsets, counts = list(tiff_page.dataoffsets), list(tiff_page.databytecounts)
+    return intervals_mosaic(header, _Intervals(path, offsets, counts, cols), (ch, cw), (rows, cols))
+
+
 def open_plane(info: SlideInfo, plane: int = 0, level: int = 0):
     """A lazy libvips image of one focal plane at one level, alpha flattened onto white."""
     module = vips()
@@ -254,6 +352,8 @@ def open_plane(info: SlideInfo, plane: int = 0, level: int = 0):
     if focal.page is not None:
         if level:
             raise ValueError("stack planes are read at level 0; levels come from the written pyramid")
+        if info.vendor == "hamamatsu" and max(info.width, info.height) > JPEG_MAX_SIDE:
+            return _flatten(_ndpi_intervals(info.path, focal.page))
         # A scanner writes a plane as one very large strip, over libtiff's 50 MB allocation guard: the sources here
         # were verified before processing, and the job runs in a killable process with a time limit.
         try:
@@ -269,6 +369,15 @@ def open_plane(info: SlideInfo, plane: int = 0, level: int = 0):
             raise ValueError(f"{Path(info.path).name} has a single level")
         image = module.Image.new_from_file(info.path)
     return _flatten(image)
+
+
+def single_colour(image) -> bool:
+    """Whether a libvips image holds one colour only, every band constant. No photograph or scan does; a decoder that
+    fails without an error gives one (a Hamamatsu plane read black, 2026-09-29). Read on a small image: a pyramid's
+    smallest level, a photograph's thumbnail."""
+    pixels = np.asarray(window(image, 0, 0, image.width, image.height))
+    flat = pixels.reshape(-1, pixels.shape[-1]) if pixels.ndim == 3 else pixels.reshape(-1, 1)
+    return bool((flat == flat[0]).all())
 
 
 def associated_image(info: SlideInfo, name: str):

@@ -140,3 +140,106 @@ def test_power_two_size_matches_the_plugin():
 
 def test_mirror_index_does_not_repeat_the_edge():
     assert list(edf.mirror_index(np.arange(-3, 8), 5)) == [3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1]
+
+
+def test_windows_fused_in_parallel_equal_one_at_a_time():
+    """Parallel windows give the same arrays as the serial loop, grey and colour, both methods (the base bake's
+    largest NMNH stacks, 3 planes of 53,760 x 73,728 px, would take hours one window at a time)."""
+    stack, _, _ = focal_stack(300, 460, 5, 11)
+    for method in (edf.METHOD_VARIANCE, edf.METHOD_WAVELET):
+        serial = edf.fuse_array(stack, method, tile=128, margin=16)
+        parallel = edf.fuse_array(stack, method, tile=128, margin=16, workers=3)
+        assert np.array_equal(serial.height_map, parallel.height_map), method
+        assert np.array_equal(serial.composite, parallel.composite), method
+    rng = np.random.default_rng(5)
+    colour = rng.integers(0, 256, (4, 150, 230, 3), dtype=np.uint8)
+    serial = edf.fuse_array(colour, edf.METHOD_WAVELET, tile=64, margin=8)
+    seen = []
+    parallel = edf.fuse_array(colour, edf.METHOD_WAVELET, tile=64, margin=8, workers=4,
+                              progress=lambda done, total: seen.append((done, total)))
+    assert np.array_equal(serial.height_map, parallel.height_map)
+    assert np.array_equal(serial.composite, parallel.composite)
+    assert [d for d, _ in seen] == list(range(1, len(seen) + 1)) and seen[-1][0] == seen[-1][1]
+
+
+def _sleepy_height_map(stack, method, plugin_axes=False):
+    import time
+
+    time.sleep(30)
+    return edf.window_height_map(stack, method, plugin_axes)
+
+
+def test_a_stalled_parallel_fusion_fails_and_stops_its_processes(monkeypatch):
+    """No window finishing within the stall limit ends the fusion with its reason, instead of the job's timeout."""
+    import pytest
+
+    stack, _, _ = focal_stack(120, 160, 3, 2)
+    monkeypatch.setattr(edf, "window_height_map", _sleepy_height_map)
+    with pytest.raises(RuntimeError, match="stalled"):
+        edf.fuse_array(stack, edf.METHOD_VARIANCE, tile=64, margin=8, workers=2, stall_s=2)
+
+
+_POOL_CHILD = """
+import os, sys, time
+sys.path.insert(0, sys.argv[1])
+from app.imaging import edf
+if __name__ == "__main__":
+    executor = edf.pool(2)
+    pids = sorted({executor.submit(os.getpid).result() for _ in range(8)})
+    print(" ".join(map(str, pids)), flush=True)
+    time.sleep(600)
+"""
+
+
+def _alive(pid: int) -> bool:
+    import os
+    import sys
+
+    if sys.platform == "win32":
+        import ctypes
+
+        handle = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not handle:
+            return False
+        code = ctypes.c_ulong()
+        ctypes.windll.kernel32.GetExitCodeProcess(handle, ctypes.byref(code))
+        ctypes.windll.kernel32.CloseHandle(handle)
+        return code.value == 259  # STILL_ACTIVE
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+    try:
+        with open(f"/proc/{pid}/stat") as f:
+            return f.read().rsplit(")", 1)[1].split()[0] != "Z"
+    except OSError:
+        return True
+
+
+def test_the_pool_processes_end_when_the_job_process_is_killed(tmp_path):
+    """A job's timeout kills the job's process; its fusion's pool processes must not outlive it."""
+    import subprocess
+    import sys
+    import time
+    from pathlib import Path
+
+    script = tmp_path / "pool_child.py"
+    script.write_text(_POOL_CHILD, encoding="utf-8")
+    root = str(Path(edf.__file__).resolve().parents[2])
+    job = subprocess.Popen([sys.executable, str(script), root], stdout=subprocess.PIPE, text=True)
+    try:
+        pids = [int(p) for p in job.stdout.readline().split()]
+        assert pids and all(_alive(p) for p in pids)
+    finally:
+        job.kill()
+        job.wait()
+    deadline = time.time() + 30
+    while time.time() < deadline and any(_alive(p) for p in pids):
+        time.sleep(0.5)
+    left = [p for p in pids if _alive(p)]
+    for p in left:
+        import os
+        import signal
+
+        os.kill(p, signal.SIGTERM)
+    assert not left, f"pool processes {left} outlived the killed job process"

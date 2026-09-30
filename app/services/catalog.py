@@ -17,6 +17,8 @@ from app.contracts import licences
 from app.db.models import Asset, Slide
 
 CELL_DEGREES = 0.2
+#: Images made from other images of the slide (U2's fusion of a focal stack).
+DERIVED_ROLES = ("edf_wavelet", "edf_variance", "height_map")
 
 
 def obscure(short_id: str, lat: float, lon: float) -> tuple[c.PointRecord, c.CellRecord]:
@@ -103,11 +105,14 @@ def asset_record(asset: Asset, settings: Settings) -> c.AssetRecord:
 
 def quality_checks(origin: str, assets) -> list[c.QualityCheckRecord]:
     """The slide checks (M9), each computed from what is stored: ``assets`` are the slide's asset rows (or anything
-    with their ``family``, ``licence_uri``, ``source_url``, ``pixel_size_um`` and ``modality``)."""
+    with their ``family``, ``role``, ``licence_uri``, ``source_url``, ``pixel_size_um`` and ``modality``)."""
     assets = list(assets)
     micro = [a for a in assets if a.family == "micro"]
     macro = [a for a in assets if a.family == "macro"]
-    unsourced = [a for a in assets if not a.licence_uri or (origin == "base" and not a.source_url)]
+    # A composite fused from a focal stack (and its height map) is made from the stack's planes, whose licence and
+    # source are recorded; it has a licence and no source of its own, so it is not a missing source.
+    unsourced = [a for a in assets if not a.licence_uri
+                 or (origin == "base" and not a.source_url and a.role not in DERIVED_ROLES)]
     unscaled = [a for a in micro if a.pixel_size_um is None]
     no_modality = [a for a in micro if not a.modality]
     checks = [

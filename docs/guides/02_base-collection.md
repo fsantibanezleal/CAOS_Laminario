@@ -89,27 +89,33 @@ pyramids, the z-plane policy, derivatives). It can take hours for the whole-slid
 so a stopped bake continues where it stopped. It ends by writing `manifest.json` and reports the number of failed
 jobs, which must be zero before an import.
 
-The index keeps two fingerprints of each baked slide: of its assets and of its whole lock entry. After the lock
-changes, a slide whose assets changed is baked again, and a slide whose record alone changed (a country, a locality, a
-determination) has its rows rewritten in place with its images kept, so a corrected label never fuses a focal stack
-again. `--refresh <slide id>` bakes a slide again whatever changed. A bake root made before the images fingerprint
-existed learns it once from the lock it was baked from:
+The index keeps two fingerprints of each baked slide: of its pixels (its assets without their credits) and of its
+whole lock entry. After the lock changes, a slide whose pixels changed (a new file, a new role, a new plane policy) is
+baked again, and a slide whose record alone changed (a country, a locality, a determination, a licence, a credit line)
+has its rows rewritten in place with its images kept, the credits of every stored image included, so a corrected label
+never fuses a focal stack again. `--refresh <slide id>` bakes a slide again whatever changed.
 
-```powershell
-git show <commit of that lock>:data/base/lock.yaml > (Join-Path $env:TEMP "baked-from.yaml")
-.\.venv\Scripts\python -m app.base bake --out <bake root> --digests-from (Join-Path $env:TEMP "baked-from.yaml")
-```
+A bake root made before the pixels fingerprint needs nothing: the next bake judges each old entry by its own rows. When
+the stored images come from exactly the files the lock now names (source address and SHA-256 of the retrieved bytes),
+the entry gains the fingerprint and only its record is rewritten; otherwise the slide is baked again. The bake prints
+how many old entries it found and how many of each.
 
 ## 5. Import on the server
 
-Copy the bake root to the server's staging folder, then import (on the server):
+Copy the bake root to the server's `/srv/laminario/bake/` (the guide Operate the host has the commands), then
+import and check it, as the service account with the service's settings:
 
 ```bash
-cd /opt/laminario && sudo -u laminario .venv/bin/python -m app.base import --bake /srv/laminario/staging/bake-2026-09-30
+set -a; . /etc/fasl-laminario.env; set +a
+cd /opt/fasl-apps/CAOS_Laminario
+runuser -u laminario --preserve-environment -- .venv/bin/python -m app.base import --bake /srv/laminario/bake/<bake>
+runuser -u laminario --preserve-environment -- .venv/bin/python -m app.base verify --bake /srv/laminario/bake/<bake>
 ```
 
-The import verifies every stored file against the manifest before it writes anything, copies the files into the
-store, inserts the slides and assets as baked, composes their search text with the server's tree, and prints what it
-imported, updated, skipped and copied. A base slide already on the server is brought to the bake's rows when its
-record or its assets changed since, and skipped otherwise, so running the import again changes nothing. Remove the
-staging copy afterwards.
+The import verifies every stored file against the manifest before it writes anything, places the files in the store
+(a hard link, since the bake and the store share the data volume, so the import takes no second copy of the
+images), inserts the slides and assets as baked, composes their search text with the server's tree, and prints what
+it imported, updated and skipped, and the files it linked or copied. A base slide already on the server is brought
+to the bake's rows when its record or its assets changed since, and skipped otherwise, so running the import again
+changes nothing. `verify` then checks the served store against the manifest. Remove the bake root afterwards: the
+store's links keep the files.

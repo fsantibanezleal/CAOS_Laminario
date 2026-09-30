@@ -1,0 +1,31 @@
+# The Laminario API on the production host (U16): FastAPI under uvicorn on loopback, behind nginx.
+#
+# Installed as /etc/systemd/system/fasl-laminario.service by deploy/register-services.sh, which the host's owner runs
+# (the management rules keep the registration of long-running services a person's step). The settings come from
+# /etc/fasl-laminario.env (deploy/fasl-laminario.env.example lists them); the data root is the volume at
+# /srv/laminario, owned by the laminario account the service runs as.
+[Unit]
+Description=Laminario API (laminario.ml.fasl-work.com)
+After=network-online.target srv-laminario.mount
+Wants=network-online.target
+RequiresMountsFor=/srv/laminario
+
+[Service]
+Type=simple
+User=laminario
+Group=laminario
+WorkingDirectory=/opt/fasl-apps/CAOS_Laminario
+EnvironmentFile=/etc/fasl-laminario.env
+ExecStart=/opt/fasl-apps/CAOS_Laminario/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8147 --proxy-headers --forwarded-allow-ips 127.0.0.1
+Restart=on-failure
+RestartSec=5
+# The API writes only to the data root; the code and the system are read-only to it.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/srv/laminario
+MemoryMax=1500M
+
+[Install]
+WantedBy=multi-user.target

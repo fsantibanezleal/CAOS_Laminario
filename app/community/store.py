@@ -121,7 +121,7 @@ def checks_pass(conn: Connection, slide_id: int, origin: str) -> bool:
     from app.services.catalog import quality_checks
 
     rows = conn.execute(text(
-        "SELECT family, licence_uri, source_url, pixel_size_um, modality FROM asset WHERE slide_id = :s"),
+        "SELECT family, role, licence_uri, source_url, pixel_size_um, modality FROM asset WHERE slide_id = :s"),
         {"s": slide_id}).all()
     assets = [SimpleNamespace(**r._mapping) for r in rows]
     return all(check.passed for check in quality_checks(origin, assets))

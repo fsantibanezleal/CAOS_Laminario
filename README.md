@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/fsantibanezleal/CAOS_Laminario)](LICENSE)
 [![Version](https://img.shields.io/github/v/tag/fsantibanezleal/CAOS_Laminario?label=version&sort=semver)](https://github.com/fsantibanezleal/CAOS_Laminario/tags)
 
-Live: not deployed yet. It will be served at `https://laminario.ml.fasl-work.com`.
+Live: [laminario.ml.fasl-work.com](https://laminario.ml.fasl-work.com).
 
 **An open collection of microscope slides, in the spirit of iNaturalist.** Every case is a real slide, shown as the
 glass object it is: its format and size, the specimen seen through the coverslip, and a label with a QR code that
@@ -34,7 +34,7 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.15.000`. Released, each with its wiki page:
+Version `0.16.000`. Released, each with its wiki page:
 
 - U0, the repository base: versioning, guards, the design document with a gate per requirement.
 - U1, the data model and both contracts (ingestion and catalog), exported as JSON Schema and TypeScript ([`02_data-contracts.md`](docs/architecture/02_data-contracts.md)).
@@ -52,6 +52,7 @@ Version `0.15.000`. Released, each with its wiki page:
 - U13, Identify: identifications, the community's agreement rule, badges, moderation ([`15_identify.md`](docs/architecture/15_identify.md)).
 - U14, the profile cabinet and printable label sheets on real label stocks ([`16_cabinet.md`](docs/architecture/16_cabinet.md)).
 - U15, About the collection: sources, licences, citing, how the imaging works ([`17_about.md`](docs/architecture/17_about.md)).
+- U16, the deployment at laminario.ml.fasl-work.com with the base collection and production gates ([`18_deployment.md`](docs/architecture/18_deployment.md)).
 
 The units that follow are listed in the design document.
 

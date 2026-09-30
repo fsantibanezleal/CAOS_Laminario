@@ -11314,7 +11314,7 @@ slides:
     height: 2848
     modality: brightfield
   note: benign urine cytology, very high magnification
-- id: mammals-openslide-philips-tiff-philips-2-tiff-1a0328
+- id: mammals-openslide-philips-tiff-philips-4-tiff-fa5d0b
   collection: life.mammals
   slide:
     format: iso_76x26
@@ -11333,16 +11333,16 @@ slides:
   assets:
   - family: micro
     role: pyramid
-    url: https://openslide.cs.cmu.edu/download/openslide-testdata/Philips-TIFF/Philips-2.tiff
-    record_id: openslide:Philips-TIFF/Philips-2.tiff
-    record_url: https://openslide.cs.cmu.edu/download/openslide-testdata/Philips-TIFF/Philips-2.tiff
+    url: https://openslide.cs.cmu.edu/download/openslide-testdata/Philips-TIFF/Philips-4.tiff
+    record_id: openslide:Philips-TIFF/Philips-4.tiff
+    record_url: https://openslide.cs.cmu.edu/download/openslide-testdata/Philips-TIFF/Philips-4.tiff
     licence: https://creativecommons.org/publicdomain/zero/1.0/
     rights_holder: null
     creator: Computational Pathology Group, Radboud University Medical Center
     modality: brightfield
     wsi: true
-    sha256: 773eecd27eec7c27f820fa52abc5fca90047b0a8b6aa7a4dc056b95ae849cb09
-    bytes: 914485186
+    sha256: 6a743d3bbf721a63f1fc2920f41ddcca43571346665114c6827e63efe034a0b0
+    bytes: 290991342
   note: lymph node section from the CAMELYON16 data set, with the slide's macro image
 - id: mammals-openslide-philips-tiff-philips-1-tiff-157c46
   collection: life.mammals

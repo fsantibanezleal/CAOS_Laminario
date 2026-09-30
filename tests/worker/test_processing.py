@@ -155,3 +155,24 @@ def test_fuse_stack_stores_composites(tmp_path, monkeypatch, vips):
     labels = [canvas["label"]["en"][0] for canvas in manifest["items"]]
     assert len(labels) == 12, "ten planes and two composites; the height map is not painted"
     assert any(label.startswith("extended depth of field, complex wavelets") for label in labels)
+
+
+def test_an_image_of_one_colour_fails_its_job_with_the_reason(tmp_path, monkeypatch, vips):
+    """A decoder that fails without an error gives an image of one colour (a Hamamatsu plane beyond libjpeg's size
+    was read black, 2026-09-29): the job fails with that reason, and nothing is left in the store."""
+    settings, engine = sandbox(tmp_path, monkeypatch)
+    source = tmp_path / "blank.tif"
+    (vips.Image.black(1200, 900, bands=3) + [0, 0, 0]).cast("uchar").tiffsave(str(source))
+    photo = tmp_path / "blank.jpg"
+    (vips.Image.black(800, 600, bands=3) + [240, 240, 240]).cast("uchar").jpegsave(str(photo))
+    short = seed_slide(settings, [
+        {"family": "micro", "media_kind": "pyramid", "status": "pending", "licence_uri": CC_BY,
+         "source_path": str(source), "pixel_size_um": 0.46},
+        {"family": "macro", "media_kind": "image", "status": "pending", "licence_uri": CC_BY,
+         "source_path": str(photo)}])
+    for asset_id in asset_ids(engine, short):
+        with pytest.raises(kinds.JobError, match="decodes to a single colour"):
+            run(engine, "process_asset", {"asset_id": asset_id})
+        assert asset_row(engine, asset_id).storage_key is None
+    folder = settings.store_root / short
+    assert not folder.exists() or not any(p.is_file() for p in folder.rglob("*"))

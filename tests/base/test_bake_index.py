@@ -1,54 +1,39 @@
-"""A baked slide whose lock entry changed (without an images digest to tell what changed) is baked again; one baked
-before digests were recorded is trusted unless named. Record-only changes: tests/base/test_countries.py."""
+"""The bake index: which baked slides are baked again, which have their record rewritten, and how an entry made before
+the pixels fingerprint is judged by the bake's own rows. Record-only changes end to end: tests/base/test_countries.py.
+"""
 
 from __future__ import annotations
 
-from app.base.bake import _stale, digest
+from app.base.bake import _stale, digest, lock_files, pixels_digest, upgrade_entries
 
 
-def test_changed_entries_are_stale_and_legacy_entries_are_trusted():
-    a = {"id": "a", "specimen": {"anchor": {"ref": "1"}}}
-    b = {"id": "b", "specimen": {"anchor": {"ref": "2"}}}
-    index = {"a": {"short_id": "AAAA0001", "digest": digest(a)}, "b": {"short_id": "BBBB0002", "digest": digest(b)},
-             "c": "CCCC0003"}
-    moved = {**b, "specimen": {"anchor": {"ref": "3"}}}
-    slides = [a, moved, {"id": "c"}]
-    assert _stale(index, slides, set()) == (["b"], [])
-    assert _stale(index, slides, {"c"}) == (["b", "c"], [])
-    assert digest(a) == digest({"specimen": {"anchor": {"ref": "1"}}, "id": "a"})  # key order does not matter
+def _slide(slide_id: str, ref: str, url: str) -> dict:
+    return {"id": slide_id, "specimen": {"anchor": {"ref": ref}},
+            "assets": [{"url": url, "role": "single", "licence": "CC-BY-4.0", "rights_holder": "A museum"}]}
 
 
-def test_a_slide_the_lock_no_longer_holds_leaves_the_bake(tmp_path, monkeypatch):
-    """The bake root mirrors the lock: a dropped slide (the DICOM sample over the size limit, F-043) is removed."""
-    import json
-
-    import yaml
-
-    from app.base import bake as bake_module
-
-    out = tmp_path / "bake"
-    out.mkdir()
-    (out / bake_module.INDEX).write_text(json.dumps({"dropped": {"short_id": "AAAA0001", "digest": "x"}}))
-    lock = tmp_path / "lock.yaml"
-    lock.write_text(yaml.safe_dump({"slides": []}))
-    monkeypatch.setattr(bake_module, "LOCK", lock)
-    removed = []
-
-    def remove(out_, index, ids):
-        removed.extend(ids)
-        for slide_id in ids:
-            index.pop(slide_id)
-
-    monkeypatch.setattr(bake_module, "_remove", remove)
-    monkeypatch.setattr(bake_module, "_store", lambda *a, **k: _done([]))
-    monkeypatch.setattr(bake_module, "load_acquired", lambda: {})
-    monkeypatch.setattr(bake_module, "_queue_processing", lambda *a: 0)
-    monkeypatch.setattr(bake_module, "_run_worker", lambda *a: 0)
-    monkeypatch.setattr(bake_module, "write_manifest", lambda out_: {"slides": []})
-    bake_module.bake(out, tmp_path)
-    assert removed == ["dropped"]
-    assert json.loads((out / bake_module.INDEX).read_text()) == {}
+def test_pixels_and_record_changes_are_told_apart():
+    a, b, c = _slide("a", "1", "https://a"), _slide("b", "2", "https://b"), _slide("c", "3", "https://c")
+    index = {s["id"]: {"short_id": f"{s['id'].upper() * 4}0001", "digest": digest(s), "pixels": pixels_digest(s)}
+             for s in (a, b, c)}
+    credited = {**b, "assets": [{**b["assets"][0], "rights_holder": "The same museum, renamed"}]}
+    moved = {**c, "assets": [{**c["assets"][0], "url": "https://c2"}]}
+    assert _stale(index, [a, credited, moved], set()) == (["c"], ["b"])  # a credit is record; a new file is pixels
+    assert _stale(index, [a, credited, moved], {"a"}) == (["a", "c"], ["b"])  # named: baked again
+    assert _stale(index, [a], set()) == ([], [])  # slides this bake does not store are left alone
+    assert digest(a) == digest({"specimen": {"anchor": {"ref": "1"}}, "assets": a["assets"], "id": "a"})
 
 
-async def _done(value):
-    return value
+def test_an_entry_without_a_pixels_fingerprint_is_judged_by_the_stored_images():
+    kept, moved, plain = _slide("kept", "1", "https://k"), _slide("moved", "2", "https://m2"), _slide("p", "3", "u")
+    acquired = {"https://k": {"sha256": "k" * 64}, "https://m2": {"sha256": "m" * 64}, "u": {"sha256": "u" * 64}}
+    index = {"kept": "KEPT0001", "moved": {"short_id": "MOVE0002", "digest": "old", "images": "old"}, "p": "PLAIN003"}
+    baked = {"KEPT0001": lock_files(kept, acquired), "MOVE0002": {("https://m1", "m" * 64)},
+             "PLAIN003": {("u", "an older download")}}
+    assert upgrade_entries(index, [kept, moved, plain], baked, acquired) == (1, 2)
+    assert index["kept"] == {"short_id": "KEPT0001", "digest": "", "pixels": pixels_digest(kept)}
+    assert index["moved"]["short_id"] == "MOVE0002" and index["moved"]["pixels"] == ""
+    # The kept entry's record is rewritten (what it was baked from is not known); the others are baked again.
+    assert _stale(index, [kept, moved, plain], set()) == (["moved", "p"], ["kept"])
+    assert upgrade_entries(index, [kept, moved, plain], baked, acquired) == (0, 0)  # upgraded once
+    assert _stale({"x": "XXXX0001"}, [_slide("x", "9", "v")], set()) == (["x"], [])  # never trusted unjudged

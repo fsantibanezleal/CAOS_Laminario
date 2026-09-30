@@ -2382,7 +2382,7 @@ life.mammals:
   modality: brightfield
   stain: Papanicolaou
   note: benign urine cytology, very high magnification
-- openslide: Philips-TIFF/Philips-2.tiff
+- openslide: Philips-TIFF/Philips-4.tiff
   taxon: Homo sapiens@species
   prep: section
   part: lymph-node

@@ -1,5 +1,8 @@
 // Browser gates run against the real build: `vite preview` serves dist/ on the preview port, and each gate opens it
 // with Playwright's Chromium. PLAYWRIGHT_BROWSERS_PATH names the browser cache (outside the repository).
+//
+// LAMINARIO_GATE_ORIGIN points the gates at a deployed site instead (https://laminario.ml.fasl-work.com): no preview
+// is started, and the API is read through the same origin, as a visitor reads it (U16's production gates).
 import { spawn } from "node:child_process";
 import { mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -7,11 +10,14 @@ import { fileURLToPath } from "node:url";
 
 export const FRONTEND = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 export const PORT = 4909;
-export const ORIGIN = `http://127.0.0.1:${PORT}`;
+const DEPLOYED = process.env.LAMINARIO_GATE_ORIGIN?.replace(/\/$/, "");
+export const ORIGIN = DEPLOYED ?? `http://127.0.0.1:${PORT}`;
 export const WIDTHS = [360, 768, 1280, 1920];
 export const ROOMS = ["daylight", "lamplit"];
 export const LANGS = ["en", "es"];
-export const API = "http://127.0.0.1:8147";
+export const API = DEPLOYED ?? "http://127.0.0.1:8147";
+/** Whether the gates run against a deployed site. */
+export const PRODUCTION = Boolean(DEPLOYED);
 
 /**
  * Every place a visitor can open, each gate walks them all (U15 adds About). The contribute and moderation
@@ -66,8 +72,10 @@ export function outDir(gate) {
   return folder;
 }
 
-/** Start `vite preview` and resolve when it answers; the returned function stops it. */
+/** Start `vite preview` and resolve when it answers; the returned function stops it. Against a deployed site there
+ * is nothing to start. */
 export async function serve() {
+  if (DEPLOYED) return async () => undefined;
   const child = spawn(process.execPath, [join(FRONTEND, "node_modules", "vite", "bin", "vite.js"), "preview", "--host",
     "127.0.0.1", "--port", String(PORT), "--strictPort"], { cwd: FRONTEND, stdio: "ignore" });
   const deadline = Date.now() + 30_000;

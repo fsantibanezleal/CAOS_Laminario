@@ -54,6 +54,27 @@ What the reader returns for each fixture, equal to the files' own metadata (gate
 OpenSlide sees only one focal plane of an NDPI; the other 70 are TIFF pages that libvips reads directly
 (`tiffload(page=...)`, about 0.2 s per plane).
 
+### A plane beyond the JPEG limit
+
+A Hamamatsu scanner writes each plane as one JPEG, however large, with a restart marker after every few rows of
+blocks. libjpeg decodes at most 65,500 px on a side, and a plane beyond it was not refused: libtiff returned it
+black, without an error. A Zenodo palynology slide of 53,760 x 73,728 px with three planes (-15, 0 and 15 um) was
+stored and fused black in the base bake before the check below existed (2026-09-29).
+
+Such a plane is decoded by its restart intervals. tifffile locates them (the file's MCU starts; here 129,024
+intervals of 8 x 3,840 px, 14 to a row) and gives the plane's JPEG header. The plane is cut into bands of whole
+intervals, at most 1,024 px tall and 65,500 px wide; each band is a JPEG of its own, made of that header with the
+band's size, the band's intervals with their restart markers numbered again from RST0 (a decoder checks their
+order), and an end marker. libvips decodes the bands and joins them in place. A block's pixels depend only on its
+coefficients when the chroma is at full resolution (4:4:4, as in these files), so the result is the whole JPEG's:
+the plane at depth 0 equals OpenSlide's level 0, which is the scanner's default plane, to the last value, across
+the bands' seams (tested on that slide, and on a synthetic JPEG cut into tiles of every shape). Each plane opens in
+3 to 9 s and holds only its compressed bands: 493 to 583 MB for that file's planes.
+
+Any stored image is also read back once, on the pyramid's smallest level or on a photograph's thumbnail: one colour
+in every band means its decoder failed without an error, or the file holds no image. The file is removed and the job
+fails with that reason, so a slide is never shown black (tested with a blank scan and a blank photograph).
+
 ## 2. Limits
 
 A decompression bomb is a small file that expands to an image far larger than the machine can hold. The header
@@ -217,6 +238,29 @@ dome stack tiled and whole composites have Tenengrad sharpness 1811 and 1804 and
 
 Measured times on this machine: dome (20 planes) 2.8 s, fly eye (32 planes) 8.6 s for the wavelet fusion,
 0.2 s and 0.6 s for variance selection.
+
+### Windows in parallel
+
+The windows are independent (each writes only its core), so a stack's fusion computes their height maps in parallel
+processes: `fuse_workers` of them, 2 on the four-core host, which the API shares, and as many as leave four cores free
+(at most 12) in the base bake on a workstation. The job's own process reads each window from the plane pyramids,
+hands its stack to a pool process (spawn context: the images it reads from stay in the job's process), and places the
+returned height map and the composite it selects in the window's core. At most two windows per worker are in flight,
+so memory stays bounded whatever the stack's size: a window of eleven colour planes, with its margins, is 54 MB of
+pixels and about half a gigabyte while its wavelet transform runs. The arrays equal those of the one-window-at-a-time
+loop exactly, grey and colour, for both methods and in the order of the progress it reports (tested). On the host
+(4 vCPU), 16 windows of a three-plane colour stack take 72.8 s one at a time and 40.1 s in two processes, with
+identical arrays; in the base bake, twelve processes on a workstation fused the 6,720 wavelet windows of a
+three-plane NMNH stack at about 90 windows a minute. The worker's own path was run on the host: its job process,
+spawned by pebble, fuses in a pool spawned from it.
+
+If no window finishes within 20 minutes, the fusion stops its pool's processes and fails with that reason, instead of
+waiting for the job's timeout of hours: in a benchmark on Windows one pool process hung at start-up and the fusion
+waited on it without end (tested with a height map that sleeps past a short limit). The other way round, each pool
+process watches the job's process and ends when it does. A job's timeout kills the job's process without a word to
+its pool, and the pool's processes, which hold both ends of their own task queue, never see it close: on the host,
+two of them and the resource tracker were still waiting 118 s after the job's process received SIGTERM. With the watch
+they were gone within 2 s (tested by killing a process that holds a pool).
 
 ## 6. Derivatives
 

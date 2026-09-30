@@ -45,6 +45,9 @@ CONSISTENCY_SCALES = 3
 WAVELET_LENGTH = 14
 TILE = 1024
 MARGIN = 128
+#: Seconds the parallel fusion waits for any window before it declares its processes stalled (a window of eleven
+#: planes takes seconds; a pool process was once seen hanging at start-up on Windows, 2026-09-29).
+STALL_S = 1200
 COEFFICIENT_BUDGET_BYTES = 512 * 1_000_000
 
 METHOD_VARIANCE = "variance"
@@ -350,10 +353,54 @@ def _tile_windows(size: int, tile: int, margin: int) -> list[tuple[int, int, int
     return windows
 
 
+def _exit_with_parent() -> None:
+    """In a pool process: end at once when the process that made the pool ends. A job's timeout terminates the job's
+    process without a word to its pool, and the pool's processes, which hold both ends of their task queue, would
+    otherwise wait on it for good (measured on the host: alive two minutes after SIGTERM, then killed by hand)."""
+    import os
+    import threading
+    from multiprocessing import parent_process
+    from multiprocessing.connection import wait as wait_ready
+
+    parent = parent_process()
+    if parent is None:
+        return
+
+    def watch() -> None:
+        wait_ready([parent.sentinel])
+        os._exit(1)
+
+    threading.Thread(target=watch, name="exit-with-parent", daemon=True).start()
+
+
+def pool(workers: int):
+    """A pool of ``workers`` spawned processes that end with the process that made them, even when it is killed."""
+    import multiprocessing
+    from concurrent.futures import ProcessPoolExecutor
+
+    return ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context("spawn"),
+                               initializer=_exit_with_parent)
+
+
+def window_height_map(stack: np.ndarray, method: str, plugin_axes: bool = False) -> np.ndarray:
+    """The height map of one window's stack (planes, h, w[, 3]); a process of the fusion's pool runs it."""
+    grey = luminance(stack) if stack.ndim == 4 else stack.astype(np.float64)
+    if method == METHOD_WAVELET:
+        return wavelet_height_map(grey, plugin_axes=plugin_axes)
+    return variance_height_map(grey)
+
+
 def fuse(read: PlaneReader, planes: int, width: int, height: int, method: str = METHOD_WAVELET,
          tile: int = TILE, margin: int = MARGIN, plugin_axes: bool = False,
-         progress: Callable[[int, int], None] | None = None) -> EdfResult:
-    """Fuse a focal stack of ``planes`` planes, reading windows through ``read``."""
+         progress: Callable[[int, int], None] | None = None, workers: int = 1,
+         stall_s: float = STALL_S) -> EdfResult:
+    """Fuse a focal stack of ``planes`` planes, reading windows through ``read``.
+
+    The windows are independent: each owns its core and writes only there. With ``workers`` above 1 their height
+    maps are computed in that many processes while this one reads the windows (the images it reads from stay
+    here) and assembles them, which gives the same arrays as one window at a time. At most two windows per worker
+    are in flight, so memory stays bounded whatever the stack's size.
+    """
     if planes < 1:
         raise ValueError("a focal stack needs at least one plane")
     if method not in (METHOD_WAVELET, METHOD_VARIANCE):
@@ -361,18 +408,18 @@ def fuse(read: PlaneReader, planes: int, width: int, height: int, method: str = 
     height_map = np.zeros((height, width), dtype=np.uint16)
     composite = None
     windows = [(xw, yw) for yw in _tile_windows(height, tile, margin) for xw in _tile_windows(width, tile, margin)]
-    for done, ((x0, tw, ox0, ox1), (y0, th, oy0, oy1)) in enumerate(windows):
-        stack = np.stack([np.asarray(read(k, x0, y0, tw, th)) for k in range(planes)])
-        colour = stack.ndim == 4
-        grey = luminance(stack) if colour else stack.astype(np.float64)
-        if method == METHOD_WAVELET:
-            local = wavelet_height_map(grey, plugin_axes=plugin_axes)
-        else:
-            local = variance_height_map(grey)
+
+    def read_window(spec) -> np.ndarray:
+        (x0, tw, _, _), (y0, th, _, _) = spec
+        return np.stack([np.asarray(read(k, x0, y0, tw, th)) for k in range(planes)])
+
+    def place(spec, stack: np.ndarray, local: np.ndarray) -> None:
+        nonlocal composite
+        (x0, _, ox0, ox1), (y0, _, oy0, oy1) = spec
         own = local[oy0 - y0:oy1 - y0, ox0 - x0:ox1 - x0]
         height_map[oy0:oy1, ox0:ox1] = own
         index = (own.astype(np.intp) - 1)[None, ...]
-        if colour:
+        if stack.ndim == 4:
             if composite is None:
                 composite = np.zeros((height, width, 3), dtype=np.uint8)
             window = stack[:, oy0 - y0:oy1 - y0, ox0 - x0:ox1 - x0, :]
@@ -382,8 +429,50 @@ def fuse(read: PlaneReader, planes: int, width: int, height: int, method: str = 
                 composite = np.zeros((height, width), dtype=np.float32)
             window = stack[:, oy0 - y0:oy1 - y0, ox0 - x0:ox1 - x0].astype(np.float32)
             composite[oy0:oy1, ox0:ox1] = np.take_along_axis(window, index, axis=0)[0]
-        if progress:
-            progress(done + 1, len(windows))
+
+    workers = max(1, min(int(workers), len(windows)))
+    if workers == 1:
+        for done, spec in enumerate(windows):
+            stack = read_window(spec)
+            place(spec, stack, window_height_map(stack, method, plugin_axes))
+            if progress:
+                progress(done + 1, len(windows))
+    else:
+        from concurrent.futures import FIRST_COMPLETED, wait
+
+        done = 0
+        executor = pool(workers)
+        stalled = False
+        try:
+            pending: dict = {}
+            upcoming = iter(windows)
+            exhausted = False
+            while pending or not exhausted:
+                while not exhausted and len(pending) < 2 * workers:
+                    spec = next(upcoming, None)
+                    if spec is None:
+                        exhausted = True
+                        break
+                    stack = read_window(spec)
+                    pending[executor.submit(window_height_map, stack, method, plugin_axes)] = (spec, stack)
+                finished, _ = wait(pending, timeout=stall_s, return_when=FIRST_COMPLETED)
+                if not finished:
+                    stalled = True
+                    raise RuntimeError(f"no window of the fusion finished in {stall_s:.0f} s: its processes stalled")
+                for future in finished:
+                    spec, stack = pending.pop(future)
+                    place(spec, stack, future.result())
+                    done += 1
+                    if progress:
+                        progress(done, len(windows))
+        finally:
+            if stalled:
+                # A stalled process never answers a shutdown: stop every one first.
+                for process in list(getattr(executor, "_processes", {}).values()):
+                    process.terminate()
+                executor.shutdown(wait=False, cancel_futures=True)
+            else:
+                executor.shutdown(wait=True)
     parameters = {"tile": tile, "margin": margin, "planes": planes}
     if method == METHOD_WAVELET:
         parameters |= {"length": WAVELET_LENGTH, "subband_check": True, "majority_check": True,
