@@ -15,14 +15,17 @@
 
 /* The table of contents: a card of the sections, numbered as they follow. */
 .toc {
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   grid-area: toc;
   max-width: 68ch;
   margin: 0 0 var(--s-7);
   padding: var(--s-4) var(--s-5);
-  border: 1px solid var(--c-rule);
-  border-top: 4px solid var(--c-wood);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
 }
 
 .tocTitle {
@@ -152,13 +155,16 @@
 }
 
 .stat {
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   display: grid;
   gap: var(--s-1);
   padding: var(--s-3) var(--s-4);
-  border: 1px solid var(--c-rule);
-  border-top: 4px solid var(--c-wood);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
 }
 
 .stat dt {
@@ -228,14 +234,18 @@
 }
 
 .card {
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   display: grid;
   align-content: start;
   gap: var(--s-2);
   min-width: 0;
   padding: var(--s-4) var(--s-5);
-  border: 1px solid var(--c-rule);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
 }
 
 .card p {

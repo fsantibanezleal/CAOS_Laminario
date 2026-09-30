@@ -1,0 +1,111 @@
+/* A glass slide drawn in the page, holding text: clear glass with a bright bevel and a faint green thickness at its
+   edge, a frosted end of fine grain with the band, icon and title. The glass lets the room show through. */
+.panel {
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23f)'/%3E%3C/svg%3E");
+  display: grid;
+  grid-template-columns: minmax(110px, 22%) minmax(0, 1fr);
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 2px;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.12) 70%,
+      rgba(255, 255, 255, 0) 100%),
+    color-mix(in oklab, var(--c-surface) 72%, #cfe6da 8%);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, #ffffff 70%, transparent),
+    inset 0 0 0 2px color-mix(in oklab, #7fb89a 45%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.14),
+    0 10px 24px -14px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="lamplit"] .panel {
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.05) 70%,
+      rgba(255, 255, 255, 0) 100%),
+    color-mix(in oklab, var(--c-surface) 80%, #2f4a3d 20%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 0 0 2px color-mix(in oklab, #7fb89a 30%, transparent),
+    0 10px 24px -14px rgba(0, 0, 0, 0.7);
+}
+
+.end {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  min-width: 0;
+  padding: 0 var(--s-4) var(--s-5);
+  color: #251c16;
+  background: var(--grain), rgba(247, 247, 243, 0.94);
+}
+
+.band {
+  display: block;
+  height: 8px;
+  margin: 0 calc(-1 * var(--s-4)) var(--s-2);
+  background: var(--tag-hue);
+}
+
+.icon {
+  color: var(--tag-hue);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--f-label);
+  font-size: var(--fs-4);
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.glass {
+  min-width: 0;
+  padding: var(--s-5) var(--s-6);
+}
+
+.quiet {
+  grid-template-columns: minmax(64px, 12%) minmax(0, 1fr);
+}
+
+/* The end above the glass: on a narrow screen, and for a narrow column. */
+.stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.stacked .end {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-bottom: var(--s-3);
+}
+
+.stacked .band {
+  flex: 0 0 100%;
+}
+
+.stacked .glass {
+  padding: var(--s-4);
+}
+
+@media (max-width: 640px) {
+  .panel,
+  .quiet {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .end {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-bottom: var(--s-3);
+  }
+
+  .band {
+    flex: 0 0 100%;
+  }
+
+  .glass {
+    padding: var(--s-4);
+  }
+}

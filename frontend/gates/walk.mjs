@@ -7,18 +7,21 @@
 // R-1006  after every navigation the new place's heading has the focus; a place reopened from its address (filters
 //         included) shows the same results as when it was reached by clicking
 // R-1007  every slide in a drawer is drawn at its format's proportion within 1 percent, at one scale for the whole tray,
-//         label end first
+//         label end first (measured on the drawer drawn flat; the scene draws each slide in millimetres)
+// R-1701  the sets are glass slides reached by pointer through the scene (U17): a collection, a drawer and a slide are
+//         opened by clicking them on the stage
 // R-1008  without its basemap the map still draws, and says so
 //
 // Screenshots of each step go to .gates/walk/.
 import { join } from "node:path";
 import { chromium } from "playwright";
+import { glassHrefs, glassReady, openGlass } from "./lib/glass.mjs";
 import { API, ORIGIN, openPlace, outDir, requireApi, serve } from "./lib/serve.mjs";
 
 const api = await requireApi();
 const out = outDir("walk");
 const stop = await serve();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 const failures = [];
 const steps = [];
 const check = (ok, message) => { if (!ok) failures.push(message); };
@@ -40,20 +43,25 @@ async function arrived(page, pattern, name) {
 /** The slides a place shows, and its announced count. */
 async function shown(page) {
   await page.waitForFunction(() => !document.querySelector("[aria-busy='true']"));
+  await glassReady(page, "slides").catch(() => undefined);
   return page.evaluate(() => ({
-    ids: [...document.querySelectorAll("[data-slide]")].map((a) => a.dataset.slide),
+    ids: [...document.querySelectorAll('[data-glass-set="slides"] [data-glass-item]')].map((a) => a.dataset.glassItem),
     count: document.querySelector("[role='status']")?.textContent ?? "",
   }));
 }
 
-/** R-1007: proportion, one scale, label end first, for every slide of the tray. */
+/** R-1007: proportion, one scale, label end first, for every slide of the drawer drawn flat. */
 async function measureTray(page, name) {
-  const slides = await page.evaluate(() => [...document.querySelectorAll("[data-slide]")].map((a) => {
-    const [long, short] = a.dataset.format.split("x").map(Number);
-    const glass = a.firstElementChild.getBoundingClientRect();
-    const label = a.firstElementChild.firstElementChild.getBoundingClientRect();
-    return { id: a.dataset.slide, long, short, w: glass.width, h: glass.height, labelLeft: label.left, glassLeft: glass.left };
-  }));
+  await page.waitForSelector('[data-glass-set="slides"] [data-glass-flat]');
+  const slides = await page.evaluate(() => [...document.querySelectorAll('[data-glass-set="slides"] [data-glass-flat]')]
+    .map((a) => {
+      const [long, short] = a.dataset.format.split("x").map(Number);
+      const glass = a.getBoundingClientRect();
+      const first = a.firstElementChild;
+      const label = first && first.tagName !== "IMG" ? first.getBoundingClientRect() : glass;
+      return { id: a.dataset.glassFlat, long, short, w: glass.width, h: glass.height, labelLeft: label.left,
+        glassLeft: glass.left };
+    }));
   check(slides.length > 0, `${name}: the tray holds no slide`);
   const scales = slides.map((s) => s.w / s.long);
   for (const s of slides) {
@@ -71,17 +79,23 @@ try {
   await page.screenshot({ path: join(out, "00-landing.png"), fullPage: true });
   steps.push("landing: /");
 
-  // Landing > the Rocks cabinet > the igneous drawer.
-  await page.locator('a[href="/c/rocks"]').first().click();
+  // Landing > the Rocks collection > the igneous drawer, each a glass slide clicked on its stage (R-1701).
+  await openGlass(page, "earth", "earth.rocks");
   await arrived(page, "**/c/rocks", "cabinet");
-  await page.locator('a[href="/c/rocks/igneous"]').first().click();
+  await openGlass(page, "drawers", "earth.rocks.igneous");
   await arrived(page, "**/c/rocks/igneous", "drawer");
   const drawer = await shown(page);
   check(drawer.ids.length > 0, "drawer: no slides in the igneous drawer");
-  const measured = await measureTray(page, "drawer");
+  // R-1007 on the same drawer drawn flat, in a browser set to draw the slides flat.
+  const flat = await context.browser().newContext({ viewport: { width: 1280, height: 900 } });
+  await flat.addInitScript(() => { localStorage.setItem("laminario.glass", "flat"); localStorage.setItem("laminario.lang", "en"); });
+  const flatPage = await flat.newPage();
+  await flatPage.goto(page.url(), { waitUntil: "networkidle" });
+  const measured = await measureTray(flatPage, "drawer");
+  await flat.close();
 
   // Every slide opens its own place (the slide place arrives with U11).
-  const hrefs = await page.evaluate(() => [...document.querySelectorAll("[data-slide]")].map((a) => a.getAttribute("href")));
+  const hrefs = await glassHrefs(page, "slides");
   check(hrefs.every((h) => /^\/s\/[0-9A-HJKMNP-TV-Z]{8}$/.test(h)), `drawer: a slide links elsewhere: ${hrefs.find((h) => !/^\/s\//.test(h))}`);
 
   // A facet by pointer narrows the drawer; the address carries it and reopens to the same slides.
@@ -105,10 +119,10 @@ try {
 
   // A slide from the tray, then its stage, by pointer (R-084); every image's provenance on the slide (R-1107).
   const picked = filtered.ids[0];
-  await page.locator(`[data-slide="${picked}"]`).first().click();
+  await openGlass(page, "slides", picked);
   await arrived(page, `**/s/${picked}`, "slide");
   const record = await (await fetch(`${API}/api/slides/${picked}`)).json();
-  await page.waitForSelector("[data-testid=slide-object] svg");
+  await page.waitForSelector("[data-testid=slide-object]");
   const rows = await page.evaluate(() => [...document.querySelectorAll("[data-testid=provenance] tbody tr")].map((tr) => ({
     asset: Number(tr.dataset.asset), cells: [...tr.children].map((c) => c.textContent.trim()),
     licence: tr.querySelector("a[href*='creativecommons'], a[href*='publicdomain']")?.getAttribute("href") ?? null,

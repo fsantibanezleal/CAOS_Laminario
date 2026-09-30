@@ -7,7 +7,7 @@ import { ROOMS, openPlace, outDir, serve } from "./lib/serve.mjs";
 
 const out = outDir("states");
 const stop = await serve();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 const failures = [];
 try {
   for (const room of ROOMS) {

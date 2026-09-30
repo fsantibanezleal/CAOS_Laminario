@@ -14,8 +14,9 @@ import { useI18n } from "../../i18n";
 import { PrintDialog } from "../../labels/PrintDialog";
 import { EXPORT_URL, PAGE, peopleApi } from "../../people/api";
 import { Place } from "../../router/Place";
-import { nameParts, trayReference } from "../../slide/names";
-import { TraySlide } from "../../slide/TraySlide";
+import { FlatGlassSlide } from "../../glass/FlatGlassSlide";
+import { slideItem } from "../../glass/items";
+import { nameParts } from "../../slide/names";
 import { localised, nodeHref, useTree, type TreeIndex } from "../../tree/TreeProvider";
 import { Button } from "../../ui/Button";
 import { CollectionTag } from "../../ui/Chip";
@@ -208,7 +209,8 @@ interface DrawerProps {
 
 /** One collection's drawer of the account's slides: its tray, a page at a time. */
 function Drawer({ handle, collection, count, tree, selecting, selected, onToggle, onAll }: DrawerProps) {
-  const { t, plural, lang } = useI18n();
+  const i18n = useI18n();
+  const { t, plural, lang } = i18n;
   const [items, setItems] = useState<SlideSummary[] | null>(null);
   const [total, setTotal] = useState(count);
   const [busy, setBusy] = useState(false);
@@ -253,10 +255,10 @@ function Drawer({ handle, collection, count, tree, selecting, selected, onToggle
       {failed ? <p role="alert" className={styles.problem}>{t("people.failed")}</p> : null}
       {!items && !failed ? <Skeleton lines={3} /> : null}
       {items?.length ? (
-        <ul className={styles.tray} style={{ "--ref": trayReference(items.map((s) => s.format)) } as CSSProperties}>
+        <ul className={styles.tray}>
           {items.map((slide) => (
             <li key={slide.id} data-selected={selected.includes(slide.id) || undefined}>
-              <TraySlide slide={slide} tree={tree} />
+              <FlatGlassSlide item={slideItem(slide, tree, i18n)} />
               {selecting ? (
                 <Checkbox className={styles.pick} checked={selected.includes(slide.id)} data-pick={slide.id}
                   onChange={(e) => onToggle(slide.id, e.target.checked)}
@@ -279,7 +281,8 @@ function Drawer({ handle, collection, count, tree, selecting, selected, onToggle
 
 /** The account's current identifications of others' slides, newest first. */
 function Identifications({ handle, total, tree }: { handle: string; total: number; tree: TreeIndex }) {
-  const { t, date } = useI18n();
+  const i18n = useI18n();
+  const { t, date } = i18n;
   const [items, setItems] = useState<PersonIdentificationRecord[] | null>(null);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -308,10 +311,10 @@ function Identifications({ handle, total, tree }: { handle: string; total: numbe
   }
   return (
     <>
-      <ul className={styles.tray} style={{ "--ref": trayReference(items.map((i) => i.slide.format)) } as CSSProperties}>
+      <ul className={styles.tray}>
         {items.map((i) => (
           <li key={i.id} className={styles.ident} data-identification={i.id}>
-            <TraySlide slide={i.slide} tree={tree} />
+            <FlatGlassSlide item={slideItem(i.slide, tree, i18n)} />
             <dl className={styles.identFacts}>
               <div>
                 <dt>{t("people.idents.gave")}</dt>

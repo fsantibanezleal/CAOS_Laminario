@@ -2,8 +2,8 @@
 // state, which says why a place is empty and what can be done.
 import type { ReactNode } from "react";
 import { useI18n } from "../i18n";
+import { GlassPanel } from "../glass/GlassPanel";
 import styles from "./Feedback.module.css";
-import { Icon } from "./Icon";
 
 export function Progress({ label, value }: { label: string; value?: number }) {
   const { number } = useI18n();
@@ -34,14 +34,13 @@ export function Skeleton({ lines = 3 }: { lines?: number }) {
   );
 }
 
+/** An empty place or set: a glass slide with nothing under its coverslip but the icon, its label saying why (U17). */
 export function EmptyState({ icon, title, children, action }: { icon: string; title: string; children: ReactNode;
   action?: ReactNode }) {
   return (
-    <div className={styles.empty}>
-      <Icon name={icon} size={48} />
-      <h3 className={styles.emptyTitle}>{title}</h3>
+    <GlassPanel as="div" icon={icon} title={title} level={3} quiet className={styles.empty}>
       <p>{children}</p>
       {action}
-    </div>
+    </GlassPanel>
   );
 }

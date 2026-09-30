@@ -91,16 +91,19 @@
 
 /* A stage item: what the eyepiece would show, on the stage's dark ground. */
 .card {
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  border: 1px solid var(--c-rule);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
   color: var(--c-ink);
   text-decoration: none;
-  box-shadow: var(--lift);
   transition: transform var(--t-quick) var(--ease-out);
 }
 
@@ -227,12 +230,16 @@
 }
 
 .quality {
+  --tag-hue: var(--c-good);
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   margin-top: var(--s-5);
   padding: var(--s-4);
-  border: 1px solid var(--c-rule);
-  border-left: 4px solid var(--c-good);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
 }
 
 .quality[data-badge="reference"] {

@@ -1,7 +1,7 @@
 // /s/<id>: a slide. At the top the slide as an object (its drawing, with its label and QR) and what can be done with
 // it (print the label at 1:1, read the label, download the drawing, the IIIF manifest); then what can be looked at
 // under the microscope, the photographs, the record, and where every image came from (R-1107).
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 import { Link, useParams } from "wouter";
 import { CiteSlide } from "../../about/CiteSlide";
 import { api, labelPdf, slideDrawing } from "../../api/client";
@@ -12,7 +12,9 @@ import { en, type MessageKey } from "../../i18n/en";
 import { Place } from "../../router/Place";
 import { stageItems, thumbnail, type StageItem } from "../../slide/assets";
 import { nameParts } from "../../slide/names";
-import { LabelReading, SlideObject } from "../../slide/SlideObject";
+import { useRoom } from "../../design/theme";
+import { recordItem } from "../../glass/items";
+import { LabelReading, SlideObject, useSlideSvg } from "../../slide/SlideObject";
 import { collectionOf, localised, nodeHref, pathTo, useTree, type TreeIndex } from "../../tree/TreeProvider";
 import { Button } from "../../ui/Button";
 import { CollectionTag } from "../../ui/Chip";
@@ -63,7 +65,15 @@ export function SlideName({ record }: { record: Pick<SlideRecord, "anchor"> }) {
 }
 
 function SlideView({ record, tree, onChanged }: { record: SlideRecord; tree: TreeIndex; onChanged: () => void }) {
-  const { t, lang } = useI18n();
+  const i18n = useI18n();
+  const { t, lang } = i18n;
+  const { room } = useRoom();
+  const drawing = useSlideSvg(record.id);
+  // The slide as its glass slide, with the QR the server draws for it (U17).
+  const glass = useMemo(() => recordItem(record, tree, i18n, drawing.value),
+    // The item follows the record, its drawing, the language and the room's colours.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [record, tree, drawing.value, lang, room]);
   const [reading, setReading] = useState(false);
   const [photo, setPhoto] = useState<AssetRecord | null>(null);
   const collection = collectionOf(record.placement.node);
@@ -84,7 +94,7 @@ function SlideView({ record, tree, onChanged }: { record: SlideRecord; tree: Tre
       </div>
 
       <section className={styles.objectArea} aria-label={t("slide.object")}>
-        <SlideObject slideId={record.id} />
+        <SlideObject slideId={record.id} item={glass} />
         <div className={styles.actions}>
           <a className={styles.action} href={labelPdf(record.id, lang)} target="_blank" rel="noreferrer">
             <Glyph name="slide" size={20} />{t("slide.print")}

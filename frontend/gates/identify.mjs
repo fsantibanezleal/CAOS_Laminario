@@ -103,7 +103,7 @@ try {
     300_000, "the slide published");
   check(true, `the slide ${id} published (a carbonatite thin section in ${node})`);
 
-  browser = await chromium.launch();
+  browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 
   // Two identifiers agree from the Identify place (R-1308).
   for (const key of ["one", "two"]) {

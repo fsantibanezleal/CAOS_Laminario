@@ -5,7 +5,7 @@
   margin-top: var(--s-6);
 }
 
-/* The facets: a rail beside the tray from 1280 px, a dialog below. */
+/* The facets: a glass panel beside the slides from 1280 px, a dialog below. */
 .rail {
   display: none;
 }
@@ -64,27 +64,6 @@
 
 /* The tray: slides lie on a sunken, wood-edged surface in columns of at least 250 px, every slide at the one scale
    that makes the tray's longest slide fill its column. */
-.tray {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
-  align-items: start;
-  gap: var(--s-6) var(--s-5);
-  margin: 0;
-  padding: var(--s-5);
-  list-style: none;
-  background: var(--c-sunken);
-  border: 1px solid var(--c-rule);
-  border-top: 6px solid var(--c-wood);
-  border-radius: var(--r-panel);
-  transition: opacity var(--t-quick) var(--ease-out);
-}
-
-.tray > li {
-  display: flex;
-  min-width: 0;
-  container-type: inline-size;
-}
-
 .stale {
   opacity: 0.6;
 }
@@ -162,10 +141,6 @@
 }
 
 @media (min-width: 768px) {
-  .tray {
-    padding: var(--s-6);
-  }
-
   .toolbar {
     flex-direction: row;
     flex-wrap: wrap;
@@ -190,7 +165,7 @@
   }
 
   .rail {
-    display: block;
+    display: grid;
     align-self: start;
     position: sticky;
     top: var(--s-5);
