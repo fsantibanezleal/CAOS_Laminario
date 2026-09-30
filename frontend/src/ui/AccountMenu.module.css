@@ -40,16 +40,19 @@
 }
 
 .panel {
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   position: absolute;
   z-index: 20;
   top: calc(100% + var(--s-2));
   right: 0;
   min-width: 16rem;
   padding: var(--s-3);
-  border: 1px solid var(--c-edge);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
-  box-shadow: var(--float);
 }
 
 .panel[hidden] {

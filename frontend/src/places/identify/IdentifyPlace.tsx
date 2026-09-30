@@ -1,15 +1,16 @@
 // /identify: the slides waiting for identification (R-1307), oldest first so none waits forever, laid out as a tray
 // like a drawer's; filtered by collection, kind and badge (the reference slides on request), and, for an identifier,
 // without the slides they have identified. The filters live in the address, so a queue can be shared.
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useSearch } from "wouter";
 import { useSession } from "../../account/session";
 import { communityApi, type QueueFilters } from "../../community/api";
 import type { SlideSummary } from "../../contract/catalog";
 import { useI18n } from "../../i18n";
 import { Place } from "../../router/Place";
-import { trayReference } from "../../slide/names";
-import { TraySlide } from "../../slide/TraySlide";
+import { useRoom } from "../../design/theme";
+import { GlassSet } from "../../glass/GlassSet";
+import { slideItem } from "../../glass/items";
 import { localised, useTree } from "../../tree/TreeProvider";
 import { Button } from "../../ui/Button";
 import { Checkbox } from "../../ui/Choice";
@@ -52,6 +53,12 @@ export function IdentifyPlace() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [failed, setFailed] = useState(false);
   const key = JSON.stringify(filters);
+  const i18n = useI18n();
+  const { room } = useRoom();
+  const glass = useMemo(() => (items && tree.state === "ready" ? items.map((s) => slideItem(s, tree.tree, i18n)) : []),
+    // The items follow the queue, the language and the room's colours.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [items, tree, lang, room]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -118,10 +125,8 @@ export function IdentifyPlace() {
       {items && items.length === 0 ? (
         <EmptyState icon="life" title={t("identify.empty.title")}>{t("identify.empty.body")}</EmptyState>
       ) : null}
-      {items && items.length && tree.state === "ready" ? (
-        <ul className={styles.tray} style={{ "--ref": trayReference(items.map((s) => s.format)) } as CSSProperties}>
-          {items.map((slide) => <li key={slide.id}><TraySlide slide={slide} tree={tree.tree} /></li>)}
-        </ul>
+      {glass.length ? (
+        <GlassSet items={glass} name="identify" title={t("identify.title")} label={t("identify.title")} />
       ) : null}
       {items && items.length < total ? (
         <div className={styles.more}>

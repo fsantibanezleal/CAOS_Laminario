@@ -1,0 +1,49 @@
+/* The glass of the interface (U17): every box of a place is a glass slide drawn in the page. These two tokens are its
+   surface, in each room; a box takes them with a frosted band along its top end, in its own hue:
+
+     border: 0;
+     border-top: 12px solid rgba(247, 247, 243, 0.94);
+     border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+       12 0 0 0 / 12px 0 0 0;
+     border-radius: 2px;
+     background: var(--glass-bg);
+     box-shadow: var(--glass-shadow);
+
+   Clear glass lets the room show through, a bright bevel runs round its edge with the faint green of soda-lime glass
+   inside it, and it casts a soft shadow. */
+:root,
+:root[data-theme="daylight"] {
+  --glass-bg:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.12) 70%,
+      rgba(255, 255, 255, 0) 100%),
+    color-mix(in oklab, var(--c-surface) 72%, #cfe6da 8%);
+  --glass-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7),
+    inset 0 0 0 2px color-mix(in oklab, #7fb89a 45%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.14),
+    0 10px 24px -14px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="lamplit"] {
+  --glass-bg:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.05) 70%,
+      rgba(255, 255, 255, 0) 100%),
+    color-mix(in oklab, var(--c-surface) 80%, #2f4a3d 20%);
+  --glass-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 0 0 2px color-mix(in oklab, #7fb89a 30%, transparent),
+    0 10px 24px -14px rgba(0, 0, 0, 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="daylight"]) {
+    --glass-bg:
+      linear-gradient(115deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.05) 70%,
+        rgba(255, 255, 255, 0) 100%),
+      color-mix(in oklab, var(--c-surface) 80%, #2f4a3d 20%);
+    --glass-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+      inset 0 0 0 2px color-mix(in oklab, #7fb89a 30%, transparent),
+      0 10px 24px -14px rgba(0, 0, 0, 0.7);
+  }
+}

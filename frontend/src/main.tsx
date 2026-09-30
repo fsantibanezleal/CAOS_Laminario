@@ -5,6 +5,7 @@ import type { SlideRecord } from "./contract/catalog";
 import "./design/fonts.css";
 import "./design/tokens.css";
 import "./design/base.css";
+import "./glass/surface.css";
 
 export type { SlideRecord };
 

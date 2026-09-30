@@ -1,13 +1,16 @@
 /* The account places: one form on a card of paper, narrow enough to read at a glance. */
 .card {
+  border: 0;
+  border-top: 12px solid rgba(247, 247, 243, 0.94);
+  border-image: linear-gradient(to bottom, var(--tag-hue, var(--c-accent)) 0 4px, rgba(247, 247, 243, 0.94) 4px)
+    12 0 0 0 / 12px 0 0 0;
+  border-radius: 2px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
   display: grid;
   gap: var(--s-5);
   max-width: 28rem;
   padding: var(--s-6);
-  border: 1px solid var(--c-edge);
-  border-radius: var(--r-panel);
-  background: var(--c-surface);
-  box-shadow: var(--lift);
 }
 
 .lead {
