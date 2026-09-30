@@ -13,7 +13,7 @@ PLACES.push(`/s/${label.id}`, ...(stageAsset ? [`/s/${label.id}/stage/${stageAss
 
 const out = outDir("fit");
 const stop = await serve();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 const failures = [];
 let cases = 0;
 try {

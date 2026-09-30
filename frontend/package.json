@@ -30,7 +30,9 @@
     "gate:cabinet": "node gates/cabinet.mjs",
     "gate:about": "node gates/about.mjs",
     "gate:links": "node gates/links.mjs",
-    "gate:production": "node gates/production.mjs"
+    "gate:production": "node gates/production.mjs",
+    "gate:glass": "node gates/glass.mjs",
+    "gate:glass-look": "node gates/glass-look.mjs"
   },
   "dependencies": {
     "@annotorious/openseadragon": "3.9.3",

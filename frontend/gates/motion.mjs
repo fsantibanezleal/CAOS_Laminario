@@ -11,7 +11,7 @@ const stageAsset = label.assets.find((a) => a.family === "micro" && a.status ===
 PLACES.push(`/s/${label.id}`, ...(stageAsset ? [`/s/${label.id}/stage/${stageAsset.id}`] : []));
 
 const stop = await serve();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 const failures = [];
 let measured = 0;
 try {

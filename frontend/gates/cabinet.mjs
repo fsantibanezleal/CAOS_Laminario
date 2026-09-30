@@ -153,7 +153,7 @@ try {
     { anchor: carbonatite, body: "Calcite with apatite and phlogopite." });
   check(agreed.status === 201, "the identifier agrees with the carbonatite");
 
-  browser = await chromium.launch();
+  browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 
   // A visitor: from the slide to its contributor's cabinet (R-1408).
   const visitor = await newContext();

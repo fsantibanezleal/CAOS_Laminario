@@ -14,7 +14,7 @@ const slides = [...new Map([examples.label, examples.stack, examples.pair, examp
   .filter(Boolean).map((r) => [r.id, r])).values()];
 const out = outDir("qr");
 const stop = await serve();
-const browser = await chromium.launch();
+const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 const failures = [];
 let decoded = 0;
 try {

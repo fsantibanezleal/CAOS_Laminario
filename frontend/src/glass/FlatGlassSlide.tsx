@@ -13,7 +13,9 @@ export function FlatGlassSlide({ item, current = false, compact = false }: { ite
   const style = { "--long": long, "--short": short, "--label": label, "--tag-hue": item.hue } as CSSProperties;
   return (
     <Link href={item.href} className={[styles.slide, compact ? styles.compact : "", item.empty ? styles.empty : ""]
-      .join(" ")} style={style} aria-current={current ? "page" : undefined} data-glass-flat={item.id}>
+      .join(" ")} style={style} aria-current={current ? "page" : undefined} data-glass-flat={item.id}
+      data-slide={item.href.startsWith("/s/") ? item.id : undefined}
+      data-format={`${item.format.long}x${item.format.short}`}>
       {item.photo ? (
         <img className={styles.photo} src={item.photo} alt="" loading="lazy" decoding="async" />
       ) : (

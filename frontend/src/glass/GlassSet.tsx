@@ -55,9 +55,15 @@ export function useArrangement(): [Arrangement, (next: Arrangement) => void] {
 
 let webgl: boolean | null = null;
 
-/** Whether this device draws WebGL; without it the slides are drawn flat. */
+/** Whether this device draws WebGL; without it (or when this device is set to draw them flat, as the gates set it to
+ * measure the slides' proportions) the slides are drawn flat. */
 export function hasWebGL(): boolean {
   if (webgl !== null) return webgl;
+  try {
+    if (localStorage.getItem("laminario.glass") === "flat") return (webgl = false);
+  } catch {
+    // Storage may be refused: draw what the device can.
+  }
   try {
     const canvas = document.createElement("canvas");
     webgl = Boolean(canvas.getContext("webgl2") ?? canvas.getContext("webgl"));
@@ -219,7 +225,8 @@ export function GlassSet({ items, label, title, hue = "--c-accent", initial = 0,
               aria-label={t("glass.position", { n: i + 1, total: items.length })}>
               <Link href={item.href} ref={(el: HTMLAnchorElement | null) => { links.current[i] = el; }}
                 tabIndex={i === selected ? 0 : -1} className={styles.layerLink}
-                data-glass-item={item.id} data-pick-x={spot ? Math.round(spot.pickX) : undefined}
+                data-glass-item={item.id} data-slide={item.href.startsWith("/s/") ? item.id : undefined}
+                data-pick-x={spot ? Math.round(spot.pickX) : undefined}
                 data-pick-y={spot ? Math.round(spot.pickY) : undefined}
                 onFocus={() => { setFocus(i); setSelected(i); }} onBlur={() => setFocus(null)}>
                 {item.description ?? [item.name, ...item.facts].join(", ")}
