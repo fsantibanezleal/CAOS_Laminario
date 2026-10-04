@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { AssetRecord } from "../contract/catalog";
-import { itemFor, stageItems } from "./assets";
+import { bestFit, itemFor, stageItems, thumbnail } from "./assets";
 
 let next = 1;
 function asset(role: string, extra: Partial<AssetRecord> = {}): AssetRecord {
@@ -38,5 +38,21 @@ describe("stage items", () => {
     expect(itemFor(items, wavelet.id)).toBe(stack);
     expect(itemFor(items, xpl.id)).toBe(pair);
     expect(itemFor(items, macro.id)).toBeUndefined();
+  });
+});
+
+describe("best-fit sizes", () => {
+  // iipsrv 1.3 answers 400 to !w,h when w or h exceeds the image's side; 95 of 505 base slides tripped it.
+  it("caps the box at the image's own sides", () => {
+    expect(bestFit(1024, { width_px: 1280, height_px: 720 })).toBe("!1024,720");
+    expect(bestFit(1024, { width_px: 640, height_px: 480 })).toBe("!640,480");
+    expect(bestFit(320, { width_px: 1280, height_px: 720 })).toBe("!320,320");
+  });
+  it("sends the plain box when the size is unknown", () => {
+    expect(bestFit(400, { width_px: null, height_px: null })).toBe("!400,400");
+  });
+  it("puts the capped size in the thumbnail URL", () => {
+    const a = asset("single", { media: { kind: "pyramid", iiif_info_url: "/iiif/X%2F1.tif/info.json", width_px: 1280, height_px: 720 } });
+    expect(thumbnail(a, 1024)).toBe("/iiif/X%2F1.tif/full/!1024,720/0/default.jpg");
   });
 });

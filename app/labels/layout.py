@@ -26,6 +26,7 @@ from dataclasses import dataclass, field
 
 from app.collections import places, vocab
 from app.contracts import catalog as c
+from app.delivery.iiif import best_fit
 
 PT_MM = 25.4 / 72
 ADVANCE_EM = 0.6
@@ -267,7 +268,8 @@ def _mount_asset(record: c.SlideRecord) -> c.AssetRecord | None:
 def _href(asset: c.AssetRecord) -> str:
     media = asset.media
     if media.iiif_info_url:
-        return media.iiif_info_url.removesuffix("/info.json") + "/full/!800,800/0/default.jpg"
+        size = best_fit(800, media.width_px, media.height_px)
+        return media.iiif_info_url.removesuffix("/info.json") + f"/full/{size}/0/default.jpg"
     return media.image_url or ""
 
 

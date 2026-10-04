@@ -3,6 +3,23 @@
 All notable changes, newest first, grouped Added / Changed / Fixed / Removed. Versions are `X.XX.XXX` (the `VERSION`
 file, the tags and this log); manifests carry the semantic form.
 
+## [0.17.003] - 2026-10-04
+
+### Fixed
+
+- Images that answered 400 for about a fifth of the collection. iipsrv 1.3 treats a best-fit size `!w,h` as an
+  upscale whenever `w` or `h` exceeds one of the image's sides, and answers "upscaling should be prefixed with ^",
+  though a best fit only shrinks. The glass view asked for `!1024,1024`, and 95 of the 505 base slides have an image
+  under 1024 px on one side (slide M1GP9NA7, 1280x720, failed). The stage thumbnails, the catalog thumbnails, the
+  label images and the IIIF manifest's thumbnail built the same unclamped box. Every one now caps each side at the
+  image's own size (`best_fit` in `app/delivery/iiif.py`, `bestFit` in `frontend/src/slide/assets.ts`), so the same
+  picture is asked for without crossing that check. (#67)
+- The README's first paragraph said every case is a real slide with the specimen seen through the coverslip. It now
+  states what the base collection is: 15 of 505 slides carry a photograph of the actual glass, the other 490 are
+  drawn in an assumed format with a taxon icon, 475 images come from Wikimedia Commons and 14 are SEM images.
+- `tests/uploads/test_location.py::test_the_check_reads_the_position` reads a JPEG through libvips and failed
+  wherever libvips is absent; it now skips there, like its neighbours.
+
 ## [0.17.002] - 2026-09-30
 
 ### Added
