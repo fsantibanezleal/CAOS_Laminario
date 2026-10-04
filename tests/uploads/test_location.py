@@ -7,6 +7,7 @@ from __future__ import annotations
 import io
 
 import numpy as np
+import pytest
 from PIL import Image
 
 from app.jobs.kinds import has_gps
@@ -33,6 +34,14 @@ SANTIAGO = {1: "S", 2: (33.0, 26.0, 56.0), 3: "W", 4: (70.0, 39.0, 0.0)}
 
 
 def test_the_check_reads_the_position(tmp_path):
+    # has_gps reads a JPEG through libvips. Its neighbours skip without the library (through tusd's stack or the
+    # imaging fixture); this one failed instead wherever libvips is absent.
+    try:
+        from app.imaging.library import vips
+
+        vips().version(0)
+    except Exception as exc:  # the library is absent or cannot be loaded on this machine
+        pytest.skip(f"libvips is not available: {exc}")
     with_position, emptied, without = tmp_path / "a.jpg", tmp_path / "b.jpg", tmp_path / "c.jpg"
     with_position.write_bytes(photo(SANTIAGO))
     emptied.write_bytes(photo({}))
