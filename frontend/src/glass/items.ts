@@ -2,6 +2,7 @@
 // or a slide's summary. Colours are the room's, resolved when the items are made (the scene paints with them).
 import type { CollectionNodeRecord, SlideRecord, SlideSummary } from "../contract/catalog";
 import type { useI18n } from "../i18n";
+import { bestFit } from "../slide/assets";
 import { geometry, isItalicName } from "../slide/names";
 import { collectionOf, localised, nodeHref, type TreeIndex } from "../tree/TreeProvider";
 import { roomColour } from "./GlassSet";
@@ -78,7 +79,7 @@ export function recordItem(record: SlideRecord, tree: TreeIndex, i18n: I18n, dra
   const picture = (a?: (typeof ready)[number]) => {
     if (!a) return null;
     const info = a.media.iiif_info_url;
-    return info ? `${info.replace(/\/info\.json$/, "")}/full/!1024,1024/0/default.jpg` : a.media.image_url ?? null;
+    return info ? `${info.replace(/\/info\.json$/, "")}/full/${bestFit(1024, a.media)}/0/default.jpg` : a.media.image_url ?? null;
   };
   const collected = record.label.collected_on;
   const facts = [preparation ? localised(preparation.name, lang) : record.label.preparation, record.label.locality_text ?? "",

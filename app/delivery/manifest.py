@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from app.contracts import catalog as c
 from app.contracts import licences
+from app.delivery.iiif import best_fit
 
 PRESENTATION_CONTEXT = "http://iiif.io/api/presentation/3/context.json"
 NAVPLACE_CONTEXT = "http://iiif.io/api/extension/navplace/context.json"
@@ -200,10 +201,12 @@ def manifest(slide: c.SlideRecord, public_base_url: str) -> dict:
     }
     if len(rights) == 1 and None not in rights:
         document["rights"] = rights.pop()
-    first_service = next((_service(a) for a in ordered if _service(a)), None)
-    if first_service:
+    first = next((a for a in ordered if _service(a)), None)
+    first_service = _service(first) if first else None
+    if first and first_service:
         service_base = first_service.get("id") or first_service["@id"]
-        document["thumbnail"] = [{"id": f"{service_base}/full/!320,320/0/default.jpg", "type": "Image",
+        size = best_fit(320, first.media.width_px, first.media.height_px)
+        document["thumbnail"] = [{"id": f"{service_base}/full/{size}/0/default.jpg", "type": "Image",
                                   "format": "image/jpeg", "service": [first_service]}]
     place = _nav_place(slide, manifest_id)
     if place:

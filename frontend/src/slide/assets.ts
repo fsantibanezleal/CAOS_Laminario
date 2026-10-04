@@ -74,9 +74,17 @@ export function itemFor(items: StageItem[], assetId: number): StageItem | undefi
     i.composites.some((c) => c.id === assetId) || i.xpl?.id === assetId);
 }
 
+/** The IIIF size for a best fit inside a `box` square, never larger than the image (app/delivery/iiif.py `best_fit`).
+ * iipsrv 1.3 answers 400 to `!w,h` whenever w or h exceeds the image's own side, though a best fit only shrinks: a
+ * 1280x720 image failed `!1024,1024`, and 95 of the 505 base slides have a side under 1024 px. */
+export function bestFit(box: number, media: Pick<AssetRecord["media"], "width_px" | "height_px">): string {
+  const { width_px: w, height_px: h } = media;
+  return w && h ? `!${Math.min(box, w)},${Math.min(box, h)}` : `!${box},${box}`;
+}
+
 /** A thumbnail of an asset, from its IIIF image or its plain image. */
 export function thumbnail(asset: AssetRecord, box = 400): string | null {
   const media = asset.media;
-  if (media.iiif_info_url) return `${media.iiif_info_url.replace(/\/info\.json$/, "")}/full/!${box},${box}/0/default.jpg`;
+  if (media.iiif_info_url) return `${media.iiif_info_url.replace(/\/info\.json$/, "")}/full/${bestFit(box, media)}/0/default.jpg`;
   return media.image_url ?? null;
 }
