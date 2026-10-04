@@ -27,6 +27,20 @@ INFO_MEDIA_TYPE = f'application/ld+json;profile="{IMAGE_CONTEXT}"'
 INFO_CACHE_ENTRIES = 2048
 
 
+def best_fit(box: int, width: int | None, height: int | None) -> str:
+    """The IIIF size for a best fit inside a ``box`` square, never larger than the image: ``!w,h``.
+
+    iipsrv 1.3 treats ``!w,h`` as an upscale whenever ``w`` or ``h`` exceeds the image's own width or height, and
+    answers 400 ("upscaling should be prefixed with ^") even though a best fit would only shrink. A 1280x720 image
+    failed ``!800,800`` and ``!1024,1024``; 95 of the 505 base slides have an image under 1024 px on one side. Capping
+    each side at the image's size asks for the same picture without crossing that check. With the size unknown (a
+    remote IIIF service) the plain box is sent: other servers apply the specification's best fit.
+    """
+    if width and height:
+        return f"!{min(box, width)},{min(box, height)}"
+    return f"!{box},{box}"
+
+
 def identifier(storage_key: str) -> str:
     """The IIIF identifier of a stored file: its storage key as one percent-encoded path segment."""
     return quote(storage_key, safe="")

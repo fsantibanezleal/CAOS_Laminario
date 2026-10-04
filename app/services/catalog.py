@@ -15,6 +15,7 @@ from app.config import Settings
 from app.contracts import catalog as c
 from app.contracts import licences
 from app.db.models import Asset, Slide
+from app.delivery.iiif import best_fit
 
 CELL_DEGREES = 0.2
 #: Images made from other images of the slide (U2's fusion of a focal stack).
@@ -76,7 +77,8 @@ def media_record(asset: Asset, settings: Settings) -> c.MediaRecord:
 def thumbnail_url(asset: Asset, settings: Settings, box: int = 320) -> str | None:
     media = media_record(asset, settings)
     if media.iiif_info_url:
-        return media.iiif_info_url.removesuffix("/info.json") + f"/full/!{box},{box}/0/default.jpg"
+        size = best_fit(box, media.width_px, media.height_px)
+        return media.iiif_info_url.removesuffix("/info.json") + f"/full/{size}/0/default.jpg"
     return media.image_url
 
 
