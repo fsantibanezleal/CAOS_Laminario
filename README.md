@@ -6,10 +6,15 @@
 
 Live: [laminario.ml.fasl-work.com](https://laminario.ml.fasl-work.com).
 
-**An open collection of microscope slides, in the spirit of iNaturalist.** Every case is a real slide, shown as the
-glass object it is: its format and size, the specimen seen through the coverslip, and a label with a QR code that
-opens the slide's page. Behind the glass is the micro imagery, from a single photomicrograph to a whole-slide scan
-with focal planes, explored in deep zoom.
+**An open collection of microscope slides, in the spirit of iNaturalist.** Each case is shown as a glass slide: its
+format and size, and a label with a QR code that opens the slide's page. Behind the glass is the micro imagery, from a
+single photomicrograph to a whole-slide scan with focal planes, explored in deep zoom.
+
+Most of the 505 slides in the base collection are openly licensed micrographs, not photographed glass. Only 15 carry
+a photograph of the actual slide. The other 490 are drawn in an assumed standard format, with a taxon icon where the
+specimen would be, and each slide page says so ("76 x 26 mm (assumed: the source does not record the preparation)").
+475 of the images come from Wikimedia Commons, and 14 are scanning electron micrographs rather than optical
+preparations.
 
 ## Why
 
@@ -34,7 +39,7 @@ The design is in [`docs/design/SDD.md`](docs/design/SDD.md), written before any 
 
 ## Status
 
-Version `0.17.002`. Released, each with its wiki page:
+Version `0.17.003`. Released, each with its wiki page:
 
 - U0, the repository base: versioning, guards, the design document with a gate per requirement.
 - U1, the data model and both contracts (ingestion and catalog), exported as JSON Schema and TypeScript ([`02_data-contracts.md`](docs/architecture/02_data-contracts.md)).
